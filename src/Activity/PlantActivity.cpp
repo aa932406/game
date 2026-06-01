@@ -44,23 +44,25 @@ int32_t PlantActivity::onBeginGather(Player* player)
     
     if (m_pActivityMap)
     {
-        return m_pActivityMap->onBeginGather(this, player);
+        m_pActivityMap->OnBeginGather(this, player);
     }
     
     return 0;
 }
 
-void PlantActivity::onEndGather(Player* player)
+int32_t PlantActivity::onEndGather(Player* player)
 {
-    if (!player) return;
+    if (!player) return -1;
     
     int32_t err = Plant::onEndGather(player);
-    if (err != 0) return;
+    if (err != 0) return err;
     
     if (m_pActivityMap)
     {
-        m_pActivityMap->onPlantGather(this, player);
+        m_pActivityMap->OnPlantGather(this, player);
     }
+    
+    return 0;
 }
 
 bool PlantActivity::IsExpired() const
@@ -91,15 +93,14 @@ void PlantActivity::SetLifeTime(int32_t lifeTime)
 
 void PlantActivity::OnTimer(int64_t curTick)
 {
-    Plant::OnTimer(curTick);
-    
     // 检查是否过期
     if (IsExpired())
     {
         // 植物过期，从地图移除
-        if (m_pMap && m_pActivityMap)
+        Map* pMap = getMap();
+        if (pMap && m_pActivityMap)
         {
-            m_pMap->removePlant(this);
+            pMap->removePlant(getId());
         }
     }
 }

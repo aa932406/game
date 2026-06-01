@@ -1,1 +1,4 @@
-#ifndef _CXUNIBI_H_\n#define _CXUNIBI_H_\nclass CXuNiBi {};\n#endif
+#ifndef _CXUNIBI_H_
+#define _CXUNIBI_H_
+class CXuNiBi {};
+#endif

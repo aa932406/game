@@ -5,6 +5,17 @@
 #include <cstdint>
 #include <vector>
 
+// CfgPlantEvent struct (needed by CfgPlant)
+#ifndef CFGPLANTEVENT_STRUCT_DEFINED
+#define CFGPLANTEVENT_STRUCT_DEFINED
+struct CfgPlantEvent
+{
+    int32_t EventId;
+    int32_t Probability;
+    
+    CfgPlantEvent() : EventId(0), Probability(0) {}
+};
+#endif
 
 /**
  * @brief CfgPlant - Config data class

@@ -526,10 +526,13 @@ struct CfgDungeonNpcCost {
     int ItemCount;
 };
 
+#ifndef CFGPLANTEVENT_STRUCT_DEFINED
+#define CFGPLANTEVENT_STRUCT_DEFINED
 struct CfgPlantEvent {
     int EventId;
     int Probability;
 };
+#endif
 
 struct TaskRequest {
     int param1;
