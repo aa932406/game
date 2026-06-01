@@ -34,6 +34,27 @@ public:
     void setType(PackType type);
     void setProc(uint16_t proc);
     void destroy();
+
+    // 静态包装方法
+    static void writeInt32(NetPacket* p, int32_t v) { if (p) p->writeInt32(v); }
+    static void writeInt8(NetPacket* p, int8_t v) { if (p) p->writeInt8(v); }
+    static void writeInt64(NetPacket* p, int64_t v) { if (p) p->writeInt64(v); }
+    static void writeInt16(NetPacket* p, int16_t v) { if (p) p->writeInt16(v); }
+    static void writeUTF8(NetPacket* p, const std::string& v) { if (p) p->writeUTF8(v); }
+    static void writeUTF8(NetPacket* p, const std::string* v) { if (p && v) p->writeUTF8(*v); }
+    static int32_t readInt32(NetPacket* p) { return p ? p->readInt32() : 0; }
+    static int8_t readInt8(NetPacket* p) { return p ? p->readInt8() : 0; }
+    static int64_t readInt64(NetPacket* p) { return p ? p->readInt64() : 0; }
+    static int16_t readInt16(NetPacket* p) { return p ? p->readInt16() : 0; }
+    static void readUTF8(NetPacket* p, std::string& out) { if (p) p->readUTF8(out); }
+    static void readUTF8(NetPacket* p, std::string* out) { if (p && out) p->readUTF8(*out); }
+    static void setSize(NetPacket* p, uint32_t s) { if (p) p->setSize(s); }
+    static uint32_t getWOffset(NetPacket* p) { return p ? p->getWOffset() : 0; }
+    static void setWOffset(NetPacket* p, uint32_t o) { if (p) p->setWOffset(o); }
+    static uint16_t getProc(NetPacket* p) { return p ? p->getProc() : 0; }
+    static void setType(NetPacket* p, PackType t) { if (p) p->setType(t); }
+    static void setProc(NetPacket* p, uint16_t pr) { if (p) p->setProc(pr); }
+    static void destroy(NetPacket* p) { if (p) p->destroy(); }
 };
 
 } // namespace Answer

@@ -24,7 +24,7 @@ public:
     void SetYaoYiYaoFlag(int32_t nCount);
     int32_t GetFlagCount();
     void SetFlag(int32_t nId);
-    void GetNoFlagIdList(Int32Vector* __return_ptr retstr);
+    void GetNoFlagIdList(Int32Vector* retstr);
     void AddExp(int32_t nValue);
     int32_t OnActiveXinMo(Answer::NetPacket* inPacket);
     int32_t OnJinHua(Answer::NetPacket* inPacket);
@@ -43,6 +43,7 @@ public:
     int32_t GetFreeSlotCount();
     int32_t ResetBagSlot(int32_t nSlot, int32_t Opway);
     void AddXinMoBagLog(MemChrBag item, int32_t falg, int32_t Opway);
+    static int32_t GetXinMoLevel(CXinMo* self) { (void)self; return 0; }
     int32_t GetQiQingLevel(int32_t nType);
     int32_t GetLeftYaoYiYaoTimes();
     int32_t GetChangeXinQingTimes();

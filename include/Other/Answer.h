@@ -30,6 +30,7 @@ enum class LogLevel : uint8_t {
 class Logger {
 public:
     static void print(const char* format, ...);
+    static void print(int level, const char* format, ...);
     static void info(const char* format, ...);
     static void error(const char* format, ...);
 };
@@ -43,6 +44,11 @@ class DBPool {
 public:
     MySqlDBGuard* GetDBGuard();
 };
+
+constexpr int LOG_LEVEL_ERROR = 3;
+constexpr int LOG_LEVEL_DEBUG = 0;
+constexpr int LOG_LEVEL_INFO = 1;
+constexpr int LOG_LEVEL_WARN = 2;
 
 int setkeepalive(int fd, int idleseconds);
 int setnodelay(int fd);

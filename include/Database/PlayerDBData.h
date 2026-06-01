@@ -8,16 +8,23 @@
 #include <set>
 #include <cstring>
 
+struct IDataStruct {};
+
 class PlayerDBData : public IDataStruct {
 public:
     PlayerDBData();
     ~PlayerDBData();
-    void CleanUp(PlayerDBData *const this);
-    void SaveToSqlString(PlayerDBData *const this, SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
-    bool LoadFromDB(PlayerDBData *const this, Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
-    void PackageData(PlayerDBData *const this, Answer::NetPacket *packet);
+    void CleanUp();
+    void SaveToSqlString(class SqlStringList *const sqls, char (*const szSQL)[4096], int64_t nCid);
+    bool LoadFromDB(class Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, int64_t nCid);
+    void PackageData(class Answer::NetPacket *packet);
+
+    // 背包数据 (供 CExtCharBag 使用)
+    struct BagData {
+        char bagData[56 * sizeof(struct MemChrBag)];
+        std::map<int32_t, int32_t> m_ItemLimit;
+    } bagData;
 
 private:
-    // TODO: member variables
+    // TODO: other member variables
 };
-（内容由AI生成，仅供参考）

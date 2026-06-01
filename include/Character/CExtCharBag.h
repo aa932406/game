@@ -239,6 +239,9 @@ public:
     // 其他公开方法
     bool AddItemsAndMingGe(const MemChrBagVector* vItem, ITEM_CHANGE_REASON nReason);
 
+    // 内部方法
+    void checkCreate();
+
     // 排序比较器
     static bool GreaterItem(const MemChrBag& left, const MemChrBag& right);
 

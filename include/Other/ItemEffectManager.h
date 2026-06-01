@@ -32,6 +32,7 @@ public:
     ~ItemEffectManager();
 
     void init();
+    static int32_t effect(ItemEffectManager* mgr, int32_t itemId, Player* src, Player* dst, int32_t* count) { (void)mgr; (void)itemId; (void)src; (void)dst; (void)count; return 0; }
 
 private:
     std::map<int, ItemEffect*> m_itemEffects;

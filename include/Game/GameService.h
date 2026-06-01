@@ -57,6 +57,13 @@ public:
 
   int32_t getLine() const { return m_line; }
   int32_t getId() const { return m_id; }
+  
+  // 静态包装方法
+  static int32_t getLine(GameService* gs) { return gs ? gs->m_line : 0; }
+  static Answer::NetPacket* popNetpacket(GameService* gs, int8_t connid, Answer::PackType type, uint16_t proc) { return gs ? gs->popNetpacket(connid, type, proc) : nullptr; }
+  static void sendPacketTo(GameService* gs, int8_t connid, int16_t index, Answer::NetPacket* pkt) { if (gs) gs->sendPacketTo(connid, index, pkt); }
+  static int32_t replySuccess(GameService* gs, int8_t connid, int16_t index, uint16_t proc, int64_t addon) { return gs ? gs->replySuccess(connid, index, proc, addon) : -1; }
+  static void worldBroadcast(GameService* gs, int8_t connid, Answer::NetPacket* pkt) { if (gs) gs->worldBroadcast(connid, pkt); }
   int32_t getWorldLevel() const { return m_WorldLevel; }
   int32_t getBattle() const { return m_Battle; }
   void setWorldLevel(int32_t level) { m_WorldLevel = level; }

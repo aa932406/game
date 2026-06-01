@@ -7,11 +7,17 @@
 #include <list>
 #include <map>
 
+#include "Other/MemChrTaskData.h"
+
 class Player;
 class Map;
 class Unit;
 class Npc;
 class CActivity;
+struct DropItem;
+struct ItemData;
+typedef std::vector<ItemData> DropItemVector;
+typedef int32_t TaskType;
 
 class ChrTask
 {
@@ -31,6 +37,7 @@ public:
     bool receivePreCheck(int32_t tid, CfgTask * cfgTask);
     bool submitPreCheck(int32_t tid, CfgTask * cfgTask);
     void updateTaskUseItem(int32_t id, int32_t Count);
+    static void updateTaskUseItem(ChrTask* self, int32_t id, int32_t Count) { if (self) self->updateTaskUseItem(id, Count); }
     void updateTaskTypeCount(int32_t taskType);
     void updateTaskPlant(int32_t id);
     void updateTaskMonster(int32_t Mid, int32_t group_id, int32_t level);

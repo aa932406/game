@@ -88,6 +88,11 @@ public:
     void logLevelUp(int8_t connid, const LogPlayerLevel *const logLevel);
     void SaveOnlineTime(int8_t connid, CharId_t nCharId, int32_t nDayTime, int32_t nOnlineTime);
     void log360(int8_t connid, Log360 *const LogStu);
+    
+    // 静态包装方法
+    static void insertItemChange(DBService* db, int8_t connid, const LogItemChange* item) { if (db) db->insertItemChange(connid, item); }
+    static void log360(DBService* db, int8_t connid, Log360* stu) { if (db) db->log360(connid, stu); }
+    static void OnSendSysMail(DBService* db, int8_t connid, int64_t ReceiverId, int32_t SysMailId, const MemChrBagVector* items, int32_t nReason, const std::string* Param, int32_t nFamilyid) { if (db) db->OnSendSysMail(connid, ReceiverId, SysMailId, items, static_cast<ITEM_CHANGE_REASON>(nReason), Param, nFamilyid); }
     void LogProc(int8_t connid, PacketProcLog *const stu);
     void logGeneral(int8_t connid, Generallog *const LogStu);
     void LogUpEquipStar(int8_t connid, UpStartLog *const LogStu);

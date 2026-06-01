@@ -2103,6 +2103,13 @@ public:
     int32_t getOutValue(int32_t nId, int8_t nClass);
     bool dropBroadcast(int32_t nId, int8_t nClass);
     bool canSell(int32_t nId, int8_t nClass);
+    
+    // 静态包装方法
+    static int32_t getOverlay(CfgData* cfg, int32_t nId, int8_t nClass) { return cfg ? cfg->getOverlay(nId, nClass) : 0; }
+    static CfgItem* getItem(CfgData* cfg, int32_t id) { return cfg ? cfg->getItem(id) : nullptr; }
+    static int32_t getOutValue(CfgData* cfg, int32_t nId, int8_t nClass) { return cfg ? cfg->getOutValue(nId, nClass) : 0; }
+    static bool canSell(CfgData* cfg, int32_t nId, int8_t nClass) { return cfg ? cfg->canSell(nId, nClass) : false; }
+    static SelectItemCfg* GetSelectItemCfg(CfgData* cfg, int32_t nId) { return cfg ? cfg->GetSelectItemCfg(nId) : nullptr; }
     int32_t InitXuWuTask(int32_t Level, int32_t Times);
     int32_t InitXinMoTask(int32_t Level, int32_t Times);
     int32_t RandPdbfTask(int32_t Level);

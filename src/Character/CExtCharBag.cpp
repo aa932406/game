@@ -12,6 +12,8 @@
 #include "Other/MemEquip.h"
 #include "Other/Log360.h"
 #include "Other/StaticObj.h"
+#include "Database/PlayerDBData.h"
+#include "Network/NetPacket.h"
 #include "Other/CVplan.h"
 #include "Other/CWuHunShop.h"
 #include "Other/CXingMai.h"
@@ -20,6 +22,10 @@
 #include "Other/CLingZhu.h"
 #include "Other/CXuNiBi.h"
 #include "Other/CExtOperateLimit.h"
+#include "Other/CXinMo.h"
+#include "Other/Answer.h"
+#include "Database/DBService.h"
+#include "Answer/Singleton.h"
 #include "Common/CommonTypes.h"
 #include <cstring>
 #include <algorithm>
@@ -1314,13 +1320,13 @@ bool CExtCharBag::autoUseItem(const MemChrBag* item, ITEM_CHANGE_REASON nReason)
         }
         CURRENCY_TYPE ctype = CItemHelper::TranseCurrencyType((CURRENCY_ITEM_ID)item->itemId);
         if (ctype == CURRENCY_INVALID) return false;
-        CURRENCY_CHANGE_REASON nCCReason = MCR_AUTO_USE;
+        CURRENCY_CHANGE_REASON nCCReason = CURRENCY_CHANGE_REASON::MCR_AUTO_USE;
         switch (nReason)
         {
-            case ICR_PICK: nCCReason = MCR_PICK_CURRENCY_ITEM; break;
+            case ICR_PICK: nCCReason = CURRENCY_CHANGE_REASON::MCR_PICK_CURRENCY_ITEM; break;
             case ICR_MAIL:
-            case ICR_AUCTION_BACK: nCCReason = MCR_MAIL_CURRENCY_ITEM; break;
-            case ICR_CROSS_DRAW_REWARD: nCCReason = MCR_CROSS_DRAW_REWARD; break;
+            case ICR_AUCTION_BACK: nCCReason = CURRENCY_CHANGE_REASON::MCR_MAIL_CURRENCY_ITEM; break;
+            case ICR_CROSS_DRAW_REWARD: nCCReason = CURRENCY_CHANGE_REASON::MCR_CROSS_DRAW_REWARD; break;
             default: break;
         }
         return Player::AddCurrency(m_pPlayer, ctype, nCount, nCCReason, 0);
@@ -1390,12 +1396,12 @@ int32_t CExtCharBag::buyChrShopItem(void* pCharShop, int32_t id, int32_t count)
     // 扣除货币
     if (pShop->ConstType && pShop->ConstType != 6)
     {
-        if (!Player::DecCurrency(m_pPlayer, (CURRENCY_TYPE)pShop->ConstType, costValue, MCR_CHR_SHOP_COST, pShop->ItemId))
+        if (!Player::DecCurrency(m_pPlayer, (CURRENCY_TYPE)pShop->ConstType, costValue, CURRENCY_CHANGE_REASON::MCR_CHR_SHOP_COST, pShop->ItemId))
             return 10002;
     }
     else
     {
-        if (!Player::DecMoneyAndNoBind(m_pPlayer, costValue, MCR_CHR_SHOP_COST, pShop->ItemId))
+        if (!Player::DecMoneyAndNoBind(m_pPlayer, costValue, CURRENCY_CHANGE_REASON::MCR_CHR_SHOP_COST, pShop->ItemId))
             return 10002;
     }
 
@@ -1783,7 +1789,7 @@ int32_t CExtCharBag::onSellItem(Answer::NetPacket* inPacket)
         nTotalValue += outValue;
         setSellItem(slotData);
         setSlotData(nSlot, &m_nullobj, ICR_SELL, 0);
-        Player::AddCurrency(m_pPlayer, CURRENCY_MONEY, outValue, MCR_NPC_SELL, slotData->itemId);
+        Player::AddCurrency(m_pPlayer, CURRENCY_TYPE::CURRENCY_MONEY, outValue, CURRENCY_CHANGE_REASON::MCR_NPC_SELL, slotData->itemId);
     }
     SendBagSellItem();
     uint16_t proc = Answer::NetPacket::getProc(inPacket);

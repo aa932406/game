@@ -89,6 +89,8 @@ enum class CURRENCY_TYPE
     CURRENCY_TYPE_COUNT  = 8    // 类型总数
 };
 
+constexpr CURRENCY_TYPE CURRENCY_INVALID = static_cast<CURRENCY_TYPE>(-1);
+
 // 货币变化原因
 #ifndef CURRENCY_CHANGE_REASON_DEFINED
 #define CURRENCY_CHANGE_REASON_DEFINED
@@ -104,11 +106,17 @@ enum class CURRENCY_CHANGE_REASON
     GCR_XINMO_SIT_REVIVE,             // 心魔原地复活
     GCR_YJSK_GUESS_SIZE,              // 猜大小
     MCR_DUNGEON_REWARD,               // 副本铜钱奖励
-    GCR_FESTIVAL_ACT_2,                // 节日活动金币消耗
-    MCR_SEARCH_BACK,                   // 找回金币消耗
-    GCR_GET_OFFLINE_EXP,               // 获取离线经验
-    GCR_RETROACTIVE,                   // 补签
-    GCC_WEEK_ONLINE_REWARD,            // 周在线奖励
+    GCR_FESTIVAL_ACT_2,               // 节日活动金币消耗
+    MCR_SEARCH_BACK,                  // 找回金币消耗
+    GCR_GET_OFFLINE_EXP,              // 获取离线经验
+    GCR_RETROACTIVE,                  // 补签
+    GCC_WEEK_ONLINE_REWARD,           // 周在线奖励
+    MCR_AUTO_USE,                     // 自动使用
+    MCR_PICK_CURRENCY_ITEM,           // 拾取货币物品
+    MCR_MAIL_CURRENCY_ITEM,           // 邮件货币物品
+    MCR_CROSS_DRAW_REWARD,            // 跨服抽奖奖励
+    MCR_CHR_SHOP_COST,                // 角色商店消耗
+    MCR_NPC_SELL,                     // NPC出售
 };
 #endif // CURRENCY_CHANGE_REASON_DEFINED
 

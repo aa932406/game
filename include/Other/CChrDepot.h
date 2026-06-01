@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+struct ItemInfo;
+
 class CChrDepot : public CExtSystemBase
 {
 public:

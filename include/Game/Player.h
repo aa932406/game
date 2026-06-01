@@ -36,6 +36,7 @@ class CVplan;
 class ChouJiang;
 class CExtChrTaskCycle;
 class CExtCharFamily;
+class CXinMo;
 
 // 角色基础数据结构
 struct PlayerChrData
@@ -201,6 +202,14 @@ public:
     // 连接信息
     int8_t getConnId() const { return m_connid; }
     int16_t getGateIndex() const { return m_cgindex; }
+    
+    // 静态包装方法 (用于C风格静态调用)
+    static int8_t getConnId(Player* player) { return player ? player->m_connid : -1; }
+    static CharId_t getCid(Player* player) { return player ? player->m_cid : 0; }
+    static int32_t getLevel(Player* player) { return player ? player->m_level : 0; }
+    static int32_t getJob(Player* player) { return player ? player->m_job : 0; }
+    static int16_t getGateIndex(Player* player) { return player ? player->m_cgindex : 0; }
+    static int64_t getSid(Player* player) { return player ? player->m_cid : 0; }
 
     // 货币操作
     bool AddCurrency(CURRENCY_TYPE nType, int64_t nAmount, CURRENCY_CHANGE_REASON nReason, int32_t nParam) {
@@ -276,6 +285,18 @@ public:
     int32_t EnterActivity(int32_t nActId, int32_t nProc);
     int32_t doTeleportActivity(int32_t aid);
     int32_t doTeleport(int32_t nId);
+    
+    // 静态包装方法 - 信息获取
+    static void GetPassport(Player* player, std::string* out) { if (player && out) *out = player->m_passport; }
+    static void getName(Player* player, std::string* out) { if (player && out) *out = player->m_name; }
+    static int64_t GetMoneyBindAndNoBind(Player* player) { return player ? player->m_chr.money : 0; }
+    static CExtOperateLimit* GetOperateLimit(Player* player) { return player ? player->m_extOperateLimit : nullptr; }
+    static ChrTask* GetTask(Player* player) { return player ? player->m_task : nullptr; }
+    static CXinMo* GetCXinMo(Player* player) { return nullptr; }
+    static void sendBuyItemInfo(Player* player, int32_t itemId, int8_t itemClass, int32_t count, int32_t costValue, int32_t index) {}
+    static bool DecMoneyAndNoBind(Player* player, int32_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return true; }
+    static bool AddCurrency(Player* player, CURRENCY_TYPE type, int64_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return player ? player->AddCurrency(type, amount, reason, param) : false; }
+    static bool DecCurrency(Player* player, CURRENCY_TYPE type, int64_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return player ? player->DecCurrency(type, amount, reason, param) : false; }
     
     // 图标状态
     static void SendIconState(Player* player, const ShowIcon* stu);

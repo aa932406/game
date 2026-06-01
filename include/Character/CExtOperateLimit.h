@@ -31,6 +31,7 @@ public:
     
     void UpdateLimitCount(int32_t LimitId, int32_t LimitCount);
     void AddLimitCount(int32_t LimitId, int32_t LimitCount);
+    static void AddLimitCount(CExtOperateLimit* self, int32_t LimitId, int32_t LimitCount) { if (self) self->AddLimitCount(LimitId, LimitCount); }
     void Reset(int32_t LimitId);
     void ResetRange(int32_t MinId, int32_t MaxId, int32_t DiffDay);
     int32_t GetLimitCount(int32_t LimitId);
