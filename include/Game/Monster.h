@@ -60,6 +60,12 @@ public:
     void onSendKillerReward(Player *pPlayer);
     void GetOwner();
     int32_t CanAddBossSocre(Player *pPlayer, int32_t nAddValue);
+    void SetLifeTime(int64_t lifeEndTime) { m_nLifeTime = lifeEndTime; }
+    void ClearTarget() { m_target = UnitHandle(); }
+    const CfgMonster& GetCfgMonster() const { return *m_cfgmonster; }
+    int32_t GetLevel() const;
+    int32_t GetMonsterId() const;
+    MonsterState GetState() const { return m_state; }
     void die();
     void ActDrop(DropItemVector *dropItems);
     void revive();
@@ -100,11 +106,9 @@ public:
     void FillHP(int32_t nPercent);
 
 private:
-    // 虚函数表指针
-    void** _vptr_Entity;
     // 成员变量 (从反编译代码的构造和析构还原)
-    std::map<long, ActStruct> m_ActStructMap;       // (std::map<long,ActStruct>::~map)
-    bool m_ChangeOwner;                              // (this->m_ChangeOwner && ...)
+    std::map<long, ActStruct> m_ActStructMap;
+    bool m_ChangeOwner;
     bool m_DamageFlag;
     int8_t m_DieType;
     bool m_HaveItem;
@@ -116,28 +120,24 @@ private:
     int32_t m_OwnerId;
     int64_t m_OwnerLastAttack;
     std::string m_OwnerName;
-    std::map<long, PlayerScore> m_PlayerScore;       // (std::map<long,PlayerScore>::~map)
-    std::vector<Position> m_RevivePos;               // (std::vector<Position>::~vector)
-    std::multiset<PlayerScore*> m_ScoreRank;         // (std::multiset<PlayerScore*,PlayerScoreRankGreater>)
-    std::map<int, PlayerScore> m_TeamScore;          // (std::map<int,PlayerScore>::~map)
+    std::map<long, PlayerScore> m_PlayerScore;
+    std::vector<Position> m_RevivePos;
+    std::multiset<PlayerScore*> m_ScoreRank;
+    std::map<int, PlayerScore> m_TeamScore;
     bool m_TunShi;
     int64_t m_attackTick;
     int64_t m_attackTime;
-    bool m_bDie;
     bool m_bHPRevive;
-    const CfgMonster* m_cfgMonsterAI;                // 配置类型已确认: CfgMonster*
-    const CfgMonster* m_cfgSpecialMonster;            // 配置类型已确认: CfgMonster*
-    const CfgMapMonster* m_cfgmapmonster;             // 配置类型已确认: CfgMapMonster*
-    const CfgMonster* m_cfgmonster;                   // 配置类型已确认: CfgMonster* (CfgMonster::CfgMonster(&this->m_cfgmonster))
+    const CfgMonster* m_cfgMonsterAI;
+    const CfgMonster* m_cfgSpecialMonster;
+    const CfgMapMonster* m_cfgmapmonster;
+    const CfgMonster* m_cfgmonster;
     int64_t m_corpseTick;
-    Position m_currentPos;
-    Position m_currentTile;
     bool m_delFlag;
     int64_t m_ghostTick;
-    UnitHandle m_killer;                              // (UnitHandle::UnitHandle(&this->m_killer, 0, 0))
-    std::list<UnitAddonSkill> m_lAddonSkill;
+    UnitHandle m_killer;
     std::list<CharId_t> m_lDamager;
-    std::list<int> m_lRandType;                       // (std::list<int>::list(&this->m_lRandType))
+    std::list<int> m_lRandType;
     int64_t m_lastActionTick;
     int32_t m_lastUpdateMinute;
     int32_t m_nActivityId;
@@ -151,22 +151,14 @@ private:
     int64_t m_nLifeTime;
     int64_t m_nReviveTime;
     int64_t m_nRunTick;
-    int64_t m_nSkillChantTime;
-    int64_t m_nSyncTick;
-    const CfgActiveSkill* m_pCfgSkill;               // 配置类型已确认: CfgActiveSkill*
-    Map* m_pMap;
-    int64_t m_posUpdateTick;
+    const CfgActiveSkill* m_pCfgSkill;
     int64_t m_reviveTick;
     int64_t m_standTick;
     int64_t m_standTime;
-    MonsterState m_state;                             // (Monster::setState(this, MonsterState::MS_STAND))
+    MonsterState m_state;
     std::string m_strFamilyName;
-    UnitHandle m_target;                              // (UnitHandle::UnitHandle(&this->m_target, 0, 0))
-    std::map<long, UnitHandle> m_targetMap;           // (std::map<long,UnitHandle>::map)
-    Position m_targetPos;
-    Position m_targetTile;
-    int64_t m_throwedTick;
-    CObjAttrs m_unitAttr;
+    UnitHandle m_target;
+    std::map<long, UnitHandle> m_targetMap;
     std::vector<int> m_vSkills;
 };
 

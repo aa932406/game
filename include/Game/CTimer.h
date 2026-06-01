@@ -8,6 +8,8 @@
 #include <list>
 #include <map>
 
+#include "Answer/Mutex.h"
+
 class Player;
 class Map;
 class Unit;
@@ -20,6 +22,10 @@ class CfgMonster;
 class CfgMap;
 class Answer_NetPacket;
 class Position;
+
+namespace Answer {
+    class Mutex;
+}
 
 class CTimer
 {

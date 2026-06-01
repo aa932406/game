@@ -3,6 +3,7 @@
 
 #include "Game/Monster.h"
 #include "Config/CfgActivityMonster.h"
+#include "Activity/CActivity.h"
 #include <list>
 #include <string>
 #include <cstdint>

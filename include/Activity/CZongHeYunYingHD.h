@@ -22,6 +22,7 @@ class Npc;
 class CActivity;
 class RankInfo;
 class RechargeDailyRank;
+struct ShowIcon;
 
 class CZongHeYunYingHD
 {

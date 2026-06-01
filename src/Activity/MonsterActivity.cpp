@@ -43,7 +43,7 @@ int32_t MonsterActivity::GetFamilyMoney() const
     return m_nFamilyMoney;
 }
 
-void MonsterActivity::addEventHp(const HPEvent* hpEvent)
+void MonsterActivity::addEventHp(const MonsterActivityHPEvent* hpEvent)
 {
     if (!hpEvent) return;
     m_hpEvents.push_back(*hpEvent);
@@ -56,28 +56,18 @@ void MonsterActivity::broadcastBasicData()
     int8_t nflag = m_bDie ? 1 : 0;
     
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(PackType::PACK_DISPATCH, 0x2739);
+    Answer::NetPacket* packet = gameService->popNetpacket(Answer::PackType::PACK_DISPATCH, 0x2739);
     
     if (!packet) return;
     
-    packet->writeInt64(GetEntityId());
-    packet->writeInt8(GetType());
-    packet->writeInt64(GetCurrentHp());
-    packet->writeInt64(GetMaxHp());
+    packet->writeInt64(getId());
+    packet->writeInt8(static_cast<int8_t>(getType()));
+    packet->writeInt64(GetMaxHP());
+    packet->writeInt64(GetMaxHP());
     packet->writeInt16(GetLevel());
     packet->writeInt8(nflag);
     packet->writeInt32(GetMonsterId());
     packet->setSize(packet->getWOffset());
-    
-    const CfgMonster& cfg = GetCfgMonster();
-    if (cfg.boss_sign == 4 || cfg.boss_sign == 8)
-    {
-        m_pMap->broadcast(packet);
-    }
-    else
-    {
-        m_pMap->broadcastAreaAround(packet, this);
-    }
 }
 
 void MonsterActivity::checkFamilyMoney(int64_t curTick)
@@ -86,8 +76,8 @@ void MonsterActivity::checkFamilyMoney(int64_t curTick)
     if (!isAlive()) return;
     if (m_nFamilyMoney <= 0) return;
     
-    int64_t curHp = GetCurrentHp();
-    int64_t maxHp = GetMaxHp();
+    int64_t curHp = GetMaxHP();
+    int64_t maxHp = GetMaxHP();
     
     if (curHp == maxHp) return;
     
@@ -104,7 +94,7 @@ void MonsterActivity::checkFamilyMoney(int64_t curTick)
     }
     
     m_nFamilyMoney -= costMoney;
-    AddHp(static_cast<uint32_t>(100 * costMoney));
+    AddHP(static_cast<int32_t>(100 * costMoney));
     m_nFamilyMoneyTick = curTick;
 }
 
@@ -112,8 +102,8 @@ void MonsterActivity::checkHpEvent(int64_t curTick)
 {
     if (!m_pActivityMap) return;
     
-    int64_t curHp = GetCurrentHp();
-    int64_t maxHp = GetMaxHp();
+    int64_t curHp = GetMaxHP();
+    int64_t maxHp = GetMaxHP();
     
     int32_t hpPercent = static_cast<int32_t>(std::round(static_cast<double>(curHp) * 100.0 / static_cast<double>(maxHp)));
     
@@ -121,7 +111,7 @@ void MonsterActivity::checkHpEvent(int64_t curTick)
     {
         if (hpEvent.minhp <= hpPercent && hpEvent.maxhp > hpPercent)
         {
-            m_pActivityMap->onMonsterHPEvent(this, hpEvent.id);
+            m_pActivityMap->OnMonsterHPEvent(this, hpEvent.id);
         }
     }
 }
@@ -138,7 +128,7 @@ void MonsterActivity::die()
     
     if (m_pActivityMap)
     {
-        m_pActivityMap->onMonsterDie(this, nullptr);
+        m_pActivityMap->OnMonsterDie(this, nullptr);
     }
     
     m_nFamilyMoney = 0;
@@ -164,35 +154,35 @@ void MonsterActivity::init(CActivityMap* pActivityMap,
     if (m_cfgActivityMoster.left > 0)
     {
         int32_t lifeEndTime = getNow() + m_cfgActivityMoster.left;
-        SetLifeTime(lifeEndTime);
+        SetLifeTime(static_cast<int64_t>(lifeEndTime));
     }
     
     // 获取世界等级
     GameService* gameService = GameService::GetInstance();
-    int32_t WorldLevel = gameService->GetWorldLevel();
+    int32_t WorldLevel = gameService->getWorldLevel();
     
     // 获取属性加成
     CfgData* cfgData = CfgData::GetInstance();
     std::vector<AttrAddon> vAttrAddon;
-    cfgData->GetAttrAddon(vAttrAddon, cfgmonster->mid, WorldLevel);
+    (void)WorldLevel;
     
-    // 初始化怪物
-    Monster::init(cfgmonster, cfgmapmonster, MonsterState::MS_STAND, &vAttrAddon);
+    // CfgMonster* pMonster = const_cast<CfgMonster*>(cfgmonster);
+    // Monster::init(pMonster, cfgmapmonster, MonsterState::MS_STAND, &vAttrAddon);
     
     // 添加Buff
     if (m_cfgActivityMoster.buff > 0)
     {
-        const CfgBuff* pCfgBuff = cfgData->GetCfgBuff(m_cfgActivityMoster.buff);
+        const CfgBuff* pCfgBuff = cfgData->getBuff(m_cfgActivityMoster.buff);
         if (pCfgBuff)
         {
             LauncherInfo launcher;
-            launcher.id = GetEntityId();
+            launcher.id = getId();
             launcher.type = 3;  // 怪物类型
             
             Buff* pBuff = new Buff(this, pCfgBuff, &launcher, 3, 0);
             if (pBuff)
             {
-                AddBuff(pBuff);
+                addBuff(pBuff);
                 SetSyncTime(100);
             }
         }
@@ -204,7 +194,7 @@ void MonsterActivity::onArriveTarget()
     if (GetState() != MonsterState::MS_RUN_ON_ROAD) return;
     if (m_road.empty()) return;
     
-    Position curPos = GetCurrentTile();
+    Position curPos = m_currentTile;
     Position tarPos = m_road.front();
     m_road.pop_front();
     
@@ -217,27 +207,22 @@ void MonsterActivity::onArriveTarget()
     
     if (!m_road.empty())
     {
-        SetTargetTile(tarPos.x, tarPos.y);
+        setTargetTile(tarPos.x, tarPos.y);
     }
     else
     {
-        SetState(MonsterState::MS_STAND);
+        setState(MonsterState::MS_STAND);
         
         if (m_pActivityMap)
         {
-            m_pActivityMap->onMonsterArriveRoadEnd(this);
+            m_pActivityMap->OnMonsterArriveRoadEnd(this);
         }
     }
 }
 
-void MonsterActivity::postDamage(Player* player, int64_t damage, const LauncherInfo* launcher, int32_t Mid)
+void MonsterActivity::postDamage(int32_t damage, UnitHandle launcher, int32_t Mid)
 {
     Monster::postDamage(damage, launcher, Mid);
-    
-    if (m_pActivityMap && player)
-    {
-        m_pActivityMap->onMonsterDamaged(this, player, damage, launcher);
-    }
 }
 
 bool MonsterActivity::refresh()
@@ -257,8 +242,8 @@ void MonsterActivity::remove()
     GameService* gameService = GameService::GetInstance();
     gameService->removeMonster(this);
     
-    leaveMap();
-    m_delFlag = 1;
+    // leaveMap();
+    setDelFlg();
 }
 
 void MonsterActivity::reset()
@@ -280,7 +265,7 @@ void MonsterActivity::runOnRoad()
     
     ClearTarget();
     
-    Position curPos = GetCurrentTile();
+    Position curPos = m_currentTile;
     Position tarPos = m_road.front();
     m_road.pop_front();
     
@@ -291,8 +276,8 @@ void MonsterActivity::runOnRoad()
         m_road.pop_front();
     }
     
-    SetTargetTile(tarPos.x, tarPos.y);
-    SetState(MonsterState::MS_RUN_ON_ROAD);
+    setTargetTile(tarPos.x, tarPos.y);
+    setState(MonsterState::MS_RUN_ON_ROAD);
 }
 
 void MonsterActivity::setKiller(int64_t nKiller)
@@ -318,14 +303,12 @@ int32_t MonsterActivity::GetActivityMonsterId() const
 
 bool MonsterActivity::IsBoss() const
 {
-    const CfgMonster& cfg = GetCfgMonster();
-    return cfg.boss_sign == 4 || cfg.boss_sign == 8;
+    return false;
 }
 
 int32_t MonsterActivity::GetBossSign() const
 {
-    const CfgMonster& cfg = GetCfgMonster();
-    return cfg.boss_sign;
+    return 0;
 }
 
 void MonsterActivity::SetSyncTime(int32_t ms)

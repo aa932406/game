@@ -14,6 +14,7 @@ class Buff
 public:
     Buff();
     Buff(int32_t buffId, int32_t buffLevel, Unit* target, Unit* launcher);
+    Buff(Unit* target, const CfgBuff* cfgBuff, const LauncherInfo* launcherInfo, int32_t type, int32_t param);
     ~Buff();
 
     // 基本信息
