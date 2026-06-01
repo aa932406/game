@@ -29,6 +29,13 @@ class ItemBuff;
 #include "Activity/CZongHeYunYingHD.h"
 class DailyActivity;
 struct ShowIcon;
+class CHuoYueDu;
+class CFunctionOpen;
+class CVip;
+class CVplan;
+class ChouJiang;
+class CExtChrTaskCycle;
+class CExtCharFamily;
 
 // 角色基础数据结构
 struct PlayerChrData
@@ -196,6 +203,23 @@ public:
     int16_t getGateIndex() const { return m_cgindex; }
 
     // 货币操作
+    bool AddCurrency(CURRENCY_TYPE nType, int64_t nAmount, CURRENCY_CHANGE_REASON nReason, int32_t nParam) {
+        switch (nType) {
+        case CURRENCY_TYPE::CURRENCY_GOLD:
+            m_chr.gold += static_cast<int32_t>(nAmount);
+            break;
+        case CURRENCY_TYPE::CURRENCY_MONEY:
+            m_chr.money += static_cast<int32_t>(nAmount);
+            break;
+        case CURRENCY_TYPE::CURRENCY_CASH:
+            m_cash += nAmount;
+            break;
+        default:
+            return false;
+        }
+        return true;
+    }
+    
     bool DecCurrency(CURRENCY_TYPE nType, int64_t nAmount, CURRENCY_CHANGE_REASON nReason, int32_t nParam) {
         switch (nType) {
         case CURRENCY_TYPE::CURRENCY_GOLD:
@@ -460,6 +484,15 @@ public:
     CExtCharCarrier* GetCharCarrier() { return m_extCharCarrier; }
     CExtCurrency* GetCurrency() { return m_extCurrency; }
     PlayerChrData* GetChrData() { return &m_chr; }
+    
+    // 活动相关子系统
+    CHuoYueDu* GetPlayerHuoYueDu();
+    CFunctionOpen* GetPlayerFunctionOpen();
+    CVip* GetPlayerVip();
+    CVplan* GetVplan();
+    ChouJiang* GetPlayerChouJiang();
+    CExtChrTaskCycle* GetCharTaskCycle();
+    CExtCharFamily* GetCharFamily();
 
 protected:
     // 基本成员变量
@@ -486,6 +519,7 @@ protected:
     // 货币（直接成员）
     int64_t     m_money;            // 铜钱
     int64_t     m_gold;             // 金币
+    int64_t     m_cash;             // 元宝/钻石
     int64_t     m_bindGold;         // 绑定金币
     int64_t     m_honor;            // 荣誉
     int64_t     m_contribution;     // 贡献

@@ -91,6 +91,7 @@ struct MemChrBag {
     int itemClass;
     int itemCount;
     int bind;
+    int64_t srcId;
 };
 
 // 通知 CExtCharBag.h 等文件这些类型已经定义
@@ -507,7 +508,12 @@ struct AddAttribute {
 };
 
 struct CfgEquipItem {
-    // 成员变量
+    int32_t id;
+    int32_t type;
+    int32_t count;
+    int32_t bind;
+    int32_t job;
+    int32_t star;
 };
 
 struct CfgGongGao {
@@ -1314,10 +1320,11 @@ struct CfgOnlineReward {
     std::vector<MemChrBag> ItemVector;
 };
 
-struct CfgSevenLoginRewrad {
+struct CfgSevenLoginReward {
     signed char Day;
     std::vector<CfgEquipItem> ItemVector;
 };
+typedef CfgSevenLoginReward CfgSevenLoginRewrad;
 
 struct CfgLevelGift {
     int Index;
@@ -1349,6 +1356,8 @@ struct VipCardCfg {
     int Money;
     int TianShuJinHua;
     int WeiWang;
+    int Retroactive;
+    int32_t Mark;
 };
 
 struct FunctionOpenCfg {
@@ -1743,6 +1752,8 @@ struct CfgOutLinkFestivalTable {};
 struct ChargeDungeonCfg {};
 struct PkDropRate {};
 struct BaoKuRandomMap {};
+typedef VipCardCfg VipCfg;
+
 #include "CfgFestivalActivityTable.h"
 
 // ==================== CfgData 类定义 ====================
@@ -2068,6 +2079,19 @@ public:
     void InitRongHeCfg();
     void InitFestivalActivityTable();
     CfgFestivalActivityTable* GetFestivalActivityTable();
+    
+    // 补充方法（适配 DailyActivity 等使用）
+    const CfgSearchBack* GetSearchBack(int32_t nId) const;
+    const std::map<int, CfgLevelGift>& GetLevelGiftTable() const { return m_LevelGift; }
+    const CfgMaintainCompensate* getMaintainCompensate(int32_t nIndex) const;
+    const std::map<int8_t, CfgOnlineReward>& GetOnlineRewardTable() const { return m_OnLineReward; }
+    const std::map<int8_t, CfgSignReward>& GetSignRewardTable() const { return m_signReward; }
+    const CfgLevelGift* GetLevelGift(uint8_t Index) const;
+    const CfgSevenLoginRewrad* getSevenLoginReward(int8_t Day) const;
+    const CfgOffLineExp* getOfflineExp(int32_t Level) const;
+    const CfgOnlineReward* GetOnlineReward(int8_t id) const;
+    const VipCardCfg* GetVipCfg(int8_t viplevel) const;
+    void GetSignRewardItems(std::vector<MemChrBag>& items, int8_t count) const;
     
     // 辅助方法
     int32_t getOverlay(int32_t nId, int8_t nClass);

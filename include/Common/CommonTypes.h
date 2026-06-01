@@ -85,7 +85,8 @@ enum class CURRENCY_TYPE
     CURRENCY_CONTRIBUTION = 4,  // 贡献
     CURRENCY_XUWU        = 5,   // 虚无值
     CURRENCY_JINGLI      = 6,   // 精力值
-    CURRENCY_TYPE_COUNT  = 7    // 类型总数
+    CURRENCY_CASH        = 7,   // 现金/绑定元宝
+    CURRENCY_TYPE_COUNT  = 8    // 类型总数
 };
 
 // 货币变化原因
@@ -104,6 +105,10 @@ enum class CURRENCY_CHANGE_REASON
     GCR_YJSK_GUESS_SIZE,              // 猜大小
     MCR_DUNGEON_REWARD,               // 副本铜钱奖励
     GCR_FESTIVAL_ACT_2,                // 节日活动金币消耗
+    MCR_SEARCH_BACK,                   // 找回金币消耗
+    GCR_GET_OFFLINE_EXP,               // 获取离线经验
+    GCR_RETROACTIVE,                   // 补签
+    GCC_WEEK_ONLINE_REWARD,            // 周在线奖励
 };
 #endif // CURRENCY_CHANGE_REASON_DEFINED
 
@@ -259,6 +264,12 @@ enum class ITEM_CHANGE_REASON
     ICR_WORLD_BOSS_KILL_REWARD = 700,
     IDCR_FESTIVAL_ACT_2,               // 节日活动兑换
     IDCR_DA_TI_ACT,                    // 答题活动
+    ICR_SEARCH_BACK,                   // 找回
+    IDCR_DOG_TITLE_GET,                // 获取狗称号
+    ICR_SEVEN_LOGIN_REWARD,            // 七日登录奖励
+    ICR_MAINTAIN_COMPENSATE_REWARD,    // 维护补偿奖励
+    ICR_ONLINE_REWAR,                  // 在线奖励
+    ICR_SIGN_REWARD,                   // 签到奖励
 };
 #endif
 

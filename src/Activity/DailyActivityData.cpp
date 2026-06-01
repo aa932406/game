@@ -1,4 +1,6 @@
 #include "Activity/DailyActivityData.h"
+#include "Activity/DailyActivity.h"
+#include "Network/NetPacket.h"
 #include "Database/MySqlDBGuard.h"
 #include "Database/MySqlQuery.h"
 #include "Utility/StringUtility.h"
@@ -254,7 +256,7 @@ void DailyActivityData::UnPackageData(Answer::NetPacket* inPacket)
     
     // 读取签到奖励字符串
     std::string v5;
-    inPacket->readUTF8(&v5);
+    inPacket->readUTF8(v5);
     InitSignRewardInfo(v5);
     
     // 读取刷新时间
@@ -289,7 +291,7 @@ void DailyActivityData::UnPackageData(Answer::NetPacket* inPacket)
     }
     
     // 读取在线奖励字符串
-    inPacket->readUTF8(&OnlimeReward);
+    inPacket->readUTF8(OnlimeReward);
 }
 
 std::string DailyActivityData::GetSignRewardString()

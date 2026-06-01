@@ -66,6 +66,7 @@ public:
     void StartFamilyAct(int32_t Param);
     bool AddMedRes(int32_t AddValues);
     void SendFamilyDungeonInfo();
+    void RefreshWeekTime();
     
     int32_t GetFamilyId();
     int32_t GetPosition();

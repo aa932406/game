@@ -1,4 +1,5 @@
 #include "Activity/DailyActivity.h"
+#include "Activity/CActivity.h"
 #include "Activity/CActivityManager.h"
 #include "Config/CfgData.h"
 #include "Game/GameService.h"
@@ -18,6 +19,9 @@
 #include "Other/Logger.h"
 #include "Other/DayTime.h"
 #include "Other/Answer.h"
+#include "Character/CExtOperateLimit.h"
+#include "Common/Random.h"    // 已包含 - 无需重复
+#include "Other/MemEquip.h"
 
 DailyActivity::DailyActivity()
     : m_LastUpdate(0)
@@ -226,7 +230,7 @@ int32_t DailyActivity::GetLastWeekOnlineTime()
 int32_t DailyActivity::GetNewSeverWeek()
 {
     CfgData* cfgData = CfgData::GetInstance();
-    int32_t ServerStartTime = cfgData->GetServerStartTime(SERVER_TYPE::SVT_NORMAL);
+    int32_t ServerStartTime = cfgData->getServerStartTime(SERVER_TYPE::SVT_NORMAL);
     return DayTime::weekdiff(ServerStartTime) + 1;
 }
 
@@ -250,8 +254,7 @@ bool DailyActivity::GetSearchReward(const SearchBackRecord& record, int8_t nFree
     if (record.nTimes < Times) return false;
     
     CfgData* cfgData = CfgData::GetInstance();
-    const CfgSearchBackTable* SearchBackTable = cfgData->GetSearchBackTable();
-    const CfgSearchBack* pCfgSearchBack = SearchBackTable->GetSearchBack(record.nId);
+    const CfgSearchBack* pCfgSearchBack = cfgData->GetSearchBack(record.nId);
     
     if (!pCfgSearchBack) return false;
     
@@ -281,7 +284,7 @@ bool DailyActivity::GetSearchReward(const SearchBackRecord& record, int8_t nFree
         item.itemCount *= Times;
     }
     
-    CExtCharBag* Bag = m_pPlayer->GetBag();
+    CExtCharBag* Bag = m_pPlayer->GetCharBag();
     if (!Bag->AddItem(&vItemReward, ITEM_CHANGE_REASON::ICR_SEARCH_BACK))
     {
         m_pPlayer->TiShiInfo(2048, 0);
@@ -357,7 +360,7 @@ bool DailyActivity::HaveLevelReward()
     int32_t RewardRecord = m_pPlayer->getRecord(1015);
     
     CfgData* cfgData = CfgData::GetInstance();
-    const std::map<int, CfgLevelGift>* LevelGiftTable = cfgData->GetLevelGiftTable();
+    const std::map<int, CfgLevelGift>* LevelGiftTable = &cfgData->GetLevelGiftTable();
     
     for (const auto& pair : *LevelGiftTable)
     {
@@ -381,8 +384,7 @@ bool DailyActivity::HaveMaintainCompensateReward()
     int32_t v3 = OperateLimit->GetLimitCount(1070) + 1;
     
     CfgData* cfgData = CfgData::GetInstance();
-    const CfgMaintainCompensateTable* MaintainCompensateTable = cfgData->GetMaintainCompensateTable();
-    const CfgMaintainCompensate* pCfg = MaintainCompensateTable->GetInfo(v3);
+    const CfgMaintainCompensate* pCfg = cfgData->getMaintainCompensate(v3);
     
     if (pCfg)
     {
@@ -410,7 +412,7 @@ bool DailyActivity::HaveOnLineReward()
     int32_t RewardRecord = m_pPlayer->getRecord(2004);
     
     CfgData* cfgData = CfgData::GetInstance();
-    const std::map<int8_t, CfgOnlineReward>* OnLineRewardTable = cfgData->GetOnlineRewardTable();
+    const std::map<int8_t, CfgOnlineReward>* OnLineRewardTable = &cfgData->GetOnlineRewardTable();
     
     for (const auto& pair : *OnLineRewardTable)
     {
@@ -440,7 +442,7 @@ bool DailyActivity::HaveSignReward()
     }
     
     CfgData* cfgData = CfgData::GetInstance();
-    const std::map<int8_t, CfgSignReward>* ReardTable = cfgData->GetSignRewardTable();
+    const std::map<int8_t, CfgSignReward>* ReardTable = &cfgData->GetSignRewardTable();
     
     for (const auto& pair : *ReardTable)
     {
@@ -478,7 +480,7 @@ void DailyActivity::OnAskDogTitleInfo(Answer::NetPacket* inPacket)
     
     int8_t ConnId = m_pPlayer->getConnId();
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x2CE3);
+    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2CE3);
     
     if (!packet) return;
     
@@ -535,7 +537,7 @@ void DailyActivity::OnGetDogTitle(Answer::NetPacket* inPacket)
         stu.itemClass = 1;
         stu.itemCount = 1;
         
-        CExtCharBag* Bag = m_pPlayer->GetBag();
+        CExtCharBag* Bag = m_pPlayer->GetCharBag();
         if (Bag->AddItem(&stu, ITEM_CHANGE_REASON::IDCR_DOG_TITLE_GET))
         {
             m_pPlayer->updateRecord(1158, 1);
@@ -549,7 +551,7 @@ void DailyActivity::OnGetDogTitle(Answer::NetPacket* inPacket)
         stu.itemClass = 1;
         stu.itemCount = 1;
         
-        CExtCharBag* Bag = m_pPlayer->GetBag();
+        CExtCharBag* Bag = m_pPlayer->GetCharBag();
         if (Bag->AddItem(&stu, ITEM_CHANGE_REASON::IDCR_DOG_TITLE_GET))
         {
             m_pPlayer->updateRecord(1159, 1);
@@ -561,7 +563,7 @@ void DailyActivity::OnGetLevelGift(Answer::NetPacket* inPacket)
 {
     if (!inPacket || !m_pPlayer) return;
     
-    uint8_t Index = inPacket->readUInt8();
+    uint8_t Index = static_cast<uint8_t>(inPacket->readInt8());
     
     CfgData* cfgData = CfgData::GetInstance();
     const CfgLevelGift* pLevelGift = cfgData->GetLevelGift(Index);
@@ -575,7 +577,7 @@ void DailyActivity::OnGetLevelGift(Answer::NetPacket* inPacket)
     
     if (OldRecord == NewRecord) return;
     
-    CExtCharBag* Bag = m_pPlayer->GetBag();
+    CExtCharBag* Bag = m_pPlayer->GetCharBag();
     if (!Bag->AddItem(&pLevelGift->ItemVector, ITEM_CHANGE_REASON::ICR_SEVEN_LOGIN_REWARD)) return;
     
     m_pPlayer->updateRecord(1015, NewRecord);
@@ -593,14 +595,13 @@ void DailyActivity::OnGetMaintainCompensateReward(Answer::NetPacket* inPacket)
     if (OperateLimit->GetLimitCount(1070) + 1 != nIndex) return;
     
     CfgData* cfgData = CfgData::GetInstance();
-    const CfgMaintainCompensateTable* MaintainCompensateTable = cfgData->GetMaintainCompensateTable();
-    const CfgMaintainCompensate* pCfg = MaintainCompensateTable->GetInfo(nIndex);
+    const CfgMaintainCompensate* pCfg = cfgData->getMaintainCompensate(nIndex);
     
     if (!pCfg) return;
     
     if (pCfg->nTime > m_pPlayer->getNow()) return;
     
-    CExtCharBag* Bag = m_pPlayer->GetBag();
+    CExtCharBag* Bag = m_pPlayer->GetCharBag();
     if (!Bag->AddItem(&pCfg->vItems, ITEM_CHANGE_REASON::ICR_MAINTAIN_COMPENSATE_REWARD)) return;
     
     OperateLimit->UpdateLimitCount(1070, nIndex);
@@ -615,7 +616,7 @@ void DailyActivity::OnGetOffLineExp(Answer::NetPacket* inPacket)
     
     int32_t Level = m_pPlayer->GetLevel();
     CfgData* cfgData = CfgData::GetInstance();
-    const CfgOfflineExp* pOfflineExp = cfgData->GetOfflineExp(Level);
+    const CfgOffLineExp* pOfflineExp = cfgData->getOfflineExp(Level);
     
     if (!pOfflineExp) return;
     
@@ -677,9 +678,9 @@ void DailyActivity::OnGetOnLineReward(Answer::NetPacket* inPacket)
     size_t nSize = pReward->ItemVector.size();
     Answer::Random* random = Answer::Random::GetInstance();
     int32_t nRand = random->generate(0, static_cast<int32_t>(nSize - 1));
-    MemChrBag* v5 = pReward->ItemVector[nRand];
+    const MemChrBag* v5 = &pReward->ItemVector[nRand];
     
-    CExtCharBag* Bag = m_pPlayer->GetBag();
+    CExtCharBag* Bag = m_pPlayer->GetCharBag();
     if (!Bag->AddItem(v5, ITEM_CHANGE_REASON::ICR_ONLINE_REWAR)) return;
     
     m_OnlimeTimeGetReward[Id] = nRand;
@@ -743,7 +744,7 @@ void DailyActivity::OnGetSevenLoginRewrad(Answer::NetPacket* inPacket)
     if (OldRecord == NewRecord) return;
     
     CfgData* cfgData = CfgData::GetInstance();
-    const CfgSevenLoginReward* pReward = cfgData->GetSevenLoginReward(Day);
+    const CfgSevenLoginReward* pReward = cfgData->getSevenLoginReward(Day);
     
     if (!pReward) return;
     
@@ -752,7 +753,7 @@ void DailyActivity::OnGetSevenLoginRewrad(Answer::NetPacket* inPacket)
     
     for (const auto& cfgItem : pReward->ItemVector)
     {
-        int32_t Job = m_pPlayer->GetJob();
+        int32_t Job = m_pPlayer->getJob();
         
         if (Job == cfgItem.job || cfgItem.job == 0)
         {
@@ -768,7 +769,7 @@ void DailyActivity::OnGetSevenLoginRewrad(Answer::NetPacket* inPacket)
                 int32_t Time = cfgItem.star;
                 std::string p_name = m_pPlayer->getName();
                 int64_t nCreaterId = m_pPlayer->getCid();
-                int32_t Sid = m_pPlayer->getSid();
+                int32_t Sid = m_pPlayer->getCid();
                 int8_t ConnId = m_pPlayer->getConnId();
                 
                 CEquipManager* equipMgr = CEquipManager::GetInstance();
@@ -786,7 +787,7 @@ void DailyActivity::OnGetSevenLoginRewrad(Answer::NetPacket* inPacket)
         }
     }
     
-    CExtCharBag* Bag = m_pPlayer->GetBag();
+    CExtCharBag* Bag = m_pPlayer->GetCharBag();
     if (!Bag->AddItem(&addItemVt, ITEM_CHANGE_REASON::ICR_SEVEN_LOGIN_REWARD)) return;
     
     if (!vEquip.empty())
@@ -846,7 +847,9 @@ void DailyActivity::OnLevelUp(int32_t newLevel)
 
 void DailyActivity::OnLoadFromDB(const DailyActivityDBData* dbData)
 {
-    m_signInfo = dbData->signInfo.data;
+    m_signInfo.sign_record = dbData->signInfo.data.sign_record;
+    m_signInfo.sign_reward = dbData->signInfo.data.sign_reward;
+    m_signInfo.refresh_time = dbData->signInfo.data.refresh_time;
     m_lstTodayInfo = dbData->signInfo.lstTodayInfo;
     
     for (int i = 0; i <= 2; ++i)
@@ -884,7 +887,7 @@ void DailyActivity::OnQueryOffLineExpInfo(Answer::NetPacket* inPacket)
     {
         int8_t ConnId = m_pPlayer->getConnId();
         GameService* gameService = GameService::GetInstance();
-        Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x27C4);
+        Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x27C4);
         if (packet)
         {
             packet->writeInt32(0);
@@ -908,7 +911,9 @@ void DailyActivity::OnQuerySevenLoginInfo(Answer::NetPacket* inPacket)
 
 void DailyActivity::OnSaveToDB(DailyActivityDBData* dbData)
 {
-    dbData->signInfo.data = m_signInfo;
+    dbData->signInfo.data.sign_record = m_signInfo.sign_record;
+    dbData->signInfo.data.sign_reward = m_signInfo.sign_reward;
+    dbData->signInfo.data.refresh_time = m_signInfo.refresh_time;
     dbData->signInfo.lstTodayInfo = m_lstTodayInfo;
     
     for (int i = 0; i <= 2; ++i)
@@ -980,7 +985,7 @@ void DailyActivity::SendHuoDaoDaTingData(int8_t Type)
     {
         int8_t ConnId = m_pPlayer->getConnId();
         GameService* gameService = GameService::GetInstance();
-        Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x2CD8);
+        Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD8);
         
         if (packet)
         {
@@ -1006,7 +1011,7 @@ void DailyActivity::SendHuoDaoDaTingData(int8_t Type)
     {
         int8_t ConnId = m_pPlayer->getConnId();
         GameService* gameService = GameService::GetInstance();
-        Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x2CD8);
+        Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD8);
         
         if (packet)
         {
@@ -1041,7 +1046,7 @@ void DailyActivity::SendHuoDongDaTingIcon()
     {
         ShowIcon icon;
         GetHuoDongDaTingIcon(&icon);
-        m_pPlayer->SendIconState(&icon);
+        Player::SendIconState(m_pPlayer, &icon);
     }
 }
 
@@ -1054,7 +1059,7 @@ void DailyActivity::SendJiangLiDaTingIcon()
     {
         ShowIcon stu;
         GetJiangLiDaTingIcon(&stu);
-        m_pPlayer->SendIconState(&stu);
+        Player::SendIconState(m_pPlayer, &stu);
     }
 }
 
@@ -1064,7 +1069,7 @@ void DailyActivity::SendLevelGiftInfo()
     
     int8_t ConnId = m_pPlayer->getConnId();
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x27F4);
+    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x27F4);
     
     if (packet)
     {
@@ -1081,7 +1086,7 @@ void DailyActivity::SendOffLineInfo()
     
     int8_t ConnId = m_pPlayer->getConnId();
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x27C4);
+    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x27C4);
     
     if (packet)
     {
@@ -1100,7 +1105,7 @@ void DailyActivity::SendOnlineRewardInfo()
     
     int8_t ConnId = m_pPlayer->getConnId();
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x27AB);
+    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x27AB);
     
     if (packet)
     {
@@ -1128,7 +1133,7 @@ void DailyActivity::SendSearchBackInfo()
     
     int8_t ConnId = m_pPlayer->getConnId();
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x2CE2);
+    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2CE2);
     
     if (packet)
     {
@@ -1160,7 +1165,7 @@ void DailyActivity::SendSevenDayLoginIcon()
     {
         ShowIcon stu;
         GetSevenDayLoginIcon(&stu);
-        m_pPlayer->SendIconState(&stu);
+        Player::SendIconState(m_pPlayer, &stu);
     }
 }
 
@@ -1170,7 +1175,7 @@ void DailyActivity::SendSevenLoginInfo()
     
     int8_t ConnId = m_pPlayer->getConnId();
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x27FB);
+    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x27FB);
     
     if (packet)
     {
@@ -1275,7 +1280,7 @@ void DailyActivity::OnGetSignDailyReward(Answer::NetPacket* inPacket)
     if (!items || items->empty())
         return;
     
-    CExtCharBag* Bag = m_pPlayer->GetBag();
+    CExtCharBag* Bag = m_pPlayer->GetCharBag();
     if (!Bag->AddItem(items, ITEM_CHANGE_REASON::ICR_SIGN_REWARD))
         return;
     
@@ -1312,7 +1317,7 @@ void DailyActivity::OnGetSignReward(Answer::NetPacket* inPacket)
     
     if (items.empty()) return;
     
-    CExtCharBag* Bag = m_pPlayer->GetBag();
+    CExtCharBag* Bag = m_pPlayer->GetCharBag();
     if (!Bag->AddItem(&items, ITEM_CHANGE_REASON::ICR_SIGN_REWARD)) return;
     
     m_signInfo.sign_reward.push_back(static_cast<int8_t>(count));
@@ -1482,7 +1487,7 @@ void DailyActivity::SendSignInfo()
     
     int8_t ConnId = m_pPlayer->getConnId();
     GameService* gameService = GameService::GetInstance();
-    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, PackType::PACK_DISPATCH, 0x27F9);
+    Answer::NetPacket* packet = gameService->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x27F9);
     
     if (packet)
     {

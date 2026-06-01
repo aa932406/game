@@ -10,6 +10,7 @@
 #include <cstdint>
 
 class Player;
+struct ShowIcon;
 namespace Answer { class NetPacket; }
 
 struct SearchBackInfo
@@ -31,6 +32,8 @@ struct SearchBackRecord
     SearchBackRecord() : nId(0), nTimes(0), nParam(0) {}
 };
 
+struct SignInfoData;
+
 struct SignInfo
 {
     int32_t sign_record;
@@ -38,6 +41,8 @@ struct SignInfo
     int32_t refresh_time;
     
     SignInfo() : sign_record(0), refresh_time(0) {}
+    SignInfo(const SignInfoData& other) : sign_record(other.sign_record), sign_reward(other.sign_reward), refresh_time(other.refresh_time) {}
+    SignInfo& operator=(const SignInfoData& other) { sign_record = other.sign_record; sign_reward = other.sign_reward; refresh_time = other.refresh_time; return *this; }
 };
 
 class DailyActivity : public CExtSystemBase

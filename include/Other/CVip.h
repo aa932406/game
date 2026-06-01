@@ -3,6 +3,15 @@
 
 #include "Character/CExtSystemBase.h"
 
+// 公会掉落数据结构
+struct VipLuckyDrop
+{
+    int32_t nType;
+    int32_t nTimes;
+    
+    VipLuckyDrop() : nType(0), nTimes(0) {}
+};
+
 class CVip : public CExtSystemBase
 {
 public:

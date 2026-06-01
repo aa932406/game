@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <map>
 #include <vector>
+#include <string>
 
 #include "Other/MemEquip.h"
 
@@ -26,7 +27,10 @@ public:
     ~CEquipManager();
 
     void OnEquipUpdated(const MemEquipVector* vAmulet);
+    static CEquipManager* GetInstance();
+    void CreateMemEquip(MemEquip* equip, int8_t connId, int32_t param1, int32_t itemId, int32_t sid, int64_t createrId, std::string* name, int32_t a8, int32_t a9, int32_t time, int32_t a11, int32_t a12);
     void SendPlayerEquipInfo(Player* pPlayer);
+    void SendPlayerEquipInfo(Player* pPlayer, const MemEquipVector* vEquip);
     void BroadcastEquipInfo(const MemEquip* equip);
     int64_t getEquipId(int32_t nServerId);
 

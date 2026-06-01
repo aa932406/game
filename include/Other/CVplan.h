@@ -3,6 +3,8 @@
 
 #include "Character/CExtSystemBase.h"
 
+struct ShowIcon;
+
 class CVplan : public CExtSystemBase
 {
 public:
@@ -18,6 +20,7 @@ public:
     int32_t DispatchNetDatas(ProcId_t nProcId, Answer::NetPacket* inPacket) override;
     void OnWeekSwitch(int32_t nDiffWeeks);
     int32_t OnLoginFromYYgameApp(Answer::NetPacket* inPacket);
+    void RefreshWeekTime(int32_t nDiffWeeks);
     void AddAttr();
     int32_t GetExpRatio();
     int32_t OnGetReward(Answer::NetPacket* inPacket);
@@ -27,7 +30,7 @@ public:
     void SendVplanInfo();
     void SendVplanIcon();
     void GetVplanIconState(IconStateList* IconList);
-    void GetVplanIconStu(ShowIcon* __return_ptr retstr);
+    void GetVplanIconStu(ShowIcon* retstr);
     int32_t OnGetYYLevelReward(Answer::NetPacket* inPacket);
     int32_t HaveYYLevelReward();
     void SendYYInfo();
@@ -35,7 +38,7 @@ public:
     void SendYYVipInfo();
     void GetYYVipIconState(IconStateList* IconList);
     void SendYYVipIcon();
-    void GetYYVipIconStu(ShowIcon* __return_ptr retstr);
+    void GetYYVipIconStu(ShowIcon* retstr);
     int32_t HaveYYVipLeftGift();
     void AppendYYInfo(Answer::NetPacket* packet);
     int32_t OnGetSWVipReward(Answer::NetPacket* inPacket);
@@ -46,13 +49,13 @@ public:
     void GetSwVipIconState(IconStateList* IconList);
     void GetSwVipBarIconState(IconStateList* IconList);
     void sendSwVipIcon();
-    void getSwVipIconStu(ShowIcon* __return_ptr retstr);
+    void getSwVipIconStu(ShowIcon* retstr);
     int32_t getSwVipRewardCount();
     bool isGetAllSwVipReward();
     bool checkSwVipRewardCondition(int8_t nType, int32_t nCondition);
     void resetSwVipDailyReward();
     void sendSwVipBarIcon();
-    void getSwVipBarIconStu(ShowIcon* __return_ptr retstr);
+    void getSwVipBarIconStu(ShowIcon* retstr);
     int32_t getSwVipBarRewardCount();
     bool isGetAllSwVipBarReward();
     bool checkSwBarRewardCondition(int8_t nType, int32_t nCondition);
@@ -63,20 +66,20 @@ public:
     void SendSgGameAppInfo();
     int32_t HaveSgGameAppReward();
     bool HaveSgDownLoadGift();
-    void getSgDownLoadIconStu(ShowIcon* __return_ptr retstr);
+    void getSgDownLoadIconStu(ShowIcon* retstr);
     void SendSgDownLoadIcon();
     void GetSgDownLoadIocnState(IconStateList* IconList);
     void GetXunLeiIconState(IconStateList* IconList);
     void SendXunLeiIcon();
-    void GetXunLeiDownlondIcon(ShowIcon* __return_ptr retstr);
-    void GetXunLeiDaTingIcon(ShowIcon* __return_ptr retstr);
-    void GetXunLeiVipIcon(ShowIcon* __return_ptr retstr);
+    void GetXunLeiDownlondIcon(ShowIcon* retstr);
+    void GetXunLeiDaTingIcon(ShowIcon* retstr);
+    void GetXunLeiVipIcon(ShowIcon* retstr);
     bool IsGetAllXunLeiReward(int32_t Type);
     int32_t HaveXunLeiVipReward();
     int32_t OnGetLuDaShiVipGift(Answer::NetPacket* inPacket);
     void SendLuDaShiVipInfo();
     int32_t HaveLuDaShiVipLeftGift();
-    void GetLuDaShiStu(ShowIcon* __return_ptr retstr);
+    void GetLuDaShiStu(ShowIcon* retstr);
     void GetLuDaShiIconState(IconStateList* IconList);
     void SendLuDaShiIcon();
 };

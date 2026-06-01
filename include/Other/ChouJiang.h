@@ -3,7 +3,9 @@
 
 #include "Character/CExtSystemBase.h"
 #include <list>
+#include "Other/ChouJiangData.h"
 
+struct ShowIcon;
 class ChouJiang;
 
 class ChouJiang : public CExtSystemBase
@@ -40,7 +42,8 @@ public:
     void GetItem(int32_t Slot);
     int32_t GetFreeCount();
     void GetChouJiangStu(IconStateList* const IconList);
-    void GetShowIconStu(ShowIcon* __return_ptr retstr);
+    void GetShowIconStu(ShowIcon* retstr);
+    void RefreshWeekTime(int32_t nDiffWeeks);
     void SendHuoDongIcon();
     void CleanBag();
 

@@ -4,6 +4,8 @@
 #include "Character/CExtSystemBase.h"
 #include <map>
 
+struct ShowIcon;
+
 class HuoYueDuRecord
 {
 public:
@@ -34,7 +36,7 @@ public:
     int32_t RewardCount();
     void GetHuoYueDuIcon(IconStateList* IconList);
     void SendtHuoYueDuIcon();
-    void GettHuoYueDuIcon(ShowIcon* __return_ptr retstr);
+    void GettHuoYueDuIcon(ShowIcon* retstr);
 
 private:
     std::map<int, HuoYueDuRecord> m_HuoYueDuRecord;
