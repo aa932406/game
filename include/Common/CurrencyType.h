@@ -1,0 +1,1 @@
+#ifndef _CURRENCYTYPE_H_\n#define _CURRENCYTYPE_H_\nenum class CURRENCY_TYPE {\n    CURRENCY_GOLD = 0,\n    CURRENCY_MONEY = 1,\n    CURRENCY_BINDGOLD = 2\n};\nenum class CURRENCY_CHANGE_REASON {\n    REASON_DEFAULT = 0\n};\n#endif

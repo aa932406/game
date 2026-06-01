@@ -1,0 +1,746 @@
+void __cdecl CSuperTeHui::CSuperTeHui(CSuperTeHui *const this)
+{
+  CExtSystemBase::CExtSystemBase(this);
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F1770;
+}
+
+#####################################
+// Alternative name is '_ZN11CSuperTeHuiD2Ev'
+void __cdecl CSuperTeHui::~CSuperTeHui(CSuperTeHui *const this)
+{
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F1770;
+  CExtSystemBase::~CExtSystemBase(this);
+}
+
+#####################################
+void __cdecl CSuperTeHui::~CSuperTeHui(CSuperTeHui *const this)
+{
+  CSuperTeHui::~CSuperTeHui(this);
+  operator delete(this);
+}
+
+#####################################
+void __cdecl CSuperTeHui::GetInterestsProtocol(CSuperTeHui *const this, ProcIdList *const procList)
+{
+  unsigned __int16 __x; // [rsp+18h] [rbp-8h] BYREF
+  unsigned __int16 v3; // [rsp+1Ah] [rbp-6h] BYREF
+  unsigned __int16 v4; // [rsp+1Ch] [rbp-4h] BYREF
+  unsigned __int16 v5; // [rsp+1Eh] [rbp-2h] BYREF
+
+  __x = 645;
+  std::list<unsigned short>::push_back(procList, &__x);
+  v3 = 646;
+  std::list<unsigned short>::push_back(procList, &v3);
+  v4 = 647;
+  std::list<unsigned short>::push_back(procList, &v4);
+  v5 = 648;
+  std::list<unsigned short>::push_back(procList, &v5);
+}
+
+#####################################
+int32_t __cdecl CSuperTeHui::DispatchNetDatas(CSuperTeHui *const this, ProcId_t nProcId, Answer::NetPacket *inPacket)
+{
+  if ( !this->m_pPlayer || !inPacket )
+    return 2;
+  if ( nProcId == 646 )
+    return CSuperTeHui::OnGetJewelPavilionItem(this, inPacket);
+  if ( nProcId > 0x286u )
+  {
+    if ( nProcId == 647 )
+      return CSuperTeHui::OnBuyShengRenItem(this, inPacket);
+    if ( nProcId == 648 )
+      CSuperTeHui::SendLeftTime(this);
+  }
+  else if ( nProcId == 645 )
+  {
+    return CSuperTeHui::OnBuySuperTeHui(this, inPacket);
+  }
+  return 0;
+}
+
+#####################################
+void __cdecl CSuperTeHui::OnDaySwitch(CSuperTeHui *const this, int32_t nDiffDays)
+{
+  CSuperTeHui::SendJewelPavilionIcon(this);
+  CSuperTeHui::SendShangRenIcon(this);
+}
+
+#####################################
+int32_t __cdecl CSuperTeHui::OnBuySuperTeHui(CSuperTeHui *const this, Answer::NetPacket *inPacket)
+{
+  CfgData *v3; // rax
+  CVip *PlayerVip; // rax
+  CExtCharBag *Bag; // rax
+  int32_t FreeSlotCount; // ebx
+  CExtCharBag *v7; // rax
+  int8_t ConnId; // bl
+  GameService *v9; // rax
+  CharId_t Cid; // rax
+  uint32_t WOffset; // eax
+  int8_t v12; // bl
+  GameService *v13; // rax
+  std::string val; // [rsp+10h] [rbp-40h] BYREF
+  int32_t nIndex; // [rsp+24h] [rbp-2Ch]
+  SuperTeHuiCfg *pSuperTeHuiCfg; // [rsp+28h] [rbp-28h]
+  int32_t OldRecord; // [rsp+30h] [rbp-20h]
+  int32_t NewRecord; // [rsp+34h] [rbp-1Ch]
+  Answer::NetPacket *packet; // [rsp+38h] [rbp-18h]
+
+  if ( !inPacket || !this->m_pPlayer )
+    return 10002;
+  nIndex = Answer::NetPacket::readInt32(inPacket);
+  v3 = Answer::Singleton<CfgData>::instance();
+  pSuperTeHuiCfg = CfgData::GetSuperTeHuiCfg(v3, nIndex);
+  if ( !pSuperTeHuiCfg )
+    return 10002;
+  OldRecord = Player::getRecord(this->m_pPlayer, 1028);
+  NewRecord = OldRecord | (1 << (nIndex - 1));
+  if ( OldRecord == NewRecord )
+    return 2;
+  PlayerVip = Player::GetPlayerVip(this->m_pPlayer);
+  if ( CVip::GetVipLevel(PlayerVip) < pSuperTeHuiCfg->nNeedVip )
+    return 2;
+  if ( !std::vector<MemChrBag>::size(&pSuperTeHuiCfg->Items) )
+    return 2;
+  Bag = Player::GetBag(this->m_pPlayer);
+  FreeSlotCount = CExtCharBag::GetFreeSlotCount(Bag);
+  if ( FreeSlotCount < (int)std::vector<MemChrBag>::size(&pSuperTeHuiCfg->Items) )
+    return 2;
+  if ( pSuperTeHuiCfg->nPrice <= 0 )
+    return 2;
+  if ( !Player::DecCurrency(
+          this->m_pPlayer,
+          CURRENCY_TYPE::CURRENCY_GOLD,
+          pSuperTeHuiCfg->nPrice,
+          CURRENCY_CHANGE_REASON::GCR_BUY_SUPER_TE_HUI,
+          nIndex) )
+    return 2;
+  v7 = Player::GetBag(this->m_pPlayer);
+  CExtCharBag::AddItem(v7, &pSuperTeHuiCfg->Items, ITEM_CHANGE_REASON::ICR_SUPER_TE_HUI);
+  Player::updateRecord(this->m_pPlayer, 1028, NewRecord);
+  CSuperTeHui::SendSuperTeHuiIcon(this);
+  if ( pSuperTeHuiCfg->nGongGaoId > 0 )
+  {
+    ConnId = Player::getConnId(this->m_pPlayer);
+    v9 = Answer::Singleton<GameService>::instance();
+    packet = GameService::popNetpacket(v9, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    if ( !packet )
+      return 10002;
+    Answer::NetPacket::writeInt32(packet, pSuperTeHuiCfg->nGongGaoId);
+    Player::getName((const Player *const)&val);
+    Answer::NetPacket::writeUTF8(packet, &val);
+    std::string::~string(&val);
+    Cid = Player::getCid(this->m_pPlayer);
+    Answer::NetPacket::writeInt64(packet, Cid);
+    Answer::NetPacket::writeInt32(packet, nIndex);
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    v12 = Player::getConnId(this->m_pPlayer);
+    v13 = Answer::Singleton<GameService>::instance();
+    GameService::worldBroadcast(v13, v12, packet);
+  }
+  return 0;
+}
+
+#####################################
+void __cdecl CSuperTeHui::GetSuperTeHuiIcon(CSuperTeHui *const this, IconStateList *const IconList)
+{
+  CFunctionOpen *PlayerFunctionOpen; // rax
+  ShowIcon icon; // [rsp+10h] [rbp-20h] BYREF
+
+  if ( this->m_pPlayer )
+  {
+    PlayerFunctionOpen = Player::GetPlayerFunctionOpen(this->m_pPlayer);
+    if ( CFunctionOpen::IsOpened(PlayerFunctionOpen, 201) )
+    {
+      CSuperTeHui::GetSuperTeHuiIcon(&icon, this);
+      std::list<ShowIcon>::push_back(IconList, &icon);
+    }
+  }
+}
+
+#####################################
+void __cdecl CSuperTeHui::SendSuperTeHuiIcon(CSuperTeHui *const this)
+{
+  CFunctionOpen *PlayerFunctionOpen; // rax
+  ShowIcon icon; // [rsp+10h] [rbp-20h] BYREF
+
+  if ( this->m_pPlayer )
+  {
+    PlayerFunctionOpen = Player::GetPlayerFunctionOpen(this->m_pPlayer);
+    if ( CFunctionOpen::IsOpened(PlayerFunctionOpen, 201) )
+    {
+      CSuperTeHui::GetSuperTeHuiIcon(&icon, this);
+      Player::SendIconState(this->m_pPlayer, &icon);
+    }
+  }
+}
+
+#####################################
+ShowIcon *__cdecl CSuperTeHui::GetSuperTeHuiIcon(ShowIcon *__return_ptr retstr, CSuperTeHui *const this)
+{
+  CFunctionOpen *PlayerFunctionOpen; // rax
+
+  *(_QWORD *)&retstr->nId = 0;
+  *(_QWORD *)&retstr->nLeftTime = 0;
+  *(_QWORD *)&retstr->nIconRight = 0;
+  if ( this->m_pPlayer )
+  {
+    retstr->nId = 121;
+    PlayerFunctionOpen = Player::GetPlayerFunctionOpen(this->m_pPlayer);
+    if ( CFunctionOpen::IsOpened(PlayerFunctionOpen, 201) && !CSuperTeHui::IsAllGetTeHui(this) )
+      retstr->nState = 2;
+    else
+      retstr->nState = 4;
+    retstr->nEffects = 1;
+  }
+  return retstr;
+}
+
+#####################################
+bool __cdecl CSuperTeHui::IsAllGetTeHui(CSuperTeHui *const this)
+{
+  bool v1; // bl
+  CfgData *v2; // rax
+  SuperTeHuiCfgMap *SuperTeHuiCfgMap; // rax
+  std::pair<const int,SuperTeHuiCfg> *v4; // rax
+  SuperTeHuiCfgMap CfgTeHuiMap; // [rsp+10h] [rbp-60h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,SuperTeHuiCfg> > it; // [rsp+40h] [rbp-30h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,SuperTeHuiCfg> > __x; // [rsp+50h] [rbp-20h] BYREF
+  int32_t OldRecord; // [rsp+58h] [rbp-18h]
+  int32_t NewRecord; // [rsp+5Ch] [rbp-14h]
+
+  if ( !this->m_pPlayer )
+    return 1;
+  OldRecord = Player::getRecord(this->m_pPlayer, 1028);
+  v2 = Answer::Singleton<CfgData>::instance();
+  SuperTeHuiCfgMap = CfgData::GetSuperTeHuiCfgMap(v2);
+  std::map<int,SuperTeHuiCfg>::map(&CfgTeHuiMap, SuperTeHuiCfgMap);
+  for ( it._M_node = std::map<int,SuperTeHuiCfg>::begin(&CfgTeHuiMap)._M_node;
+        ;
+        std::_Rb_tree_iterator<std::pair<int const,SuperTeHuiCfg>>::operator++(&it) )
+  {
+    __x._M_node = std::map<int,SuperTeHuiCfg>::end(&CfgTeHuiMap)._M_node;
+    if ( !std::_Rb_tree_iterator<std::pair<int const,SuperTeHuiCfg>>::operator!=(&it, &__x) )
+      break;
+    v4 = std::_Rb_tree_iterator<std::pair<int const,SuperTeHuiCfg>>::operator->(&it);
+    NewRecord = OldRecord | (1 << (LOBYTE(v4->first) - 1));
+    if ( OldRecord != NewRecord )
+    {
+      v1 = 0;
+      goto LABEL_9;
+    }
+  }
+  v1 = 1;
+LABEL_9:
+  std::map<int,SuperTeHuiCfg>::~map(&CfgTeHuiMap);
+  return v1;
+}
+
+#####################################
+int32_t __cdecl CSuperTeHui::OnGetJewelPavilionItem(CSuperTeHui *const this, Answer::NetPacket *inPacket)
+{
+  CfgData *v3; // rax
+  CExtCharBag *Bag; // rax
+  CExtCharBag *v5; // rax
+  int32_t nDay; // [rsp+18h] [rbp-28h]
+  int32_t nIndex; // [rsp+1Ch] [rbp-24h]
+  JewelPavilionCfg *pJewelPavilionCfg; // [rsp+20h] [rbp-20h]
+  int32_t OldRecord; // [rsp+28h] [rbp-18h]
+  int NewRecord; // [rsp+2Ch] [rbp-14h]
+
+  if ( !inPacket || !this->m_pPlayer )
+    return 10002;
+  if ( !CSuperTeHui::IsOpenedJewelPavilion(this) )
+    return 10002;
+  nDay = CSuperTeHui::GetJewelPavilionDay(this);
+  nIndex = Answer::NetPacket::readInt32(inPacket);
+  v3 = Answer::Singleton<CfgData>::instance();
+  pJewelPavilionCfg = CfgData::GetJewelPavilionCfg(v3, nDay, nIndex);
+  if ( !pJewelPavilionCfg )
+    return 10002;
+  OldRecord = Player::getRecord(this->m_pPlayer, 2085);
+  NewRecord = OldRecord | (1 << (nIndex - 1));
+  if ( OldRecord == NewRecord )
+    return 2;
+  Bag = Player::GetBag(this->m_pPlayer);
+  if ( CExtCharBag::GetFreeSlotCount(Bag) <= 0 )
+    return 10002;
+  if ( pJewelPavilionCfg->nPrice > 0
+    && !Player::DecCurrency(
+          this->m_pPlayer,
+          CURRENCY_TYPE::CURRENCY_GOLD,
+          pJewelPavilionCfg->nPrice,
+          CURRENCY_CHANGE_REASON::GCR_JEWEL_PAVILION,
+          0) )
+  {
+    return 10002;
+  }
+  v5 = Player::GetBag(this->m_pPlayer);
+  CExtCharBag::AddItem(v5, &pJewelPavilionCfg->Item, ITEM_CHANGE_REASON::ICR_JEWEL_PAVILION);
+  Player::updateRecord(this->m_pPlayer, 2085, NewRecord);
+  CSuperTeHui::SendJewelPavilionIcon(this);
+  return 0;
+}
+
+#####################################
+void __cdecl CSuperTeHui::GetJewelPavilionIcon(CSuperTeHui *const this, IconStateList *const IconList)
+{
+  ShowIcon icon; // [rsp+10h] [rbp-20h] BYREF
+
+  if ( this->m_pPlayer )
+  {
+    if ( CSuperTeHui::IsOpenedJewelPavilion(this) )
+    {
+      CSuperTeHui::GetJewelPavilionIcon(&icon, this);
+      std::list<ShowIcon>::push_back(IconList, &icon);
+    }
+  }
+}
+
+#####################################
+void __cdecl CSuperTeHui::SendJewelPavilionIcon(CSuperTeHui *const this)
+{
+  ShowIcon icon; // [rsp+10h] [rbp-20h] BYREF
+
+  if ( this->m_pPlayer )
+  {
+    if ( CSuperTeHui::IsOpenedJewelPavilion(this) )
+    {
+      CSuperTeHui::GetJewelPavilionIcon(&icon, this);
+      Player::SendIconState(this->m_pPlayer, &icon);
+    }
+  }
+}
+
+#####################################
+ShowIcon *__cdecl CSuperTeHui::GetJewelPavilionIcon(ShowIcon *__return_ptr retstr, CSuperTeHui *const this)
+{
+  *(_QWORD *)&retstr->nId = 0;
+  *(_QWORD *)&retstr->nLeftTime = 0;
+  *(_QWORD *)&retstr->nIconRight = 0;
+  if ( this->m_pPlayer )
+  {
+    retstr->nId = 122;
+    if ( CSuperTeHui::IsOpenedJewelPavilion(this) && !CSuperTeHui::IsTimeEnd(this) )
+    {
+      if ( CSuperTeHui::GetJewelPavilionDay(this) == 7 && CSuperTeHui::IsAllGetPavilion(this) )
+        retstr->nState = 4;
+      else
+        retstr->nState = 2;
+    }
+    else
+    {
+      retstr->nState = 4;
+    }
+    if ( !CSuperTeHui::IsAllGetPavilion(this) )
+      retstr->nEffects = 1;
+    retstr->nIconRight = CSuperTeHui::HaveFreeCount(this);
+  }
+  return retstr;
+}
+
+#####################################
+int32_t __cdecl CSuperTeHui::HaveFreeCount(CSuperTeHui *const this)
+{
+  CfgData *v1; // rax
+  JewelPavilionCfgMap *JewelPavilionCfgMap; // rax
+  std::pair<const std::pair<int,int>,JewelPavilionCfg> *v3; // rax
+  std::pair<const std::pair<int,int>,JewelPavilionCfg> *v4; // rax
+  int32_t v5; // ebx
+  JewelPavilionCfgMap CfgJewelPavilionMap; // [rsp+10h] [rbp-70h] BYREF
+  std::_Rb_tree_iterator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > it; // [rsp+40h] [rbp-40h] BYREF
+  std::_Rb_tree_iterator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > __x; // [rsp+50h] [rbp-30h] BYREF
+  int32_t Count; // [rsp+60h] [rbp-20h]
+  int32_t nDay; // [rsp+64h] [rbp-1Ch]
+  int32_t OldRecord; // [rsp+68h] [rbp-18h]
+  int32_t NewRecord; // [rsp+6Ch] [rbp-14h]
+
+  Count = 0;
+  nDay = CSuperTeHui::GetJewelPavilionDay(this);
+  OldRecord = Player::getRecord(this->m_pPlayer, 2085);
+  v1 = Answer::Singleton<CfgData>::instance();
+  JewelPavilionCfgMap = CfgData::GetJewelPavilionCfgMap(v1);
+  std::map<std::pair<int,int>,JewelPavilionCfg>::map(&CfgJewelPavilionMap, JewelPavilionCfgMap);
+  for ( it._M_node = std::map<std::pair<int,int>,JewelPavilionCfg>::begin(&CfgJewelPavilionMap)._M_node;
+        ;
+        std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator++(&it) )
+  {
+    __x._M_node = std::map<std::pair<int,int>,JewelPavilionCfg>::end(&CfgJewelPavilionMap)._M_node;
+    if ( !std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator!=(&it, &__x) )
+      break;
+    v3 = std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator->(&it);
+    if ( *((_DWORD *)v3 + 3) == nDay
+      && *((int *)std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator->(&it) + 12) <= 0 )
+    {
+      v4 = std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator->(&it);
+      NewRecord = OldRecord | (1 << (*((_BYTE *)v4 + 8) - 1));
+      if ( OldRecord != NewRecord )
+        ++Count;
+    }
+  }
+  v5 = Count;
+  std::map<std::pair<int,int>,JewelPavilionCfg>::~map(&CfgJewelPavilionMap);
+  return v5;
+}
+
+#####################################
+bool __cdecl CSuperTeHui::IsOpenedJewelPavilion(CSuperTeHui *const this)
+{
+  return this->m_pPlayer && Player::getRecord(this->m_pPlayer, 1034) > 0;
+}
+
+#####################################
+bool __cdecl CSuperTeHui::IsAllGetPavilion(CSuperTeHui *const this)
+{
+  bool v1; // bl
+  CfgData *v2; // rax
+  JewelPavilionCfgMap *JewelPavilionCfgMap; // rax
+  std::pair<const std::pair<int,int>,JewelPavilionCfg> *v4; // rax
+  std::pair<const std::pair<int,int>,JewelPavilionCfg> *v5; // rax
+  JewelPavilionCfgMap CfgJewelPavilionMap; // [rsp+10h] [rbp-70h] BYREF
+  std::_Rb_tree_iterator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > it; // [rsp+40h] [rbp-40h] BYREF
+  std::_Rb_tree_iterator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > __x; // [rsp+50h] [rbp-30h] BYREF
+  int32_t nDay; // [rsp+64h] [rbp-1Ch]
+  int32_t OldRecord; // [rsp+68h] [rbp-18h]
+  int32_t NewRecord; // [rsp+6Ch] [rbp-14h]
+
+  if ( !this->m_pPlayer )
+    return 1;
+  nDay = CSuperTeHui::GetJewelPavilionDay(this);
+  OldRecord = Player::getRecord(this->m_pPlayer, 2085);
+  v2 = Answer::Singleton<CfgData>::instance();
+  JewelPavilionCfgMap = CfgData::GetJewelPavilionCfgMap(v2);
+  std::map<std::pair<int,int>,JewelPavilionCfg>::map(&CfgJewelPavilionMap, JewelPavilionCfgMap);
+  for ( it._M_node = std::map<std::pair<int,int>,JewelPavilionCfg>::begin(&CfgJewelPavilionMap)._M_node;
+        ;
+        std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator++(&it) )
+  {
+    __x._M_node = std::map<std::pair<int,int>,JewelPavilionCfg>::end(&CfgJewelPavilionMap)._M_node;
+    if ( !std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator!=(&it, &__x) )
+      break;
+    v4 = std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator->(&it);
+    if ( *((_DWORD *)v4 + 3) == nDay )
+    {
+      v5 = std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator->(&it);
+      NewRecord = OldRecord | (1 << (*((_BYTE *)v5 + 8) - 1));
+      if ( OldRecord != NewRecord )
+      {
+        v1 = 0;
+        goto LABEL_10;
+      }
+    }
+  }
+  v1 = 1;
+LABEL_10:
+  std::map<std::pair<int,int>,JewelPavilionCfg>::~map(&CfgJewelPavilionMap);
+  return v1;
+}
+
+#####################################
+bool __cdecl CSuperTeHui::IsTimeEnd(CSuperTeHui *const this)
+{
+  int StartTime; // [rsp+18h] [rbp-8h]
+  int EndTime; // [rsp+1Ch] [rbp-4h]
+
+  if ( !this->m_pPlayer )
+    return 1;
+  StartTime = Player::getRecord(this->m_pPlayer, 1034);
+  EndTime = Answer::DayTime::dayzero(StartTime) + 604800;
+  return Unit::getNow(this->m_pPlayer) > EndTime;
+}
+
+#####################################
+void __cdecl CSuperTeHui::SetJewelPavilionOpen(CSuperTeHui *const this)
+{
+  int32_t Now; // eax
+
+  if ( this->m_pPlayer )
+  {
+    Now = Unit::getNow(this->m_pPlayer);
+    Player::updateRecord(this->m_pPlayer, 1034, Now);
+    CSuperTeHui::SendJewelPavilionIcon(this);
+  }
+}
+
+#####################################
+int32_t __cdecl CSuperTeHui::GetJewelPavilionDay(CSuperTeHui *const this)
+{
+  int v2; // eax
+  int StartTime; // [rsp+1Ch] [rbp-4h]
+
+  if ( !this->m_pPlayer )
+    return 0;
+  StartTime = Player::getRecord(this->m_pPlayer, 1034);
+  v2 = Answer::DayTime::dayzero(StartTime);
+  return Answer::DayTime::daydiff(v2) + 1;
+}
+
+#####################################
+int32_t __cdecl CSuperTeHui::OnBuyShengRenItem(CSuperTeHui *const this, Answer::NetPacket *inPacket)
+{
+  CfgData *v3; // rax
+  CfgData *v4; // rax
+  CExtCharBag *Bag; // rax
+  int32_t FreeSlotCount; // ebx
+  CExtCharBag *v7; // rax
+  int32_t Day; // [rsp+18h] [rbp-28h]
+  int32_t nId; // [rsp+1Ch] [rbp-24h]
+  ShangRenCfg *pShangRenCfg; // [rsp+20h] [rbp-20h]
+  int32_t OldRecord; // [rsp+28h] [rbp-18h]
+  int NewRecord; // [rsp+2Ch] [rbp-14h]
+
+  if ( !this->m_pPlayer || !inPacket )
+    return 10002;
+  v3 = Answer::Singleton<CfgData>::instance();
+  Day = CfgData::getServerDiffDay(v3, SERVER_TYPE::SVT_NORMAL) + 1;
+  if ( Day <= 9 || Day > 12 )
+    return 10002;
+  nId = Answer::NetPacket::readInt32(inPacket);
+  v4 = Answer::Singleton<CfgData>::instance();
+  pShangRenCfg = CfgData::GetShangRenCfg(v4, nId);
+  if ( !pShangRenCfg )
+    return 10002;
+  OldRecord = Player::getRecord(this->m_pPlayer, 2100);
+  NewRecord = OldRecord | (1 << (nId - 1));
+  if ( OldRecord == NewRecord )
+    return 2;
+  if ( !std::vector<MemChrBag>::size(&pShangRenCfg->vItem) )
+    return 2;
+  Bag = Player::GetBag(this->m_pPlayer);
+  FreeSlotCount = CExtCharBag::GetFreeSlotCount(Bag);
+  if ( FreeSlotCount < (int)std::vector<MemChrBag>::size(&pShangRenCfg->vItem) )
+    return 2;
+  if ( pShangRenCfg->nPrice <= 0 )
+    return 2;
+  if ( !Player::DecCurrency(
+          this->m_pPlayer,
+          CURRENCY_TYPE::CURRENCY_GOLD,
+          pShangRenCfg->nPrice,
+          CURRENCY_CHANGE_REASON::GCR_SHANG_REN,
+          nId) )
+    return 2;
+  v7 = Player::GetBag(this->m_pPlayer);
+  CExtCharBag::AddItem(v7, &pShangRenCfg->vItem, ITEM_CHANGE_REASON::IDCR_SHANG_REN);
+  Player::updateRecord(this->m_pPlayer, 2100, NewRecord);
+  CSuperTeHui::SendShangRenIcon(this);
+  return 0;
+}
+
+#####################################
+void __cdecl CSuperTeHui::GetShangRenIcon(CSuperTeHui *const this, IconStateList *const IconList)
+{
+  CfgData *v2; // rax
+  ShowIcon icon; // [rsp+10h] [rbp-20h] BYREF
+  int32_t Day; // [rsp+2Ch] [rbp-4h]
+
+  v2 = Answer::Singleton<CfgData>::instance();
+  Day = CfgData::getServerDiffDay(v2, SERVER_TYPE::SVT_NORMAL) + 1;
+  if ( Day > 9 && Day <= 12 )
+  {
+    CSuperTeHui::GetShangRenIcon(&icon, this);
+    std::list<ShowIcon>::push_back(IconList, &icon);
+  }
+}
+
+#####################################
+void __cdecl CSuperTeHui::SendShangRenIcon(CSuperTeHui *const this)
+{
+  ShowIcon icon; // [rsp+10h] [rbp-20h] BYREF
+
+  if ( this->m_pPlayer )
+  {
+    CSuperTeHui::GetShangRenIcon(&icon, this);
+    Player::SendIconState(this->m_pPlayer, &icon);
+  }
+}
+
+#####################################
+ShowIcon *__cdecl CSuperTeHui::GetShangRenIcon(ShowIcon *__return_ptr retstr, CSuperTeHui *const this)
+{
+  CfgData *v2; // rax
+  int32_t Day; // [rsp+1Ch] [rbp-14h]
+
+  *(_QWORD *)&retstr->nId = 0;
+  *(_QWORD *)&retstr->nLeftTime = 0;
+  *(_QWORD *)&retstr->nIconRight = 0;
+  if ( this->m_pPlayer )
+  {
+    retstr->nId = 131;
+    v2 = Answer::Singleton<CfgData>::instance();
+    Day = CfgData::getServerDiffDay(v2, SERVER_TYPE::SVT_NORMAL) + 1;
+    if ( Day > 9 && Day <= 12 && !CSuperTeHui::IsSoldOut(this) )
+      retstr->nState = 2;
+    else
+      retstr->nState = 4;
+    retstr->nEffects = 1;
+    retstr->nLeftTime = CSuperTeHui::GetShangRenLeftTime(this);
+  }
+  return retstr;
+}
+
+#####################################
+int32_t __cdecl CSuperTeHui::GetShangRenLeftTime(CSuperTeHui *const this)
+{
+  CfgData *v2; // rax
+  CfgData *v3; // rax
+  int32_t Day; // [rsp+18h] [rbp-8h]
+  int32_t EndTime; // [rsp+1Ch] [rbp-4h]
+
+  if ( !this->m_pPlayer )
+    return 2;
+  v2 = Answer::Singleton<CfgData>::instance();
+  Day = CfgData::getServerDiffDay(v2, SERVER_TYPE::SVT_NORMAL) + 1;
+  if ( Day <= 9 || Day > 12 )
+    return 0;
+  v3 = Answer::Singleton<CfgData>::instance();
+  EndTime = CfgData::getServerStartDayZeroTime(v3, SERVER_TYPE::SVT_NORMAL) + 1036800;
+  return EndTime - Unit::getNow(this->m_pPlayer);
+}
+
+#####################################
+void __cdecl CSuperTeHui::SendLeftTime(CSuperTeHui *const this)
+{
+  int8_t ConnId; // bl
+  GameService *v2; // rax
+  int32_t ShangRenLeftTime; // edx
+  uint32_t WOffset; // edx
+  int16_t GateIndex; // r12
+  int8_t v6; // bl
+  GameService *v7; // rax
+  Answer::NetPacket *packet; // [rsp+18h] [rbp-18h]
+
+  if ( this->m_pPlayer )
+  {
+    ConnId = Player::getConnId(this->m_pPlayer);
+    v2 = Answer::Singleton<GameService>::instance();
+    packet = GameService::popNetpacket(v2, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CC6u);
+    if ( packet )
+    {
+      ShangRenLeftTime = CSuperTeHui::GetShangRenLeftTime(this);
+      Answer::NetPacket::writeInt32(packet, ShangRenLeftTime);
+      WOffset = Answer::NetPacket::getWOffset(packet);
+      Answer::NetPacket::setSize(packet, WOffset);
+      GateIndex = Player::getGateIndex(this->m_pPlayer);
+      v6 = Player::getConnId(this->m_pPlayer);
+      v7 = Answer::Singleton<GameService>::instance();
+      GameService::sendPacketTo(v7, v6, GateIndex, packet);
+    }
+  }
+}
+
+#####################################
+// Alternative name is '_Z41__static_initialization_and_destruction_0ii_124'
+void __cdecl _static_initialization_and_destruction_0_23(int __initialize_p, int __priority)
+{
+  if ( __initialize_p == 1 && __priority == 0xFFFF )
+  {
+    std::ios_base::Init::Init(&std::__ioinit);
+    __cxa_atexit(std::ios_base::Init::~Init, &std::__ioinit, &_dso_handle);
+  }
+}
+
+#####################################
+// Alternative name is '_ZNSt3mapIi13SuperTeHuiCfgSt4lessIiESaISt4pairIKiS0_EEEC2ERKS7_'
+void __cdecl std::map<int,SuperTeHuiCfg>::map(
+        std::map<int,SuperTeHuiCfg> *const this,
+        const std::map<int,SuperTeHuiCfg> *const __x)
+{
+  std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_Rb_tree(
+    &this->_M_t,
+    &__x->_M_t);
+}
+
+#####################################
+std::_Rb_tree_iterator<std::pair<const int,SuperTeHuiCfg> > *__cdecl std::_Rb_tree_iterator<std::pair<int const,SuperTeHuiCfg>>::operator++(
+        std::_Rb_tree_iterator<std::pair<const int,SuperTeHuiCfg> > *const this)
+{
+  this->_M_node = (std::_Rb_tree_node_base::_Base_ptr)std::_Rb_tree_increment(this->_M_node);
+  return this;
+}
+
+#####################################
+// Alternative name is '_ZNSt3mapISt4pairIiiE16JewelPavilionCfgSt4lessIS1_ESaIS0_IKS1_S2_EEEC1ERKS8_'
+void __cdecl std::map<std::pair<int,int>,JewelPavilionCfg>::map(
+        std::map<std::pair<int,int>,JewelPavilionCfg> *const this,
+        const std::map<std::pair<int,int>,JewelPavilionCfg> *const __x)
+{
+  std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_Rb_tree(
+    &this->_M_t,
+    &__x->_M_t);
+}
+
+#####################################
+std::_Rb_tree_iterator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > *__cdecl std::_Rb_tree_iterator<std::pair<std::pair const<int,int>,JewelPavilionCfg>>::operator++(
+        std::_Rb_tree_iterator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > *const this)
+{
+  this->_M_node = (std::_Rb_tree_node_base::_Base_ptr)std::_Rb_tree_increment(this->_M_node);
+  return this;
+}
+
+#####################################
+// Alternative name is '_ZNSt8_Rb_treeIiSt4pairIKi13SuperTeHuiCfgESt10_Select1stIS3_ESt4lessIiESaIS3_EEC1ERKS9_'
+void __cdecl std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_Rb_tree(
+        std::_Rb_tree<int,std::pair<const int,SuperTeHuiCfg>,std::_Select1st<std::pair<const int,SuperTeHuiCfg> >,std::less<int>,std::allocator<std::pair<const int,SuperTeHuiCfg> > > *const this,
+        const std::_Rb_tree<int,std::pair<const int,SuperTeHuiCfg>,std::_Select1st<std::pair<const int,SuperTeHuiCfg> >,std::less<int>,std::allocator<std::pair<const int,SuperTeHuiCfg> > > *const __x)
+{
+  const std::allocator<std::_Rb_tree_node<std::pair<const int,SuperTeHuiCfg> > > *Node_allocator; // rdx
+  std::_Rb_tree_node_base **v3; // rbx
+  std::_Rb_tree_node<std::pair<const int,SuperTeHuiCfg> > *v4; // r12
+  const std::_Rb_tree_node<std::pair<const int,SuperTeHuiCfg> > *v5; // rcx
+  std::_Rb_tree_node_base **v6; // rbx
+  std::_Rb_tree_node_base **v7; // rax
+  std::_Rb_tree_node_base **v8; // rbx
+  std::_Rb_tree_node_base **v9; // rax
+
+  Node_allocator = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_get_Node_allocator(__x);
+  std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_Rb_tree_impl<std::less<int>,false>::_Rb_tree_impl(
+    &this->_M_impl,
+    &__x->_M_impl._M_key_compare,
+    Node_allocator);
+  if ( std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_root(__x) )
+  {
+    v3 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_root(this);
+    v4 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_end(this);
+    v5 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_begin(__x);
+    *v3 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_copy(
+            this,
+            v5,
+            v4);
+    v6 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_leftmost(this);
+    v7 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_root(this);
+    *v6 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_S_minimum(*v7);
+    v8 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_rightmost(this);
+    v9 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_M_root(this);
+    *v8 = std::_Rb_tree<int,std::pair<int const,SuperTeHuiCfg>,std::_Select1st<std::pair<int const,SuperTeHuiCfg>>,std::less<int>,std::allocator<std::pair<int const,SuperTeHuiCfg>>>::_S_maximum(*v9);
+    this->_M_impl._M_node_count = __x->_M_impl._M_node_count;
+  }
+}
+
+#####################################
+// Alternative name is '_ZNSt8_Rb_treeISt4pairIiiES0_IKS1_16JewelPavilionCfgESt10_Select1stIS4_ESt4lessIS1_ESaIS4_EEC2ERKSA_'
+void __cdecl std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_Rb_tree(
+        std::_Rb_tree<std::pair<int,int>,std::pair<const std::pair<int,int>,JewelPavilionCfg>,std::_Select1st<std::pair<const std::pair<int,int>,JewelPavilionCfg> >,std::less<std::pair<int,int> >,std::allocator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > > *const this,
+        const std::_Rb_tree<std::pair<int,int>,std::pair<const std::pair<int,int>,JewelPavilionCfg>,std::_Select1st<std::pair<const std::pair<int,int>,JewelPavilionCfg> >,std::less<std::pair<int,int> >,std::allocator<std::pair<const std::pair<int,int>,JewelPavilionCfg> > > *const __x)
+{
+  const std::allocator<std::_Rb_tree_node<std::pair<const std::pair<int,int>,JewelPavilionCfg> > > *Node_allocator; // rdx
+  std::_Rb_tree_node_base **v3; // rbx
+  std::_Rb_tree_node<std::pair<const std::pair<int,int>,JewelPavilionCfg> > *v4; // r12
+  const std::_Rb_tree_node<std::pair<const std::pair<int,int>,JewelPavilionCfg> > *v5; // rcx
+  std::_Rb_tree_node_base **v6; // rbx
+  std::_Rb_tree_node_base **v7; // rax
+  std::_Rb_tree_node_base **v8; // rbx
+  std::_Rb_tree_node_base **v9; // rax
+
+  Node_allocator = std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_M_get_Node_allocator(__x);
+  std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_Rb_tree_impl<std::less<std::pair<int,int>>,false>::_Rb_tree_impl(
+    &this->_M_impl,
+    &__x->_M_impl._M_key_compare,
+    Node_allocator);
+  if ( std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_M_root(__x) )
+  {
+    v3 = std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_M_root(this);
+    v4 = std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_M_end(this);
+    v5 = std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_M_begin(__x);
+    *v3 = (std::_Rb_tree_node_base *)std::_Rb_tree<std::pair<int,int>,std::pair<std::pair<int,int> const,JewelPavilionCfg>,std::_Select1st<std::pair<std::pair<int,int> const,JewelPavilionCfg>>,std::less<std::pair<int,int>>,std::allocator<std::pair<std::pair<int,int> const,JewelPavilionCfg>>>::_M_copy(
+                                       this,

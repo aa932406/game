@@ -1,0 +1,46 @@
+#ifndef _CFGTOUZITABLE_H_
+#define _CFGTOUZITABLE_H_
+
+#include "Common/CommonTypes.h"
+#include <cstdint>
+#include <string>
+#include <vector>
+#include <list>
+#include <map>
+
+class Player;
+class Map;
+class Unit;
+class Monster;
+class Npc;
+class CActivity;
+class CActivityMap;
+class CfgActivity;
+class CfgMonster;
+class CfgMap;
+class Answer_NetPacket;
+class Position;
+
+
+/**
+ * @brief CfgTouZiTable - Config data class
+ */
+class CfgTouZiTable
+{
+public:
+    CfgTouZiTable();
+    ~CfgTouZiTable();
+
+    void AddSevenTouZi(CfgTouZiTable * this, SevenTouZi *p_stu);
+    void AddMonthTouZi(CfgTouZiTable * this, MonthTouZi *p_stu);
+    void GetSevenTouZi(CfgTouZiTable * this, int32_t nId);
+    bool IsAllGetSevenDay(CfgTouZiTable * this, int32_t SevenDayRecord);
+    void GetMonthTouZi(CfgTouZiTable * this, int32_t nDay);
+    bool IsAllGetMonthTouZi(CfgTouZiTable * this, int32_t MonthTouZiRecord);
+
+private:
+        // TODO: 确认类型 m_MonthTouZiMap
+        // TODO: 确认类型 m_SevenTouZiMap
+};
+
+#endif // _CFGTOUZITABLE_H_

@@ -1,0 +1,1 @@
+#include "../Character/CExtCharTencent.h"

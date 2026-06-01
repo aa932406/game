@@ -1,0 +1,1 @@
+#ifndef _CFGGAMESHOP_H_\n#define _CFGGAMESHOP_H_\n#include <cstdint>\n#include <vector>\nclass CfgGameShop {\npublic:\n    int32_t id;\n    int32_t itemId;\n    int32_t price;\n    int32_t count;\n};\n#endif

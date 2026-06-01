@@ -1,0 +1,1 @@
+#ifndef _RANDOM_H_\n#define _RANDOM_H_\n#include <cstdint>\nnamespace Answer {\nclass Random {\npublic:\n    static Random* GetInstance();\n    int32_t generate(int32_t min, int32_t max);\n    float generateFloat();\n};\n}

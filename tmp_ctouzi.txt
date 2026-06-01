@@ -1,0 +1,624 @@
+void __cdecl CTouZi::CTouZi(CTouZi *const this)
+{
+  CExtSystemBase::CExtSystemBase(this);
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F32D0;
+  CTouZi::OnCleanUp(this);
+}
+
+#####################################
+// Alternative name is '_ZN6CTouZiD1Ev'
+void __cdecl CTouZi::~CTouZi(CTouZi *const this)
+{
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F32D0;
+  CExtSystemBase::~CExtSystemBase(this);
+}
+
+#####################################
+void __cdecl CTouZi::~CTouZi(CTouZi *const this)
+{
+  CTouZi::~CTouZi(this);
+  operator delete(this);
+}
+
+#####################################
+void __cdecl CTouZi::OnLoadFromDB(CTouZi *const this, const PlayerDBData *const dbData)
+{
+  this->m_SevenDayTouZiTime = dbData->m_TouZiData.m_SevenDayTouZiTime;
+  this->m_SevenDayRecord = dbData->m_TouZiData.m_SevenDayRecord;
+  this->m_MonthTouZiTime = dbData->m_TouZiData.m_MonthTouZiTime;
+  this->m_MonthTouZiRecord = dbData->m_TouZiData.m_MonthTouZiRecord;
+}
+
+#####################################
+void __cdecl CTouZi::OnSaveToDB(CTouZi *const this, PlayerDBData *const dbData)
+{
+  dbData->m_TouZiData.m_SevenDayTouZiTime = this->m_SevenDayTouZiTime;
+  dbData->m_TouZiData.m_SevenDayRecord = this->m_SevenDayRecord;
+  dbData->m_TouZiData.m_MonthTouZiTime = this->m_MonthTouZiTime;
+  dbData->m_TouZiData.m_MonthTouZiRecord = this->m_MonthTouZiRecord;
+}
+
+#####################################
+void __cdecl CTouZi::OnDaySwitch(CTouZi *const this, int32_t nDiffDays)
+{
+  CTouZi::SendTouZiInfo(this);
+  CTouZi::SendTouZiIcon(this);
+}
+
+#####################################
+void __cdecl CTouZi::GetInterestsProtocol(CTouZi *const this, ProcIdList *const procList)
+{
+  unsigned __int16 __x; // [rsp+1Ah] [rbp-6h] BYREF
+  unsigned __int16 v3; // [rsp+1Ch] [rbp-4h] BYREF
+  unsigned __int16 v4; // [rsp+1Eh] [rbp-2h] BYREF
+
+  __x = 490;
+  std::list<unsigned short>::push_back(procList, &__x);
+  v3 = 491;
+  std::list<unsigned short>::push_back(procList, &v3);
+  v4 = 492;
+  std::list<unsigned short>::push_back(procList, &v4);
+}
+
+#####################################
+int32_t __cdecl CTouZi::DispatchNetDatas(CTouZi *const this, ProcId_t nProcId, Answer::NetPacket *inPacket)
+{
+  if ( !inPacket )
+    return 2;
+  switch ( nProcId )
+  {
+    case 0x1EBu:
+      return CTouZi::OnGetTouZiReward(this, inPacket);
+    case 0x1ECu:
+      return CTouZi::OnTouZi(this, inPacket);
+    case 0x1EAu:
+      return CTouZi::OnAskTouZiInfo(this, inPacket);
+  }
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CTouZi::OnTouZi(CTouZi *const this, Answer::NetPacket *inPacket)
+{
+  CVip *PlayerVip; // rax
+  CfgData *v4; // rax
+  CfgData *v6; // rax
+  uint16_t Proc; // r13
+  int16_t GateIndex; // r12
+  int8_t ConnId; // bl
+  GameService *v11; // rax
+  GameService *v12; // rax
+  CharId_t Cid; // rax
+  uint32_t WOffset; // eax
+  GameService *v15; // rax
+  std::string val; // [rsp+10h] [rbp-40h] BYREF
+  int8_t nType; // [rsp+23h] [rbp-2Dh]
+  int32_t GongGaoId; // [rsp+24h] [rbp-2Ch]
+  Answer::NetPacket *packet; // [rsp+28h] [rbp-28h]
+
+  if ( !inPacket || !this->m_pPlayer )
+    return 10002;
+  nType = Answer::NetPacket::readInt8(inPacket);
+  PlayerVip = Player::GetPlayerVip(this->m_pPlayer);
+  if ( CVip::GetVipLevel(PlayerVip) <= 0 )
+    return 10002;
+  GongGaoId = 0;
+  if ( nType == 1 )
+  {
+    v4 = Answer::Singleton<CfgData>::instance();
+    if ( CfgData::getServerDiffDay(v4, SERVER_TYPE::SVT_NORMAL) + 1 > 7 )
+      return 10002;
+    if ( this->m_SevenDayTouZiTime > 0 )
+      return 10002;
+    if ( !Player::DecCurrency(
+            this->m_pPlayer,
+            CURRENCY_TYPE::CURRENCY_GOLD,
+            10000,
+            CURRENCY_CHANGE_REASON::GCR_TOU_ZHI_SHI_QU,
+            nType) )
+      return 10002;
+    this->m_SevenDayTouZiTime = Unit::getNow(this->m_pPlayer);
+    GongGaoId = 499;
+  }
+  else
+  {
+    if ( nType != 2 )
+      return 10002;
+    if ( this->m_MonthTouZiTime > 0 )
+      return 10002;
+    if ( this->m_SevenDayTouZiTime > 0 && !CTouZi::IsAllGetSevenDayTouZi(this) )
+      return 10002;
+    if ( this->m_SevenDayTouZiTime <= 0 )
+    {
+      v6 = Answer::Singleton<CfgData>::instance();
+      if ( CfgData::getServerDiffDay(v6, SERVER_TYPE::SVT_NORMAL) + 1 <= 7 )
+        return 10002;
+    }
+    if ( !Player::DecCurrency(
+            this->m_pPlayer,
+            CURRENCY_TYPE::CURRENCY_GOLD,
+            50000,
+            CURRENCY_CHANGE_REASON::GCR_TOU_ZHI_SHI_QU,
+            nType) )
+      return 10002;
+    this->m_MonthTouZiTime = Unit::getNow(this->m_pPlayer);
+    GongGaoId = 500;
+  }
+  CTouZi::SendTouZiInfo(this);
+  CTouZi::SendTouZiIcon(this);
+  Proc = Answer::NetPacket::getProc(inPacket);
+  GateIndex = Player::getGateIndex(this->m_pPlayer);
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v11 = Answer::Singleton<GameService>::instance();
+  GameService::replySuccess(v11, ConnId, GateIndex, Proc, nType);
+  v12 = Answer::Singleton<GameService>::instance();
+  packet = GameService::popNetpacket(v12, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+  if ( packet )
+  {
+    Answer::NetPacket::writeInt32(packet, GongGaoId);
+    Cid = Player::getCid(this->m_pPlayer);
+    Answer::NetPacket::writeInt64(packet, Cid);
+    Player::getName((const Player *const)&val);
+    Answer::NetPacket::writeUTF8(packet, &val);
+    std::string::~string(&val);
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    v15 = Answer::Singleton<GameService>::instance();
+    GameService::worldBroadcast(v15, packet);
+  }
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CTouZi::OnGetTouZiReward(CTouZi *const this, Answer::NetPacket *inPacket)
+{
+  int8_t nType; // [rsp+1Dh] [rbp-3h]
+  __int16 nIndex; // [rsp+1Eh] [rbp-2h]
+
+  if ( !inPacket || !this->m_pPlayer )
+    return 10002;
+  nType = Answer::NetPacket::readInt8(inPacket);
+  nIndex = Answer::NetPacket::readInt16(inPacket);
+  if ( nIndex <= 0 )
+    return 10002;
+  if ( nType == 1 )
+    return CTouZi::GetSevenTouZiReward(this, nIndex);
+  if ( nType == 2 )
+    return CTouZi::GetMonthTouZiReward(this, nIndex);
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CTouZi::OnAskTouZiInfo(CTouZi *const this, Answer::NetPacket *inPacket)
+{
+  if ( !inPacket )
+    return 10002;
+  CTouZi::SendTouZiInfo(this);
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CTouZi::GetSevenTouZiReward(CTouZi *const this, int16_t nIndex)
+{
+  CfgData *v3; // rax
+  const CfgTouZiTable *TouZiTable; // rax
+  CExtCharBag *Bag; // rax
+  const SevenTouZi *pCfg; // [rsp+10h] [rbp-20h]
+  int nNewRecord; // [rsp+18h] [rbp-18h]
+
+  if ( !this->m_pPlayer )
+    return 10002;
+  if ( this->m_SevenDayTouZiTime <= 0 )
+    return 10002;
+  v3 = Answer::Singleton<CfgData>::instance();
+  TouZiTable = CfgData::GetTouZiTable(v3);
+  pCfg = CfgTouZiTable::GetSevenTouZi(TouZiTable, nIndex);
+  if ( !pCfg )
+    return 10002;
+  nNewRecord = (1 << (nIndex - 1)) | this->m_SevenDayRecord;
+  if ( this->m_SevenDayRecord == nNewRecord )
+    return 10002;
+  if ( pCfg->nType == 1 )
+  {
+    if ( Answer::DayTime::daydiff(this->m_SevenDayTouZiTime) + 1 < pCfg->nCondition )
+      return 10002;
+  }
+  else
+  {
+    if ( pCfg->nType != 2 )
+      return 10002;
+    if ( (*((int (__fastcall **)(Player *))this->m_pPlayer->_vptr_Entity + 9))(this->m_pPlayer) < pCfg->nCondition )
+      return 10002;
+  }
+  Bag = Player::GetBag(this->m_pPlayer);
+  if ( !CExtCharBag::AddItem(Bag, &pCfg->vItem, ITEM_CHANGE_REASON::ICR_WEEK_TOU_ZI) )
+    return 10002;
+  this->m_SevenDayRecord = nNewRecord;
+  CTouZi::SendTouZiInfo(this);
+  CTouZi::SendTouZiIcon(this);
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CTouZi::GetMonthTouZiReward(CTouZi *const this, int16_t nIndex)
+{
+  CfgData *v3; // rax
+  const CfgTouZiTable *TouZiTable; // rax
+  CExtCharBag *Bag; // rax
+  GameService *v6; // rax
+  CharId_t Cid; // rax
+  uint32_t WOffset; // eax
+  GameService *v9; // rax
+  std::string val; // [rsp+10h] [rbp-40h] BYREF
+  int32_t nNewRecord; // [rsp+24h] [rbp-2Ch]
+  const MonthTouZi *pCfg; // [rsp+28h] [rbp-28h]
+  int32_t nDiffDay; // [rsp+34h] [rbp-1Ch]
+  Answer::NetPacket *packet; // [rsp+38h] [rbp-18h]
+
+  if ( !this->m_pPlayer )
+    return 10002;
+  if ( this->m_MonthTouZiTime <= 0 )
+    return 10002;
+  nNewRecord = (1 << (nIndex - 1)) | this->m_MonthTouZiRecord;
+  if ( this->m_MonthTouZiRecord == nNewRecord )
+    return 10002;
+  v3 = Answer::Singleton<CfgData>::instance();
+  TouZiTable = CfgData::GetTouZiTable(v3);
+  pCfg = CfgTouZiTable::GetMonthTouZi(TouZiTable, nIndex);
+  if ( !pCfg )
+    return 10002;
+  nDiffDay = Answer::DayTime::daydiff(this->m_MonthTouZiTime);
+  if ( nDiffDay + 1 < pCfg->nDay )
+    return 10002;
+  Bag = Player::GetBag(this->m_pPlayer);
+  if ( !CExtCharBag::AddItem(Bag, &pCfg->vItem, ITEM_CHANGE_REASON::ICR_WEEK_TOU_ZI) )
+    return 10002;
+  this->m_MonthTouZiRecord = nNewRecord;
+  CTouZi::SendTouZiInfo(this);
+  CTouZi::SendTouZiIcon(this);
+  if ( pCfg->nGongGaoId > 0 )
+  {
+    v6 = Answer::Singleton<GameService>::instance();
+    packet = GameService::popNetpacket(v6, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    if ( !packet )
+      return 0;
+    Answer::NetPacket::writeInt32(packet, pCfg->nGongGaoId);
+    Cid = Player::getCid(this->m_pPlayer);
+    Answer::NetPacket::writeInt64(packet, Cid);
+    Player::getName((const Player *const)&val);
+    Answer::NetPacket::writeUTF8(packet, &val);
+    std::string::~string(&val);
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    v9 = Answer::Singleton<GameService>::instance();
+    GameService::worldBroadcast(v9, packet);
+  }
+  return 0;
+}
+
+#####################################
+void __cdecl CTouZi::SendTouZiInfo(CTouZi *const this)
+{
+  int8_t ConnId; // bl
+  GameService *v2; // rax
+  uint32_t WOffset; // edx
+  int16_t GateIndex; // r12
+  int8_t v5; // bl
+  GameService *v6; // rax
+  Answer::NetPacket *packet; // [rsp+18h] [rbp-18h]
+
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v2 = Answer::Singleton<GameService>::instance();
+  packet = GameService::popNetpacket(v2, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CE8u);
+  if ( packet )
+  {
+    if ( this->m_pPlayer )
+    {
+      Answer::NetPacket::writeInt32(packet, this->m_SevenDayTouZiTime);
+      Answer::NetPacket::writeInt32(packet, this->m_SevenDayRecord);
+      Answer::NetPacket::writeInt32(packet, this->m_MonthTouZiTime);
+      Answer::NetPacket::writeInt32(packet, this->m_MonthTouZiRecord);
+      WOffset = Answer::NetPacket::getWOffset(packet);
+      Answer::NetPacket::setSize(packet, WOffset);
+      GateIndex = Player::getGateIndex(this->m_pPlayer);
+      v5 = Player::getConnId(this->m_pPlayer);
+      v6 = Answer::Singleton<GameService>::instance();
+      GameService::sendPacketTo(v6, v5, GateIndex, packet);
+    }
+  }
+}
+
+#####################################
+void __cdecl CTouZi::GetTouZiIconState(CTouZi *const this, IconStateList *const IconList)
+{
+  CFunctionOpen *PlayerFunctionOpen; // rax
+  ShowIcon __x; // [rsp+10h] [rbp-20h] BYREF
+
+  if ( this->m_pPlayer )
+  {
+    PlayerFunctionOpen = Player::GetPlayerFunctionOpen(this->m_pPlayer);
+    if ( CFunctionOpen::IsOpened(PlayerFunctionOpen, 65) )
+    {
+      CTouZi::GetTouZiIconStu(&__x, this);
+      std::list<ShowIcon>::push_back(IconList, &__x);
+    }
+  }
+}
+
+#####################################
+void __cdecl CTouZi::SendTouZiIcon(CTouZi *const this)
+{
+  CFunctionOpen *PlayerFunctionOpen; // rax
+  ShowIcon StuTmp; // [rsp+10h] [rbp-40h] BYREF
+  ShowIcon stu; // [rsp+30h] [rbp-20h] BYREF
+
+  if ( this->m_pPlayer )
+  {
+    PlayerFunctionOpen = Player::GetPlayerFunctionOpen(this->m_pPlayer);
+    if ( CFunctionOpen::IsOpened(PlayerFunctionOpen, 65) )
+    {
+      CTouZi::GetTouZiIconStu(&stu, this);
+      Player::SendIconState(this->m_pPlayer, &stu);
+      if ( stu.nId == 133 )
+      {
+        *(_QWORD *)&StuTmp.nId = 0x400000086LL;
+        *(_QWORD *)&StuTmp.nLeftTime = 0;
+        *(_QWORD *)&StuTmp.nIconRight = 0;
+        Player::SendIconState(this->m_pPlayer, &StuTmp);
+      }
+    }
+  }
+}
+
+#####################################
+bool __cdecl CTouZi::IsAllGetSevenDayTouZi(CTouZi *const this)
+{
+  int32_t m_SevenDayRecord; // ebx
+  CfgData *v2; // rax
+  const CfgTouZiTable *TouZiTable; // rax
+
+  m_SevenDayRecord = this->m_SevenDayRecord;
+  v2 = Answer::Singleton<CfgData>::instance();
+  TouZiTable = CfgData::GetTouZiTable(v2);
+  return CfgTouZiTable::IsAllGetSevenDay(TouZiTable, m_SevenDayRecord);
+}
+
+#####################################
+bool __cdecl CTouZi::IsAllGetMonthTouZi(CTouZi *const this)
+{
+  int32_t m_MonthTouZiRecord; // ebx
+  CfgData *v2; // rax
+  const CfgTouZiTable *TouZiTable; // rax
+
+  m_MonthTouZiRecord = this->m_MonthTouZiRecord;
+  v2 = Answer::Singleton<CfgData>::instance();
+  TouZiTable = CfgData::GetTouZiTable(v2);
+  return CfgTouZiTable::IsAllGetMonthTouZi(TouZiTable, m_MonthTouZiRecord);
+}
+
+#####################################
+int32_t __cdecl CTouZi::GetSevenDayRewardCount(CTouZi *const this)
+{
+  int32_t v1; // ebx
+  CfgData *v2; // rax
+  const CfgTouZiTable *TouZiTable; // rax
+  const SevenTouZiMap *SevenDayTable; // rax
+  int32_t v5; // ebx
+  int32_t v6; // ebx
+  int32_t m_SevenDayRecord; // ebx
+  SevenTouZiMap TouZiMap; // [rsp+10h] [rbp-70h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,SevenTouZi> > it; // [rsp+40h] [rbp-40h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,SevenTouZi> > __x; // [rsp+50h] [rbp-30h] BYREF
+  int32_t Count; // [rsp+64h] [rbp-1Ch]
+  int32_t nDiffDay; // [rsp+68h] [rbp-18h]
+  int32_t nNewRecord; // [rsp+6Ch] [rbp-14h]
+
+  if ( this->m_pPlayer )
+  {
+    if ( this->m_SevenDayTouZiTime <= 0 )
+      return 0;
+    Count = 0;
+    nDiffDay = Answer::DayTime::daydiff(this->m_SevenDayTouZiTime);
+    v2 = Answer::Singleton<CfgData>::instance();
+    TouZiTable = CfgData::GetTouZiTable(v2);
+    SevenDayTable = CfgTouZiTable::GetSevenDayTable(TouZiTable);
+    std::map<int,SevenTouZi>::map(&TouZiMap, SevenDayTable);
+    for ( it._M_node = std::map<int,SevenTouZi>::begin(&TouZiMap)._M_node;
+          ;
+          std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator++(&it, 0) )
+    {
+      __x._M_node = std::map<int,SevenTouZi>::end(&TouZiMap)._M_node;
+      if ( !std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator!=(&it, &__x) )
+      {
+        v1 = Count;
+        std::map<int,SevenTouZi>::~map(&TouZiMap);
+        return v1;
+      }
+      if ( std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator->(&it)->second.nType == 1 )
+      {
+        v5 = nDiffDay + 1;
+        if ( v5 < std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator->(&it)->second.nCondition )
+          continue;
+      }
+      else if ( std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator->(&it)->second.nType == 2 )
+      {
+        v6 = (*((__int64 (__fastcall **)(Player *))this->m_pPlayer->_vptr_Entity + 9))(this->m_pPlayer);
+        if ( v6 < std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator->(&it)->second.nCondition )
+          continue;
+      }
+      m_SevenDayRecord = this->m_SevenDayRecord;
+      nNewRecord = m_SevenDayRecord
+                 | (1 << (LOBYTE(std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator->(&it)->second.nId)
+                        - 1));
+      if ( this->m_SevenDayRecord != nNewRecord )
+        ++Count;
+    }
+  }
+  return 10002;
+}
+
+#####################################
+int32_t __cdecl CTouZi::GetMonthRewardCount(CTouZi *const this)
+{
+  int32_t v1; // ebx
+  CfgData *v2; // rax
+  const CfgTouZiTable *TouZiTable; // rax
+  const MonthTouZiMap *MonthTable; // rax
+  int32_t v5; // ebx
+  int32_t m_MonthTouZiRecord; // ebx
+  MonthTouZiMap TouZiMap; // [rsp+10h] [rbp-70h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,MonthTouZi> > it; // [rsp+40h] [rbp-40h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,MonthTouZi> > __x; // [rsp+50h] [rbp-30h] BYREF
+  int32_t Count; // [rsp+64h] [rbp-1Ch]
+  int32_t nDiffDay; // [rsp+68h] [rbp-18h]
+  int32_t nNewRecord; // [rsp+6Ch] [rbp-14h]
+
+  if ( !this->m_pPlayer )
+    return 10002;
+  if ( this->m_MonthTouZiTime <= 0 )
+    return 0;
+  Count = 0;
+  nDiffDay = Answer::DayTime::daydiff(this->m_MonthTouZiTime);
+  v2 = Answer::Singleton<CfgData>::instance();
+  TouZiTable = CfgData::GetTouZiTable(v2);
+  MonthTable = CfgTouZiTable::GetMonthTable(TouZiTable);
+  std::map<int,MonthTouZi>::map(&TouZiMap, MonthTable);
+  for ( it._M_node = std::map<int,MonthTouZi>::begin(&TouZiMap)._M_node;
+        ;
+        std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator++(&it, 0) )
+  {
+    __x._M_node = std::map<int,MonthTouZi>::end(&TouZiMap)._M_node;
+    if ( !std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator!=(&it, &__x) )
+      break;
+    v5 = nDiffDay + 1;
+    if ( v5 >= std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator->(&it)->second.nDay )
+    {
+      m_MonthTouZiRecord = this->m_MonthTouZiRecord;
+      nNewRecord = m_MonthTouZiRecord
+                 | (1 << (LOBYTE(std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator->(&it)->second.nDay)
+                        - 1));
+      if ( this->m_MonthTouZiRecord != nNewRecord )
+        ++Count;
+    }
+  }
+  v1 = Count;
+  std::map<int,MonthTouZi>::~map(&TouZiMap);
+  return v1;
+}
+
+#####################################
+ShowIcon *__cdecl CTouZi::GetTouZiIconStu(ShowIcon *__return_ptr retstr, CTouZi *const this)
+{
+  CfgData *v2; // rax
+
+  *(_QWORD *)&retstr->nId = 0;
+  *(_QWORD *)&retstr->nLeftTime = 0;
+  *(_QWORD *)&retstr->nIconRight = 0;
+  retstr->nId = 134;
+  if ( this->m_SevenDayTouZiTime <= 0 )
+  {
+    v2 = Answer::Singleton<CfgData>::instance();
+    if ( CfgData::getServerDiffDay(v2, SERVER_TYPE::SVT_NORMAL) + 1 > 7 )
+      retstr->nId = 133;
+  }
+  else if ( CTouZi::IsAllGetSevenDayTouZi(this) )
+  {
+    retstr->nId = 133;
+  }
+  if ( CTouZi::IsAllGetMonthTouZi(this) )
+    retstr->nState = 4;
+  else
+    retstr->nState = 2;
+  if ( retstr->nId == 134 )
+    retstr->nIconRight = CTouZi::GetSevenDayRewardCount(this);
+  else
+    retstr->nIconRight = CTouZi::GetMonthRewardCount(this);
+  retstr->nLeftTime = -1;
+  return retstr;
+}
+
+#####################################
+// Alternative name is '_Z41__static_initialization_and_destruction_0ii_134'
+void __cdecl _static_initialization_and_destruction_0_33(int __initialize_p, int __priority)
+{
+  if ( __initialize_p == 1 && __priority == 0xFFFF )
+  {
+    std::ios_base::Init::Init(&std::__ioinit);
+    __cxa_atexit(std::ios_base::Init::~Init, &std::__ioinit, &_dso_handle);
+  }
+}
+
+#####################################
+const SevenTouZi *__cdecl CfgTouZiTable::GetSevenTouZi(const CfgTouZiTable *const this, int32_t nId)
+{
+  int32_t nIda; // [rsp+4h] [rbp-2Ch] BYREF
+  const CfgTouZiTable *thisa; // [rsp+8h] [rbp-28h]
+  std::_Rb_tree_const_iterator<std::pair<const int,SevenTouZi> > it; // [rsp+10h] [rbp-20h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,SevenTouZi> > __x; // [rsp+20h] [rbp-10h] BYREF
+
+  thisa = this;
+  nIda = nId;
+  it._M_node = std::map<int,SevenTouZi>::find(&this->m_SevenTouZiMap, &nIda)._M_node;
+  __x._M_node = std::map<int,SevenTouZi>::end(&thisa->m_SevenTouZiMap)._M_node;
+  if ( std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator!=(&it, &__x) )
+    return &std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator->(&it)->second;
+  else
+    return 0;
+}
+
+#####################################
+bool __cdecl CfgTouZiTable::IsAllGetSevenDay(const CfgTouZiTable *const this, int32_t SevenDayRecord)
+{
+  std::_Rb_tree_const_iterator<std::pair<const int,SevenTouZi> > it; // [rsp+10h] [rbp-30h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,SevenTouZi> > __x; // [rsp+20h] [rbp-20h] BYREF
+  int32_t nNewRecord; // [rsp+2Ch] [rbp-14h]
+
+  for ( it._M_node = std::map<int,SevenTouZi>::begin(&this->m_SevenTouZiMap)._M_node;
+        ;
+        std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator++(&it, 0) )
+  {
+    __x._M_node = std::map<int,SevenTouZi>::end(&this->m_SevenTouZiMap)._M_node;
+    if ( !std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator!=(&it, &__x) )
+      break;
+    nNewRecord = SevenDayRecord
+               | (1 << (LOBYTE(std::_Rb_tree_const_iterator<std::pair<int const,SevenTouZi>>::operator->(&it)->second.nId)
+                      - 1));
+    if ( nNewRecord != SevenDayRecord )
+      return 0;
+  }
+  return 1;
+}
+
+#####################################
+const MonthTouZi *__cdecl CfgTouZiTable::GetMonthTouZi(const CfgTouZiTable *const this, int32_t nDay)
+{
+  int32_t nDaya; // [rsp+4h] [rbp-2Ch] BYREF
+  const CfgTouZiTable *thisa; // [rsp+8h] [rbp-28h]
+  std::_Rb_tree_const_iterator<std::pair<const int,MonthTouZi> > it; // [rsp+10h] [rbp-20h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,MonthTouZi> > __x; // [rsp+20h] [rbp-10h] BYREF
+
+  thisa = this;
+  nDaya = nDay;
+  it._M_node = std::map<int,MonthTouZi>::find(&this->m_MonthTouZiMap, &nDaya)._M_node;
+  __x._M_node = std::map<int,MonthTouZi>::end(&thisa->m_MonthTouZiMap)._M_node;
+  if ( std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator!=(&it, &__x) )
+    return &std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator->(&it)->second;
+  else
+    return 0;
+}
+
+#####################################
+bool __cdecl CfgTouZiTable::IsAllGetMonthTouZi(const CfgTouZiTable *const this, int32_t MonthTouZiRecord)
+{
+  std::_Rb_tree_const_iterator<std::pair<const int,MonthTouZi> > it; // [rsp+10h] [rbp-30h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,MonthTouZi> > __x; // [rsp+20h] [rbp-20h] BYREF
+  int32_t nNewRecord; // [rsp+2Ch] [rbp-14h]
+
+  for ( it._M_node = std::map<int,MonthTouZi>::begin(&this->m_MonthTouZiMap)._M_node;
+        ;
+        std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator++(&it, 0) )
+  {
+    __x._M_node = std::map<int,MonthTouZi>::end(&this->m_MonthTouZiMap)._M_node;
+    if ( !std::_Rb_tree_const_iterator<std::pair<int const,MonthTouZi>>::operator!=(&it, &__x) )
+      break;
+    nNewRecord = MonthTouZiRecord

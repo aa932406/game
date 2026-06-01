@@ -1,0 +1,1018 @@
+void __cdecl CRongHe::CRongHe(CRongHe *const this)
+{
+  CExtSystemBase::CExtSystemBase(this);
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F00B0;
+  std::map<int,RongLianInfo>::map(&this->m_RongLianInfoMap);
+  CRongHe::OnCleanUp(this);
+}
+
+#####################################
+// Alternative name is '_ZN7CRongHeD1Ev'
+void __cdecl CRongHe::~CRongHe(CRongHe *const this)
+{
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F00B0;
+  std::map<int,RongLianInfo>::~map(&this->m_RongLianInfoMap);
+  CExtSystemBase::~CExtSystemBase(this);
+}
+
+#####################################
+void __cdecl CRongHe::~CRongHe(CRongHe *const this)
+{
+  CRongHe::~CRongHe(this);
+  operator delete(this);
+}
+
+#####################################
+void __cdecl CRongHe::OnLoadFromDB(CRongHe *const this, const PlayerDBData *const dbData)
+{
+  std::string p_RongHeEquipString; // [rsp+10h] [rbp-20h] BYREF
+
+  std::string::string(&p_RongHeEquipString, &dbData->m_EquipRongHeData.m_EquipRongHe);
+  CRongHe::ParesRongHeEquipString(this, &p_RongHeEquipString);
+  std::string::~string(&p_RongHeEquipString);
+}
+
+#####################################
+void __cdecl CRongHe::OnSaveToDB(CRongHe *const this, PlayerDBData *const dbData)
+{
+  _BYTE v2[32]; // [rsp+10h] [rbp-20h] BYREF
+
+  CRongHe::GetRongHeEquipString((CRongHe *const)v2);
+  std::string::operator=(&dbData->m_EquipRongHeData.m_EquipRongHe, v2);
+  std::string::~string(v2);
+}
+
+#####################################
+void __cdecl CRongHe::GetInterestsProtocol(CRongHe *const this, ProcIdList *const procList)
+{
+  unsigned __int16 __x; // [rsp+16h] [rbp-Ah] BYREF
+  unsigned __int16 v3; // [rsp+18h] [rbp-8h] BYREF
+  unsigned __int16 v4; // [rsp+1Ah] [rbp-6h] BYREF
+  unsigned __int16 v5; // [rsp+1Ch] [rbp-4h] BYREF
+  unsigned __int16 v6; // [rsp+1Eh] [rbp-2h] BYREF
+
+  __x = 944;
+  std::list<unsigned short>::push_back(procList, &__x);
+  v3 = 945;
+  std::list<unsigned short>::push_back(procList, &v3);
+  v4 = 946;
+  std::list<unsigned short>::push_back(procList, &v4);
+  v5 = 947;
+  std::list<unsigned short>::push_back(procList, &v5);
+  v6 = 948;
+  std::list<unsigned short>::push_back(procList, &v6);
+}
+
+#####################################
+int32_t __cdecl CRongHe::DispatchNetDatas(CRongHe *const this, ProcId_t nProcId, Answer::NetPacket *inPacket)
+{
+  int32_t result; // eax
+
+  if ( !inPacket )
+    return 10002;
+  switch ( nProcId )
+  {
+    case 0x3B0u:
+      result = CRongHe::OnRongLian(this, inPacket);
+      break;
+    case 0x3B1u:
+      result = CRongHe::OnEquipRongLian(this, inPacket);
+      break;
+    case 0x3B2u:
+      result = CRongHe::OnDismantlingEquip(this, inPacket);
+      break;
+    case 0x3B3u:
+      result = CRongHe::OnItemRecovery(this, inPacket);
+      break;
+    case 0x3B4u:
+      result = CRongHe::OnOneKeyItemRecovery(this, inPacket);
+      break;
+    default:
+      result = 10002;
+      break;
+  }
+  return result;
+}
+
+#####################################
+// local variable allocation has failed, the output may be wrong!
+AttrAddonList __cdecl CRongHe::GetAttrList(CRongHe *const this, int32_t nSlot)
+{
+  int32_t v2; // edx
+  AttrAddonList result; // rax
+  int32_t nItemId; // r12d
+  CfgData *v5; // rax
+  int32_t nEquipId; // r12d
+  CfgData *v7; // rax
+  const CfgEquipTable *EquipTable; // rax
+  const AttrAddon *v9; // rax
+  int32_t nSlota; // [rsp+4h] [rbp-8Ch] BYREF
+  CRongHe *thisa; // [rsp+8h] [rbp-88h]
+  AttrAddon stu; // [rsp+10h] [rbp-80h] BYREF
+  __gnu_cxx::__normal_iterator<const AttrAddon*,std::vector<AttrAddon> > iter; // [rsp+20h] [rbp-70h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > it; // [rsp+30h] [rbp-60h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __x; // [rsp+40h] [rbp-50h] BYREF
+  __gnu_cxx::__normal_iterator<const AttrAddon*,std::vector<AttrAddon> > __rhs; // [rsp+50h] [rbp-40h] BYREF
+  const EquipRongHe *pCfg; // [rsp+60h] [rbp-30h]
+  const CfgEquip *pCfgEquip; // [rsp+68h] [rbp-28h]
+
+  thisa = *(CRongHe **)&nSlot;
+  nSlota = v2;
+  std::list<AttrAddon>::list((std::list<AttrAddon> *const)this);
+  it._M_node = std::map<int,RongLianInfo>::find((std::map<int,RongLianInfo> *const)(*(_QWORD *)&nSlot + 16LL), &nSlota)._M_node;
+  __x._M_node = std::map<int,RongLianInfo>::end(&thisa->m_RongLianInfoMap)._M_node;
+  if ( !std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator==(&it, &__x) )
+  {
+    nItemId = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nItemId;
+    v5 = Answer::Singleton<CfgData>::instance();
+    pCfg = CfgData::GetEquipRongHe(v5, nItemId);
+    if ( pCfg )
+    {
+      nEquipId = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nEquipId;
+      v7 = Answer::Singleton<CfgData>::instance();
+      EquipTable = CfgData::GetEquipTable(v7);
+      pCfgEquip = CfgEquipTable::GetEquip(EquipTable, nEquipId);
+      if ( pCfgEquip )
+      {
+        for ( iter._M_current = std::vector<AttrAddon>::begin(&pCfgEquip->m_BaseAttr)._M_current;
+              ;
+              __gnu_cxx::__normal_iterator<AttrAddon const*,std::vector<AttrAddon>>::operator++(&iter, 0) )
+        {
+          __rhs._M_current = std::vector<AttrAddon>::end(&pCfgEquip->m_BaseAttr)._M_current;
+          if ( !__gnu_cxx::operator!=<AttrAddon const*,std::vector<AttrAddon>>(&iter, &__rhs) )
+            break;
+          stu = 0;
+          stu.index = __gnu_cxx::__normal_iterator<AttrAddon const*,std::vector<AttrAddon>>::operator->(&iter)->index;
+          v9 = __gnu_cxx::__normal_iterator<AttrAddon const*,std::vector<AttrAddon>>::operator->(&iter);
+          stu.addon = pCfg->nAttrRate * v9->addon / 1000;
+          if ( stu.index != 45 && stu.index != 11 && stu.addon > 0 )
+            std::list<AttrAddon>::push_back((std::list<AttrAddon> *const)this, &stu);
+        }
+      }
+    }
+  }
+  result._M_impl._M_node._M_next = (std::_List_node_base *)this;
+  return result;
+}
+
+#####################################
+int32_t __cdecl CRongHe::OnRongLian(CRongHe *const this, Answer::NetPacket *inPacket)
+{
+  CfgData *v3; // rax
+  CExtCharBag *Bag; // rax
+  CGuiGuDaoRen *v5; // rax
+  int32_t nMaxRate; // ebx
+  Answer::Random *v7; // rax
+  const RongHeItem *v8; // rax
+  const RongHeItem *v9; // rax
+  int32_t nMaxRate2; // ebx
+  Answer::Random *v11; // rax
+  const RongHeItem *v12; // rax
+  const RongHeItem *v13; // rax
+  CExtCharBag *v14; // rax
+  CExtCharBag *v15; // rax
+  CExtCharBag *v16; // rax
+  CGuiGuDaoRen *v17; // rax
+  GameService *v18; // rax
+  CharId_t Cid; // rax
+  uint32_t WOffset; // eax
+  GameService *v21; // rax
+  int32_t m_nId; // ebx
+  CfgData *v23; // rax
+  int32_t itemId; // ebx
+  CfgData *v25; // rax
+  CGuiGuDaoRen *v26; // rax
+  int64_t nSuccess; // r14
+  uint16_t Proc; // r13
+  int16_t GateIndex; // r12
+  int8_t ConnId; // bl
+  GameService *v31; // rax
+  RongHeItem stu; // [rsp+30h] [rbp-150h] BYREF
+  RongHeRecord RecordStu; // [rsp+70h] [rbp-110h] BYREF
+  std::_List_const_iterator<RongHeItem> it_0; // [rsp+90h] [rbp-F0h] BYREF
+  std::_List_const_iterator<RongHeItem> it; // [rsp+A0h] [rbp-E0h] BYREF
+  ItemData nCostItem; // [rsp+B0h] [rbp-D0h] BYREF
+  std::_List_const_iterator<RongHeItem> __x; // [rsp+C0h] [rbp-C0h] BYREF
+  std::_List_const_iterator<RongHeItem> v38; // [rsp+D0h] [rbp-B0h] BYREF
+  _BYTE v39[16]; // [rsp+E0h] [rbp-A0h] BYREF
+  RongHeRecord p_Stu; // [rsp+F0h] [rbp-90h] BYREF
+  std::string val; // [rsp+110h] [rbp-70h] BYREF
+  int32_t nId; // [rsp+124h] [rbp-5Ch]
+  const RongHeCfg *pCfg; // [rsp+128h] [rbp-58h]
+  int32_t nCostValue; // [rsp+138h] [rbp-48h]
+  int32_t nGetValue; // [rsp+13Ch] [rbp-44h]
+  int32_t nRand; // [rsp+140h] [rbp-40h]
+  int32_t nRand_0; // [rsp+144h] [rbp-3Ch]
+  Answer::NetPacket *packet; // [rsp+148h] [rbp-38h]
+  CfgItem *pCostItem; // [rsp+150h] [rbp-30h]
+  CfgItem *pGetItem; // [rsp+158h] [rbp-28h]
+
+  if ( !this->m_pPlayer || !inPacket )
+    return 2;
+  nId = Answer::NetPacket::readInt32(inPacket);
+  v3 = Answer::Singleton<CfgData>::instance();
+  pCfg = CfgData::GetRongHeCfg(v3, nId);
+  if ( !pCfg )
+    return 2;
+  Bag = Player::GetBag(this->m_pPlayer);
+  if ( CExtCharBag::GetFreeSlotCount(Bag) <= 0 )
+  {
+    Player::TiShiInfo(this->m_pPlayer, 2048, 0);
+    return 10002;
+  }
+  memset(&stu, 0, sizeof(stu));
+  v5 = Answer::Singleton<CGuiGuDaoRen>::instance();
+  if ( CGuiGuDaoRen::GetRongHeRate(v5) )
+  {
+    nMaxRate2 = pCfg->nMaxRate2;
+    v11 = Answer::Singleton<Answer::Random>::instance();
+    nRand_0 = Answer::Random::generate(v11, 1, nMaxRate2);
+    for ( it_0._M_node = std::list<RongHeItem>::begin(&pCfg->lRongHeItemList)._M_node;
+          ;
+          std::_List_const_iterator<RongHeItem>::operator++(&it_0, 0) )
+    {
+      v38._M_node = std::list<RongHeItem>::end(&pCfg->lRongHeItemList)._M_node;
+      if ( !std::_List_const_iterator<RongHeItem>::operator!=(&it_0, &v38) )
+        break;
+      v12 = std::_List_const_iterator<RongHeItem>::operator->(&it_0);
+      if ( v12->nRate2 >= nRand_0 )
+      {
+        stu = *std::_List_const_iterator<RongHeItem>::operator*(&it_0);
+        break;
+      }
+      v13 = std::_List_const_iterator<RongHeItem>::operator->(&it_0);
+      nRand_0 -= v13->nRate2;
+    }
+  }
+  else
+  {
+    nMaxRate = pCfg->nMaxRate;
+    v7 = Answer::Singleton<Answer::Random>::instance();
+    nRand = Answer::Random::generate(v7, 1, nMaxRate);
+    for ( it._M_node = std::list<RongHeItem>::begin(&pCfg->lRongHeItemList)._M_node;
+          ;
+          std::_List_const_iterator<RongHeItem>::operator++(&it, 0) )
+    {
+      __x._M_node = std::list<RongHeItem>::end(&pCfg->lRongHeItemList)._M_node;
+      if ( !std::_List_const_iterator<RongHeItem>::operator!=(&it, &__x) )
+        break;
+      v8 = std::_List_const_iterator<RongHeItem>::operator->(&it);
+      if ( v8->nRate >= nRand )
+      {
+        stu = *std::_List_const_iterator<RongHeItem>::operator*(&it);
+        break;
+      }
+      v9 = std::_List_const_iterator<RongHeItem>::operator->(&it);
+      nRand -= v9->nRate;
+    }
+  }
+  nCostItem = pCfg->nCostItem;
+  if ( stu.item.itemId <= 0 )
+    return 10002;
+  v14 = Player::GetBag(this->m_pPlayer);
+  if ( !CExtCharBag::RemoveItem(v14, &nCostItem, ITEM_CHANGE_REASON::IDCR_RONG_HE_CONST) )
+    return 10002;
+  v15 = Player::GetBag(this->m_pPlayer);
+  if ( !CExtCharBag::AddItem(v15, &stu.item, ITEM_CHANGE_REASON::IDCR_RONG_HE_GET) )
+    return 10002;
+  v16 = Player::GetBag(this->m_pPlayer);
+  CExtCharBag::ForceSendDirty(v16);
+  CRongHe::SendRongHeResult(this, nId, stu.nSuccess, stu.item);
+  if ( stu.nRecord > 0 )
+  {
+    memset(&RecordStu, 0, sizeof(RecordStu));
+    std::string::string(&RecordStu.strName);
+    RecordStu.nCid = Player::getCid(this->m_pPlayer);
+    Player::getName((const Player *const)v39);
+    std::string::operator=(&RecordStu.strName, v39);
+    std::string::~string(v39);
+    RecordStu.nCostId = nCostItem.m_nId;
+    RecordStu.nGiveId = stu.item.itemId;
+    RecordStu.nSuccess = stu.nSuccess;
+    RecordStu.nTime = Unit::getNow(this->m_pPlayer);
+    RongHeRecord::RongHeRecord(&p_Stu, &RecordStu);
+    v17 = Answer::Singleton<CGuiGuDaoRen>::instance();
+    CGuiGuDaoRen::AddRongHeRecord(v17, &p_Stu);
+    RongHeRecord::~RongHeRecord(&p_Stu);
+    RongHeRecord::~RongHeRecord(&RecordStu);
+  }
+  if ( stu.nGongGaoId > 0 )
+  {
+    v18 = Answer::Singleton<GameService>::instance();
+    packet = GameService::popNetpacket(v18, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    if ( !packet )
+      return 0;
+    Answer::NetPacket::writeInt32(packet, stu.nGongGaoId);
+    Cid = Player::getCid(this->m_pPlayer);
+    Answer::NetPacket::writeInt64(packet, Cid);
+    Player::getName((const Player *const)&val);
+    Answer::NetPacket::writeUTF8(packet, &val);
+    std::string::~string(&val);
+    Answer::NetPacket::writeInt32(packet, nCostItem.m_nId);
+    Answer::NetPacket::writeInt32(packet, stu.item.itemId);
+    Answer::NetPacket::writeInt8(packet, stu.item.itemClass);
+    Answer::NetPacket::writeInt32(packet, stu.item.itemCount);
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    v21 = Answer::Singleton<GameService>::instance();
+    GameService::worldBroadcast(v21, packet);
+  }
+  nCostValue = 0;
+  nGetValue = 0;
+  m_nId = nCostItem.m_nId;
+  v23 = Answer::Singleton<CfgData>::instance();
+  pCostItem = CfgData::getItem(v23, m_nId);
+  if ( pCostItem && pCostItem->RongHeReceovery.nParam1 == 1 && pCostItem->RongHeReceovery.nParam2 > 0 )
+    nCostValue = pCostItem->RongHeReceovery.nParam2 * nCostItem.m_nCount;
+  itemId = stu.item.itemId;
+  v25 = Answer::Singleton<CfgData>::instance();
+  pGetItem = CfgData::getItem(v25, itemId);
+  if ( pGetItem && pGetItem->RongHeReceovery.nParam1 == 1 && pGetItem->RongHeReceovery.nParam2 > 0 )
+    nGetValue = pGetItem->RongHeReceovery.nParam2 * stu.item.itemCount;
+  v26 = Answer::Singleton<CGuiGuDaoRen>::instance();
+  CGuiGuDaoRen::AddRongHeCount(v26, nCostValue, nGetValue);
+  nSuccess = stu.nSuccess;
+  Proc = Answer::NetPacket::getProc(inPacket);
+  GateIndex = Player::getGateIndex(this->m_pPlayer);
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v31 = Answer::Singleton<GameService>::instance();
+  GameService::replySuccess(v31, ConnId, GateIndex, Proc, nSuccess);
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CRongHe::OnEquipRongLian(CRongHe *const this, Answer::NetPacket *inPacket)
+{
+  int32_t m_nId; // ebx
+  CfgData *v4; // rax
+  int32_t itemId; // ebx
+  CfgData *v6; // rax
+  const CfgEquipTable *EquipTable; // rax
+  int8_t v8; // r12
+  int8_t m_nType; // bl
+  CExtEquip *Equip; // rax
+  CExtCharBag *Bag; // rax
+  RongLianInfo *v12; // rax
+  RongLianInfo *v13; // rax
+  RongLianInfo *v14; // rax
+  CExtCharBag *v15; // rax
+  uint16_t Proc; // r13
+  int16_t GateIndex; // r12
+  int8_t ConnId; // bl
+  GameService *v19; // rax
+  MemChrBag EquipBag; // [rsp+10h] [rbp-80h] BYREF
+  ItemData stu; // [rsp+30h] [rbp-60h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > it; // [rsp+40h] [rbp-50h] BYREF
+  int32_t nSlot; // [rsp+4Ch] [rbp-44h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __x; // [rsp+50h] [rbp-40h] BYREF
+  int32_t nEquipSlot; // [rsp+5Ch] [rbp-34h]
+  const EquipRongHe *pEquipRongHe; // [rsp+60h] [rbp-30h]
+  const CfgEquip *pCfgEquip; // [rsp+68h] [rbp-28h]
+
+  if ( !this->m_pPlayer || !inPacket )
+    return 2;
+  nSlot = Answer::NetPacket::readInt32(inPacket);
+  if ( (unsigned int)nSlot >= 0xA )
+    return 2;
+  it._M_node = std::map<int,RongLianInfo>::find(&this->m_RongLianInfoMap, &nSlot)._M_node;
+  __x._M_node = std::map<int,RongLianInfo>::end(&this->m_RongLianInfoMap)._M_node;
+  if ( std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator!=(&it, &__x) )
+    return 2;
+  *(_DWORD *)&stu.m_nClass = 1;
+  stu.m_nId = Answer::NetPacket::readInt32(inPacket);
+  nEquipSlot = Answer::NetPacket::readInt32(inPacket);
+  stu.m_nCount = 1;
+  if ( !nSlot || nSlot == 2 )
+    stu.m_nCount = 2;
+  Player::getBagSlotData(&EquipBag, this->m_pPlayer, nEquipSlot);
+  if ( EquipBag.itemClass != 2 )
+    return 2;
+  m_nId = stu.m_nId;
+  v4 = Answer::Singleton<CfgData>::instance();
+  pEquipRongHe = CfgData::GetEquipRongHe(v4, m_nId);
+  if ( !pEquipRongHe )
+    return 2;
+  itemId = EquipBag.itemId;
+  v6 = Answer::Singleton<CfgData>::instance();
+  EquipTable = CfgData::GetEquipTable(v6);
+  pCfgEquip = CfgEquipTable::GetEquip(EquipTable, itemId);
+  if ( !pCfgEquip )
+    return 2;
+  if ( pCfgEquip->m_CanRongHe <= 0 )
+    return 2;
+  v8 = nSlot;
+  m_nType = pCfgEquip->m_nType;
+  Equip = Player::GetEquip(this->m_pPlayer);
+  if ( !CExtEquip::checkEquipPlace(Equip, m_nType, v8) )
+    return 2;
+  if ( pEquipRongHe->nMaxEquip < pCfgEquip->m_nGrade )
+    return 2;
+  Bag = Player::GetBag(this->m_pPlayer);
+  if ( !CExtCharBag::RemoveItem(Bag, &stu, ITEM_CHANGE_REASON::IDCR_EQUIP_RONG_HE) )
+    return 2;
+  v12 = std::map<int,RongLianInfo>::operator[](&this->m_RongLianInfoMap, &nSlot);
+  v12->nEquipId = EquipBag.itemId;
+  v13 = std::map<int,RongLianInfo>::operator[](&this->m_RongLianInfoMap, &nSlot);
+  v13->nItemId = stu.m_nId;
+  v14 = std::map<int,RongLianInfo>::operator[](&this->m_RongLianInfoMap, &nSlot);
+  v14->nCount = stu.m_nCount;
+  v15 = Player::GetBag(this->m_pPlayer);
+  CExtCharBag::CleanSlot(v15, nEquipSlot, ITEM_CHANGE_REASON::IDCR_EQUIP_RONG_HE);
+  CRongHe::SendOneRongHeInfo(this, nSlot);
+  Player::RecalcAttr(this->m_pPlayer);
+  Proc = Answer::NetPacket::getProc(inPacket);
+  GateIndex = Player::getGateIndex(this->m_pPlayer);
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v19 = Answer::Singleton<GameService>::instance();
+  GameService::replySuccess(v19, ConnId, GateIndex, Proc, 0);
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CRongHe::OnOneKeyItemRecovery(CRongHe *const this, Answer::NetPacket *inPacket)
+{
+  int32_t v2; // ebx
+  int *v3; // rax
+  int32_t itemId; // ebx
+  CfgData *v5; // rax
+  int *v6; // rax
+  int *v7; // rax
+  int32_t v8; // ebx
+  CExtCharBag *Bag; // rax
+  int64_t second; // r12
+  std::pair<const int,int> *v11; // rax
+  Int32Int32Map CurrMap; // [rsp+10h] [rbp-110h] BYREF
+  MemChrBag ItemBag; // [rsp+40h] [rbp-E0h] BYREF
+  __gnu_cxx::__normal_iterator<int*,std::vector<int> > itV; // [rsp+60h] [rbp-C0h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,int> > itMap; // [rsp+70h] [rbp-B0h] BYREF
+  Int32Vector vRemoveSlot; // [rsp+80h] [rbp-A0h] BYREF
+  __gnu_cxx::__normal_iterator<int*,std::vector<int> > it; // [rsp+A0h] [rbp-80h] BYREF
+  Int32Vector vSlot; // [rsp+B0h] [rbp-70h] BYREF
+  __gnu_cxx::__normal_iterator<int*,std::vector<int> > __rhs; // [rsp+D0h] [rbp-50h] BYREF
+  __gnu_cxx::__normal_iterator<int*,std::vector<int> > v21; // [rsp+E0h] [rbp-40h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,int> > __x; // [rsp+F0h] [rbp-30h] BYREF
+  int32_t BackCount; // [rsp+104h] [rbp-1Ch]
+  CfgItem *pItem; // [rsp+108h] [rbp-18h]
+
+  if ( !this->m_pPlayer || !inPacket )
+    return 2;
+  std::vector<int>::vector(&vSlot);
+  Player::queryBagInfo(this->m_pPlayer, inPacket, &vSlot);
+  it._M_current = std::vector<int>::begin(&vSlot)._M_current;
+  std::map<int,int>::map(&CurrMap);
+  std::vector<int>::vector(&vRemoveSlot);
+  while ( 1 )
+  {
+    __rhs._M_current = std::vector<int>::end(&vSlot)._M_current;
+    if ( !__gnu_cxx::operator!=<int *,std::vector<int>>(&it, &__rhs) )
+      break;
+    v3 = __gnu_cxx::__normal_iterator<int *,std::vector<int>>::operator*(&it);
+    Player::getBagSlotData(&ItemBag, this->m_pPlayer, *v3);
+    itemId = ItemBag.itemId;
+    v5 = Answer::Singleton<CfgData>::instance();
+    pItem = CfgData::getItem(v5, itemId);
+    if ( pItem && pItem->RongHeReceovery.nParam1 >= 0 && pItem->RongHeReceovery.nParam2 > 0 )
+    {
+      v6 = std::map<int,int>::operator[](&CurrMap, (const int *const)&pItem->RongHeReceovery);
+      *v6 += pItem->RongHeReceovery.nParam2 * ItemBag.itemCount;
+      v7 = __gnu_cxx::__normal_iterator<int *,std::vector<int>>::operator*(&it);
+      std::vector<int>::push_back(&vRemoveSlot, v7);
+    }
+    __gnu_cxx::__normal_iterator<int *,std::vector<int>>::operator++(&it, 0);
+  }
+  BackCount = std::vector<int>::size(&vRemoveSlot);
+  if ( BackCount > 0 )
+  {
+    for ( itV._M_current = std::vector<int>::begin(&vRemoveSlot)._M_current;
+          ;
+          __gnu_cxx::__normal_iterator<int *,std::vector<int>>::operator++(&itV, 0) )
+    {
+      v21._M_current = std::vector<int>::end(&vRemoveSlot)._M_current;
+      if ( !__gnu_cxx::operator!=<int *,std::vector<int>>(&itV, &v21) )
+        break;
+      v8 = *__gnu_cxx::__normal_iterator<int *,std::vector<int>>::operator*(&itV);
+      Bag = Player::GetBag(this->m_pPlayer);
+      CExtCharBag::CleanSlot(Bag, v8, ITEM_CHANGE_REASON::IDCT_RONG_HE_BACK);
+    }
+    for ( itMap._M_node = std::map<int,int>::begin(&CurrMap)._M_node;
+          ;
+          std::_Rb_tree_iterator<std::pair<int const,int>>::operator++(&itMap, 0) )
+    {
+      __x._M_node = std::map<int,int>::end(&CurrMap)._M_node;
+      if ( !std::_Rb_tree_iterator<std::pair<int const,int>>::operator!=(&itMap, &__x) )
+        break;
+      second = std::_Rb_tree_iterator<std::pair<int const,int>>::operator->(&itMap)->second;
+      v11 = std::_Rb_tree_iterator<std::pair<int const,int>>::operator->(&itMap);
+      Player::AddCurrency(
+        this->m_pPlayer,
+        (const CURRENCY_TYPE)v11->first,
+        second,
+        CURRENCY_CHANGE_REASON::GCR_RONG_HE_HUI_SHOU,
+        0);
+    }
+    v2 = 0;
+  }
+  else
+  {
+    v2 = 10002;
+  }
+  std::vector<int>::~vector(&vRemoveSlot);
+  std::map<int,int>::~map(&CurrMap);
+  std::vector<int>::~vector(&vSlot);
+  return v2;
+}
+
+#####################################
+int32_t __cdecl CRongHe::OnItemRecovery(CRongHe *const this, Answer::NetPacket *inPacket)
+{
+  int32_t itemId; // ebx
+  CfgData *v4; // rax
+  CExtCharBag *Bag; // rax
+  int64_t nParam2; // r14
+  uint16_t Proc; // r13
+  int16_t GateIndex; // r12
+  int8_t ConnId; // bl
+  GameService *v10; // rax
+  MemChrBag ItemBag; // [rsp+10h] [rbp-50h] BYREF
+  int32_t nSlot; // [rsp+34h] [rbp-2Ch]
+  CfgItem *pItem; // [rsp+38h] [rbp-28h]
+
+  if ( !this->m_pPlayer || !inPacket )
+    return 2;
+  nSlot = Answer::NetPacket::readInt32(inPacket);
+  Player::getBagSlotData(&ItemBag, this->m_pPlayer, nSlot);
+  if ( ItemBag.itemClass != 1 )
+    return 2;
+  itemId = ItemBag.itemId;
+  v4 = Answer::Singleton<CfgData>::instance();
+  pItem = CfgData::getItem(v4, itemId);
+  if ( !pItem )
+    return 2;
+  if ( pItem->RongHeReceovery.nParam1 < 0 || pItem->RongHeReceovery.nParam2 <= 0 )
+    return 2;
+  --ItemBag.itemCount;
+  Player::AddCurrency(
+    this->m_pPlayer,
+    (const CURRENCY_TYPE)pItem->RongHeReceovery.nParam1,
+    pItem->RongHeReceovery.nParam2,
+    CURRENCY_CHANGE_REASON::GCR_EQUIP_BACK,
+    0);
+  Bag = Player::GetBag(this->m_pPlayer);
+  CExtCharBag::SetSlotData(Bag, nSlot, &ItemBag, ITEM_CHANGE_REASON::IDCT_RONG_HE_BACK, 0);
+  nParam2 = pItem->RongHeReceovery.nParam2;
+  Proc = Answer::NetPacket::getProc(inPacket);
+  GateIndex = Player::getGateIndex(this->m_pPlayer);
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v10 = Answer::Singleton<GameService>::instance();
+  GameService::replySuccess(v10, ConnId, GateIndex, Proc, nParam2);
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CRongHe::OnDismantlingEquip(CRongHe *const this, Answer::NetPacket *inPacket)
+{
+  CExtCharBag *Bag; // rax
+  CExtCharBag *v4; // rax
+  int64_t v5; // r14
+  uint16_t Proc; // r13
+  int16_t GateIndex; // r12
+  int8_t ConnId; // bl
+  GameService *v9; // rax
+  MemChrBag stu; // [rsp+10h] [rbp-60h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > it; // [rsp+30h] [rbp-40h] BYREF
+  int32_t nSlot; // [rsp+3Ch] [rbp-34h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __x; // [rsp+40h] [rbp-30h] BYREF
+
+  if ( !this->m_pPlayer || !inPacket )
+    return 2;
+  nSlot = Answer::NetPacket::readInt32(inPacket);
+  it._M_node = std::map<int,RongLianInfo>::find(&this->m_RongLianInfoMap, &nSlot)._M_node;
+  __x._M_node = std::map<int,RongLianInfo>::end(&this->m_RongLianInfoMap)._M_node;
+  if ( std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator==(&it, &__x) )
+    return 2;
+  Bag = Player::GetBag(this->m_pPlayer);
+  if ( CExtCharBag::GetFreeSlotCount(Bag) <= 0 )
+    return 2;
+  if ( std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nItemId > 0 )
+  {
+    *(_QWORD *)&stu.itemId = 0x100000000LL;
+    memset(&stu.itemCount, 0, 24);
+    stu.itemCount = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nCount;
+    stu.itemId = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nItemId;
+    v4 = Player::GetBag(this->m_pPlayer);
+    if ( !CExtCharBag::AddItem(v4, &stu, ITEM_CHANGE_REASON::IDCR_EQUIP_RONG_HE_DIS) )
+    {
+      return 2;
+    }
+    else
+    {
+      std::map<int,RongLianInfo>::erase(&this->m_RongLianInfoMap, it);
+      Player::RecalcAttr(this->m_pPlayer);
+      v5 = nSlot;
+      Proc = Answer::NetPacket::getProc(inPacket);
+      GateIndex = Player::getGateIndex(this->m_pPlayer);
+      ConnId = Player::getConnId(this->m_pPlayer);
+      v9 = Answer::Singleton<GameService>::instance();
+      GameService::replySuccess(v9, ConnId, GateIndex, Proc, v5);
+      return 0;
+    }
+  }
+  else
+  {
+    std::map<int,RongLianInfo>::erase(&this->m_RongLianInfoMap, it);
+    return 2;
+  }
+}
+
+#####################################
+void __cdecl CRongHe::SendAllRongHeInfo(CRongHe *const this)
+{
+  int8_t ConnId; // bl
+  GameService *v2; // rax
+  std::pair<const int,RongLianInfo> *v3; // rax
+  std::pair<const int,RongLianInfo> *v4; // rax
+  std::pair<const int,RongLianInfo> *v5; // rax
+  std::pair<const int,RongLianInfo> *v6; // rax
+  uint32_t WOffset; // eax
+  int16_t GateIndex; // r12
+  int8_t v9; // bl
+  GameService *v10; // rax
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > it; // [rsp+10h] [rbp-40h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __x; // [rsp+20h] [rbp-30h] BYREF
+  Answer::NetPacket *packet; // [rsp+30h] [rbp-20h]
+  int32_t nSize; // [rsp+3Ch] [rbp-14h]
+
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v2 = Answer::Singleton<GameService>::instance();
+  packet = GameService::popNetpacket(v2, ConnId, Answer::PackType::PACK_DISPATCH, 0x2DC4u);
+  if ( packet )
+  {
+    nSize = std::map<int,RongLianInfo>::size(&this->m_RongLianInfoMap);
+    Answer::NetPacket::writeInt32(packet, nSize);
+    for ( it._M_node = std::map<int,RongLianInfo>::begin(&this->m_RongLianInfoMap)._M_node;
+          ;
+          std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator++(&it, 0) )
+    {
+      __x._M_node = std::map<int,RongLianInfo>::end(&this->m_RongLianInfoMap)._M_node;
+      if ( !std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator!=(&it, &__x) )
+        break;
+      v3 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v3->first);
+      v4 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v4->second.nItemId);
+      v5 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v5->second.nCount);
+      v6 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v6->second.nEquipId);
+    }
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    GateIndex = Player::getGateIndex(this->m_pPlayer);
+    v9 = Player::getConnId(this->m_pPlayer);
+    v10 = Answer::Singleton<GameService>::instance();
+    GameService::sendPacketTo(v10, v9, GateIndex, packet);
+  }
+}
+
+#####################################
+void __cdecl CRongHe::SendOneRongHeInfo(CRongHe *const this, int32_t nSlot)
+{
+  int8_t ConnId; // bl
+  GameService *v3; // rax
+  std::pair<const int,RongLianInfo> *v4; // rax
+  std::pair<const int,RongLianInfo> *v5; // rax
+  std::pair<const int,RongLianInfo> *v6; // rax
+  std::pair<const int,RongLianInfo> *v7; // rax
+  uint32_t WOffset; // eax
+  int16_t GateIndex; // r12
+  int8_t v10; // bl
+  GameService *v11; // rax
+  int32_t nSlota; // [rsp+4h] [rbp-3Ch] BYREF
+  CRongHe *thisa; // [rsp+8h] [rbp-38h]
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > it; // [rsp+10h] [rbp-30h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __x; // [rsp+20h] [rbp-20h] BYREF
+  Answer::NetPacket *packet; // [rsp+28h] [rbp-18h]
+
+  thisa = this;
+  nSlota = nSlot;
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v3 = Answer::Singleton<GameService>::instance();
+  packet = GameService::popNetpacket(v3, ConnId, Answer::PackType::PACK_DISPATCH, 0x2DC5u);
+  if ( packet )
+  {
+    it._M_node = std::map<int,RongLianInfo>::find(&thisa->m_RongLianInfoMap, &nSlota)._M_node;
+    __x._M_node = std::map<int,RongLianInfo>::end(&thisa->m_RongLianInfoMap)._M_node;
+    if ( std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator!=(&it, &__x) )
+    {
+      v4 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v4->first);
+      v5 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v5->second.nItemId);
+      v6 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v6->second.nCount);
+      v7 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+      Answer::NetPacket::writeInt32(packet, v7->second.nEquipId);
+    }
+    else
+    {
+      Answer::NetPacket::writeInt32(packet, nSlota);
+      Answer::NetPacket::writeInt32(packet, 0);
+      Answer::NetPacket::writeInt32(packet, 0);
+      Answer::NetPacket::writeInt32(packet, 0);
+    }
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    GateIndex = Player::getGateIndex(thisa->m_pPlayer);
+    v10 = Player::getConnId(thisa->m_pPlayer);
+    v11 = Answer::Singleton<GameService>::instance();
+    GameService::sendPacketTo(v11, v10, GateIndex, packet);
+  }
+}
+
+#####################################
+void __cdecl CRongHe::SendRongHeResult(CRongHe *const this, int32_t nId, int32_t nSuccess, MemChrBag stu)
+{
+  int8_t ConnId; // bl
+  GameService *v5; // rax
+  uint32_t WOffset; // edx
+  int16_t GateIndex; // r12
+  int8_t v8; // bl
+  GameService *v9; // rax
+  Answer::NetPacket *packet; // [rsp+18h] [rbp-18h]
+
+  ConnId = Player::getConnId(this->m_pPlayer);
+  v5 = Answer::Singleton<GameService>::instance();
+  packet = GameService::popNetpacket(v5, ConnId, Answer::PackType::PACK_DISPATCH, 0x2DC6u);
+  if ( packet )
+  {
+    Answer::NetPacket::writeInt32(packet, nId);
+    Answer::NetPacket::writeInt32(packet, nSuccess);
+    Answer::NetPacket::writeInt32(packet, stu.itemId);
+    Answer::NetPacket::writeInt8(packet, stu.itemClass);
+    Answer::NetPacket::writeInt32(packet, stu.itemCount);
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    GateIndex = Player::getGateIndex(this->m_pPlayer);
+    v8 = Player::getConnId(this->m_pPlayer);
+    v9 = Answer::Singleton<GameService>::instance();
+    GameService::sendPacketTo(v9, v8, GateIndex, packet);
+  }
+}
+
+#####################################
+std::string __cdecl CRongHe::GetRongHeEquipString(CRongHe *const this)
+{
+  __int64 v1; // rsi
+  std::_Ios_Openmode v2; // eax
+  unsigned int nEquipId; // r12d
+  unsigned int nCount; // r13d
+  unsigned int nItemId; // r14d
+  std::pair<const int,RongLianInfo> *v6; // rax
+  __int64 v7; // rax
+  __int64 v8; // rax
+  __int64 v9; // rax
+  __int64 v10; // rax
+  __int64 v11; // rax
+  __int64 v12; // rax
+  __int64 v13; // rax
+  _BYTE v15[16]; // [rsp+10h] [rbp-1B0h] BYREF
+  __int64 v16; // [rsp+20h] [rbp-1A0h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > it; // [rsp+180h] [rbp-40h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __x; // [rsp+190h] [rbp-30h] BYREF
+
+  v2 = std::operator|(std::_Ios_Openmode::_S_out, std::_Ios_Openmode::_S_in);
+  std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream(v15, (unsigned int)v2);
+  for ( it._M_node = std::map<int,RongLianInfo>::begin((std::map<int,RongLianInfo> *const)(v1 + 16))._M_node;
+        ;
+        std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator++(&it, 0) )
+  {
+    __x._M_node = std::map<int,RongLianInfo>::end((std::map<int,RongLianInfo> *const)(v1 + 16))._M_node;
+    if ( !std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator!=(&it, &__x) )
+      break;
+    nEquipId = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nEquipId;
+    nCount = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nCount;
+    nItemId = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it)->second.nItemId;
+    v6 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator->(&it);
+    v7 = std::ostream::operator<<(&v16, (unsigned int)v6->first);
+    v8 = std::operator<<<std::char_traits<char>>(v7, L":|");
+    v9 = std::ostream::operator<<(v8, nItemId);
+    v10 = std::operator<<<std::char_traits<char>>(v9, L":|");
+    v11 = std::ostream::operator<<(v10, nCount);
+    v12 = std::operator<<<std::char_traits<char>>(v11, L":|");
+    v13 = std::ostream::operator<<(v12, nEquipId);
+    std::operator<<<std::char_traits<char>>(v13, 9371450);
+  }
+  std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::str(this, v15);
+  std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::~basic_stringstream(v15);
+  return (std::string)this;
+}
+
+#####################################
+void __cdecl CRongHe::ParesRongHeEquipString(CRongHe *const this, std::string *p_RongHeEquipString)
+{
+  std::string *v2; // rax
+  std::string *v3; // rax
+  const char *v4; // rax
+  RongLianInfo *v5; // rbx
+  std::string *v6; // rax
+  const char *v7; // rax
+  RongLianInfo *v8; // rbx
+  std::string *v9; // rax
+  const char *v10; // rax
+  RongLianInfo *v11; // rbx
+  std::string *v12; // rax
+  const char *v13; // rax
+  int32_t nType; // [rsp+1Ch] [rbp-84h] BYREF
+  StringVector tv; // [rsp+20h] [rbp-80h] BYREF
+  StringVector vStr; // [rsp+40h] [rbp-60h] BYREF
+  std::string delims; // [rsp+60h] [rbp-40h] BYREF
+  char v18; // [rsp+6Fh] [rbp-31h] BYREF
+  std::string v19; // [rsp+70h] [rbp-30h] BYREF
+  char v20; // [rsp+87h] [rbp-19h] BYREF
+  int32_t isize; // [rsp+88h] [rbp-18h]
+  int32_t i; // [rsp+8Ch] [rbp-14h]
+
+  if ( !std::operator==<char>(p_RongHeEquipString, (const char *)L"") )
+  {
+    std::allocator<char>::allocator(&v18);
+    std::string::string(&delims, 9371450);
+    Answer::StringUtility::split(&vStr, p_RongHeEquipString, &delims, 0);
+    std::string::~string(&delims);
+    std::allocator<char>::~allocator(&v18);
+    isize = std::vector<std::string>::size(&vStr);
+    for ( i = 0; i < isize; ++i )
+    {
+      std::allocator<char>::allocator(&v20);
+      std::string::string(&v19, L":|");
+      v2 = std::vector<std::string>::operator[](&vStr, i);
+      Answer::StringUtility::split(&tv, v2, &v19, 0);
+      std::string::~string(&v19);
+      std::allocator<char>::~allocator(&v20);
+      if ( std::vector<std::string>::size(&tv) == 4 )
+      {
+        v3 = std::vector<std::string>::operator[](&tv, 0);
+        v4 = (const char *)std::string::c_str(v3);
+        nType = atoi(v4);
+        if ( (unsigned int)nType <= 9 )
+        {
+          v5 = std::map<int,RongLianInfo>::operator[](&this->m_RongLianInfoMap, &nType);
+          v6 = std::vector<std::string>::operator[](&tv, 1u);
+          v7 = (const char *)std::string::c_str(v6);
+          v5->nItemId = atoi(v7);
+          v8 = std::map<int,RongLianInfo>::operator[](&this->m_RongLianInfoMap, &nType);
+          v9 = std::vector<std::string>::operator[](&tv, 2u);
+          v10 = (const char *)std::string::c_str(v9);
+          v8->nCount = atoi(v10);
+          v11 = std::map<int,RongLianInfo>::operator[](&this->m_RongLianInfoMap, &nType);
+          v12 = std::vector<std::string>::operator[](&tv, 3u);
+          v13 = (const char *)std::string::c_str(v12);
+          v11->nEquipId = atoi(v13);
+        }
+      }
+      std::vector<std::string>::~vector(&tv);
+    }
+    std::vector<std::string>::~vector(&vStr);
+  }
+}
+
+#####################################
+// Alternative name is '_Z41__static_initialization_and_destruction_0ii_113'
+void __cdecl _static_initialization_and_destruction_0_12(int __initialize_p, int __priority)
+{
+  if ( __initialize_p == 1 && __priority == 0xFFFF )
+  {
+    std::ios_base::Init::Init(&std::__ioinit);
+    __cxa_atexit(std::ios_base::Init::~Init, &std::__ioinit, &_dso_handle);
+  }
+}
+
+#####################################
+// Alternative name is '_ZNSt8_Rb_treeIiSt4pairIKi12RongLianInfoESt10_Select1stIS3_ESt4lessIiESaIS3_EED2Ev'
+void __cdecl std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::~_Rb_tree(
+        std::_Rb_tree<int,std::pair<const int,RongLianInfo>,std::_Select1st<std::pair<const int,RongLianInfo> >,std::less<int>,std::allocator<std::pair<const int,RongLianInfo> > > *const this)
+{
+  std::_Rb_tree_node<std::pair<const int,RongLianInfo> > *v1; // rdx
+
+  v1 = std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_M_begin(this);
+  std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_M_erase(
+    this,
+    v1);
+  std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_Rb_tree_impl<std::less<int>,false>::~_Rb_tree_impl(&this->_M_impl);
+}
+
+#####################################
+std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __cdecl std::map<int,RongLianInfo>::find(
+        std::map<int,RongLianInfo> *const this,
+        const int *const __x)
+{
+  return std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::find(
+           &this->_M_t,
+           __x);
+}
+
+#####################################
+bool __cdecl std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator==(
+        const std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > *const this,
+        const std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > *const __x)
+{
+  return this->_M_node == __x->_M_node;
+}
+
+#####################################
+std::_List_const_iterator<RongHeItem> __cdecl std::_List_const_iterator<RongHeItem>::operator++(
+        std::_List_const_iterator<RongHeItem> *const this,
+        int a2)
+{
+  const std::_List_node_base *__tmp; // [rsp+Ch] [rbp-10h]
+
+  __tmp = this->_M_node;
+  this->_M_node = this->_M_node->_M_next;
+  return (std::_List_const_iterator<RongHeItem>)__tmp;
+}
+
+#####################################
+bool __cdecl std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator!=(
+        const std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > *const this,
+        const std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > *const __x)
+{
+  return this->_M_node != __x->_M_node;
+}
+
+#####################################
+RongLianInfo *__cdecl std::map<int,RongLianInfo>::operator[](
+        std::map<int,RongLianInfo> *const this,
+        const int *const __k)
+{
+  std::pair<const int,RongLianInfo> *v2; // rbx
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __i; // [rsp+10h] [rbp-50h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __x; // [rsp+20h] [rbp-40h] BYREF
+  std::less<int> v7; // [rsp+2Fh] [rbp-31h] BYREF
+  std::pair<const int,RongLianInfo> v8; // [rsp+30h] [rbp-30h] BYREF
+  RongLianInfo __b; // [rsp+40h] [rbp-20h] BYREF
+
+  __i._M_node = std::map<int,RongLianInfo>::lower_bound(this, __k)._M_node;
+  __x._M_node = std::map<int,RongLianInfo>::end(this)._M_node;
+  if ( std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator==(&__i, &__x)
+    || (v2 = std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator*(&__i),
+        v7.gap0 = std::map<int,RongLianInfo>::key_comp(this).gap0,
+        std::less<int>::operator()(&v7, __k, &v2->first)) )
+  {
+    __b.nItemId = 0;
+    __b.nCount = 0;
+    __b.nEquipId = 0;
+    std::pair<int const,RongLianInfo>::pair(&v8, __k, &__b);
+    __i._M_node = std::map<int,RongLianInfo>::insert(this, __i, &v8)._M_node;
+  }
+  return &std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator*(&__i)->second;
+}
+
+#####################################
+void __cdecl std::map<int,RongLianInfo>::erase(
+        std::map<int,RongLianInfo> *const this,
+        std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __position)
+{
+  std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::erase(
+    &this->_M_t,
+    __position);
+}
+
+#####################################
+std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > __cdecl std::_Rb_tree_iterator<std::pair<int const,RongLianInfo>>::operator++(
+        std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> > *const this,
+        int a2)
+{
+  std::_Rb_tree_node_base::_Base_ptr __tmp; // [rsp+10h] [rbp-10h]
+
+  __tmp = this->_M_node;
+  this->_M_node = (std::_Rb_tree_node_base::_Base_ptr)std::_Rb_tree_increment(this->_M_node);
+  return (std::_Rb_tree_iterator<std::pair<const int,RongLianInfo> >)__tmp;
+}
+
+#####################################
+void __cdecl std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_M_erase(
+        std::_Rb_tree<int,std::pair<const int,RongLianInfo>,std::_Select1st<std::pair<const int,RongLianInfo> >,std::less<int>,std::allocator<std::pair<const int,RongLianInfo> > > *const this,
+        std::_Rb_tree_node<std::pair<const int,RongLianInfo> > *__x)
+{
+  std::_Rb_tree_node<std::pair<const int,RongLianInfo> > *v2; // rdx
+  std::_Rb_tree_node<std::pair<const int,RongLianInfo> > *__y; // [rsp+18h] [rbp-8h]
+
+  while ( __x )
+  {
+    v2 = std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_S_right(__x);
+    std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_M_erase(
+      this,
+      v2);
+    __y = std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_S_left(__x);
+    std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::_M_destroy_node(
+      this,
+      __x);
+    __x = __y;
+  }
+}
+
+#####################################
+void __cdecl std::_Rb_tree<int,std::pair<int const,RongLianInfo>,std::_Select1st<std::pair<int const,RongLianInfo>>,std::less<int>,std::allocator<std::pair<int const,RongLianInfo>>>::clear(
+        std::_Rb_tree<int,std::pair<const int,RongLianInfo>,std::_Select1st<std::pair<const int,RongLianInfo> >,std::less<int>,std::allocator<std::pair<const int,RongLianInfo> > > *const this)
+{
+  std::_Rb_tree_node<std::pair<const int,RongLianInfo> > *v1; // rdx
+  std::_Rb_tree_node_base **v2; // rbx

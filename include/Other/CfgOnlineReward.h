@@ -1,0 +1,1 @@
+#include "../Config/CfgOnlineReward.h"

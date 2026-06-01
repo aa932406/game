@@ -1,0 +1,34 @@
+#ifndef _SELECTITEMCFG_H_
+#define _SELECTITEMCFG_H_
+
+#include <cstdint>
+#include <string>
+#include <vector>
+#include <list>
+#include <map>
+
+class Player;
+class Map;
+class Unit;
+class Monster;
+class Npc;
+class CActivity;
+class CActivityMap;
+class CfgActivity;
+class CfgMonster;
+class CfgMap;
+class Answer_NetPacket;
+class Position;
+
+struct MemChrBag;
+
+class SelectItemCfg
+{
+public:
+    SelectItemCfg(SelectItemCfg *const this, const SelectItemCfg *const a2);
+
+    int32_t nId;
+    std::vector<MemChrBag> vItem;
+};
+
+#endif // _SELECTITEMCFG_H_

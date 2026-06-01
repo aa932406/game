@@ -1,0 +1,1 @@
+#include "../Character/CExtCharDepot.h"

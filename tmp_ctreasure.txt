@@ -1,0 +1,883 @@
+void __cdecl CTreasureMap::CTreasureMap(CTreasureMap *const this)
+{
+  SpecialTreasureMapRandCfg *v1; // r15
+  __int64 i; // r13
+  __int64 j; // r14
+  SpecialTreasureMapRandCfg *v4; // [rsp+8h] [rbp-48h]
+
+  CExtSystemBase::CExtSystemBase(this);
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F3C50;
+  v1 = this->m_Items[0];
+  for ( i = 5; i != -1; --i )
+  {
+    v4 = v1;
+    for ( j = 5; j != -1; --j )
+      SpecialTreasureMapRandCfg::SpecialTreasureMapRandCfg(v4++);
+    v1 += 6;
+  }
+  std::map<int,TreasureMapData>::map(&this->m_TreasureMapDataMap);
+  CTreasureMap::OnCleanUp(this);
+}
+
+#####################################
+// Alternative name is '_ZN12CTreasureMapD2Ev'
+void __cdecl CTreasureMap::~CTreasureMap(CTreasureMap *const this)
+{
+  SpecialTreasureMapRandCfg *i; // rbx
+
+  this->_vptr_IExtSystem = (int (**)(...))&off_8F3C50;
+  std::map<int,TreasureMapData>::~map(&this->m_TreasureMapDataMap);
+  if ( this != (CTreasureMap *const)-24LL )
+  {
+    for ( i = (SpecialTreasureMapRandCfg *)&this->m_SpecialX;
+          i != (SpecialTreasureMapRandCfg *)this->m_Items;
+          SpecialTreasureMapRandCfg::~SpecialTreasureMapRandCfg(i) )
+    {
+      --i;
+    }
+  }
+  CExtSystemBase::~CExtSystemBase(this);
+}
+
+#####################################
+void __cdecl CTreasureMap::~CTreasureMap(CTreasureMap *const this)
+{
+  CTreasureMap::~CTreasureMap(this);
+  operator delete(this);
+}
+
+#####################################
+void __cdecl CTreasureMap::OnCleanUp(CTreasureMap *const this)
+{
+  std::map<int,TreasureMapData>::clear(&this->m_TreasureMapDataMap);
+  this->m_LeftTimes = 0;
+  this->m_SpecialX = 0;
+  this->m_SpecialY = 0;
+}
+
+#####################################
+void __cdecl CTreasureMap::GetInterestsProtocol(CTreasureMap *const this, ProcIdList *const procList)
+{
+  unsigned __int16 __x; // [rsp+18h] [rbp-8h] BYREF
+  unsigned __int16 v3; // [rsp+1Ah] [rbp-6h] BYREF
+  unsigned __int16 v4; // [rsp+1Ch] [rbp-4h] BYREF
+  unsigned __int16 v5; // [rsp+1Eh] [rbp-2h] BYREF
+
+  __x = 622;
+  std::list<unsigned short>::push_back(procList, &__x);
+  v3 = 623;
+  std::list<unsigned short>::push_back(procList, &v3);
+  v4 = 620;
+  std::list<unsigned short>::push_back(procList, &v4);
+  v5 = 621;
+  std::list<unsigned short>::push_back(procList, &v5);
+}
+
+#####################################
+int32_t __cdecl CTreasureMap::DispatchNetDatas(CTreasureMap *const this, ProcId_t nProcId, Answer::NetPacket *inPacket)
+{
+  if ( !inPacket )
+    return 10002;
+  if ( nProcId == 621 )
+    return CTreasureMap::OnAskSpecialTreasureMapInfo(this, inPacket);
+  if ( nProcId > 0x26Du )
+  {
+    if ( nProcId == 622 )
+      return CTreasureMap::OnAskTreasureMapInfo(this, inPacket);
+    if ( nProcId == 623 )
+      return CTreasureMap::OnGetTreasureMapReward(this, inPacket);
+  }
+  else if ( nProcId == 620 )
+  {
+    return CTreasureMap::OnGetSpecialTreasureMapReward(this, inPacket);
+  }
+  return 0;
+}
+
+#####################################
+int32_t __cdecl CTreasureMap::OnGetTreasureMapReward(CTreasureMap *const this, Answer::NetPacket *inPacket)
+{
+  int32_t v2; // ebx
+  int32_t Record; // r12d
+  CExtCharBag *Bag; // rax
+  CfgData *v5; // rax
+  int32_t MapId; // r12d
+  int32_t itemId; // r12d
+  CfgData *v9; // rax
+  const TreasureMapTabale *TreasureMapTabale; // rax
+  int32_t m_EventType; // eax
+  CExtCharBag *v12; // rax
+  int v13; // r12d
+  const char *v14; // rax
+  int32_t v15; // ebx
+  CfgData *v16; // rax
+  CfgData *v17; // rax
+  CPoolManager *v18; // rax
+  int32_t Now; // eax
+  CharId_t Cid; // rax
+  const char *v21; // rax
+  const char *v22; // rax
+  int v23; // eax
+  CExtCharBag *v24; // rax
+  int8_t ConnId; // bl
+  GameService *v26; // rax
+  CharId_t v27; // rax
+  int32_t v28; // eax
+  uint32_t WOffset; // eax
+  int8_t v30; // bl
+  GameService *v31; // rax
+  CNationalDayHd *CNationalDayHd; // rax
+  int32_t v33; // eax
+  CHuoYueDu *PlayerHuoYueDu; // rax
+  int64_t m_EventId; // r14
+  uint16_t Proc; // r13
+  int16_t GateIndex; // r12
+  int8_t v38; // bl
+  GameService *v39; // rax
+  MemChrBag bagSlot; // [rsp+20h] [rbp-130h] BYREF
+  CfgMapMonster MapMonster; // [rsp+40h] [rbp-110h] BYREF
+  MemChrBagVector ItemVt; // [rsp+60h] [rbp-F0h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,TreasureMapData> > it; // [rsp+80h] [rbp-D0h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,TreasureMapData> > __x; // [rsp+90h] [rbp-C0h] BYREF
+  std::vector<AttrAddon> vAttrAddon; // [rsp+A0h] [rbp-B0h] BYREF
+  std::string p_Name; // [rsp+C0h] [rbp-90h] BYREF
+  std::string val; // [rsp+D0h] [rbp-80h] BYREF
+  int32_t nSlot; // [rsp+E4h] [rbp-6Ch]
+  CfgItem *pItem; // [rsp+E8h] [rbp-68h]
+  const TreasureMapEventCfg *pEvent; // [rsp+F0h] [rbp-60h]
+  CfgMonster *pMonster; // [rsp+F8h] [rbp-58h]
+  int32_t MonsterId; // [rsp+104h] [rbp-4Ch]
+  Monster *monster; // [rsp+108h] [rbp-48h]
+  Map *pMap; // [rsp+110h] [rbp-40h]
+  int32_t DungeonId; // [rsp+11Ch] [rbp-34h]
+  int32_t SubHpRate; // [rsp+120h] [rbp-30h]
+  int32_t SubHpValue; // [rsp+124h] [rbp-2Ch]
+  Answer::NetPacket *packet; // [rsp+128h] [rbp-28h]
+
+  if ( !inPacket || !this->m_pPlayer )
+    return 2;
+  Record = Player::getRecord(this->m_pPlayer, 7006);
+  if ( Record > CTreasureMap::GetUseMaxTime(this) )
+    return 2;
+  nSlot = Answer::NetPacket::readInt32(inPacket);
+  Bag = Player::GetBag(this->m_pPlayer);
+  bagSlot = *CExtCharBag::GetSlotData(Bag, nSlot);
+  v5 = Answer::Singleton<CfgData>::instance();
+  pItem = CfgData::getItem(v5, bagSlot.itemId);
+  it._M_node = std::map<int,TreasureMapData>::find(&this->m_TreasureMapDataMap, &bagSlot.itemId)._M_node;
+  __x._M_node = std::map<int,TreasureMapData>::end(&this->m_TreasureMapDataMap)._M_node;
+  if ( std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator==(&it, &__x) )
+    return 2;
+  if ( std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it)->second.IsGetReward == 1 )
+    return 2;
+  MapId = std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it)->second.MapId;
+  if ( MapId != StaticObj::getMapId(this->m_pPlayer) )
+    return 2;
+  itemId = bagSlot.itemId;
+  v9 = Answer::Singleton<CfgData>::instance();
+  TreasureMapTabale = CfgData::GetTreasureMapTabale(v9);
+  pEvent = TreasureMapTabale::GetEvent(TreasureMapTabale, itemId);
+  if ( !pEvent )
+    return 2;
+  m_EventType = pEvent->m_EventType;
+  if ( m_EventType == 2 )
+  {
+    v14 = (const char *)std::string::c_str(&pEvent->m_EventParam);
+    v15 = atoi(v14);
+    v16 = Answer::Singleton<CfgData>::instance();
+    pMonster = CfgData::getMonster(v16, v15);
+    if ( !pMonster )
+      return 2;
+    if ( pMonster->boss_sign != 11 )
+      return 2;
+    v17 = Answer::Singleton<CfgData>::instance();
+    MonsterId = CfgData::GetMapMonsterId(v17);
+    memset(&MapMonster.mapid, 0, 24);
+    MapMonster.id = MonsterId;
+    MapMonster.mapid = StaticObj::getMapId(this->m_pPlayer);
+    MapMonster.x = StaticObj::GetPosX(this->m_pPlayer);
+    MapMonster.y = StaticObj::GetPosY(this->m_pPlayer);
+    v18 = Answer::Singleton<CPoolManager>::instance();
+    monster = CPoolManager::pop<Monster>(v18);
+    if ( monster )
+    {
+      if ( pMonster )
+      {
+        std::vector<AttrAddon>::vector(&vAttrAddon);
+        Monster::init(monster, pMonster, &MapMonster, MonsterState::MS_STAND, &vAttrAddon);
+        std::vector<AttrAddon>::~vector(&vAttrAddon);
+        Now = Unit::getNow(this->m_pPlayer);
+        Monster::SetLifeTime(monster, Now + 1800);
+        Player::getName((const Player *const)&p_Name);
+        Cid = Player::getCid(this->m_pPlayer);
+        Monster::SetOwner(monster, Cid, &p_Name);
+        std::string::~string(&p_Name);
+        pMap = StaticObj::getMap(this->m_pPlayer);
+        if ( pMap )
+          (*((void (__fastcall **)(Map *, Monster *, _QWORD, _QWORD))pMap->_vptr_Map + 28))(
+            pMap,
+            monster,
+            (unsigned int)MapMonster.x,
+            (unsigned int)MapMonster.y);
+      }
+    }
+    goto LABEL_41;
+  }
+  if ( m_EventType > 2 )
+  {
+    if ( m_EventType == 3 )
+    {
+      v21 = (const char *)std::string::c_str(&pEvent->m_EventParam);
+      DungeonId = atoi(v21);
+      if ( Player::enterDungeon(this->m_pPlayer, DungeonId, 0x12u, 0, 0, 0, 0, 0) )
+        return 2;
+    }
+    else
+    {
+      if ( m_EventType != 4 )
+        return 2;
+      v22 = (const char *)std::string::c_str(&pEvent->m_EventParam);
+      SubHpRate = atoi(v22);
+      v23 = (*((__int64 (__fastcall **)(Player *))this->m_pPlayer->_vptr_Entity + 19))(this->m_pPlayer);
+      SubHpValue = SubHpRate * v23 / 100;
+      (*((void (__fastcall **)(Player *, _QWORD))this->m_pPlayer->_vptr_Entity + 21))(
+        this->m_pPlayer,
+        (unsigned int)(SubHpRate * v23 / -100));
+    }
+    goto LABEL_41;
+  }
+  if ( m_EventType != 1 )
+    return 2;
+  CItemHelper::parseItemVectorString(&ItemVt, &pEvent->m_EventParam);
+  if ( std::vector<MemChrBag>::size(&ItemVt)
+    && (v12 = Player::GetBag(this->m_pPlayer),
+        !CExtCharBag::AddItem(v12, &ItemVt, ITEM_CHANGE_REASON::ICR_CANG_BAO_TU_GET)) )
+  {
+    v2 = 2;
+    v13 = 0;
+  }
+  else
+  {
+    v13 = 1;
+  }
+  std::vector<MemChrBag>::~vector(&ItemVt);
+  if ( v13 )
+  {
+LABEL_41:
+    --bagSlot.itemCount;
+    v24 = Player::GetBag(this->m_pPlayer);
+    CExtCharBag::SetSlotData(v24, nSlot, &bagSlot, ITEM_CHANGE_REASON::ICR_CANG_BAO_TU, 0);
+    std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it)->second.IsGetReward = 1;
+    if ( pEvent->m_GongGaoId > 0 )
+    {
+      ConnId = Player::getConnId(this->m_pPlayer);
+      v26 = Answer::Singleton<GameService>::instance();
+      packet = GameService::popNetpacket(v26, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+      if ( !packet )
+        return 2;
+      Answer::NetPacket::writeInt32(packet, pEvent->m_GongGaoId);
+      v27 = Player::getCid(this->m_pPlayer);
+      Answer::NetPacket::writeInt64(packet, v27);
+      Player::getName((const Player *const)&val);
+      Answer::NetPacket::writeUTF8(packet, &val);
+      std::string::~string(&val);
+      v28 = StaticObj::getMapId(this->m_pPlayer);
+      Answer::NetPacket::writeInt32(packet, v28);
+      WOffset = Answer::NetPacket::getWOffset(packet);
+      Answer::NetPacket::setSize(packet, WOffset);
+      v30 = Player::getConnId(this->m_pPlayer);
+      v31 = Answer::Singleton<GameService>::instance();
+      GameService::worldBroadcast(v31, v30, packet);
+    }
+    CNationalDayHd = Player::GetCNationalDayHd(this->m_pPlayer);
+    CNationalDayHd::AddNationalValue(CNationalDayHd, NATIONAL_HD_TYPE::HHT_CBT, 1, 0);
+    v33 = Player::getRecord(this->m_pPlayer, 7006);
+    Player::updateRecord(this->m_pPlayer, 7006, v33 + 1);
+    PlayerHuoYueDu = Player::GetPlayerHuoYueDu(this->m_pPlayer);
+    CHuoYueDu::AddHuoYueDuRecord(PlayerHuoYueDu, 9, 0, 0);
+    m_EventId = pEvent->m_EventId;
+    Proc = Answer::NetPacket::getProc(inPacket);
+    GateIndex = Player::getGateIndex(this->m_pPlayer);
+    v38 = Player::getConnId(this->m_pPlayer);
+    v39 = Answer::Singleton<GameService>::instance();
+    return GameService::replySuccess(v39, v38, GateIndex, Proc, m_EventId);
+  }
+  return v2;
+}
+
+#####################################
+int32_t __cdecl CTreasureMap::OnAskTreasureMapInfo(CTreasureMap *const this, Answer::NetPacket *inPacket)
+{
+  CExtCharBag *Bag; // rax
+  int32_t itemId; // ebx
+  CfgData *v5; // rax
+  const TreasureMapTabale *TreasureMapTabale; // rax
+  TreasureMapData *v7; // rax
+  MemChrBag bagSlot; // [rsp+10h] [rbp-90h] BYREF
+  TreasureMapData stu; // [rsp+30h] [rbp-70h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,TreasureMapData> > it; // [rsp+50h] [rbp-50h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,TreasureMapData> > __x; // [rsp+60h] [rbp-40h] BYREF
+  Position v12; // [rsp+70h] [rbp-30h] BYREF
+  int32_t nSlot; // [rsp+84h] [rbp-1Ch]
+  const MapPos *pCfg; // [rsp+88h] [rbp-18h]
+
+  if ( !inPacket )
+    return 2;
+  nSlot = Answer::NetPacket::readInt32(inPacket);
+  Bag = Player::GetBag(this->m_pPlayer);
+  bagSlot = *CExtCharBag::GetSlotData(Bag, nSlot);
+  it._M_node = std::map<int,TreasureMapData>::find(&this->m_TreasureMapDataMap, &bagSlot.itemId)._M_node;
+  __x._M_node = std::map<int,TreasureMapData>::end(&this->m_TreasureMapDataMap)._M_node;
+  if ( !std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator!=(&it, &__x)
+    || std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it)->second.IsGetReward )
+  {
+    itemId = bagSlot.itemId;
+    v5 = Answer::Singleton<CfgData>::instance();
+    TreasureMapTabale = CfgData::GetTreasureMapTabale(v5);
+    pCfg = TreasureMapTabale::GetMapPos(TreasureMapTabale, itemId);
+    if ( !pCfg )
+      return 2;
+    Position::Position(&v12, 0, 0);
+    *(_QWORD *)&stu.ItemId = 0;
+    stu.IsGetReward = 0;
+    stu.Pos = v12;
+    *(MapPos *)&stu.MapId = *pCfg;
+    stu.ItemId = bagSlot.itemId;
+    stu.IsGetReward = 0;
+    v7 = std::map<int,TreasureMapData>::operator[](&this->m_TreasureMapDataMap, &bagSlot.itemId);
+    if ( v7 != &stu )
+      memcpy(v7, &stu, 0x11u);
+  }
+  CTreasureMap::SendTreasureInfo(this, bagSlot.itemId);
+  return 0;
+}
+
+#####################################
+void __cdecl CTreasureMap::SendTreasureInfo(CTreasureMap *const this, int32_t Id)
+{
+  int8_t ConnId; // bl
+  GameService *v3; // rax
+  std::pair<const int,TreasureMapData> *v4; // rax
+  std::pair<const int,TreasureMapData> *v5; // rax
+  std::pair<const int,TreasureMapData> *v6; // rax
+  std::pair<const int,TreasureMapData> *v7; // rax
+  uint32_t WOffset; // eax
+  int16_t GateIndex; // r12
+  int8_t v10; // bl
+  GameService *v11; // rax
+  int32_t Ida; // [rsp+4h] [rbp-3Ch] BYREF
+  CTreasureMap *thisa; // [rsp+8h] [rbp-38h]
+  std::_Rb_tree_iterator<std::pair<const int,TreasureMapData> > it; // [rsp+10h] [rbp-30h] BYREF
+  std::_Rb_tree_iterator<std::pair<const int,TreasureMapData> > __x; // [rsp+20h] [rbp-20h] BYREF
+  Answer::NetPacket *packet; // [rsp+28h] [rbp-18h]
+
+  thisa = this;
+  Ida = Id;
+  if ( this->m_pPlayer )
+  {
+    it._M_node = std::map<int,TreasureMapData>::find(&thisa->m_TreasureMapDataMap, &Ida)._M_node;
+    __x._M_node = std::map<int,TreasureMapData>::end(&thisa->m_TreasureMapDataMap)._M_node;
+    if ( std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator!=(&it, &__x) )
+    {
+      ConnId = Player::getConnId(thisa->m_pPlayer);
+      v3 = Answer::Singleton<GameService>::instance();
+      packet = GameService::popNetpacket(v3, ConnId, Answer::PackType::PACK_DISPATCH, 0x2F52u);
+      if ( packet )
+      {
+        v4 = std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it);
+        Answer::NetPacket::writeInt32(packet, v4->second.ItemId);
+        v5 = std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it);
+        Answer::NetPacket::writeInt32(packet, v5->second.MapId);
+        v6 = std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it);
+        Answer::NetPacket::writeInt32(packet, v6->second.Pos.x);
+        v7 = std::_Rb_tree_iterator<std::pair<int const,TreasureMapData>>::operator->(&it);
+        Answer::NetPacket::writeInt32(packet, v7->second.Pos.y);
+        WOffset = Answer::NetPacket::getWOffset(packet);
+        Answer::NetPacket::setSize(packet, WOffset);
+        GateIndex = Player::getGateIndex(thisa->m_pPlayer);
+        v10 = Player::getConnId(thisa->m_pPlayer);
+        v11 = Answer::Singleton<GameService>::instance();
+        GameService::sendPacketTo(v11, v10, GateIndex, packet);
+      }
+    }
+  }
+}
+
+#####################################
+int32_t __cdecl CTreasureMap::GetUseMaxTime(CTreasureMap *const this)
+{
+  CVip *PlayerVip; // rax
+
+  if ( !this->m_pPlayer )
+    return 0;
+  PlayerVip = Player::GetPlayerVip(this->m_pPlayer);
+  return CVip::GetTreasureTimes(PlayerVip) + 10;
+}
+
+#####################################
+int32_t __cdecl CTreasureMap::OnAskSpecialTreasureMapInfo(CTreasureMap *const this, Answer::NetPacket *inPacket)
+{
+  int32_t v2; // ebx
+  CExtCharBag *Bag; // rax
+  int32_t v4; // eax
+  int v5; // r12d
+  int32_t v6; // r12d
+  Answer::Random *v7; // rax
+  SpecialTreasureMapRandCfg *v9; // rax
+  SpecialTreasureMapRandCfg *v10; // rax
+  SpecialTreasureMapRandCfg *v11; // rax
+  int32_t v12; // eax
+  int v13; // r12d
+  Answer::Random *v14; // rax
+  Answer::Random *v15; // rax
+  int32_t v16; // r12d
+  Answer::Random *v17; // rax
+  SpecialTreasureMapRandCfg *v19; // rax
+  SpecialTreasureMapRandCfg *v20; // rax
+  SpecialTreasureMapRandCfg *v21; // rax
+  __int64 bagSlot; // [rsp+10h] [rbp-C0h]
+  std::_List_iterator<SpecialTreasureMapRandCfg> it_0; // [rsp+30h] [rbp-A0h] BYREF
+  SpecialTreasureMapRandCfgList SpecialTmp; // [rsp+40h] [rbp-90h] BYREF
+  int32_t MaxSpecialRate; // [rsp+5Ch] [rbp-74h]
+  std::_List_iterator<SpecialTreasureMapRandCfg> it; // [rsp+60h] [rbp-70h] BYREF
+  SpecialTreasureMapRandCfgList NormalTmp; // [rsp+70h] [rbp-60h] BYREF
+  int32_t MaxNormalRate; // [rsp+8Ch] [rbp-44h]
+  std::_List_iterator<SpecialTreasureMapRandCfg> __x; // [rsp+90h] [rbp-40h] BYREF
+  std::_List_iterator<SpecialTreasureMapRandCfg> v31; // [rsp+A0h] [rbp-30h] BYREF
+  int32_t nSlot; // [rsp+A8h] [rbp-28h]
+  int32_t nItemId; // [rsp+ACh] [rbp-24h]
+  int32_t i; // [rsp+B0h] [rbp-20h]
+  int32_t j; // [rsp+B4h] [rbp-1Ch]
+  int32_t nRand; // [rsp+B8h] [rbp-18h]
+  int32_t nRand_0; // [rsp+BCh] [rbp-14h]
+
+  if ( !inPacket || !this->m_pPlayer )
+    return 2;
+  nSlot = Answer::NetPacket::readInt32(inPacket);
+  nItemId = Answer::NetPacket::readInt32(inPacket);
+  Bag = Player::GetBag(this->m_pPlayer);
+  bagSlot = *(_QWORD *)&CExtCharBag::GetSlotData(Bag, nSlot)->itemId;
+  if ( nItemId <= 0 || (_DWORD)bagSlot != nItemId || BYTE4(bagSlot) != 1 )
+    return 2;
+  if ( this->m_LeftTimes == 3 && this->m_Items[0][0].nItemId == nItemId )
+  {
+    CTreasureMap::SendSpecialTreasureInfo(this, nSlot, nItemId);
+    return 2;
+  }
+  else
+  {
+    MaxNormalRate = 0;
+    v4 = (unsigned int)Answer::Singleton<CfgData>::instance();
+    CfgData::GetSpecialTreasureMapRandCfgList((CfgData *const)&NormalTmp, v4, nItemId, 0);
+    if ( std::list<SpecialTreasureMapRandCfg>::size(&NormalTmp) )
+    {
+      for ( i = 0; i <= 5; ++i )
+      {
+        for ( j = 0; j <= 5; ++j )
+        {
+          v6 = MaxNormalRate;
+          v7 = Answer::Singleton<Answer::Random>::instance();
+          nRand = Answer::Random::generate(v7, 1, v6);
+          for ( it._M_node = std::list<SpecialTreasureMapRandCfg>::begin(&NormalTmp)._M_node;
+                ;
+                std::_List_iterator<SpecialTreasureMapRandCfg>::operator++(&it, 0) )
+          {
+            __x._M_node = std::list<SpecialTreasureMapRandCfg>::end(&NormalTmp)._M_node;
+            if ( !std::_List_iterator<SpecialTreasureMapRandCfg>::operator!=(&it, &__x) )
+              break;
+            if ( std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it)->nItemId <= 0
+              || std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it)->IsGet
+              || std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it)->nType < 0 )
+            {
+              v2 = 2;
+              v5 = 0;
+              goto LABEL_32;
+            }
+            v9 = std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it);
+            if ( v9->nRate >= nRand )
+            {
+              v10 = std::_List_iterator<SpecialTreasureMapRandCfg>::operator*(&it);
+              SpecialTreasureMapRandCfg::operator=(&this->m_Items[i][j], v10);
+              break;
+            }
+            v11 = std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it);
+            nRand -= v11->nRate;
+          }
+        }
+      }
+      v5 = 1;
+    }
+    else
+    {
+      v2 = 2;
+      v5 = 0;
+    }
+LABEL_32:
+    std::list<SpecialTreasureMapRandCfg>::~list(&NormalTmp);
+    if ( v5 )
+    {
+      MaxSpecialRate = 0;
+      v12 = (unsigned int)Answer::Singleton<CfgData>::instance();
+      CfgData::GetSpecialTreasureMapRandCfgList((CfgData *const)&SpecialTmp, v12, nItemId, (int32_t *const)1);
+      if ( std::list<SpecialTreasureMapRandCfg>::size(&SpecialTmp) )
+      {
+        v14 = Answer::Singleton<Answer::Random>::instance();
+        this->m_SpecialX = Answer::Random::generate(v14, 0, 5);
+        v15 = Answer::Singleton<Answer::Random>::instance();
+        this->m_SpecialY = Answer::Random::generate(v15, 0, 5);
+        v16 = MaxSpecialRate;
+        v17 = Answer::Singleton<Answer::Random>::instance();
+        nRand_0 = Answer::Random::generate(v17, 1, v16);
+        for ( it_0._M_node = std::list<SpecialTreasureMapRandCfg>::begin(&SpecialTmp)._M_node;
+              ;
+              std::_List_iterator<SpecialTreasureMapRandCfg>::operator++(&it_0, 0) )
+        {
+          v31._M_node = std::list<SpecialTreasureMapRandCfg>::end(&SpecialTmp)._M_node;
+          if ( !std::_List_iterator<SpecialTreasureMapRandCfg>::operator!=(&it_0, &v31) )
+            break;
+          if ( std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it_0)->nItemId <= 0
+            || std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it_0)->IsGet
+            || std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it_0)->nType < 0 )
+          {
+            v2 = 2;
+            v13 = 0;
+            goto LABEL_48;
+          }
+          v19 = std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it_0);
+          if ( v19->nRate >= nRand_0 )
+          {
+            v20 = std::_List_iterator<SpecialTreasureMapRandCfg>::operator*(&it_0);
+            SpecialTreasureMapRandCfg::operator=(&this->m_Items[this->m_SpecialX][this->m_SpecialY], v20);
+            break;
+          }
+          v21 = std::_List_iterator<SpecialTreasureMapRandCfg>::operator->(&it_0);
+          nRand_0 -= v21->nRate;
+        }
+        v13 = 1;
+      }
+      else
+      {
+        v2 = 2;
+        v13 = 0;
+      }
+LABEL_48:
+      std::list<SpecialTreasureMapRandCfg>::~list(&SpecialTmp);
+      if ( v13 )
+      {
+        this->m_LeftTimes = 3;
+        CTreasureMap::SendSpecialTreasureInfo(this, nSlot, nItemId);
+        return 0;
+      }
+    }
+  }
+  return v2;
+}
+
+#####################################
+int32_t __cdecl CTreasureMap::OnGetSpecialTreasureMapReward(CTreasureMap *const this, Answer::NetPacket *inPacket)
+{
+  CExtCharBag *Bag; // rax
+  CExtCharBag *v4; // rax
+  MemChrBagVector *p_vGetItems; // rbx
+  CExtCharBag *v6; // rax
+  MemChrBagVector *v7; // r13
+  CharId_t Cid; // r12
+  int8_t ConnId; // bl
+  DBService *v10; // rax
+  GameService *v11; // rax
+  CharId_t v12; // rax
+  uint32_t WOffset; // eax
+  GameService *v14; // rax
+  MemChrBag bagSlot; // [rsp+20h] [rbp-70h] BYREF
+  std::string Param; // [rsp+40h] [rbp-50h] BYREF
+  char v17; // [rsp+4Fh] [rbp-41h] BYREF
+  std::string val; // [rsp+50h] [rbp-40h] BYREF
+  int32_t nSlot; // [rsp+58h] [rbp-38h]
+  int32_t nItemId; // [rsp+5Ch] [rbp-34h]
+  int32_t X; // [rsp+60h] [rbp-30h]
+  int32_t Y; // [rsp+64h] [rbp-2Ch]
+  Answer::NetPacket *packet; // [rsp+68h] [rbp-28h]
+
+  if ( !inPacket || !this->m_pPlayer )
+    return 2;
+  nSlot = Answer::NetPacket::readInt32(inPacket);
+  nItemId = Answer::NetPacket::readInt32(inPacket);
+  X = Answer::NetPacket::readInt32(inPacket);
+  Y = Answer::NetPacket::readInt32(inPacket);
+  Bag = Player::GetBag(this->m_pPlayer);
+  bagSlot = *CExtCharBag::GetSlotData(Bag, nSlot);
+  if ( this->m_LeftTimes == 3 && (bagSlot.itemId != nItemId || bagSlot.itemClass != 1) )
+    return 2;
+  if ( (unsigned int)X > 5 || (unsigned int)Y >= 6 )
+    return 2;
+  if ( this->m_Items[X][Y].IsGet > 0 )
+    return 2;
+  if ( this->m_Items[X][Y].nItemId != nItemId )
+    return 2;
+  if ( this->m_LeftTimes <= 0 )
+    return 2;
+  if ( this->m_LeftTimes == 3 )
+  {
+    --bagSlot.itemCount;
+    v4 = Player::GetBag(this->m_pPlayer);
+    CExtCharBag::SetSlotData(v4, nSlot, &bagSlot, ITEM_CHANGE_REASON::IDCR_SPECIAL_TREASURE_MAP, 0);
+  }
+  p_vGetItems = &this->m_Items[X][Y].vGetItems;
+  v6 = Player::GetBag(this->m_pPlayer);
+  if ( !CExtCharBag::AddItem(v6, p_vGetItems, ITEM_CHANGE_REASON::IDCR_SPECIAL_TREASURE_MAP) )
+  {
+    std::allocator<char>::allocator(&v17);
+    std::string::string(&Param, &unk_8F3ACF);
+    v7 = &this->m_Items[X][Y].vGetItems;
+    Cid = Player::getCid(this->m_pPlayer);
+    ConnId = Player::getConnId(this->m_pPlayer);
+    v10 = Answer::Singleton<DBService>::instance();
+    DBService::OnSendSysMail(v10, ConnId, Cid, 1, v7, ITEM_CHANGE_REASON::IDCR_SPECIAL_TREASURE_MAP, &Param, 0);
+    std::string::~string(&Param);
+    std::allocator<char>::~allocator(&v17);
+  }
+  --this->m_LeftTimes;
+  this->m_Items[X][Y].IsGet = 1;
+  if ( this->m_LeftTimes <= 0 )
+    CTreasureMap::SendEndInfo(this);
+  CTreasureMap::SendGetItemInfo(this, X, Y);
+  if ( this->m_Items[X][Y].nGongGaoId > 0 )
+  {
+    v11 = Answer::Singleton<GameService>::instance();
+    packet = GameService::popNetpacket(v11, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    if ( !packet )
+      return 0;
+    Answer::NetPacket::writeInt32(packet, this->m_Items[X][Y].nGongGaoId);
+    v12 = Player::getCid(this->m_pPlayer);
+    Answer::NetPacket::writeInt64(packet, v12);
+    Player::getName((const Player *const)&val);
+    Answer::NetPacket::writeUTF8(packet, &val);
+    std::string::~string(&val);
+    Answer::NetPacket::writeInt32(packet, this->m_Items[X][Y].vShowItem.itemId);
+    Answer::NetPacket::writeInt8(packet, this->m_Items[X][Y].vShowItem.itemClass);
+    Answer::NetPacket::writeInt32(packet, this->m_Items[X][Y].vShowItem.itemCount);
+    WOffset = Answer::NetPacket::getWOffset(packet);
+    Answer::NetPacket::setSize(packet, WOffset);
+    v14 = Answer::Singleton<GameService>::instance();
+    GameService::worldBroadcast(v14, packet);
+  }
+  return 0;
+}
+
+#####################################
+void __cdecl CTreasureMap::SendSpecialTreasureInfo(CTreasureMap *const this, int32_t nSlot, int32_t ItemId)
+{
+  int8_t ConnId; // bl
+  GameService *v4; // rax
+  uint32_t WOffset; // edx
+  int16_t GateIndex; // r12
+  int8_t v7; // bl
+  GameService *v8; // rax
+  Answer::NetPacket *packet; // [rsp+18h] [rbp-18h]
+
+  if ( this->m_pPlayer )
+  {
+    ConnId = Player::getConnId(this->m_pPlayer);
+    v4 = Answer::Singleton<GameService>::instance();
+    packet = GameService::popNetpacket(v4, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CEFu);
+    if ( packet )
+    {
+      Answer::NetPacket::writeInt32(packet, this->m_LeftTimes);
+      Answer::NetPacket::writeInt32(packet, nSlot);
+      Answer::NetPacket::writeInt32(packet, ItemId);
+      WOffset = Answer::NetPacket::getWOffset(packet);
+      Answer::NetPacket::setSize(packet, WOffset);
+      GateIndex = Player::getGateIndex(this->m_pPlayer);
+      v7 = Player::getConnId(this->m_pPlayer);
+      v8 = Answer::Singleton<GameService>::instance();
+      GameService::sendPacketTo(v8, v7, GateIndex, packet);
+    }
+  }
+}
+
+#####################################
+void __cdecl CTreasureMap::SendGetItemInfo(CTreasureMap *const this, int32_t X, int32_t Y)
+{
+  int8_t ConnId; // bl
+  GameService *v4; // rax
+  int32_t v5; // eax
+  MemChrBag *v6; // rax
+  MemChrBag *v7; // rax
+  MemChrBag *v8; // rax
+  int32_t Didff; // eax
+  uint32_t WOffset; // eax
+  int16_t GateIndex; // r12
+  int8_t v12; // bl
+  GameService *v13; // rax
+  __gnu_cxx::__normal_iterator<MemChrBag*,std::vector<MemChrBag> > it; // [rsp+10h] [rbp-30h] BYREF
+  __gnu_cxx::__normal_iterator<MemChrBag*,std::vector<MemChrBag> > __rhs; // [rsp+20h] [rbp-20h] BYREF
+  Answer::NetPacket *packet; // [rsp+28h] [rbp-18h]
+
+  if ( this->m_pPlayer )
+  {
+    if ( (unsigned int)X <= 5 && (unsigned int)Y <= 5 )
+    {
+      ConnId = Player::getConnId(this->m_pPlayer);
+      v4 = Answer::Singleton<GameService>::instance();
+      packet = GameService::popNetpacket(v4, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CF0u);
+      if ( packet )
+      {
+        Answer::NetPacket::writeInt32(packet, this->m_LeftTimes);
+        if ( this->m_SpecialX == X && this->m_SpecialY == Y )
+          Answer::NetPacket::writeInt32(packet, 1);
+        else
+          Answer::NetPacket::writeInt32(packet, 0);
+        Answer::NetPacket::writeInt32(packet, X);
+        Answer::NetPacket::writeInt32(packet, Y);
+        Answer::NetPacket::writeInt32(packet, this->m_Items[X][Y].vShowItem.itemId);
+        Answer::NetPacket::writeInt8(packet, this->m_Items[X][Y].vShowItem.itemClass);
+        Answer::NetPacket::writeInt32(packet, this->m_Items[X][Y].vShowItem.itemCount);
+        v5 = std::vector<MemChrBag>::size(&this->m_Items[X][Y].vGetItems);
+        Answer::NetPacket::writeInt32(packet, v5);
+        for ( it._M_current = std::vector<MemChrBag>::begin(&this->m_Items[X][Y].vGetItems)._M_current;
+              ;
+              __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator++(&it, 0) )
+        {
+          __rhs._M_current = std::vector<MemChrBag>::end(&this->m_Items[X][Y].vGetItems)._M_current;
+          if ( !__gnu_cxx::operator!=<MemChrBag *,std::vector<MemChrBag>>(&it, &__rhs) )
+            break;
+          v6 = __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator->(&it);
+          Answer::NetPacket::writeInt32(packet, v6->itemId);
+          v7 = __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator->(&it);
+          Answer::NetPacket::writeInt8(packet, v7->itemClass);
+          v8 = __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator->(&it);
+          Answer::NetPacket::writeInt32(packet, v8->itemCount);
+        }
+        Didff = CTreasureMap::GetDidff(this, X, Y);
+        Answer::NetPacket::writeInt32(packet, Didff);
+        WOffset = Answer::NetPacket::getWOffset(packet);
+        Answer::NetPacket::setSize(packet, WOffset);
+        GateIndex = Player::getGateIndex(this->m_pPlayer);
+        v12 = Player::getConnId(this->m_pPlayer);
+        v13 = Answer::Singleton<GameService>::instance();
+        GameService::sendPacketTo(v13, v12, GateIndex, packet);
+      }
+    }
+  }
+}
+
+#####################################
+int32_t __cdecl CTreasureMap::GetDidff(CTreasureMap *const this, int32_t X, int32_t Y)
+{
+  return abs32(this->m_SpecialX - X) + abs32(this->m_SpecialY - Y);
+}
+
+#####################################
+void __cdecl CTreasureMap::SendEndInfo(CTreasureMap *const this)
+{
+  int8_t ConnId; // bl
+  GameService *v2; // rax
+  int32_t v3; // eax
+  MemChrBag *v4; // rax
+  MemChrBag *v5; // rax
+  MemChrBag *v6; // rax
+  uint32_t WOffset; // eax
+  int16_t GateIndex; // r12
+  int8_t v9; // bl
+  GameService *v10; // rax
+  __gnu_cxx::__normal_iterator<MemChrBag*,std::vector<MemChrBag> > it; // [rsp+10h] [rbp-30h] BYREF
+  __gnu_cxx::__normal_iterator<MemChrBag*,std::vector<MemChrBag> > __rhs; // [rsp+20h] [rbp-20h] BYREF
+  Answer::NetPacket *packet; // [rsp+28h] [rbp-18h]
+
+  if ( this->m_pPlayer )
+  {
+    ConnId = Player::getConnId(this->m_pPlayer);
+    v2 = Answer::Singleton<GameService>::instance();
+    packet = GameService::popNetpacket(v2, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CF2u);
+    if ( packet )
+    {
+      Answer::NetPacket::writeInt32(packet, this->m_SpecialX);
+      Answer::NetPacket::writeInt32(packet, this->m_SpecialY);
+      Answer::NetPacket::writeInt32(packet, this->m_Items[this->m_SpecialX][this->m_SpecialY].vShowItem.itemId);
+      Answer::NetPacket::writeInt8(packet, this->m_Items[this->m_SpecialX][this->m_SpecialY].vShowItem.itemClass);
+      Answer::NetPacket::writeInt32(packet, this->m_Items[this->m_SpecialX][this->m_SpecialY].vShowItem.itemCount);
+      v3 = std::vector<MemChrBag>::size(&this->m_Items[this->m_SpecialX][this->m_SpecialY].vGetItems);
+      Answer::NetPacket::writeInt32(packet, v3);
+      for ( it._M_current = std::vector<MemChrBag>::begin(&this->m_Items[this->m_SpecialX][this->m_SpecialY].vGetItems)._M_current;
+            ;
+            __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator++(&it, 0) )
+      {
+        __rhs._M_current = std::vector<MemChrBag>::end(&this->m_Items[this->m_SpecialX][this->m_SpecialY].vGetItems)._M_current;
+        if ( !__gnu_cxx::operator!=<MemChrBag *,std::vector<MemChrBag>>(&it, &__rhs) )
+          break;
+        v4 = __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator->(&it);
+        Answer::NetPacket::writeInt32(packet, v4->itemId);
+        v5 = __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator->(&it);
+        Answer::NetPacket::writeInt8(packet, v5->itemClass);
+        v6 = __gnu_cxx::__normal_iterator<MemChrBag *,std::vector<MemChrBag>>::operator->(&it);
+        Answer::NetPacket::writeInt32(packet, v6->itemCount);
+      }
+      WOffset = Answer::NetPacket::getWOffset(packet);
+      Answer::NetPacket::setSize(packet, WOffset);
+      GateIndex = Player::getGateIndex(this->m_pPlayer);
+      v9 = Player::getConnId(this->m_pPlayer);
+      v10 = Answer::Singleton<GameService>::instance();
+      GameService::sendPacketTo(v10, v9, GateIndex, packet);
+    }
+  }
+}
+
+#####################################
+// Alternative name is '_Z41__static_initialization_and_destruction_0ii_138'
+void __cdecl _static_initialization_and_destruction_0_37(int __initialize_p, int __priority)
+{
+  if ( __initialize_p == 1 && __priority == 0xFFFF )
+  {
+    std::ios_base::Init::Init(&std::__ioinit);
+    __cxa_atexit(std::ios_base::Init::~Init, &std::__ioinit, &_dso_handle);
+  }
+}
+
+#####################################
+const MapPos *__cdecl TreasureMapTabale::GetMapPos(const TreasureMapTabale *const this, int32_t ItemId)
+{
+  const std::pair<const int,TreasureMapCfg> *v2; // rax
+  Answer::Random *v3; // rax
+  size_t v4; // rbx
+  const std::pair<const int,TreasureMapCfg> *v5; // rax
+  int32_t ItemIda; // [rsp+4h] [rbp-3Ch] BYREF
+  const TreasureMapTabale *thisa; // [rsp+8h] [rbp-38h]
+  std::_Rb_tree_const_iterator<std::pair<const int,TreasureMapCfg> > it; // [rsp+10h] [rbp-30h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,TreasureMapCfg> > __x; // [rsp+20h] [rbp-20h] BYREF
+  int32_t nSize; // [rsp+28h] [rbp-18h]
+  int32_t nRand; // [rsp+2Ch] [rbp-14h]
+
+  thisa = this;
+  ItemIda = ItemId;
+  it._M_node = std::map<int,TreasureMapCfg>::find(&this->m_TreasureMapCfgMap, &ItemIda)._M_node;
+  __x._M_node = std::map<int,TreasureMapCfg>::end(&thisa->m_TreasureMapCfgMap)._M_node;
+  if ( !std::_Rb_tree_const_iterator<std::pair<int const,TreasureMapCfg>>::operator!=(&it, &__x) )
+    return 0;
+  v2 = std::_Rb_tree_const_iterator<std::pair<int const,TreasureMapCfg>>::operator->(&it);
+  nSize = std::vector<MapPos>::size(&v2->second.m_MaxPosVector);
+  if ( nSize <= 0 )
+    return 0;
+  v3 = Answer::Singleton<Answer::Random>::instance();
+  nRand = Answer::Random::generate(v3, 1, nSize);
+  v4 = nRand - 1;
+  v5 = std::_Rb_tree_const_iterator<std::pair<int const,TreasureMapCfg>>::operator->(&it);
+  return std::vector<MapPos>::operator[](&v5->second.m_MaxPosVector, v4);
+}
+
+#####################################
+const TreasureMapEventCfg *__cdecl TreasureMapTabale::GetEvent(const TreasureMapTabale *const this, int32_t ItemId)
+{
+  Answer::Random *v3; // rax
+  const std::pair<const int,TreasureMapCfg> *v4; // rax
+  const std::pair<const int,int> *v5; // rax
+  const std::pair<const int,int> *v6; // rax
+  const std::pair<const int,int> *v7; // rax
+  const std::pair<const int,TreasureMapCfg> *v8; // rax
+  int32_t ItemIda; // [rsp+4h] [rbp-6Ch] BYREF
+  const TreasureMapTabale *thisa; // [rsp+8h] [rbp-68h]
+  std::_Rb_tree_const_iterator<std::pair<const int,TreasureMapEventCfg> > EventIt; // [rsp+10h] [rbp-60h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,int> > iter; // [rsp+20h] [rbp-50h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,TreasureMapCfg> > it; // [rsp+30h] [rbp-40h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,TreasureMapCfg> > __x; // [rsp+40h] [rbp-30h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,int> > v15; // [rsp+50h] [rbp-20h] BYREF
+  std::_Rb_tree_const_iterator<std::pair<const int,TreasureMapEventCfg> > v16; // [rsp+60h] [rbp-10h] BYREF
