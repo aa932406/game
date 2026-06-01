@@ -25,8 +25,8 @@ enum class Direction
 #endif
 
 // 货币变化原因 (仅在 Common/CommonTypes.h 未定义时定义)
-#ifndef CURRENCY_CHANGE_REASON_DEFINED_HERE
-#define CURRENCY_CHANGE_REASON_DEFINED_HERE
+#ifndef CURRENCY_CHANGE_REASON_DEFINED
+#define CURRENCY_CHANGE_REASON_DEFINED
 enum class CURRENCY_CHANGE_REASON
 {
     CCR_NONE = 0,

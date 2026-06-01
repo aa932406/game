@@ -6,12 +6,13 @@
 #include <string>
 #include <cstdint>
 
+#include "Config/CfgData.h"
+
 class Player;
 struct ShowIcon;
-struct MemChrBag;
-struct MapPos;
 
-enum class FESTIVAL_ACTIVITY_TYPE_2 : int32_t
+// 节日活动专用枚举 - 注意与 Common/CommonTypes.h 中的 FESTIVAL_ACTIVITY_TYPE_2 是不同枚举
+enum class FESTIVAL_CTRL_ACTIVITY_TYPE : int32_t
 {
     FAT2_MAIN = 0,
     FAT2_DA_TI = 1,
@@ -28,7 +29,8 @@ struct ChangeItemCfg
     std::vector<MemChrBag> lCostItem;
 };
 
-struct MapPos
+// 节日活动位置结构 - 区别于 Common/CommonTypes.h 的 MapPos(x,y)
+struct FestivalMapPos
 {
     int32_t m_MapId;
     struct Position
@@ -54,8 +56,9 @@ public:
     void OnNewMinute(int32_t nMinute);
     int32_t GetLeftTime();
     bool IsInTime();
-    bool IsOpen(FESTIVAL_ACTIVITY_TYPE_2 nType);
-    int32_t GetActDay(FESTIVAL_ACTIVITY_TYPE_2 nType);
+    bool IsInTime(FESTIVAL_CTRL_ACTIVITY_TYPE nType);
+    bool IsOpen(FESTIVAL_CTRL_ACTIVITY_TYPE nType);
+    int32_t GetActDay(FESTIVAL_CTRL_ACTIVITY_TYPE nType);
     
     // 答题
     int32_t DaTi(Player* player, const std::string& answerId);
@@ -96,12 +99,12 @@ private:
     // 植物相关
     int32_t m_PlantId;
     int32_t m_PlantCount;
-    std::vector<MapPos*> m_PlantMapPosVt;
+    std::vector<FestivalMapPos*> m_PlantMapPosVt;
     
     // NPC相关
     int32_t m_NpcId;
     int32_t m_NpcCount;
-    std::vector<MapPos*> m_NpcMapPosVt;
+    std::vector<FestivalMapPos*> m_NpcMapPosVt;
     
     // 字符串向量
     std::vector<std::vector<std::string>*> m_StringVtVector;

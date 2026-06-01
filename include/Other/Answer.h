@@ -9,6 +9,7 @@
 
 #include "Common/CommonTypes.h"
 #include "Other/RwLock.h"
+#include "Network/NetPacket.h"
 
 class Player;
 class Map;

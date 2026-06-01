@@ -28,6 +28,7 @@ class CExtCharPet;
 class ItemBuff;
 #include "Activity/CZongHeYunYingHD.h"
 class DailyActivity;
+struct ShowIcon;
 
 // 角色基础数据结构
 struct PlayerChrData
@@ -252,6 +253,9 @@ public:
     int32_t doTeleportActivity(int32_t aid);
     int32_t doTeleport(int32_t nId);
     
+    // 图标状态
+    static void SendIconState(Player* player, const ShowIcon* stu);
+
     // 网络包处理
     void initNetPacketHandlers();
     void setNetPacketHandler(int32_t proc, NetPacketHandler handler);

@@ -11,6 +11,7 @@ public:
     Plant();
     ~Plant();
 
+    void init(Map* pMap, const CfgPlant* pCfgPlant, const CfgMapPlant* pCfgMapPlant, int32_t nLifeTime);
     void reset();
     void refresh();
     int32_t GetReviveTime();

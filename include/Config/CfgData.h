@@ -1380,7 +1380,6 @@ struct CfgShouChong {
 class CfgFestivalActivity;
 struct CfgChangeItemCfg;
 struct CfgFestivalMapPos;
-class CfgFestivalActivityTable;
 
 struct NewServerFavorable {
     signed char Index;
@@ -1744,7 +1743,7 @@ struct CfgOutLinkFestivalTable {};
 struct ChargeDungeonCfg {};
 struct PkDropRate {};
 struct BaoKuRandomMap {};
-struct CfgFestivalActivityTable {};
+#include "CfgFestivalActivityTable.h"
 
 // ==================== CfgData 类定义 ====================
 

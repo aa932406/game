@@ -93,34 +93,10 @@ enum CURRENCY_ITEM_ID : int32_t
 #endif
 
 // ============== 货币类型 ==============
-#ifndef CURRENCY_TYPE_DEFINED_HERE
-#define CURRENCY_TYPE_DEFINED_HERE
-enum CURRENCY_TYPE : int32_t
-{
-    CURRENCY_INVALID   = 0,
-    CURRENCY_MONEY     = 1,
-    CURRENCY_GOLD      = 2,
-    CURRENCY_BIND_GOLD = 3,
-    CURRENCY_HONOR     = 4,
-};
-#endif
+// 已由 CommonTypes.h 的 enum class CURRENCY_TYPE 替代
 
 // ============== 货币变化原因 ==============
-#ifndef CURRENCY_CHANGE_REASON_DEFINED_HERE
-#define CURRENCY_CHANGE_REASON_DEFINED_HERE
-enum CURRENCY_CHANGE_REASON : int32_t
-{
-    MCR_NONE                  = 0,
-    MCR_PICK_CURRENCY_ITEM    = 127,
-    MCR_MAIL_CURRENCY_ITEM    = 300,
-    MCR_AUTO_USE              = 1,
-    MCR_CROSS_DRAW_REWARD     = 500,
-    MCR_NPC_SELL              = 131,
-    MCR_CHR_SHOP_COST         = 133,
-    GCR_BUY_LITTLE_HELPER     = 210,
-    IDCR_SUN_AND_MOON_LEVEL_UP = 211,
-};
-#endif
+// 已由 CommonTypes.h/Map.h 的 enum class CURRENCY_CHANGE_REASON 替代
 
 class CExtCharBag : public CExtSystemBase
 {
@@ -229,6 +205,7 @@ public:
     bool AddAndRemoveItem(const MemChrBagVector* vItem, const ItemDataList* lst, ITEM_CHANGE_REASON nReason);
     bool AddAndRemoveItem(const MemChrBagVector* vItem, const Int32Vector* vSlot, const ItemData* data, ITEM_CHANGE_REASON nReason);
     bool AddAndRemoveItem(const MemChrBagVector* vItem, const Int32Vector* vSlot, const ItemDataList* lst, ITEM_CHANGE_REASON nReason);
+    bool AddAndRemoveItem(const MemChrBagVector* vItem, const MemChrBagVector* vCost, ITEM_CHANGE_REASON nReason);
 
     // 使用检查
     bool canUseItem(const void* pCfgItem);

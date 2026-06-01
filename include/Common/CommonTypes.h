@@ -103,6 +103,7 @@ enum class CURRENCY_CHANGE_REASON
     GCR_XINMO_SIT_REVIVE,             // 心魔原地复活
     GCR_YJSK_GUESS_SIZE,              // 猜大小
     MCR_DUNGEON_REWARD,               // 副本铜钱奖励
+    GCR_FESTIVAL_ACT_2,                // 节日活动金币消耗
 };
 #endif // CURRENCY_CHANGE_REASON_DEFINED
 
@@ -256,6 +257,8 @@ enum class ITEM_CHANGE_REASON
     ICR_DUNGEON_REWARD,               // 副本奖励
     ICR_DUNGEON_GUESS_SIZE,           // 副本猜大小
     ICR_WORLD_BOSS_KILL_REWARD = 700,
+    IDCR_FESTIVAL_ACT_2,               // 节日活动兑换
+    IDCR_DA_TI_ACT,                    // 答题活动
 };
 #endif
 

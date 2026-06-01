@@ -1,9 +1,12 @@
 #include "Activity/CFestivalActivity.h"
+#include "Activity/CActivity.h"
 #include "Activity/CActivityManager.h"
 #include "Config/CfgData.h"
 #include "Config/CfgFestivalActivityTable.h"
 #include "Game/GameService.h"
 #include "Game/Player.h"
+#include "Game/Plant.h"
+#include "Game/Npc.h"
 #include "Map/MapManager.h"
 #include "Map/Map.h"
 #include "Game/CTimer.h"
@@ -15,6 +18,8 @@
 #include "Utility/StringUtility.h"
 #include <cstring>
 #include <cstdio>
+#include <algorithm>
+#include <random>
 
 CFestivalActivity::CFestivalActivity()
     : m_nDay(-1)
@@ -47,10 +52,10 @@ int32_t CFestivalActivity::DaTi(Player* player, const std::string& answerId)
 {
     if (!player) return -1;
     
-    if (!IsInTime(FESTIVAL_ACTIVITY_TYPE_2::FAT2_DA_TI)) return -2;
+    if (!IsInTime(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_DA_TI)) return -2;
     
     int32_t DaTiTimes = player->getRecord(2120);
-    int32_t index = GetActDay(FESTIVAL_ACTIVITY_TYPE_2::FAT2_DA_TI);
+    int32_t index = GetActDay(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_DA_TI);
     
     if (index < 0 || index >= static_cast<int32_t>(m_StringVtVector.size())) return -3;
     
@@ -78,7 +83,7 @@ int32_t CFestivalActivity::DuiHuan(Player* player, int32_t exchangeId)
     
     if (exchangeId < 0 || exchangeId >= static_cast<int32_t>(m_ChangeItemCfgVt.size())) return -2;
     
-    if (!IsInTime(FESTIVAL_ACTIVITY_TYPE_2::FAT2_DUI_HUAN)) return -3;
+    if (!IsInTime(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_DUI_HUAN)) return -3;
     
     int32_t Record = player->getRecord(exchangeId + 10101);
     
@@ -93,7 +98,7 @@ int32_t CFestivalActivity::DuiHuan(Player* player, int32_t exchangeId)
         if (Currency < v6->nCostGold) return -6;
     }
     
-    CExtCharBag* Bag = player->GetBag();
+    CExtCharBag* Bag = player->GetCharBag();
     if (!Bag->AddAndRemoveItem(&v6->GetItems, &v6->lCostItem, ITEM_CHANGE_REASON::IDCR_FESTIVAL_ACT_2))
     {
         return -7;
@@ -111,7 +116,7 @@ int32_t CFestivalActivity::DuiHuan(Player* player, int32_t exchangeId)
     return 0;
 }
 
-int32_t CFestivalActivity::GetActDay(FESTIVAL_ACTIVITY_TYPE_2 nType)
+int32_t CFestivalActivity::GetActDay(FESTIVAL_CTRL_ACTIVITY_TYPE nType)
 {
     int32_t index = m_nDay - m_vStartDay[static_cast<int>(nType)];
     
@@ -127,10 +132,10 @@ int32_t CFestivalActivity::GetDaTiReward(Player* player, int32_t RewardType)
 {
     if (!player) return -1;
     
-    if (!IsInTime(FESTIVAL_ACTIVITY_TYPE_2::FAT2_DA_TI)) return -2;
+    if (!IsInTime(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_DA_TI)) return -2;
     
     int32_t DaTiTimes = player->getRecord(2120);
-    int32_t index = GetActDay(FESTIVAL_ACTIVITY_TYPE_2::FAT2_DA_TI);
+    int32_t index = GetActDay(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_DA_TI);
     
     if (index < 0 || index >= static_cast<int32_t>(m_StringVtVector.size())) return -3;
     
@@ -158,7 +163,7 @@ int32_t CFestivalActivity::GetDaTiReward(Player* player, int32_t RewardType)
     
     if (player->getRecord(record) > 0) return -6;
     
-    CExtCharBag* Bag = player->GetBag();
+    CExtCharBag* Bag = player->GetCharBag();
     if (!Bag->AddItem(&item, ITEM_CHANGE_REASON::IDCR_DA_TI_ACT)) return -7;
     
     player->updateRecord(record, 1);
@@ -181,13 +186,13 @@ void CFestivalActivity::GetIconState(Player* player, std::list<ShowIcon>& IconLi
 
 int32_t CFestivalActivity::GetPlantTimes()
 {
-    if (!IsInTime(FESTIVAL_ACTIVITY_TYPE_2::FAT2_COLLECTION)) return 0;
+    if (!IsInTime(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_COLLECTION)) return 0;
     return m_Times;
 }
 
 int32_t CFestivalActivity::GetPlantTimes2()
 {
-    if (!IsInTime(FESTIVAL_ACTIVITY_TYPE_2::FAT2_COLLECTION2)) return 0;
+    if (!IsInTime(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_COLLECTION2)) return 0;
     return m_PlantTime;
 }
 
@@ -211,7 +216,15 @@ bool CFestivalActivity::IsInTime()
     return m_nDay >= 0 && m_nDay < m_nEndDay;
 }
 
-bool CFestivalActivity::IsOpen(FESTIVAL_ACTIVITY_TYPE_2 nType)
+bool CFestivalActivity::IsInTime(FESTIVAL_CTRL_ACTIVITY_TYPE nType)
+{
+    if (!IsInTime()) return false;
+    int32_t index = static_cast<int32_t>(nType);
+    if (index < 0 || index >= 6) return false;
+    return m_vOpen[index] != 0;
+}
+
+bool CFestivalActivity::IsOpen(FESTIVAL_CTRL_ACTIVITY_TYPE nType)
 {
     return IsInTime() && (m_vOpen[static_cast<int>(nType)] != 0);
 }
@@ -243,11 +256,11 @@ void CFestivalActivity::OnNewMinute(int32_t nMinute)
         if (m_PlantId > 0)
         {
             CfgData* cfgData = CfgData::GetInstance();
-            const CfgPlant* pCfgPlant = cfgData->GetCfgPlant(m_PlantId);
+            const CfgPlant* pCfgPlant = cfgData->getPlant(m_PlantId);
             
             if (pCfgPlant && !m_PlantMapPosVt.empty())
             {
-                std::random_shuffle(m_PlantMapPosVt.begin(), m_PlantMapPosVt.end());
+                std::shuffle(m_PlantMapPosVt.begin(), m_PlantMapPosVt.end(), std::mt19937(std::random_device{}()));
                 
                 int32_t nFreshCount = m_PlantCount;
                 if (static_cast<int32_t>(m_PlantMapPosVt.size()) < nFreshCount)
@@ -285,11 +298,11 @@ void CFestivalActivity::OnNewMinute(int32_t nMinute)
         if (m_NpcId > 0)
         {
             CfgData* cfgData = CfgData::GetInstance();
-            const CfgNpc* pCfgNpc = cfgData->GetCfgNpc(m_NpcId);
+            const CfgNpc* pCfgNpc = cfgData->getNpc(m_NpcId);
             
             if (pCfgNpc && !m_NpcMapPosVt.empty())
             {
-                std::random_shuffle(m_NpcMapPosVt.begin(), m_NpcMapPosVt.end());
+                std::shuffle(m_NpcMapPosVt.begin(), m_NpcMapPosVt.end(), std::mt19937(std::random_device{}()));
                 
                 int32_t nFreshCount = m_NpcCount;
                 if (static_cast<int32_t>(m_NpcMapPosVt.size()) < nFreshCount)
@@ -327,7 +340,7 @@ void CFestivalActivity::SendIconState(Player* player)
         ShowIcon stu;
         memset(&stu, 0, sizeof(stu));
         getIconState(&stu, player);
-        player->SendIconState(&stu);
+        Player::SendIconState(player, &stu);
     }
 }
 
@@ -346,7 +359,7 @@ void CFestivalActivity::HideIcon(int32_t nIconId)
     GameService* gameService = GameService::GetInstance();
     if (gameService->getLine() != 1) return;
     
-    Answer::NetPacket* packet = gameService->popNetpacket(0, PackType::PACK_DISPATCH, 0x2CC3);
+    Answer::NetPacket* packet = gameService->popNetpacket(0, Answer::PackType::PACK_DISPATCH, 0x2CC3);
     if (!packet) return;
     
     packet->writeInt32(nIconId);
@@ -404,7 +417,7 @@ void CFestivalActivity::InitCfgData()
     // 转换植物位置（从值类型到指针类型）
     for (const auto& pos : pCfg->vPlantPosList)
     {
-        MapPos* mapPos = new MapPos();
+        FestivalMapPos* mapPos = new FestivalMapPos();
         mapPos->m_MapId = pos.nMapId;
         mapPos->m_Pos.x = pos.nX;
         mapPos->m_Pos.y = pos.nY;
@@ -414,7 +427,7 @@ void CFestivalActivity::InitCfgData()
     // 转换NPC位置（从值类型到指针类型）
     for (const auto& pos : pCfg->vNpcPosList)
     {
-        MapPos* mapPos = new MapPos();
+        FestivalMapPos* mapPos = new FestivalMapPos();
         mapPos->m_MapId = pos.nMapId;
         mapPos->m_Pos.x = pos.nX;
         mapPos->m_Pos.y = pos.nY;
@@ -495,7 +508,7 @@ void CFestivalActivity::getIconState(ShowIcon* stu, Player* player)
     if (!stu || !player) return;
     
     stu->nId = m_nIcon;
-    stu->nState = IsOpen(FESTIVAL_ACTIVITY_TYPE_2::FAT2_MAIN) ? 2 : 0;
+    stu->nState = IsOpen(FESTIVAL_CTRL_ACTIVITY_TYPE::FAT2_MAIN) ? 2 : 0;
     stu->nLeftTime = GetLeftTime();
     
     if (HasReward(player))
