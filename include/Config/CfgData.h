@@ -80,12 +80,16 @@ struct AttrAddon {
 
 // Position is defined in Utility/Position.h (included above)
 
+#ifndef ITEM_DATA_DEFINED_HERE
 struct ItemData {
     int m_nId;
     int m_nClass;
     int m_nCount;
 };
+#define ITEM_DATA_DEFINED_HERE
+#endif
 
+#ifndef MEM_CHR_BAG_DEFINED_HERE
 struct MemChrBag {
     int itemId;
     int itemClass;
@@ -93,10 +97,8 @@ struct MemChrBag {
     int bind;
     int64_t srcId;
 };
-
-// 通知 CExtCharBag.h 等文件这些类型已经定义
-#define ITEM_DATA_DEFINED_HERE
 #define MEM_CHR_BAG_DEFINED_HERE
+#endif
 
 struct MemChrJobBag {
     int id;
