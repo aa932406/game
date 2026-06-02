@@ -1748,6 +1748,103 @@ struct MemJobItem {
     int32_t item;
 };
 struct CfgMountEquip {};
+
+// ====== 数据配置结构体定义 (反编译补充) ======
+
+
+struct MapBossInfo {
+    int32_t nId;
+    std::list<int32_t> BossMapList;
+};
+
+struct CfgPassiveSkill {
+    int32_t id;
+    int32_t type;
+    int32_t dropMoneyRate;
+    std::vector<AttrAddon> vAttrs;
+    std::list<TalentAddon> lTalentAddon;
+};
+
+struct CfgTrigSkill {
+    int32_t id;
+    int32_t groupid;
+    int32_t trigType;
+    std::string trigParam;
+    int32_t targetType;
+    int32_t trigRate;
+    int32_t cdTime;
+    int32_t trigBuff;
+    int32_t special;
+    std::string specialParam;
+    int32_t IsPvp;
+};
+
+struct CfgTalent {
+    int32_t id;
+    int32_t Level;
+    int32_t skillid;
+    int32_t maxLevel;
+    int32_t Playerlevel;
+    std::list<ItemData> costItem;
+    std::vector<int32_t> powerSkills;
+    int32_t battle;
+    int32_t Point;
+    int32_t GongGaoId;
+};
+
+struct CfgTalentPage {
+    int32_t job;
+    std::list<int32_t> talents;
+};
+
+struct CfgFamilySkill {
+    int32_t nId;
+    int32_t nLevel;
+    int32_t nFamilyLevel;
+    int32_t nCostValue;
+    std::vector<AttrAddon> vAttrAddon;
+    int32_t nCostMoney;
+    int32_t PlayerLevel;
+};
+
+struct CfgTalentActive {
+    int32_t nId;
+    std::list<ItemData> lItems;
+};
+
+struct CfgEquipUpStar {
+    int32_t m_nType;
+    int32_t m_nStar;
+    int32_t m_nRate;
+    int32_t m_nSuccessAddStar;
+    int32_t m_nFailLostStar;
+    int32_t m_nCostMoney;
+    int32_t m_nCostXingMai;
+    int32_t m_RongLianAttr;
+    std::list<ItemData> m_lCosItem;
+    std::vector<AttrAddon> m_vAttrAddon;
+};
+
+struct WingCfg {
+    int32_t Level;
+    int32_t StartPoints;
+    int32_t SuccessPoints;
+    int32_t MaxPoints;
+    int32_t Rate;
+    int32_t FailAddPoints;
+    int32_t SkillId;
+    int32_t SkillLevel;
+    int32_t IsClear;
+    int32_t GongGaoId;
+    std::list<ItemData> ConstItems;
+    std::vector<AttrAddon> AddonVector;
+};
+
+struct BossLevelInfo {
+    int32_t BossLevel;
+    std::list<int32_t> BossMapList;
+};
+
 struct CfgSkillTable {
     static void AddActiveSkill(void* a0, void* a1) {}
     static void AddFamilySkill(void* a0, void* a1) {}
