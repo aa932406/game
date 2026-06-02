@@ -5084,7 +5084,7 @@ void CfgData::fetchTask()
             v17 = v4->pString;
             
             MemChrJobBagVector v16;
-            CfgData::parseTaskItemJobString(&v16, this, task.id, &v17);
+            CfgData::parseTaskItemJobString(v16, task.id, &v17);
             task.award_optional = v16;
             v16.~vector();
             v17.~string();
@@ -9806,10 +9806,10 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
     return retstr;
 }
 
-void CfgData::parseTaskItemJobString(MemChrJobBagVector ,
+void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
                                       int32_t id, const std::string *const strItems)
 {
-    std::vector<MemChrJobBag>::vector(retstr);
+    retstr.clear();
     if (strItems->empty() || strItems->size() <= 4) return;
     
     std::string delims;

@@ -2347,7 +2347,7 @@ private:
     void paraseInt32List(std::list<int> *result, const std::string *str, int32_t size, const std::string *path);
     CfgInt32Vector* paraseInt32Vector2(const std::string* str, const std::string* path, int32_t size);
     CfgInt32VtVector* paraseInt32VtVector(const std::string* str, const std::string* path);
-    void parseTaskItemJobString(MemChrJobBagVector itemList, int32_t id, const std::string* strItems);
+    void parseTaskItemJobString(MemChrJobBagVector& result, int32_t id, const std::string* strItems);
     MemJobItemTable* parseGambleEquip(int32_t id, const std::string* strItems);
     void parseEquipItemString(int32_t nIndex, const std::string* strItems);
     void parseGongGaoString(int32_t nIndex, const std::string* strItems);
