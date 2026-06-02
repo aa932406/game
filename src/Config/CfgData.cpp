@@ -3652,7 +3652,7 @@ BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector const std::string *const 
                     stu.attr = atoi(std::string::c_str(vBuff[0]));
                     stu.ratio = atoi(std::string::c_str(vBuff[1]));
                     stu.addon = atoi(std::string::c_str(vBuff[2]));
-                    retstr->push_back(stu);
+                    retstr.push_back(stu);
                 }
                 vBuff.~vector();
             }
@@ -5255,7 +5255,7 @@ void CfgData::fetchLevelAttr()
             addonAttr = v1->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             levelAttr.addonattr = __x;
             __x.~vector();
             addonAttr.~string();
@@ -5271,7 +5271,7 @@ void CfgData::fetchLevelAttr()
             v14 = v2->pString;
             
             AttrAddonVector v11;
-            CfgData::paraseAttrAddon(&v11, this, &v14, i, &v12);
+            CfgData::paraseAttrAddon(v11, &v14, i, &v12);
             levelAttr.addonPoint = v11;
             v11.~vector();
             v14.~string();
@@ -5671,7 +5671,7 @@ std::vector<Position> *CfgData::paresPosition(std::vector<Position> const std::s
                 Position stu;
                 stu.x = atoi(Pos[0]->c_str());
                 stu.y = atoi(Pos[1]->c_str());
-                retstr->push_back(stu);
+                retstr.push_back(stu);
             }
             Pos.~vector();
         }
@@ -5740,7 +5740,7 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector const std::string *const str
         for (auto& valStr : vstr)
         {
             int val = atoi(valStr->c_str());
-            retstr->push_back(val);
+            retstr.push_back(val);
         }
     }
     
@@ -5748,11 +5748,11 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector const std::string *const str
     return retstr;
 }
 
-AttrAddonVector *CfgData::paraseAttrAddon(const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
+void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
 {
-    AttrAddonVector *retstr = new AttrAddonVector();
+    retstr.clear();
     
-    if (addonAttr->empty() || *addonAttr == "-1" || *addonAttr == "0") return retstr;
+    if (addonAttr->empty() || *addonAttr == "-1" || *addonAttr == "0") return;
     
     std::string delims;
     char v22;
@@ -5779,7 +5779,7 @@ AttrAddonVector *CfgData::paraseAttrAddon(const std::string *const addonAttr, in
             attrAddon.addon = atoi(strAttrAddon[1]->c_str());
             if (attrAddon.index > 0 && attrAddon.addon > 0)
             {
-                retstr->push_back(attrAddon);
+                retstr.push_back(attrAddon);
             }
         }
         else
@@ -5792,7 +5792,7 @@ AttrAddonVector *CfgData::paraseAttrAddon(const std::string *const addonAttr, in
     }
     
     strAttrAddons.~vector();
-    return retstr;
+    return;
 }
 
 int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
@@ -6005,7 +6005,7 @@ void CfgData::InitActiveSkillTable()
             addonAttr = v1->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             skill.summon_attr = __x;
             __x.~vector();
             addonAttr.~string();
@@ -6062,7 +6062,7 @@ void CfgData::InitPassiveSkillTable()
             addonAttr = v1->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.vAttrs = __x;
             __x.~vector();
             addonAttr.~string();
@@ -6286,7 +6286,7 @@ void CfgData::InitFamilySkillTable()
             addonAttr = v1->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.vAttrAddon = __x;
             __x.~vector();
             addonAttr.~string();
@@ -6383,7 +6383,7 @@ void CfgData::InitEquipTable()
             addonAttr = v1->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             equip.m_vAttrAddon = __x;
             __x.~vector();
             addonAttr.~string();
@@ -6400,7 +6400,7 @@ void CfgData::InitEquipTable()
             v14 = v2->pString;
             
             AttrAddonVector v11;
-            CfgData::paraseAttrAddon(&v11, this, &v14, i, &v12);
+            CfgData::paraseAttrAddon(v11, &v14, i, &v12);
             equip.m_vElement = v11;
             v11.~vector();
             v14.~string();
@@ -6430,7 +6430,7 @@ void CfgData::InitEquipTable()
             v19 = v3->pString;
             
             AttrAddonVector v16;
-            CfgData::paraseAttrAddon(&v16, this, &v19, i, &v17);
+            CfgData::paraseAttrAddon(v16, &v19, i, &v17);
             equip.m_BaseAttr = v16;
             v16.~vector();
             v19.~string();
@@ -6504,7 +6504,7 @@ void CfgData::InitEquipUpStarTable()
             addonAttr = v2->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.m_vAttrAddon = __x;
             __x.~vector();
             addonAttr.~string();
@@ -6580,7 +6580,7 @@ void CfgData::InitWingCfgTable()
             addonAttr = v2->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.AddonVector = __x;
             __x.~vector();
             addonAttr.~string();
@@ -6854,7 +6854,7 @@ void CfgData::InitTitleTable()
                     path = "./ServerConfig/Tables/Title.txt";
             
             AttrAddonVector v21;
-            CfgData::paraseAttrAddon(&v21, this, &getttr, i, &path);
+            CfgData::paraseAttrAddon(v21, &getttr, i, &path);
             title.vGetAttr = v21;
             v21.~vector();
             path.~string();
@@ -6864,7 +6864,7 @@ void CfgData::InitTitleTable()
                     v25 = "./ServerConfig/Tables/Title.txt";
             
             AttrAddonVector v24;
-            CfgData::paraseAttrAddon(&v24, this, &dressattr, i, &v25);
+            CfgData::paraseAttrAddon(v24, &dressattr, i, &v25);
             title.vDressAttr = v24;
             v24.~vector();
             v25.~string();
@@ -7760,7 +7760,7 @@ void CfgData::InitPetEquipTable()
             addonAttr = v1->pString;
             
             AttrAddonVector __x;
-            CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
+            CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.vAttr = __x;
             __x.~vector();
             addonAttr.~string();
@@ -7781,7 +7781,7 @@ void CfgData::InitPetEquipTable()
             v13 = v2->pString;
             
             AttrAddonVector v10;
-            CfgData::paraseAttrAddon(&v10, this, &v13, i, &v11);
+            CfgData::paraseAttrAddon(v10, &v13, i, &v11);
             stu.vOwnerAttr = v10;
             v10.~vector();
             v13.~string();
@@ -9759,7 +9759,7 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
         for (auto& valStr : vstr)
         {
             int val = atoi(valStr->c_str());
-            retstr->push_back(val);
+            retstr.push_back(val);
         }
     }
     vstr.~vector();
@@ -9799,7 +9799,7 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
             int val = atoi(valStr->c_str());
             probability.push_back(val);
         }
-        retstr->push_back(probability);
+        retstr.push_back(probability);
         vstr.~vector();
     }
     SplitStr.~vector();
@@ -9838,7 +9838,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector ,
             itemData.type = atoi(item[1]->c_str());
             itemData.count = atoi(item[2]->c_str());
             itemData.job = atoi(item[3]->c_str());
-            retstr->push_back(itemData);
+            retstr.push_back(itemData);
         }
         else if (item.size() == 5)
         {
@@ -9849,7 +9849,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector ,
             itemData.count = atoi(item[2]->c_str());
             itemData.bind = atoi(item[3]->c_str());
             itemData.job = atoi(item[4]->c_str());
-            retstr->push_back(itemData);
+            retstr.push_back(itemData);
         }
         else if (item.size() == 6)
         {
@@ -9861,7 +9861,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector ,
             itemData.bind = atoi(item[3]->c_str());
             itemData.job = atoi(item[4]->c_str());
             itemData.time = atoi(item[5]->c_str());
-            retstr->push_back(itemData);
+            retstr.push_back(itemData);
         }
         else
         {

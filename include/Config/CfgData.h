@@ -2338,7 +2338,7 @@ private:
     std::vector<Position>* paresPosition(const std::string* strPos);
     Param2 paraseParam2(const std::string* str);
     CfgInt32Vector* paraseInt32Vector(const std::string* str, const std::string* path, int32_t size);
-    AttrAddonVector* paraseAttrAddon(const std::string* addonAttr, int32_t nIndex, const std::string* path);
+    void paraseAttrAddon(AttrAddonVector& result, const std::string* addonAttr, int32_t nIndex, const std::string* path);
     BuffAttrVector* paraseBuffAttr(const std::string* str);
     void parseAddAttribues(const std::string* addonAttr, int32_t nIndex, const std::string* path);
     void parseAddAttribues(std::list<AddAttribute>* attrList, const std::string* addonAttr, int32_t nIndex, const std::string* path);
