@@ -299,7 +299,7 @@ CfgActivity *CfgData::getActivity(int32_t id)
 }
 // ==================== Getter 方法 ====================
 
-const CfgMapEventList *CfgData::getActivityEvents(int32_t activity_id, MapId_t nMapId)
+const CfgData::CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t nMapId)
 {
     MapId_t nMapIda = nMapId;
     int32_t activity_ida = activity_id;
@@ -396,7 +396,7 @@ const CfgDungeon *CfgData::GetUpTowerDungeon(int32_t nFloor)
     return nullptr;
 }
 
-const CfgMapEventList *CfgData::getDungeonEvent(int32_t dungonid)
+const CfgData::CfgMapEventListT *CfgData::getDungeonEvent(int32_t dungonid)
 {
     int32_t dungonida = dungonid;
     auto it = this->m_dungeonEvents.find(dungonida);
