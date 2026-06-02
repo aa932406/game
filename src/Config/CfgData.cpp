@@ -8506,7 +8506,7 @@ void CfgData::fetchDungeonMonster()
 
             std::list<Param2> __x;
 
-            CfgData::paraseParam2List(&__x, this, atoi(nIndex.c_str()), nullptr);
+            CfgData::paraseParam2List(&__x, nullptr, atoi(nIndex.c_str()), nullptr);
 
             monster.mids = __x;
 
@@ -11120,7 +11120,7 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
             StringVector Pos;
 
-            StringUtility::split(Pos, *posStr, v17);
+            StringUtility::split(Pos, posStr, v17);
 
                     
 
@@ -11246,7 +11246,7 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
             "CfgData::paraseInt32Vector() check size err from %s, where size = %d, str = %s\n",
 
-            path.c_str(), size, str.c_str());
+            path.c_str(), size, str->c_str());
 
     }
 
@@ -11316,7 +11316,7 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
         StringVector strAttrAddon;
 
-        StringUtility::split(strAttrAddon, *addonStr, v24);
+        StringUtility::split(strAttrAddon, addonStr, v24);
 
             
 
@@ -11348,7 +11348,7 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
                 "CfgData::paraseAttrAddon() wrong data from %s, where index = %d, str = %s\n",
 
-                path.c_str(), nIndex, addonAttr.c_str());
+                path.c_str(), nIndex, addonAttr->c_str());
 
         }
 
@@ -14134,7 +14134,7 @@ void CfgData::InitMapRoadTable()
 
                 StringVector vPos;
 
-                StringUtility::split(vPos, *roadStr, v17);
+                StringUtility::split(vPos, roadStr, v17);
 
                             
 
@@ -15362,7 +15362,7 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
                 "CfgData::parseMonsterSkill wrong data with id = %d, string = %s\n",
 
-                id, strSkill.c_str());
+                id, strSkill->c_str());
 
         }
 
@@ -15434,7 +15434,7 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
             "CfgData::parseTaskCondition wrong data with id = %d, string = %s\n",
 
-            id, strRequest.c_str());
+            id, strRequest->c_str());
 
         break;
 
@@ -16962,7 +16962,7 @@ void CfgData::InitWingEquipPolish()
 
                 auto v6 = this->m_WingEquipPolishSuitMap[nId];
 
-                *v6 = AddAttrs;
+                v6 = AddAttrs;
 
             }
 
@@ -17088,7 +17088,7 @@ void CfgData::InitGuiGuDaoRenTable()
 
                 StringVector vstr;
 
-                StringUtility::split(vstr, *monsterStr, v28);
+                StringUtility::split(vstr, monsterStr, v28);
 
                             
 
@@ -17460,7 +17460,7 @@ void CfgData::InitMonthlyChouJiangTable()
 
             RateItem ItemRate;
 
-            CItemHelper().parseRateItemDataString(ItemRate, strItem);
+            CItemHelper().parseRateItemDataString(ItemRate, &strItem);
 
                     ++nIndex;
 
@@ -17900,7 +17900,7 @@ void CfgData::InitFestivalActivityTable()
 
                 
 
-                CItemHelper().parseItemString(stu.dayGift, strDayGift);
+                CItemHelper().parseItemString(stu.dayGift, &strDayGift);
 
                 
 
@@ -17920,7 +17920,7 @@ void CfgData::InitFestivalActivityTable()
 
                 
 
-                CItemHelper().parseItemString(stu.actGift, strActGift);
+                CItemHelper().parseItemString(stu.actGift, &strActGift);
 
                 
 
@@ -17984,7 +17984,7 @@ void CfgData::InitFestivalActivityTable()
 
                                 std::string strItem = itemStr;
 
-                                CItemHelper().parseItemString(item, strItem);
+                                CItemHelper().parseItemString(item, &strItem);
 
                                 cfgItem.vGetItems.push_back(item);
 
@@ -18578,7 +18578,7 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
         StringVector strAttrAddon;
 
-        StringUtility::split(strAttrAddon, *addonStr, v24);
+        StringUtility::split(strAttrAddon, addonStr, v24);
 
             
 
@@ -18610,7 +18610,7 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
                 "CfgData::parseAddAttribues() wrong data from %s, where index = %d, str = %s\n",
 
-                path.c_str(), nIndex, addonAttr.c_str());
+                path.c_str(), nIndex, addonAttr->c_str());
 
         }
 
@@ -18658,7 +18658,7 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
         StringVector vParam;
 
-        StringUtility::split(vParam, *talentStr, v12);
+        StringUtility::split(vParam, talentStr, v12);
 
             
 
@@ -18720,7 +18720,7 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
         StringVector vParam;
 
-        StringUtility::split(vParam, *paramStr, v16);
+        StringUtility::split(vParam, paramStr, v16);
 
             
 
@@ -18776,7 +18776,7 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
             "CfgData::paraseInt32List() check size err from %s, where size = %d, str = %s\n",
 
-            path ? path.c_str() : "unknown", size, str.c_str());
+            path ? path.c_str() : "unknown", size, str->c_str());
 
     }
 
@@ -18832,7 +18832,7 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
             "CfgData::paraseInt32Vector2() check size err from %s, where size = %d, str = %s\n",
 
-            path.c_str(), size, str.c_str());
+            path.c_str(), size, str->c_str());
 
     }
 
@@ -18902,7 +18902,7 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
         StringVector vstr;
 
-        StringUtility::split(vstr, *splitItem, v21);
+        StringUtility::split(vstr, splitItem, v21);
 
             
 
