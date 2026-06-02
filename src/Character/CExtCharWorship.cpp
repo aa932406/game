@@ -1,5 +1,6 @@
 // CExtCharWorship.cpp
 #include "CExtCharWorship.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharWorship::CExtCharWorship()

@@ -80,6 +80,12 @@ public:
         std::list<CharWishInfo> lstWishs;
     } m_WishDBData;
 
+    // 祈福数据 (供 CExtCharWorship 使用)
+    struct {
+        int32_t nTimes;
+        std::string strCharList;
+    } m_WorshipData;
+
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
         std::list<MysteryShop> lstShop;
