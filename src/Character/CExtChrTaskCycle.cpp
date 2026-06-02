@@ -1,5 +1,6 @@
 // CExtChrTaskCycle.cpp
 #include "CExtChrTaskCycle.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtChrTaskCycle::CExtChrTaskCycle()

@@ -86,6 +86,13 @@ public:
         std::string strCharList;
     } m_WorshipData;
 
+    // 周期任务数据 (供 CExtChrTaskCycle 使用)
+    struct {
+        int32_t nFinishTimes;
+        int32_t nTaskId;
+        int8_t nState;
+    } taskCycleData;
+
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
         std::list<MysteryShop> lstShop;
