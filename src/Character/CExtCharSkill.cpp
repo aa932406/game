@@ -1,5 +1,6 @@
 // CExtCharSkill.cpp
 #include "CExtCharSkill.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharSkill::CExtCharSkill()

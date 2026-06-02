@@ -3,6 +3,7 @@
 #define CEXTCHARSKILL_H
 
 #include "CExtSystemBase.h"
+#include <string>
 #include <map>
 #include <list>
 

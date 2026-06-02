@@ -61,6 +61,12 @@ public:
         int32_t nPortalId;
     } m_PortalDBData;
 
+    // 技能数据 (供 CExtCharSkill 使用)
+    struct {
+        std::string talents;
+        int32_t m_nPower;
+    } skillData;
+
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
         std::list<MysteryShop> lstShop;
