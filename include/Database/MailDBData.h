@@ -23,8 +23,6 @@ public:
     bool LoadFromDB(Answer::MySqlDBGuard* const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
     void PackageData(Answer::NetPacket* packet);
     void UnPackageData(Answer::NetPacket* inPacket, CharId_t nCid);
-    static void ParesChrBagString(MemChrBag* out, MailDBData* _this, std::string* p_ItemString);
-
 private:
     std::map<int, MailInfo> m_MailInfo;
 };

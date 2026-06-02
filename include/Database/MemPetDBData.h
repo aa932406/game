@@ -8,13 +8,18 @@
 #include <set>
 #include <cstring>
 
+#include "Database/PlayerDBData.h"
+
 class MemPetDBData : public IDataStruct {
 public:
     MemPetDBData();
     ~MemPetDBData();
-    void CleanUp(MemPetDBData *const this);
+    void CleanUp();
 
-private:
-    // TODO: member variables
+    std::string strName;
+    std::string skills;
+    std::string equips;
+    int32_t nOwner;
+    int32_t nPetId;
+    int32_t nBaseId;
 };
-（内容由AI生成，仅供参考）

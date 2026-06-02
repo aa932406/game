@@ -217,33 +217,6 @@ enum class PlayerTeamStatus
     PTS_TEAM_LEADER = 2     // 队长
 };
 
-// 节日活动类型 (FestivalDoubleEleven用)
-enum class FESTIVAL_ACTIVITY_TYPE
-{
-    FAT_DRAW_RANK       = 0,    // 抽奖排行
-    FAT_WORLD_BOSS      = 1,    // 世界Boss
-    FAT_DAILY_LI        = 2,    // 日常
-    FAT_RECHARGE        = 3,    // 充值
-    FAT_HUO_YUE_D       = 4,    // 活跃度
-    FAT_LAND            = 5,    // 登陆
-    FAT_LAND_SUM        = 6,    // 累计登陆
-    FAT_DRAW            = 7,    // 抽奖
-    FAT_ONLINE_T        = 8,    // 在线时间
-    FAT_BEST_WISH        = 9,   // 许愿
-    FAT_FA_BAO_BACK     = 10,   // 法宝返还
-    FAT_EQUIP_UPSTAR    = 11,   // 装备升星
-    FAT_RECHARGE_BACK   = 12,   // 充值返还
-    FAT_ONLINE_TIME     = 13,   // 在线时间奖励
-    FAT_DAILY_XIAO_FEI  = 14,   // 日常消费
-    FAT_XIAO_FEI_SUM    = 15,   // 消费累计
-    FAT_CROSS_XIAO      = 16,   // 跨服消费
-    FAT_FRIEND_QI       = 17,   // 好友亲密度
-    FAT_XIAO_FEI_D      = 18,   // 消费日常
-    FAT_RECHARGE_D      = 19,   // 充值日常
-    FAT_BOSS_SCORE      = 20,   // Boss积分
-    FAT_CHOU_JIAN       = 21    // 抽奖
-};
-
 // 节日活动类型2 (CFestivalActivity用)
 enum class FESTIVAL_ACTIVITY_TYPE_2
 {
@@ -332,7 +305,8 @@ struct ItemData {
 #define ITEM_DATA_DEFINED_HERE
 #endif
 
-#ifndef MEM_CHR_BAG_DEFINED_HERE
+#ifndef MEMCHRBAG_DEFINED
+#define MEMCHRBAG_DEFINED
 struct MemChrBag {
     int32_t itemId;
     int8_t itemClass;
@@ -340,9 +314,13 @@ struct MemChrBag {
     int8_t bind;
     int32_t endTime;
     int64_t srcId;
+    int32_t& slot() { return itemId; }
+    const int32_t& slot() const { return itemId; }
 };
-#define MEM_CHR_BAG_DEFINED_HERE
 #endif
+
+// SQL 字符串列表
+typedef std::list<std::string> SqlStringList;
 
 // 角色背包容器
 typedef std::vector<MemChrBag> MemChrBagVector;

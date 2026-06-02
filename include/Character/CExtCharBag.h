@@ -9,8 +9,8 @@
 #include <vector>
 #include <cstdint>
 
-#ifndef MEM_CHR_BAG_DEFINED_HERE
-#define MEM_CHR_BAG_DEFINED_HERE
+#ifndef MEMCHRBAG_DEFINED
+#define MEMCHRBAG_DEFINED
 struct MemChrBag
 {
     int32_t itemId;

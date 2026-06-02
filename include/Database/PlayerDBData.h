@@ -29,7 +29,7 @@ public:
     PlayerDBData();
     ~PlayerDBData();
     void CleanUp();
-    void SaveToSqlString(class SqlStringList *const sqls, char (*const szSQL)[4096], int64_t nCid);
+    void SaveToSqlString(SqlStringList *const sqls, char (*const szSQL)[4096], int64_t nCid);
     bool LoadFromDB(class Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, int64_t nCid);
     void PackageData(class Answer::NetPacket *packet);
     static void UnPackageData(PlayerDBData* data, class Answer::NetPacket* packet, int32_t flag) { if (data) data->UnPackageData(packet, flag); }

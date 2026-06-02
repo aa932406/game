@@ -91,7 +91,7 @@ struct ItemData {
 #define ITEM_DATA_DEFINED_HERE
 #endif
 
-#ifndef MEM_CHR_BAG_DEFINED_HERE
+#ifndef MEMCHRBAG_DEFINED
 struct MemChrBag {
     int itemId;
     int itemClass;
@@ -104,7 +104,6 @@ struct MemChrBag {
     int type;
     int count;
 };
-#define MEM_CHR_BAG_DEFINED_HERE
 #endif
 
 #ifndef CFG_MEM_CHR_JOB_BAG_DEFINED
