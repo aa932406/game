@@ -9,10 +9,10 @@ namespace Answer {
 
 class Logger {
 public:
-    static void print(int level, const char* format, ...) {
+    static void print(LogLevel level, const char* format, ...) {
         va_list args;
         va_start(args, format);
-        if (level >= 3) {
+        if (level >= LogLevel::LOG_LEVEL_ERROR) {
             fprintf(stderr, "[ERROR] ");
             vfprintf(stderr, format, args);
         } else {
