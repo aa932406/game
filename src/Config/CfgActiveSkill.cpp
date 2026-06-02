@@ -1,4 +1,5 @@
 #include "Config/CfgActiveSkill.h"
+#include "Config/CfgData.h"
 
 
 CfgActiveSkill::CfgActiveSkill(const CfgActiveSkill& a2)

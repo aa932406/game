@@ -1,6 +1,7 @@
 #ifndef _COMMONTYPES_H_
 #define _COMMONTYPES_H_
 
+#include "Utility/Position.h"
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -117,6 +118,7 @@ enum class CURRENCY_CHANGE_REASON
     MCR_CROSS_DRAW_REWARD,            // 跨服抽奖奖励
     MCR_CHR_SHOP_COST,                // 角色商店消耗
     MCR_NPC_SELL,                     // NPC出售
+    GCR_BUY_LITTLE_HELPER,            // 购买小助手
 };
 #endif // CURRENCY_CHANGE_REASON_DEFINED
 

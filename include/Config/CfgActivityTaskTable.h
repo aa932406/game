@@ -5,6 +5,15 @@
 #include <cstdint>
 #include <map>
 
+#ifndef CFG_ACTIVITY_TASK_TABLE_DEFINED
+#define CFG_ACTIVITY_TASK_TABLE_DEFINED
+struct CfgActivityTask
+{
+    int32_t nId;
+    int32_t nMinLevel;
+    int32_t nMaxLevel;
+    int32_t nRatio;
+};
 
 /**
  * @brief CfgActivityTaskTable - Config data class
@@ -21,4 +30,5 @@ public:
     std::map<int, CfgActivityTask> m_mTasks;
 };
 
+#endif // CFG_ACTIVITY_TASK_TABLE_DEFINED
 #endif // _CFGCFGACTIVITYTASKTABLE_H_

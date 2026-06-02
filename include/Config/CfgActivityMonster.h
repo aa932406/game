@@ -2,6 +2,7 @@
 #define _CFGACTIVITYMONSTER_H_
 
 #include "Common/CommonTypes.h"
+#include "Utility/Position.h"
 #include <cstdint>
 #include <list>
 #include <vector>

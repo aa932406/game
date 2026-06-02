@@ -804,12 +804,16 @@ struct ZhanHunCfg {
     // 成员变量
 };
 
-#ifndef LITTLE_HELPER_CFG_DEFINED
-#define LITTLE_HELPER_CFG_DEFINED
+// 完整的小助手配置结构体
 struct LittleHelperCfg {
-    // 成员变量
+    int32_t nId;
+    int32_t nSpeed;
+    int32_t nGold;
+    int32_t nReGold;
+    int32_t nTime;
+    int32_t nGongGaoId;
+    std::list<AddAttribute> lAttr;
 };
-#endif
 
 struct ShiQuCfg {
     // 成员变量
@@ -1121,12 +1125,15 @@ struct CfgMysteryShop {
     ItemData exchange;
 };
 
+#ifndef CFG_BUY_GIFT_DEFINED
+#define CFG_BUY_GIFT_DEFINED
 struct CfgBuyGift {
     int nIndex;
     int nGold;
     std::vector<MemChrBag> vGift;
     int nBroad;
 };
+#endif
 
 struct CfgExchange {
     int nIndex;
@@ -1233,11 +1240,14 @@ struct CfgWeiXingGift {
     std::vector<MemChrBag> vReward;
 };
 
+#ifndef CFG_ADULT_GIFT_DEFINED
+#define CFG_ADULT_GIFT_DEFINED
 struct CfgAdultGift {
     std::string strPlatform;
     std::vector<MemChrBag> vReward;
     int nIconId;
 };
+#endif
 
 struct CfgTencentSevenDayLogin {
     int nDays;
@@ -1453,11 +1463,14 @@ struct CfgHuoYueDuReward {
     std::vector<MemChrBag> Items;
 };
 
+#ifndef CFG_APPEND_ATTR_DEFINED
+#define CFG_APPEND_ATTR_DEFINED
 struct CfgAppendAttr {
     int Id;
     int Job;
     std::list<AddAttribute> AttrList;
 };
+#endif
 
 struct SpecialTreasureMapRandCfg {
     int nItemId;
@@ -1717,7 +1730,10 @@ struct CfgWingTable {};
 struct CfgCarrierTable {};
 struct CfgJueWeiTable {};
 struct CfgEquipBoxTable {};
+#ifndef CFG_ACTIVITY_TASK_TABLE_DEFINED
+#define CFG_ACTIVITY_TASK_TABLE_DEFINED
 struct CfgActivityTaskTable {};
+#endif
 struct CfgYYGameApp {};
 struct CfgYYVip {};
 struct CfgYYSuperBuff {};

@@ -3,7 +3,7 @@
 #include <cstring>
 #include <algorithm>
 
-void CfgBeastShrineTable::GetEnterCost(const CfgBeastShrineTable *const this, int32_t nTimes)
+void CfgBeastShrineTable::GetEnterCost(int32_t nTimes)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:

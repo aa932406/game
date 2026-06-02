@@ -6,6 +6,7 @@
 #include "Game/CPoolManager.h"
 #include "Game/Map.h"
 #include "Character/CExtCharBag.h"
+#include "Network/NetPacket.h"
 #include "Answer/Singleton.h"
 #include "Database/PlayerDBData.h"
 #include "Config/CfgData.h"
@@ -334,7 +335,7 @@ int32_t CharLittlerHelper::OnBuyLittlerHelper(Answer::NetPacket* inPacket)
         }
 
         if (!m_pPlayer->DecCurrency(CURRENCY_TYPE::CURRENCY_GOLD, NeedGold,
-                static_cast<CURRENCY_CHANGE_REASON>(GCR_BUY_LITTLE_HELPER), 0))
+                CURRENCY_CHANGE_REASON::GCR_BUY_LITTLE_HELPER, 0))
             return 2;
 
         pInfo->nTimes = DaoQiTime;
@@ -342,7 +343,7 @@ int32_t CharLittlerHelper::OnBuyLittlerHelper(Answer::NetPacket* inPacket)
     else
     {
         if (!m_pPlayer->DecCurrency(CURRENCY_TYPE::CURRENCY_GOLD, pLittleHelper->nGold,
-                static_cast<CURRENCY_CHANGE_REASON>(GCR_BUY_LITTLE_HELPER), 0))
+                CURRENCY_CHANGE_REASON::GCR_BUY_LITTLE_HELPER, 0))
             return 2;
 
         ActLittleHelperInfo stu;

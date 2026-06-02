@@ -21,6 +21,10 @@ class CfgMap;
 class Answer_NetPacket;
 class Position;
 
+struct CfgBeastShrineCost {
+    int32_t nTimes;
+    std::list<ItemData> lCost;
+};
 
 /**
  * @brief CfgBeastShrineTable - Config data class
@@ -29,7 +33,7 @@ class CfgBeastShrineTable
 {
 public:
 
-    void GetEnterCost(CfgBeastShrineTable * this, int32_t nTimes);
+    void GetEnterCost(int32_t nTimes);
 
 private:
         std::map<int32_t, CfgBeastShrineCost*> m_mEnterCost;
