@@ -1411,7 +1411,7 @@ int32_t CExtCharBag::buyChrShopItem(void* pCharShop, int32_t id, int32_t count)
     {
         int64_t now = Unit::getNow(m_pPlayer);
         int64_t cid = Player::getCid(m_pPlayer);
-        Answer::Logger::print(Answer::LOG_LEVEL_ERROR, "buyChrShopItem fail",
+        Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "buyChrShopItem fail",
             bagItem.itemClass, bagItem.itemId, count, now, cid);
     }
 
