@@ -1,5 +1,6 @@
 // CExtCharWing.cpp
 #include "CExtCharWing.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharWing::CExtCharWing()

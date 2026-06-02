@@ -67,6 +67,13 @@ public:
         int32_t m_nPower;
     } skillData;
 
+    // 翅膀数据 (供 CExtCharWing 使用)
+    struct {
+        int32_t m_Level;
+        int32_t m_Luck;
+        int32_t m_HuanHua;
+    } m_CharWingDBData;
+
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
         std::list<MysteryShop> lstShop;
