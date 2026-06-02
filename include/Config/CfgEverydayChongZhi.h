@@ -3,6 +3,13 @@
 
 #include "Common/CommonTypes.h"
 #include <cstdint>
+
+#ifndef CFG_GONG_GAO_DEFINED
+#define CFG_GONG_GAO_DEFINED
+struct CfgGongGao {
+    // 成员变量
+};
+#endif /* CFG_GONG_GAO_DEFINED */
 #include <list>
 #include <vector>
 

@@ -529,9 +529,12 @@ struct CfgEquipItem {
     int32_t star;
 };
 
+#ifndef CFG_GONG_GAO_DEFINED
+#define CFG_GONG_GAO_DEFINED
 struct CfgGongGao {
     // 成员变量
 };
+#endif /* CFG_GONG_GAO_DEFINED */
 
 struct CfgDungeonNpcCost {
     int ItemType;
@@ -837,6 +840,8 @@ struct ShiQuCfg {
 
 struct ZeroBuyPetCfg {
     // 成员变量
+
+    static bool IsEmpty(const ZeroBuyPetCfg* cfg) { (void)cfg; return false; }
 };
 
 struct SunAndMoonCfg {
@@ -1050,6 +1055,15 @@ struct CfgFamily {
     int nMaxMembers;
     int vPosition[3];
     int nMaxBossPoints;
+
+    static void CleanUp(CfgFamily* family) { (void)family; }
+};
+
+struct CfgFamilyBoss {
+    int32_t nFamilyLevel;
+    int32_t BossMid;
+    int32_t FamilyExp;
+    int32_t GongGaoId;
 };
 
 struct CfgFamilyWar {
@@ -1268,6 +1282,8 @@ struct CfgTencentSevenDayLogin {
     std::vector<MemChrBag> vReward;
 };
 
+#ifndef CFG_FAMILY_DUNGEON_DEFINED
+#define CFG_FAMILY_DUNGEON_DEFINED
 struct CfgFamilyDungeon {
     int nHard;
     int nDungeonId;
@@ -1279,6 +1295,7 @@ struct CfgFamilyDungeon {
     int Y;
     int nTime;
 };
+#endif /* CFG_FAMILY_DUNGEON_DEFINED */
 
 struct cfgGoblinTableData {
     // 成员变量
@@ -1930,6 +1947,7 @@ struct CfgTaskCycleTable {
 
     static void AddTask(void*, ...) {}
 };
+
 struct CfgFamilyTable {
     static void Add(void* a0, void* a1) {}
     static void AddFamilyBoss(void* a0, void* a1) {}
@@ -1945,7 +1963,7 @@ struct CfgHorseRacingRewardTable {};
 #include "Config/CfgCampWarTable.h"
 #include "Config/CfgCarrier.h"
 
-#include "Config/CfgOutLinkFestival.h"#endif
+#endif
 #ifndef CFG_CITY_WAR_TABLE_DEFINED
 #define CFG_CITY_WAR_TABLE_DEFINED
 struct CfgCityWarTable {};
@@ -2032,6 +2050,8 @@ struct CfgPetEquipTable {
 
     static void AddEquip(void*, ...) {}
     static void GetEquip(void*, ...) {}
+
+    static const CfgPetEquip* GetEquip(CfgPetEquipTable* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
 };
 struct CfgWeiXinTable {
     static void Add(void* a0, void* a1) {}
@@ -2089,13 +2109,20 @@ struct CfgOutLinkFestivalTable {
 
     static void Add(void*, ...) {}
 };
-struct ChargeDungeonCfg {};
+struct ChargeDungeonCfg {
+    int32_t nDungeonId;
+    int32_t nChargeValue;
+    int32_t nMinKaiFuDay;
+    int32_t nMaxKaiFuDay;
+};
 struct PkDropRate {
     int32_t PkValues;
 };
-struct BaoKuRandomMap {};
+typedef std::map<int, BaoKuRandom> BaoKuRandomMap;
 typedef VipCardCfg VipCfg;
 
+#include "Config/CfgOutLinkFestival.h"
+#include "Config/CfgActiveSkill.h"
 #include "CfgFestivalActivityTable.h"
 
 // ==================== CfgData 类定义 ====================

@@ -19294,7 +19294,7 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
-                CfgTGPGift gift;
+                CfgTGPGift cfgGift;
 
 
 
@@ -29118,7 +29118,7 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
-                    retstr->push_back(stu);
+                    retstr.push_back(stu);
 
 
 
@@ -33270,7 +33270,7 @@ void CfgData::updateServerStartTime(int32_t kaiFuTime)
 
 
 
-    COpenBeta::updateStartTime(v2);
+    v2->updateStartTime();
 
 
 
@@ -36509,7 +36509,7 @@ void CfgData::fetchMonster()
 
 
 
-            parseMonsterSkill(monster.mid, &monster.unique_skill, &strSkill);
+            parseMonsterSkill(monster.mid, reinterpret_cast<MonsterSkill (*)[10]>(&monster.unique_skill), &strSkill);
 
 
 
@@ -36565,7 +36565,7 @@ void CfgData::fetchMonster()
 
 
 
-            parseMonsterSkill(monster.mid, &monster.random_skill, &v22);
+            parseMonsterSkill(monster.mid, reinterpret_cast<MonsterSkill (*)[10]>(&monster.random_skill), &v22);
 
 
 
@@ -40245,7 +40245,7 @@ void CfgData::fetchTask()
 
 
 
-            CfgData::parseTaskDrop((CfgData *const)&v21, task.id, &v22);
+            this->parseTaskDrop(task.id, &v22);
 
 
 
@@ -44533,7 +44533,7 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
-                retstr->push_back(stu);
+                retstr.push_back(stu);
 
 
 
@@ -45045,7 +45045,7 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
-            retstr->push_back(val);
+            retstr.push_back(val);
 
 
 
@@ -45333,7 +45333,7 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
-                retstr->push_back(attrAddon);
+                retstr.push_back(attrAddon);
 
 
 
@@ -45477,7 +45477,7 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
-        const CfgItemGem *cfgGem = CfgItemGemTable::GetItemGem(&this->m_cfgItemGem, nId);
+        const CfgItemGem *cfgGem = static_cast<const CfgItemGem*>(CfgItemGemTable::GetItemGem(&this->m_cfgItemGem, nId));
 
 
 
@@ -45757,7 +45757,7 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
-        const CfgItemGem *pGem = CfgItemGemTable::GetItemGem(&this->m_cfgItemGem, nId);
+        const CfgItemGem *pGem = static_cast<const CfgItemGem*>(CfgItemGemTable::GetItemGem(&this->m_cfgItemGem, nId));
 
 
 
@@ -48469,7 +48469,7 @@ void CfgData::InitTalentTable()
 
 
 
-            stu.powerSkills = __x;
+            stu.powerSkills.assign(__x.begin(), __x.end());
 
 
 
@@ -51389,7 +51389,7 @@ void CfgData::InitWingCfgTable()
 
 
 
-            WingCfg::WingCfg(&p_stu, &stu);
+            new (&p_stu) WingCfg(stu);
 
 
 
@@ -57271,7 +57271,7 @@ void CfgData::InitMYSJRewardTable()
 
 
 
-                    v1->Add(nGroupId, &cardList);
+                    v1->Add(nGroupId, reinterpret_cast<std::list<CCardGroupBox>*>(&cardList));
 
 
 
@@ -57471,7 +57471,7 @@ void CfgData::InitMYSJRewardTable()
 
 
 
-            v2->Add(nGroupId, &cardList);
+            v2->Add(nGroupId, reinterpret_cast<std::list<CCardGroupBox>*>(&cardList));
 
 
 
@@ -61102,7 +61102,7 @@ void CfgData::InitAdultGiftTable()
 
 
 
-stu.strPlatfrom = v2->pString;
+stu.strPlatform = v2->pString;
 
 
 
@@ -61910,7 +61910,7 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
-    int32_t diffDay = CfgData::getServerDiffDay(v4, SERVER_TYPE::SVT_NORMAL);
+    int32_t diffDay = v4->getServerDiffDay(SERVER_TYPE::SVT_NORMAL);
 
 
 
@@ -62271,7 +62271,7 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
-            stu = v2->pString;
+            stu.strPlatfrom = v2->pString;
 
 
 
@@ -64328,7 +64328,7 @@ void CfgData::InitBossDistribution()
 
 
 
-            BossLevelInfo::BossLevelInfo(&p_stu, &stu);
+            new (&p_stu) BossLevelInfo(stu);
 
 
 
@@ -64600,7 +64600,7 @@ void CfgData::InitBossDistribution()
 
 
 
-                MapBossInfo::MapBossInfo(&v14, &stu);
+                new (&v14) MapBossInfo(stu);
 
 
 
@@ -71025,7 +71025,7 @@ void CfgData::InitFestivalActivityTable()
 
 
 
-                paraseInt32List(&vStart, &strStartDay, 0, nullptr);
+                paraseInt32List(reinterpret_cast<std::list<int>*>(&vStart), &strStartDay, 0, nullptr);
 
 
 
@@ -71121,7 +71121,7 @@ void CfgData::InitFestivalActivityTable()
 
 
 
-                paraseInt32List(&vEnd, &strEndDay, 0, nullptr);
+                paraseInt32List(reinterpret_cast<std::list<int>*>(&vEnd), &strEndDay, 0, nullptr);
 
 
 
@@ -75977,7 +75977,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
-            retstr->push_back(itemData);
+            retstr.push_back(itemData);
 
 
 
@@ -76065,7 +76065,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
-            retstr->push_back(itemData);
+            retstr.push_back(itemData);
 
 
 
@@ -76161,7 +76161,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
-            retstr->push_back(itemData);
+            retstr.push_back(itemData);
 
 
 
@@ -76465,7 +76465,7 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
-            *v9 = itemData;
+            (*v9)[itemData.job] = itemData;
 
 
 
@@ -81297,7 +81297,7 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
-        CfgChargeDungeon& cfg = it->second;
+        ChargeDungeonCfg& cfg = it->second;
 
 
 
