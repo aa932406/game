@@ -343,6 +343,9 @@ struct MemChrBag {
 // 角色背包容器
 typedef std::vector<MemChrBag> MemChrBagVector;
 
+// 装备容器 (用于装备类物品解析)
+typedef std::vector<MemChrBag> MemChrEquipBagVector;
+
 // 掉落物品向量
 typedef std::vector<ItemData> DropItemVector;
 

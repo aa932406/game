@@ -11,6 +11,7 @@
 #include "CItemHelper.h"
 #include "CDBCFile.h"
 #include "Config/CfgFestivalActivityTable.h"
+#include "Utility/StringUtility.h"
 #include <cstring>
 #include <algorithm>
 
