@@ -1,5 +1,6 @@
 // CExtCharDepotManager.cpp — 仓库管理器完整实现
 #include "Character/CExtCharDepotManager.h"
+#include "Answer/Singleton.h"
 
 // ============================================================================
 // 单例

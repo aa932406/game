@@ -10,6 +10,22 @@ public:
     ~RwLock() = default;
     RwLock(const RwLock&) = delete;
     RwLock& operator=(const RwLock&) = delete;
+
+    // 读锁 (简化桩)
+    class ReadLock {
+    public:
+        explicit ReadLock(RwLock* lock) : m_lock(lock) { (void)m_lock; }
+    private:
+        RwLock* m_lock;
+    };
+
+    // 写锁 (简化桩)
+    class WriteLock {
+    public:
+        explicit WriteLock(RwLock* lock) : m_lock(lock) { (void)m_lock; }
+    private:
+        RwLock* m_lock;
+    };
 };
 
 // 读锁保护
@@ -18,6 +34,31 @@ public:
     RwLockRdGuard() : m_lock(nullptr) {}
     explicit RwLockRdGuard(RwLock* lock) : m_lock(lock) {}
     ~RwLockRdGuard() = default;
+private:
+    RwLock* m_lock;
+};
+
+// 写锁保护 (简化桩)
+class RwLockWrGuard {
+public:
+    RwLockWrGuard() : m_lock(nullptr) {}
+    explicit RwLockWrGuard(RwLock* lock) : m_lock(lock) {}
+    ~RwLockWrGuard() = default;
+private:
+    RwLock* m_lock;
+};
+
+// 内嵌类别名 (用于 CExtCharDepotManager.cpp)
+class RwLockReadLock {
+public:
+    explicit RwLockReadLock(RwLock* lock) : m_lock(lock) { (void)m_lock; }
+private:
+    RwLock* m_lock;
+};
+
+class RwLockWriteLock {
+public:
+    explicit RwLockWriteLock(RwLock* lock) : m_lock(lock) { (void)m_lock; }
 private:
     RwLock* m_lock;
 };

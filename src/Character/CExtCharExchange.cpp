@@ -1,5 +1,6 @@
 // CExtCharExchange.cpp
 #include "CExtCharExchange.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharExchange::CExtCharExchange()

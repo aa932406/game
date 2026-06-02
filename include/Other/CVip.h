@@ -31,6 +31,8 @@ public:
     int32_t OnBuyDropTimes(Answer::NetPacket* inPacket);
     int32_t OnBuyAllVipCard(Answer::NetPacket* inPacket);
     bool GetVipFlg(int8_t VipType);
+    static bool GetVipFlg(CVip* self, int8_t VipType) { return self ? self->GetVipFlg(VipType) : false; }
+    static int32_t GetStorePage(CVip* self) { return self ? self->GetStorePage() : 0; }
     int32_t GetVipEquipBackRate();
     int32_t OnGetVipCardGift(Answer::NetPacket* inPacket);
     void BuyGongGao(int32_t GongGaoId, int8_t VipType, int8_t VipLevel);

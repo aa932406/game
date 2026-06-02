@@ -5,7 +5,8 @@
 
 #include "Character/CExtCharDepot.h"
 #include "Game/Player.h"
-#include "Game/PlayerDBData.h"
+#include "Database/PlayerDBData.h"
+#include "Other/RwLock.h"
 #include <map>
 
 class CExtCharDepotManager

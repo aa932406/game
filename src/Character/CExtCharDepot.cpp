@@ -9,6 +9,9 @@
 #include "Other/CEquipManager.h"
 #include "Other/CItemHelper.h"
 #include "Other/CChrDepot.h"
+#include "Network/NetPacket.h"
+#include "Answer/Singleton.h"
+#include "Database/PlayerDBData.h"
 #include "Common/CommonTypes.h"
 #include <algorithm>
 #include <cstring>
@@ -219,7 +222,7 @@ void CExtCharDepot::CleanBag()
         {
             if (m_DepotData[i].itemClass == 2 && m_DepotData[i].srcId > 0)
             {
-                EquipId_t srcId = (EquipId_t)m_DepotData[i].srcId;
+                int64_t srcId = (int64_t)m_DepotData[i].srcId;
                 int8_t connId  = Player::getConnId(m_pPlayer);
                 CEquipManager* mgr = Answer::Singleton<CEquipManager>::instance();
                 CEquipManager::DeleteMemEquip(mgr, connId, srcId, 0);
@@ -721,7 +724,7 @@ int32_t CExtCharDepot::OnOpenDepotSlot(Answer::NetPacket* inPacket)
 
     if (CostValues <= 0) return 10002;
 
-    if (!Player::DecCurrency(m_pPlayer, CURRENCY_GOLD, CostValues,
+    if (!Player::DecCurrency(m_pPlayer, CURRENCY_TYPE::CURRENCY_GOLD, CostValues,
             (CURRENCY_CHANGE_REASON)GCR_DEPOT_SLOT_OPEN, 0))
         return 10002;
 
@@ -747,8 +750,8 @@ int32_t CExtCharDepot::OnSetPassword(Answer::NetPacket* inPacket)
 
     std::string OnePassword;
     std::string TwoPassword;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OnePassword, inPacket);
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&TwoPassword, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &OnePassword);
+    Answer::NetPacket::readUTF8(inPacket, &TwoPassword);
 
     if (OnePassword != TwoPassword)
     {
@@ -769,7 +772,7 @@ int32_t CExtCharDepot::OnEnterPassword(Answer::NetPacket* inPacket)
     if (m_Password.empty()) return 10002;
 
     std::string Password;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&Password, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &Password);
 
     if (Password != m_Password)
     {
@@ -795,9 +798,9 @@ int32_t CExtCharDepot::OnModifyPassword(Answer::NetPacket* inPacket)
     std::string OldPassword;
     std::string OnePassword;
     std::string TwoPassword;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OldPassword, inPacket);
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OnePassword, inPacket);
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&TwoPassword, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &OldPassword);
+    Answer::NetPacket::readUTF8(inPacket, &OnePassword);
+    Answer::NetPacket::readUTF8(inPacket, &TwoPassword);
 
     if (OldPassword != m_Password)
     {
@@ -822,7 +825,7 @@ int32_t CExtCharDepot::OnCancelPassword(Answer::NetPacket* inPacket)
     if (m_Password.empty()) return 10002;
 
     std::string OldPassword;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OldPassword, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &OldPassword);
 
     if (OldPassword != m_Password)
     {
@@ -842,8 +845,8 @@ int32_t CExtCharDepot::OnSetSecondPassword(Answer::NetPacket* inPacket)
 
     std::string OnePassword;
     std::string TwoPassword;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OnePassword, inPacket);
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&TwoPassword, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &OnePassword);
+    Answer::NetPacket::readUTF8(inPacket, &TwoPassword);
 
     if (OnePassword != TwoPassword)
     {
@@ -864,7 +867,7 @@ int32_t CExtCharDepot::OnEnterSecondPassword(Answer::NetPacket* inPacket)
     if (m_SendPassword.empty()) return 10002;
 
     std::string Password;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&Password, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &Password);
 
     if (Password != m_SendPassword)
     {
@@ -890,9 +893,9 @@ int32_t CExtCharDepot::OnModifySecondPassword(Answer::NetPacket* inPacket)
     std::string OldPassword;
     std::string OnePassword;
     std::string TwoPassword;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OldPassword, inPacket);
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OnePassword, inPacket);
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&TwoPassword, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &OldPassword);
+    Answer::NetPacket::readUTF8(inPacket, &OnePassword);
+    Answer::NetPacket::readUTF8(inPacket, &TwoPassword);
 
     if (OldPassword != m_SendPassword)
     {
@@ -917,7 +920,7 @@ int32_t CExtCharDepot::OnCancelSecondPassword(Answer::NetPacket* inPacket)
     if (m_SendPassword.empty()) return 10002;
 
     std::string OldPassword;
-    Answer::NetPacket::readUTF8((Answer::NetPacket*)&OldPassword, inPacket);
+    Answer::NetPacket::readUTF8(inPacket, &OldPassword);
 
     if (OldPassword != m_SendPassword)
     {

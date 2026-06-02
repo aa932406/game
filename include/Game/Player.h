@@ -299,6 +299,14 @@ public:
     static bool DecCurrency(Player* player, CURRENCY_TYPE type, int64_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return player ? player->DecCurrency(type, amount, reason, param) : false; }
     
     // 图标状态
+    // 静态包装
+    static CVip* GetPlayerVip(Player* player) { return player ? player->GetPlayerVip() : nullptr; }
+    static CExtCharBag* GetBag(Player* player) { return player ? player->GetBag() : nullptr; }
+    static void getBagSlotData(MemChrBag* ret, Player* player, int32_t slot) { if (player && ret) player->getBagSlotData(ret, slot); }
+    static void TiShiInfo(Player* player, int32_t id, int32_t pos) { if (player) player->TiShiInfo(id, pos); }
+    static void updateRecord(Player* player, int32_t id, int32_t param) { if (player) player->updateRecord(id, param); }
+    static int32_t getRecord(Player* player, int32_t id) { return player ? player->getRecord(id) : 0; }
+    static int64_t GetCurrency(Player* player, CURRENCY_TYPE nType) { return player ? player->GetCurrency(nType) : 0; }
     static void SendIconState(Player* player, const ShowIcon* stu);
 
     // 网络包处理
@@ -510,6 +518,7 @@ public:
     CHuoYueDu* GetPlayerHuoYueDu();
     CFunctionOpen* GetPlayerFunctionOpen();
     CVip* GetPlayerVip();
+    CExtCharBag* GetBag() { return GetCharBag(); }
     CVplan* GetVplan();
     ChouJiang* GetPlayerChouJiang();
     CExtChrTaskCycle* GetCharTaskCycle();
