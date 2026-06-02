@@ -303,9 +303,7 @@ struct CfgDungeonDrop {
     int probability;
 };
 
-struct CfgDungeonDropGroup {
-    // 用于管理掉落组
-};
+#include "CfgDungeonDropGroup.h"
 
 struct CfgDungeonMonster {
     int id;

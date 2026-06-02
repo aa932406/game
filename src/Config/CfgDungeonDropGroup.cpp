@@ -3,41 +3,22 @@
 #include <cstring>
 #include <algorithm>
 
-CfgDungeonDropGroup::CfgDungeonDropGroup(CfgDungeonDropGroup *const this)
+CfgDungeonDropGroup::CfgDungeonDropGroup()
 {
     // TODO: 从反编译代码还原实现
-    // 反编译代码片段:
-    // void __cdecl CfgDungeonDropGroup::CfgDungeonDropGroup(CfgDungeonDropGroup *const
-    // {
-    // std::list<CfgDungeonDrop>::list(&this->m_lstDropItems);
-    // CfgDungeonDropGroup::CleanUp(this);
-    // }
 }
 
-void CfgDungeonDropGroup::CleanUp(CfgDungeonDropGroup *const this)
+void CfgDungeonDropGroup::CleanUp()
 {
     // TODO: 从反编译代码还原实现
-    // 反编译代码片段:
-    // void __cdecl CfgDungeonDropGroup::CleanUp(CfgDungeonDropGroup *const this)
-    // {
-    // this->m_nMaxWight = 0;
-    // std::list<CfgDungeonDrop>::clear(&this->m_lstDropItems);
-    // }
 }
 
-void CfgDungeonDropGroup::Add(CfgDungeonDropGroup *const this, CfgDungeonDrop *const drop)
+void CfgDungeonDropGroup::Add(CfgDungeonDrop *const drop)
 {
     // TODO: 从反编译代码还原实现
-    // 反编译代码片段:
-    // void __cdecl CfgDungeonDropGroup::Add(CfgDungeonDropGroup *const this, CfgDungeo
-    // {
-    // this->m_nMaxWight += drop->weight;
-    // drop->weight = this->m_nMaxWight;
-    // std::list<CfgDungeonDrop>::push_back(&this->m_lstDropItems, drop);
-    // }
 }
 
-void CfgDungeonDropGroup::RandDrop(const CfgDungeonDropGroup *const this)
+const CfgDungeonDrop* CfgDungeonDropGroup::RandDrop() const
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:

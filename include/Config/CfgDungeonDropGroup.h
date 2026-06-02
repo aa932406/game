@@ -30,9 +30,9 @@ class CfgDungeonDropGroup
 public:
     CfgDungeonDropGroup();
 
-    void CleanUp(CfgDungeonDropGroup * this);
-    void Add(CfgDungeonDropGroup * this, CfgDungeonDrop * drop);
-    void RandDrop(CfgDungeonDropGroup * this);
+    void CleanUp();
+    void Add(CfgDungeonDrop * drop);
+    const CfgDungeonDrop* RandDrop() const;
 
 private:
         std::list<CfgDungeonDrop*> m_lstDropItems;

@@ -692,7 +692,7 @@ const CfgDungeonDrop *CfgData::randDungeonDrop(int32_t dungeonID)
     {
         return nullptr;
     }
-    return CfgDungeonDropGroup::RandDrop(&it->second);
+    return it->second.RandDrop();
 }
 
 CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(int32_t group_id)
@@ -3898,7 +3898,7 @@ void CfgData::fetchDungeon()
                     group.probability = DungeonDropFile.Search_Posistion( i_1, 8)->iValue;
                     
                     auto *v11 = &this->m_dungeonDropGroup[id];
-                    CfgDungeonDropGroup::Add(v11, &group);
+                    v11->Add(&group);
                 }
             }
                 }
