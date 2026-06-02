@@ -1010,11 +1010,11 @@ void CfgData::InitAppendAttrTable()
                     Attr.m_nAddAttrValue = TabFile.Search_Posistion( i, nIndex++)->iValue;
                     if (Attr.m_nAddAttrValue > 0)
                     {
-                        std::list<AddAttribute>::push_back(&stu.AttrList, &Attr);
+                        stu.AttrList.push_back(Attr);
                     }
                 }
                 
-                std::list<CfgAppendAttr>::push_back(&this->m_AppendAttrTable, &stu);
+                this->m_AppendAttrTable.push_back(stu);
                         }
         }
     }
@@ -1371,7 +1371,7 @@ void CfgData::InitSpecialTreasureMapRandTable()
                 
                                         stu.nGongGaoId = TabFile.Search_Posistion( i, 5)->iValue;
                 
-                std::list<SpecialTreasureMapRandCfg>::push_back(&this->m_SpecialTreasureMapRandCfgList, &stu);
+                this->m_SpecialTreasureMapRandCfgList.push_back(stu);
                         }
         }
     }
@@ -1406,11 +1406,11 @@ void CfgData::InitMonsterAddAttrTable()
                     memset(&stu, 0, sizeof(stu));
                     stu.index = TabFile.Search_Posistion( i, 2 * j + 3)->iValue;
                     stu.addon = TabFile.Search_Posistion( i, 2 * (j + 2))->iValue;
-                    std::vector<AttrAddon>::push_back(&AddAttrs.AttrVector, &stu);
+                    AddAttrs.AttrVector.push_back(stu);
                 }
                 
                 auto *v1 = this->m_MonstAddAttrMap[Mid];
-                std::list<CfgMonsterAddAttr>::push_back(v1, &AddAttrs);
+                v1->push_back(AddAttrs);
                         }
         }
     }
@@ -1668,7 +1668,7 @@ void CfgData::InitEveryDayChongZhi()
                 CfgData::parseGongGaoString((CfgData *const)&v8, stu.Index, &v9);
                 stu.GongGaoInfo = v8;
                                                     
-                std::list<CfgEverydayChongZhi>::push_back(&this->m_EveryDayChongZhiTable, &stu);
+                this->m_EveryDayChongZhiTable.push_back(stu);
                         }
         }
     }
@@ -3473,7 +3473,7 @@ void CfgData::fetchActivity()
                         strPos = v70->pString;
                         
                         std::vector<Position> v187;
-                        CfgData::paresPosition(&v187, this, &strPos);
+                        CfgData::paresPosition(v187, &strPos);
                         plant.EnterPosVector = v187;
                         v187.~vector();
                         strPos.~string();
@@ -3576,7 +3576,7 @@ void CfgData::fetchBuff()
             str = v1->pString;
             
             BuffAttrVector __x;
-            CfgData::paraseBuffAttr(&__x, this, &str);
+            CfgData::paraseBuffAttr(__x, &str);
             buff.buffAttr = __x;
             __x.~vector();
             str.~string();
@@ -3617,9 +3617,9 @@ void CfgData::fetchBuff()
     }
 }
 
-BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector const std::string *const str)
+void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const str)
 {
-    std::vector<BuffAttr>::vector(retstr);
+    retstr.clear();
     
     if (str->size() > 4)
     {
@@ -3634,7 +3634,7 @@ BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector const std::string *const 
         if (!vstr.empty())
         {
             int32_t nSize = (int32_t)vstr.size();
-            retstr->reserve(nSize);
+            retstr.reserve(nSize);
             
             for (int32_t i = 0; i < nSize; ++i)
             {
@@ -3659,7 +3659,7 @@ BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector const std::string *const 
         }
         vstr.~vector();
     }
-    return retstr;
+    return;
 }
 
 void CfgData::fetchDungeon()
@@ -3788,7 +3788,7 @@ void CfgData::fetchDungeon()
             str = v5->pString;
             
             Int32Vector v28;
-            CfgData::paraseInt32Vector(&v28, this, &str, &path, 0);
+            CfgData::paraseInt32Vector(v28, &str, &path, 0);
             dungeon.win_star = v28;
             v28.~vector();
             str.~string();
@@ -3816,7 +3816,7 @@ void CfgData::fetchDungeon()
             v39 = v7->pString;
             
             Int32Vector v36;
-            CfgData::paraseInt32Vector(&v36, this, &v39, &v37, 0);
+            CfgData::paraseInt32Vector(v36, &v39, &v37, 0);
             dungeon.star_ratio = v36;
             v36.~vector();
             v39.~string();
@@ -5642,9 +5642,9 @@ void CfgData::fetchMonsterTaskDrop()
 
 // ==================== 辅助方法 ====================
 
-std::vector<Position> *CfgData::paresPosition(std::vector<Position> const std::string *const strPos)
+void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *const strPos)
 {
-    std::vector<Position>::vector(retstr);
+    retstr.clear();
     
     if (!strPos->empty())
     {
@@ -5677,7 +5677,7 @@ std::vector<Position> *CfgData::paresPosition(std::vector<Position> const std::s
         }
         PosString.~vector();
     }
-    return retstr;
+    return;
 }
 
 Param2 CfgData::paraseParam2(const std::string *const str)
@@ -5714,11 +5714,11 @@ Param2 CfgData::paraseParam2(const std::string *const str)
     return result;
 }
 
-Int32Vector *CfgData::paraseInt32Vector(Int32Vector const std::string *const str, const std::string *const path, int32_t size)
+void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const str, const std::string *const path, int32_t size)
 {
-    std::vector<int>::vector(retstr);
+    retstr.clear();
     
-    if (str->empty() || *str == "-1") return retstr;
+    if (str->empty() || *str == "-1") return;
     
     std::string delims;
     char v19;
@@ -5736,7 +5736,7 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector const std::string *const str
     }
     else
     {
-        retstr->reserve(vstr.size());
+        retstr.reserve(vstr.size());
         for (auto& valStr : vstr)
         {
             int val = atoi(valStr->c_str());
@@ -5745,7 +5745,7 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector const std::string *const str
     }
     
     vstr.~vector();
-    return retstr;
+    return;
 }
 
 void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
@@ -6045,7 +6045,7 @@ void CfgData::InitPassiveSkillTable()
             CfgPassiveSkill stu;
             memset(&stu, 0, sizeof(stu));
             new (&stu.vAttrs) std::vector<AttrAddon>();
-            std::list<TalentAddon>::list(&stu.lTalentAddon);
+            stu.lTalentAddon.clear();
             
             int32_t nIndex = 0;
             stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -8888,7 +8888,7 @@ void CfgData::InitGuiGuDaoRenTable()
             str = v13->pString;
             
             Int32Vector v36;
-            CfgData::paraseInt32Vector(&v36, this, &str, &path, 0);
+            CfgData::paraseInt32Vector(v36, &str, &path, 0);
             stu.vMapId = v36;
             v36.~vector();
             str.~string();
@@ -9115,7 +9115,7 @@ void CfgData::InitOutLinkFestivalTable()
         {
             CfgOutLinkFestival stu;
             memset(&stu, 0, sizeof(stu));
-            std::string::string(&stu.strPlatfrom);
+            stu.strPlatfrom.clear();
             
             int32_t nIndex = 0;
             stu.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;

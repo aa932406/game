@@ -2335,11 +2335,11 @@ private:
     void parseMonsterSkill(int32_t id, MonsterSkill (*vSkill)[10], const std::string* strSkill);
     TaskRequest parseTaskCondition(int32_t id, int32_t condition, const std::string* strRequest);
     void parseTaskDrop(int32_t id, const std::string* strDrop);
-    std::vector<Position>* paresPosition(const std::string* strPos);
+    void paresPosition(std::vector<Position>& result, const std::string* strPos);
     Param2 paraseParam2(const std::string* str);
-    CfgInt32Vector* paraseInt32Vector(const std::string* str, const std::string* path, int32_t size);
+    void paraseInt32Vector(CfgInt32Vector& result, const std::string* str, const std::string* path, int32_t size);
     void paraseAttrAddon(AttrAddonVector& result, const std::string* addonAttr, int32_t nIndex, const std::string* path);
-    BuffAttrVector* paraseBuffAttr(const std::string* str);
+    void paraseBuffAttr(BuffAttrVector& result, const std::string* str);
     void parseAddAttribues(const std::string* addonAttr, int32_t nIndex, const std::string* path);
     void parseAddAttribues(std::list<AddAttribute>* attrList, const std::string* addonAttr, int32_t nIndex, const std::string* path);
     void paraseTalentAddon(std::list<TalentAddon>* result, const std::string* str, int32_t nIndex, const std::string* path);
