@@ -43,6 +43,21 @@ public:
         int64_t Currency[12];
     } gambleDepot;
 
+    // 家族数据 (供 CExtCharFamily 使用)
+    struct FamilyData {
+        int32_t nFamilyId;
+        int32_t nPosition;
+        int32_t nContribution;
+        int32_t nDailyContribution;
+        std::string strSkills;
+        int32_t nMedLevel;
+        int32_t nMedRes;
+        int32_t nHoe;
+        int32_t EnterDungeionFamilyId;
+        int32_t EnterCount;
+        int32_t EnterTime;
+    } m_FamilyData;
+
     // 交换数据 (供 CExtCharExchange 使用)
     struct {
         std::list<ExchangeRecord> lstExchange;

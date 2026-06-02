@@ -1,5 +1,6 @@
 // CExtCharFamily.cpp
 #include "CExtCharFamily.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharFamily::CExtCharFamily()
