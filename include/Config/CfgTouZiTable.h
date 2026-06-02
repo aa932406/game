@@ -7,6 +7,8 @@
 #include <vector>
 #include <list>
 #include <map>
+#include "Other/SevenTouZi.h"
+#include "Other/MonthTouZi.h"
 
 class Player;
 class Map;

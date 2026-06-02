@@ -25,7 +25,7 @@ struct MemChrBag;
 class SevenTouZi
 {
 public:
-    SevenTouZi(SevenTouZi *const this, const SevenTouZi *const a2);
+    SevenTouZi(const SevenTouZi& a2);
 
     int32_t nId;
     int32_t nType;

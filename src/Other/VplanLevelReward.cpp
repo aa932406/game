@@ -3,10 +3,10 @@
 #include <cstring>
 #include <algorithm>
 
-VplanLevelReward::VplanLevelReward(const VplanLevelReward *const a2)
+VplanLevelReward::VplanLevelReward(const VplanLevelReward& a2)
+    : Index(a2.Index)
+    , Level(a2.Level)
+    , Reward(a2.Reward)
 {
-    this->Index = a2->Index;
-    this->Level = a2->Level;
-    std::vector<MemChrBag>::vector(&this->Reward, &a2->Reward);
 }
 

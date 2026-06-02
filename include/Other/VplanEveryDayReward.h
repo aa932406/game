@@ -20,6 +20,8 @@ class CfgMap;
 class Answer_NetPacket;
 class Position;
 
+struct MemChrBag;
+
 class VplanEveryDayReward
 {
 public:

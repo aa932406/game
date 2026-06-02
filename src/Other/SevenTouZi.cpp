@@ -3,11 +3,11 @@
 #include <cstring>
 #include <algorithm>
 
-SevenTouZi::SevenTouZi(const SevenTouZi *const a2)
+SevenTouZi::SevenTouZi(const SevenTouZi& a2)
+    : nId(a2.nId)
+    , nType(a2.nType)
+    , nCondition(a2.nCondition)
+    , vItem(a2.vItem)
 {
-    this->nId = a2->nId;
-    this->nType = a2->nType;
-    this->nCondition = a2->nCondition;
-    std::vector<MemChrBag>::vector(&this->vItem, &a2->vItem);
 }
 

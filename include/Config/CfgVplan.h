@@ -2,6 +2,9 @@
 #define _CFGCFGVPLAN_H_
 
 #include "Common/CommonTypes.h"
+#include "Other/VplanReward.h"
+#include "Other/VplanLevelReward.h"
+#include "Other/VplanEveryDayReward.h"
 #include <cstdint>
 #include <map>
 

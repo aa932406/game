@@ -6,7 +6,7 @@
 #include <vector>
 #include <list>
 #include <map>
-#include "Config/CfgData.h"
+#include "Common/CommonTypes.h"
 
 class Player;
 class Map;

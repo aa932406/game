@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <map>
 #include "Config/CfgFamily.h"
+#include "Other/FamilyMedal.h"
+#include "Other/FamilySelfMedal.h"
 
 
 /**

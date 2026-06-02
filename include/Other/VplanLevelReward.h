@@ -25,7 +25,7 @@ struct MemChrBag;
 class VplanLevelReward
 {
 public:
-    VplanLevelReward(VplanLevelReward *const this, const VplanLevelReward *const a2);
+    VplanLevelReward(const VplanLevelReward& a2);
 
     int32_t Index;
     int32_t Level;
