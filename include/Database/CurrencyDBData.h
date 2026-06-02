@@ -3,21 +3,29 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include <map>
 #include <list>
+#include <map>
 #include <set>
-#include <cstring>
 
-class CurrencyDBData : public IDataStruct {
+namespace Answer {
+    class MySqlDBGuard;
+    class MySqlQuery;
+    class NetPacket;
+}
+
+typedef int64_t CharId_t;
+typedef int64_t FamilyId_t;
+typedef std::list<std::string> SqlStringList;
+
+class CurrencyDBData {
 public:
     CurrencyDBData();
     ~CurrencyDBData();
-    void CleanUp(CurrencyDBData *const this);
-    void SaveToSqlString(CurrencyDBData *const this, SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
-    bool LoadFromDB(CurrencyDBData *const this, Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
-    void PackageData(CurrencyDBData *const this, Answer::NetPacket *packet);
+    void CleanUp();
+    void SaveToSqlString(SqlStringList *sqls, char (*szSQL)[4096], CharId_t nCid);
+    bool LoadFromDB(Answer::MySqlDBGuard *db, char (*szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
+    void PackageData(Answer::NetPacket *packet);
 
-private:
-    // TODO: member variables
+public:
+    int64_t vCurrency[12];
 };
-（内容由AI生成，仅供参考）

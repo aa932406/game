@@ -8,8 +8,20 @@
 #include <set>
 #include <cstring>
 
-// Forward declarations for types used in method parameters
+#include "Answer/NetPacket.h"
+#include "Database/PlayerDBData.h"
+
+#define DB_SERVICE_TYPES_DEFINED
+#ifdef DB_SERVICE_TYPES_DEFINED
+typedef int64_t CharId_t;
+typedef int64_t FamilyId_t;
+#endif
+
+struct MemChrBag;
+typedef std::vector<MemChrBag> MemChrBagVector;
+
 class MemEquip;
+class LogTask;
 class LogTask;
 class LogDungeon;
 class WorldBossInfo;

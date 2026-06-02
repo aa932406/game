@@ -3,20 +3,35 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include <map>
 #include <list>
+#include <map>
 #include <set>
-#include <cstring>
 
-class CharWishDBData : public IDataStruct {
+namespace Answer {
+    class MySqlDBGuard;
+    class MySqlQuery;
+    class NetPacket;
+}
+
+typedef int64_t CharId_t;
+typedef std::list<std::string> SqlStringList;
+
+struct CharWishInfo {
+    int32_t nId;
+    int32_t nItemId;
+    int32_t nStartTime;
+    int32_t nGetReward;
+    std::string strInfo;
+};
+
+class CharWishDBData {
 public:
     CharWishDBData();
     ~CharWishDBData();
-    void SaveToSqlString(CharWishDBData *const this, SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
-    bool LoadFromDB(CharWishDBData *const this, Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
-    void PackageData(CharWishDBData *const this, Answer::NetPacket *packet);
+    void SaveToSqlString(SqlStringList *sqls, char (*szSQL)[4096], CharId_t nCid);
+    bool LoadFromDB(Answer::MySqlDBGuard *db, char (*szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
+    void PackageData(Answer::NetPacket *packet);
 
-private:
-    // TODO: member variables
+public:
+    std::list<CharWishInfo> lstWishs;
 };
-（内容由AI生成，仅供参考）
