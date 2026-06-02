@@ -1943,6 +1943,7 @@ struct CfgHorseRacingRewardTable {};
 #ifndef CFG_CAMP_WAR_TABLE_DEFINED
 #define CFG_CAMP_WAR_TABLE_DEFINED
 #include "Config/CfgCampWarTable.h"
+#include "Config/CfgCarrier.h"
 #endif
 #ifndef CFG_CITY_WAR_TABLE_DEFINED
 #define CFG_CITY_WAR_TABLE_DEFINED

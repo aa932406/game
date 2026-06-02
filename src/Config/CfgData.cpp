@@ -8486,6 +8486,8 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+            CfgOutLinkFestival stu;
+
                 memset(&stu, 0, sizeof(stu));
 
 
@@ -34029,7 +34031,7 @@ void CfgData::fetchDungeonMonster()
 
 
 
-            CfgData::paraseParam2List(&__x, nullptr, atoi(nIndex.c_str()), nullptr);
+            CfgData::paraseParam2List(&__x, nullptr, nIndex, nullptr);
 
 
 
@@ -44989,7 +44991,7 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
-            path.c_str(), size, str->c_str());
+            path->c_str(), size, str->c_str());
 
 
 
@@ -45397,7 +45399,7 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
-                path.c_str(), nIndex, addonAttr->c_str());
+                path->c_str(), nIndex, addonAttr->c_str());
 
 
 
@@ -51589,6 +51591,7 @@ void CfgData::InitCarrierTable()
 
 
 
+//             CfgCarrier stu;
             memset(&stu, 0, sizeof(stu));
 
 
@@ -52462,6 +52465,7 @@ void CfgData::InitFamilyTable()
 
 
                 int32_t nIndex_0 = 0;
+
 
 
 
@@ -60698,7 +60702,8 @@ void CfgData::InitWeiXinTable()
 
 
 
-            stu = v1->pString;
+            CfgWeiXingGift stu;
+            stu.strPlatform = v1->pString;
 
 
 
@@ -61081,6 +61086,7 @@ void CfgData::InitAdultGiftTable()
 
 
 
+            CfgAdultGift stu;
 
             stu.vReward = __x;
 
@@ -61106,7 +61112,7 @@ void CfgData::InitAdultGiftTable()
 
 
 
-            stu = v2->pString;
+stu.strPlatfrom = v2->pString;
 
 
 
@@ -62248,6 +62254,7 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+            CfgMobilePhoneGift stu;
 
 
             stu.vItem = __x;
@@ -62475,6 +62482,7 @@ void CfgData::InitMiniClientTable()
 
 
         {
+            CfgMiniClient stu;
 
 
 
@@ -62506,7 +62514,7 @@ void CfgData::InitMiniClientTable()
 
 
 
-            stu = v1->pString;
+            stu.strPlatfrom = v1->pString;
 
 
 
@@ -72051,7 +72059,7 @@ void CfgData::InitFestivalActivityTable()
 
 
 
-                                CItemHelper().parseItemString(item, strItem);
+                                CItemHelper().parseItemString(item, &strItem);
 
 
 
@@ -74451,7 +74459,7 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
-                path.c_str(), nIndex, addonAttr->c_str());
+                path->c_str(), nIndex, addonAttr->c_str());
 
 
 
@@ -75115,7 +75123,7 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
-            path ? path.c_str() : "unknown", size, str->c_str());
+            path ? path->c_str() : "unknown", size, str->c_str());
 
 
 
@@ -75339,7 +75347,7 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
-            path.c_str(), size, str->c_str());
+            path->c_str(), size, str->c_str());
 
 
 
@@ -76211,7 +76219,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
-                id, strItems.c_str());
+                id, strItems->c_str());
 
 
 
@@ -76515,7 +76523,7 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
-                id, strItems.c_str());
+                id, strItems->c_str());
 
 
 
