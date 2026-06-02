@@ -928,7 +928,7 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
         return false;
     }
     
-    return !(std::operator!=<char>(&icon->platfrom, "-1") && std::operator!=<char>(platform, &icon->platfrom));
+    return !(icon->platfrom != "-1" && *platform != icon->platfrom);
 }
 
 void CfgData::InitFamilyRewardTable()
@@ -3004,7 +3004,7 @@ void CfgData::fetchActivity()
             }
             
             // 解析奖励
-            if (std::string::size(&awards) > 0 && std::string::c_str(&awards)[0] != '\0')
+            if (awards.size() > 0 && awards.c_str()[0] != '\0')
             {
                 std::string delims;
                 std::string str;
@@ -3012,7 +3012,7 @@ void CfgData::fetchActivity()
                             delims = ":";
                 
                 char v129;
-                            str = std::string::c_str(&awards);
+                            str = awards.c_str();
                 
                 StringVector strParams;
                 StringUtility::split(&strParams, &str, &delims, 0);
@@ -3033,7 +3033,7 @@ void CfgData::fetchActivity()
                 for (int32_t j = 0; j < nsize; ++j)
                 {
                     std::string* v8 = strParams[j];
-                    int val = atoi(std::string::c_str(v8));
+                    int val = atoi(v8->c_str());
                     v77[j] = val;
                 }
                 strParams.~vector();
@@ -3046,7 +3046,7 @@ void CfgData::fetchActivity()
             }
             
             // 解析每日奖励
-            if (std::string::size(&daily) > 0 && std::string::c_str(&daily)[0] != '\0')
+            if (daily.size() > 0 && daily.c_str()[0] != '\0')
             {
                 std::string v130;
                 std::string v132;
@@ -3054,7 +3054,7 @@ void CfgData::fetchActivity()
                             v130 = ":";
                 
                 char v133;
-                            v132 = std::string::c_str(&daily);
+                            v132 = daily.c_str();
                 
                 StringVector strParams_0;
                 StringUtility::split(&strParams_0, &v132, &v130, 0);
@@ -3065,7 +3065,7 @@ void CfgData::fetchActivity()
                 for (int32_t j_0 = 0; j_0 < nsize_0; ++j_0)
                 {
                     std::string* v12 = strParams_0[j_0];
-                    int val = atoi(std::string::c_str(v12));
+                    int val = atoi(v12->c_str());
                     v78[j_0] = val;
                 }
                 strParams_0.~vector();
@@ -3084,7 +3084,7 @@ void CfgData::fetchActivity()
                             v134 = ":";
                 
                 char v137;
-                            v136 = std::string::c_str(&maps);
+                            v136 = maps.c_str();
                 
                 StringVector strMaps;
                 StringUtility::split(&strMaps, &v136, &v134, 0);
@@ -3092,7 +3092,7 @@ void CfgData::fetchActivity()
                 for (size_t j_1 = 0; j_1 < strMaps.size(); ++j_1)
                 {
                     std::string* v15 = strMaps[j_1];
-                    int val = atoi(std::string::c_str(v15));
+                    int val = atoi(v15->c_str());
                     cfg.maps.push_back(val);
                 }
                 strMaps.~vector();
@@ -3106,7 +3106,7 @@ void CfgData::fetchActivity()
                             v139 = ":";
                 
                 char v142;
-                            v141 = std::string::c_str(&position);
+                            v141 = position.c_str();
                 
                 StringVector strParams_1;
                 StringUtility::split(&strParams_1, &v141, &v139, 0);
@@ -3114,7 +3114,7 @@ void CfgData::fetchActivity()
                 if (strParams_1.size() == 2)
                 {
                     std::string* v19 = strParams_1[0];
-                    cfg.target_mapid = atoi(std::string::c_str(v19));
+                    cfg.target_mapid = atoi(v19->c_str());
                     
                     std::string v143;
                     std::string v145;
@@ -3123,7 +3123,7 @@ void CfgData::fetchActivity()
                     
                     char v146;
                                     std::string* v21 = strParams_1[1];
-                    v145 = std::string::c_str(v21);
+                    v145 = v21->c_str();
                     
                     StringVector stritemParams;
                     StringUtility::split(&stritemParams, &v145, &v143, 0);
@@ -3131,7 +3131,7 @@ void CfgData::fetchActivity()
                     for (size_t j_2 = 0; j_2 < stritemParams.size(); ++j_2)
                     {
                         std::string* v23 = stritemParams[j_2];
-                        int val = atoi(std::string::c_str(v23));
+                        int val = atoi(v23->c_str());
                         cfg.target_regiona.push_back(val);
                     }
                     stritemParams.~vector();
@@ -3139,7 +3139,7 @@ void CfgData::fetchActivity()
                 else if (strParams_1.size() == 3)
                 {
                     std::string* v25 = strParams_1[0];
-                    cfg.target_mapid = atoi(std::string::c_str(v25));
+                    cfg.target_mapid = atoi(v25->c_str());
                     
                     std::string v148;
                     std::string v150;
@@ -3148,7 +3148,7 @@ void CfgData::fetchActivity()
                     
                     char v151;
                                     std::string* v27 = strParams_1[1];
-                    v150 = std::string::c_str(v27);
+                    v150 = v27->c_str();
                     
                     StringVector stritemParams_0;
                     StringUtility::split(&stritemParams_0, &v150, &v148, 0);
@@ -3156,7 +3156,7 @@ void CfgData::fetchActivity()
                     for (size_t j_3 = 0; j_3 < stritemParams_0.size(); ++j_3)
                     {
                         std::string* v29 = stritemParams_0[j_3];
-                        int val = atoi(std::string::c_str(v29));
+                        int val = atoi(v29->c_str());
                         cfg.target_regiona.push_back(val);
                     }
                     
@@ -3167,7 +3167,7 @@ void CfgData::fetchActivity()
                     
                     char v157;
                                     std::string* v31 = strParams_1[2];
-                    v156 = std::string::c_str(v31);
+                    v156 = v31->c_str();
                     
                     StringVector v153;
                     StringUtility::split(&v153, &v156, &v154, 0);
@@ -3177,7 +3177,7 @@ void CfgData::fetchActivity()
                     for (size_t k = 0; k < stritemParams_0.size(); ++k)
                     {
                         std::string* v33 = stritemParams_0[k];
-                        int val = atoi(std::string::c_str(v33));
+                        int val = atoi(v33->c_str());
                         cfg.target_regionb.push_back(val);
                     }
                     stritemParams_0.~vector();
@@ -3197,7 +3197,7 @@ void CfgData::fetchActivity()
                 for (size_t j_4 = 0; j_4 < vStartHour.size(); ++j_4)
                 {
                     std::string* v35 = vStartHour[j_4];
-                    int tstart = atoi(std::string::c_str(v35));
+                    int tstart = atoi(v35->c_str());
                     if (tstart >= 0 && cfg.duration >= 0 && cfg.duration + tstart <= 1439)
                     {
                         cfg.start_hour.push_back(&tstart);
@@ -3263,14 +3263,14 @@ void CfgData::fetchActivity()
                                     v162 = ":";
                     
                     char v165;
-                                    v164 = std::string::c_str(&triggerParam);
+                                    v164 = triggerParam.c_str();
                     
                     StringVector strParams_2;
                     StringUtility::split(&strParams_2, &v164, &v162, 0);
                                                                                     
                     for (auto& strParam : strParams_2)
                     {
-                        int val = atoi(std::string::c_str(strParam));
+                        int val = atoi(strParam->c_str());
                         event.trigger_param.push_back(val);
                     }
                     strParams_2.~vector();
@@ -3425,7 +3425,7 @@ void CfgData::fetchActivity()
                         
                         char v184;
                                             std::string v183;
-                        v183 = std::string::c_str(&regionId);
+                        v183 = regionId.c_str();
                         
                         StringVector strRegions;
                         StringUtility::split(&strRegions, &v183, &v181, 0);
@@ -3433,7 +3433,7 @@ void CfgData::fetchActivity()
                         for (size_t it_0 = 0; it_0 < strRegions.size(); ++it_0)
                         {
                             std::string* v67 = strRegions[it_0];
-                            int val = atoi(std::string::c_str(v67));
+                            int val = atoi(v67->c_str());
                             npc.region_id.push_back(val);
                         }
                         strRegions.~vector();
