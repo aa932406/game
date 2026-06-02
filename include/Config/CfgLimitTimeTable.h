@@ -8,6 +8,8 @@
 #include <list>
 #include <map>
 
+struct CfgLimitTime;
+
 class Player;
 class Map;
 class Unit;
@@ -29,7 +31,7 @@ class CfgLimitTimeTable
 {
 public:
 
-    void AddLimitTime( CfgLimitTime * cfg);
+    void AddLimitTime(const CfgLimitTime *const cfg);
     int32_t GetLimitTime( int32_t nIndex);
 
 private:

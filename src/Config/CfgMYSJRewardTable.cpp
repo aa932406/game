@@ -1,4 +1,5 @@
 #include "Config/CfgMYSJRewardTable.h"
+#include "Config/CfgData.h"
 
 #include <cstring>
 #include <algorithm>

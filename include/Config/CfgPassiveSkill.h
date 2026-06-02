@@ -6,6 +6,14 @@
 #include <list>
 #include <vector>
 
+#ifndef TALENT_ADDON_DEFINED
+#define TALENT_ADDON_DEFINED
+struct TalentAddon {
+    int nSkillId;
+    int nSkillLevel;
+};
+#endif /* TALENT_ADDON_DEFINED */
+
 
 /**
  * @brief CfgPassiveSkill - Config data class

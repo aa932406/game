@@ -8,6 +8,8 @@
 #include <list>
 #include <map>
 
+struct CfgMYSJReward;
+
 class Player;
 class Map;
 class Unit;
@@ -31,7 +33,7 @@ public:
     CfgMYSJRewardTable();
     ~CfgMYSJRewardTable();
 
-    bool Add( int32_t nId, CfgMYSJReward * reward);
+    bool Add(int32_t nId, const CfgMYSJReward *const reward);
     int32_t GetGroupId( int32_t nDungeonId);
 
 private:

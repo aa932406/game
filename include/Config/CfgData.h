@@ -1049,6 +1049,8 @@ struct CfgTaskCycle {
     // 成员变量
 };
 
+#ifndef _CFGCFGFAMILY_H_
+#define _CFGCFGFAMILY_H_
 struct CfgFamily {
     int nLevel;
     int nExp;
@@ -1058,6 +1060,7 @@ struct CfgFamily {
 
     static void CleanUp(CfgFamily* family) { (void)family; }
 };
+#endif /* _CFGCFGFAMILY_H_ */
 
 struct CfgFamilyBoss {
     int32_t nFamilyLevel;
@@ -1134,11 +1137,14 @@ struct CfgGoldEgg {
     int nCostGold;
 };
 
+#ifndef CFG_LIMIT_TIME_DEFINED
+#define CFG_LIMIT_TIME_DEFINED
 struct CfgLimitTime {
     int nIndex;
     int nType;
     int nTime;
 };
+#endif /* CFG_LIMIT_TIME_DEFINED */
 
 struct CfgMysteryShop {
     int nId;
@@ -1203,6 +1209,8 @@ struct CfgTrailer {
     int PureDamage;
 };
 
+#ifndef CFG_MYSJ_REWARD_DEFINED
+#define CFG_MYSJ_REWARD_DEFINED
 struct CfgMYSJReward {
     int nId;
     int nClass;
@@ -1217,6 +1225,7 @@ struct CfgMYSJReward {
     int nSpecial;
     int nIndex;
 };
+#endif /* CFG_MYSJ_REWARD_DEFINED */
 
 struct CfgMaintainCompensate {
     int nIndex;
@@ -1558,10 +1567,13 @@ struct GroupMonster {
     // 成员变量
 };
 
+#ifndef TALENT_ADDON_DEFINED
+#define TALENT_ADDON_DEFINED
 struct TalentAddon {
     int nSkillId;
     int nSkillLevel;
 };
+#endif /* TALENT_ADDON_DEFINED */
 
 struct BuyFaBaoResCfg {
     // 成员变量
@@ -1948,6 +1960,8 @@ struct CfgTaskCycleTable {
     static void AddTask(void*, ...) {}
 };
 
+#ifndef _CFGCFGFAMILYTABLE_H_
+#define _CFGCFGFAMILYTABLE_H_
 struct CfgFamilyTable {
     static void Add(void* a0, void* a1) {}
     static void AddFamilyBoss(void* a0, void* a1) {}
@@ -1955,6 +1969,7 @@ struct CfgFamilyTable {
     static void Add(void*, ...) {}
     static void AddFamilyBoss(void*, ...) {}
 };
+#endif /* _CFGCFGFAMILYTABLE_H_ */
 struct CfgFamilyWarTable {};
 struct CfgFamilyLightExpTable {};
 struct CfgHorseRacingRewardTable {};
@@ -1984,11 +1999,14 @@ struct CfgGoldEggTable {
     static void AddGoldEgg(void*, ...) {}
     static void AddGoldEggProduce(void*, ...) {}
 };
+#ifndef _CFGLIMITTIMETABLE_H_
+#define _CFGLIMITTIMETABLE_H_
 struct CfgLimitTimeTable {
     static void AddLimitTime(void* a0, void* a1) {}
 
     static void AddLimitTime(void*, ...) {}
 };
+#endif /* _CFGLIMITTIMETABLE_H_ */
 struct CfgMysteryShopTable {
     static void Add(void* a0, void* a1) {}
 
@@ -2019,11 +2037,14 @@ struct CfgTrailerTable {
 
     static void Add(void*, ...) {}
 };
+#ifndef _CFGMYSJREWARDTABLE_H_
+#define _CFGMYSJREWARDTABLE_H_
 struct CfgMYSJRewardTable {
     static void Add(void* a0, void* a1, void* a2) {}
 
     static void Add(void*, ...) {}
 };
+#endif /* _CFGMYSJREWARDTABLE_H_ */
 struct CfgMaintainCompensateTable {
     static void Add(void* a0, void* a1) {}
 
@@ -2123,6 +2144,8 @@ typedef VipCardCfg VipCfg;
 
 #include "Config/CfgOutLinkFestival.h"
 #include "Config/CfgActiveSkill.h"
+class CfgFamilyTable;
+
 #include "CfgFestivalActivityTable.h"
 
 // ==================== CfgData 类定义 ====================
@@ -2729,7 +2752,7 @@ private:
     CfgPetTable m_cfgPetTable;
     CfgSkillLevelUpTable m_cfgSkillLevelUpTable;
     CfgTaskCycleTable m_cfgTaskCycleTable;
-    CfgFamilyTable m_cfgFamilyTable;
+    CfgFamilyTable* m_cfgFamilyTable = nullptr;
     CfgFamilyWarTable m_cfgFamilyWarTable;
     CfgFamilyLightExpTable m_cfgFamilyLightExpTable;
     CfgHorseRacingRewardTable m_cfgHorseRacingRewardTable;

@@ -2,8 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-std::map<int32_t, CfgPetData> CfgPetTable::m_mPetData;
-
 CfgPetTable::CfgPetTable()
 {
     m_mPetData.clear();
