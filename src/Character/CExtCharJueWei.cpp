@@ -1,5 +1,6 @@
 // CExtCharJueWei.cpp
 #include "CExtCharJueWei.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharJueWei::CExtCharJueWei()

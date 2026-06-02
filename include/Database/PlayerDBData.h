@@ -11,6 +11,7 @@
 #include "Common/CommonTypes.h"
 #include "Character/CExtCharBag.h"
 #include "Character/CExtCharExchange.h"
+#include "Character/CExtCharMysteryShop.h"
 #include "Other/RwLock.h"
 
 namespace Answer { class MySqlDBGuard; }
@@ -42,6 +43,13 @@ public:
         MemChrBag gambleDepot[560];
         int64_t Currency[12];
     } gambleDepot;
+
+    int32_t m_nJueWei;
+
+    // 神秘商店数据 (供 CExtCharMysteryShop 使用)
+    struct {
+        std::list<MysteryShop> lstShop;
+    } m_MysteryShopDBData;
 
     // 家族数据 (供 CExtCharFamily 使用)
     struct FamilyData {

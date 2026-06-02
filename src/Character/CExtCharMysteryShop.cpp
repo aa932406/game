@@ -1,5 +1,6 @@
 // CExtCharMysteryShop.cpp
 #include "CExtCharMysteryShop.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharMysteryShop::CExtCharMysteryShop()
