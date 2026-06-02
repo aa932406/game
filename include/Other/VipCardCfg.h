@@ -25,7 +25,7 @@ struct AddAttribute;
 class VipCardCfg
 {
 public:
-    VipCardCfg(VipCardCfg *const this, const VipCardCfg *const a2);
+    VipCardCfg(const VipCardCfg\& a2);
 
     int32_t VipCardId;
     int32_t AddVipTime;

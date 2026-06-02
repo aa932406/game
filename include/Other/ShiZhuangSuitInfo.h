@@ -25,7 +25,7 @@ struct AddAttribute;
 class ShiZhuangSuitInfo
 {
 public:
-    ShiZhuangSuitInfo(ShiZhuangSuitInfo *const this, const ShiZhuangSuitInfo *const a2);
+    ShiZhuangSuitInfo(const ShiZhuangSuitInfo\& a2);
 
     int32_t nLevel;
     int32_t nSuitLevel;

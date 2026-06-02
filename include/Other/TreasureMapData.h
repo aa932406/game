@@ -23,7 +23,7 @@ class Position;
 class TreasureMapData
 {
 public:
-    TreasureMapData(TreasureMapData *const this);
+    TreasureMapData() = default;
 
     Position Pos;
 };

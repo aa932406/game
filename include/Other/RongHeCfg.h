@@ -25,7 +25,7 @@ struct RongHeItem;
 class RongHeCfg
 {
 public:
-    RongHeCfg(RongHeCfg *const this, const RongHeCfg *const a2);
+    RongHeCfg(const RongHeCfg\& a2);
 
     int32_t nId;
     int32_t nCostItem;

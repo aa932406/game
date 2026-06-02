@@ -25,7 +25,7 @@ struct MemChrBag;
 class SelectItemCfg
 {
 public:
-    SelectItemCfg(SelectItemCfg *const this, const SelectItemCfg *const a2);
+    SelectItemCfg(const SelectItemCfg\& a2);
 
     int32_t nId;
     std::vector<MemChrBag> vItem;

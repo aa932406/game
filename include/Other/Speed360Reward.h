@@ -25,7 +25,7 @@ struct MemChrBag;
 class Speed360Reward
 {
 public:
-    Speed360Reward(Speed360Reward *const this, const Speed360Reward *const a2);
+    Speed360Reward(const Speed360Reward\& a2);
 
     int32_t StartTime;
     int32_t EndTime;

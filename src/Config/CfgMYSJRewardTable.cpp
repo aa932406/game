@@ -3,7 +3,7 @@
 #include <cstring>
 #include <algorithm>
 
-CfgMYSJRewardTable::CfgMYSJRewardTable(CfgMYSJRewardTable *const this)
+CfgMYSJRewardTable::CfgMYSJRewardTable()
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:
@@ -15,11 +15,11 @@ CfgMYSJRewardTable::CfgMYSJRewardTable(CfgMYSJRewardTable *const this)
     // }
 }
 
-bool CfgMYSJRewardTable::Add(CfgMYSJRewardTable *const this, int32_t nId, const CfgMYSJReward *const reward)
+bool CfgMYSJRewardTable::Add(int32_t nId, const CfgMYSJReward *const reward)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:
-    // bool __cdecl CfgMYSJRewardTable::Add(CfgMYSJRewardTable *const this, int32_t nId
+    // bool __cdecl CfgMYSJRewardTable::Add(int32_t nId
     // {
     // std::list<CfgMYSJReward> *v3; // rax
     // std::list<CfgMYSJReward> *v4; // rax
@@ -42,7 +42,7 @@ CfgMYSJRewardTable::~CfgMYSJRewardTable()
     // }
 }
 
-int32_t CfgMYSJRewardTable::GetGroupId(const CfgMYSJRewardTable *const this, int32_t nDungeonId)
+int32_t CfgMYSJRewardTable::GetGroupId(int32_t nDungeonId)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:

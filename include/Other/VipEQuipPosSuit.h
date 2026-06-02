@@ -25,7 +25,7 @@ struct AddAttribute;
 class VipEQuipPosSuit
 {
 public:
-    VipEQuipPosSuit(VipEQuipPosSuit *const this, const VipEQuipPosSuit *const a2);
+    VipEQuipPosSuit(const VipEQuipPosSuit\& a2);
 
     int32_t nIndex;
     int32_t nLevel;

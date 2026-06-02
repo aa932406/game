@@ -25,7 +25,7 @@ struct MemChrBag;
 class TestServerReward
 {
 public:
-    TestServerReward(TestServerReward *const this, const TestServerReward *const a2);
+    TestServerReward(const TestServerReward\& a2);
 
     int32_t nId;
     int32_t nType;

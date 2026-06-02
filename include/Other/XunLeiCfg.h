@@ -25,7 +25,7 @@ struct MemChrBag;
 class XunLeiCfg
 {
 public:
-    XunLeiCfg(XunLeiCfg *const this, const XunLeiCfg *const a2);
+    XunLeiCfg(const XunLeiCfg\& a2);
 
     int32_t nIndex;
     int32_t nType;

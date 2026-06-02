@@ -27,7 +27,7 @@ struct ItemData;
 class WinRefiningCfg
 {
 public:
-    WinRefiningCfg(WinRefiningCfg *const this, const WinRefiningCfg *const a2);
+    WinRefiningCfg(const WinRefiningCfg\& a2);
 
     int32_t nSlot;
     int32_t nLevel;

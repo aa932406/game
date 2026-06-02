@@ -5,14 +5,14 @@
 #include <cstring>
 #include <algorithm>
 
-RefreshMonsterCfg::RefreshMonsterCfg(const RefreshMonsterCfg *const a2)
+RefreshMonsterCfg::RefreshMonsterCfg(const RefreshMonsterCfg& a2)
 {
-    this->nIndex = a2->nIndex;
-    this->nType = a2->nType;
-    this->nId = a2->nId;
-    this->nCount = a2->nCount;
-    this->nStartTime = a2->nStartTime;
-    this->nDiffTime = a2->nDiffTime;
-    std::vector<Position>::vector(&this->vRevivePosVector, &a2->vRevivePosVector);
+    this->nIndex = a2.nIndex;
+    this->nType = a2.nType;
+    this->nId = a2.nId;
+    this->nCount = a2.nCount;
+    this->nStartTime = a2.nStartTime;
+    this->nDiffTime = a2.nDiffTime;
+    this->vRevivePosVector = a2.vRevivePosVector;
 }
 

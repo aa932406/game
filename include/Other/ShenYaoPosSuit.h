@@ -25,7 +25,7 @@ struct AttrAddon;
 class ShenYaoPosSuit
 {
 public:
-    ShenYaoPosSuit(ShenYaoPosSuit *const this, const ShenYaoPosSuit *const a2);
+    ShenYaoPosSuit(const ShenYaoPosSuit\& a2);
 
     int32_t nLevel;
     std::vector<AttrAddon> vAttrAddon;

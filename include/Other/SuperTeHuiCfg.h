@@ -25,7 +25,7 @@ struct MemChrBag;
 class SuperTeHuiCfg
 {
 public:
-    SuperTeHuiCfg(SuperTeHuiCfg *const this, const SuperTeHuiCfg *const a2);
+    SuperTeHuiCfg(const SuperTeHuiCfg\& a2);
 
     int32_t nIndex;
     int32_t nNeedVip;

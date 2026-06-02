@@ -31,8 +31,8 @@ public:
     CfgMYSJRewardTable();
     ~CfgMYSJRewardTable();
 
-    bool Add(CfgMYSJRewardTable * this, int32_t nId, CfgMYSJReward * reward);
-    int32_t GetGroupId(CfgMYSJRewardTable * this, int32_t nDungeonId);
+    bool Add( int32_t nId, CfgMYSJReward * reward);
+    int32_t GetGroupId( int32_t nDungeonId);
 
 private:
         // TODO: 确认类型 m_mDungeonGroup

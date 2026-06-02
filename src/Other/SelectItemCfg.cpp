@@ -3,9 +3,9 @@
 #include <cstring>
 #include <algorithm>
 
-SelectItemCfg::SelectItemCfg(const SelectItemCfg *const a2)
+SelectItemCfg::SelectItemCfg(const SelectItemCfg& a2)
 {
-    this->nId = a2->nId;
-    std::vector<MemChrBag>::vector(&this->vItem, &a2->vItem);
+    this->nId = a2.nId;
+    this->vItem = a2.vItem;
 }
 

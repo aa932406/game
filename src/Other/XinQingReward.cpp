@@ -3,9 +3,9 @@
 #include <cstring>
 #include <algorithm>
 
-XinQingReward::XinQingReward(const XinQingReward *const a2)
+XinQingReward::XinQingReward(const XinQingReward& a2)
 {
-    this->GongGaoId = a2->GongGaoId;
-    std::vector<MemChrBag>::vector(&this->Items, &a2->Items);
+    this->GongGaoId = a2.GongGaoId;
+    this->Items = a2.Items;
 }
 

@@ -25,7 +25,7 @@ struct MemChrBag;
 class Wan360Reward
 {
 public:
-    Wan360Reward(Wan360Reward *const this, const Wan360Reward *const a2);
+    Wan360Reward(const Wan360Reward\& a2);
 
     int32_t Index;
     std::vector<MemChrBag> Items;

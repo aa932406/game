@@ -25,7 +25,7 @@ struct MemChrBag;
 class ShangRenCfg
 {
 public:
-    ShangRenCfg(ShangRenCfg *const this, const ShangRenCfg *const a2);
+    ShangRenCfg(const ShangRenCfg\& a2);
 
     int32_t nId;
     std::vector<MemChrBag> vItem;

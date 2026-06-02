@@ -3,17 +3,17 @@
 #include <cstring>
 #include <algorithm>
 
-void CfgLimitTimeTable::AddLimitTime(CfgLimitTimeTable *const this, const CfgLimitTime *const cfg)
+void CfgLimitTimeTable::AddLimitTime(const CfgLimitTime *const cfg)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:
-    // void __cdecl CfgLimitTimeTable::AddLimitTime(CfgLimitTimeTable *const this, cons
+    // void __cdecl CfgLimitTimeTable::AddLimitTime(cons
     // {
     // *std::map<int,CfgLimitTime>::operator[](&this->m_mLimitTime, &cfg->nIndex) = *cf
     // }
 }
 
-int32_t CfgLimitTimeTable::GetLimitTime(const CfgLimitTimeTable *const this, int32_t nIndex)
+int32_t CfgLimitTimeTable::GetLimitTime(int32_t nIndex)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:

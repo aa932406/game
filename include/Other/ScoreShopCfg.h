@@ -23,7 +23,7 @@ class Position;
 class ScoreShopCfg
 {
 public:
-    ScoreShopCfg(ScoreShopCfg *const this, const ScoreShopCfg *const a2);
+    ScoreShopCfg(const ScoreShopCfg\& a2);
 
     int32_t Index;
     int32_t PlayerLevel;

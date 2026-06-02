@@ -25,7 +25,7 @@ struct MemChrBag;
 class XinQingReward
 {
 public:
-    XinQingReward(XinQingReward *const this, const XinQingReward *const a2);
+    XinQingReward(const XinQingReward\& a2);
 
     int32_t GongGaoId;
     std::vector<MemChrBag> Items;

@@ -25,7 +25,7 @@ class Param2;
 class TaskDrop
 {
 public:
-    TaskDrop(TaskDrop *const this, const TaskDrop *const a2);
+    TaskDrop(const TaskDrop\& a2);
 
     int32_t nCount;
     std::list<Param2> lstJobGroup;

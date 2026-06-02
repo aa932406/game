@@ -23,7 +23,7 @@ class Position;
 class RefreshMonsterCfg
 {
 public:
-    RefreshMonsterCfg(RefreshMonsterCfg *const this, const RefreshMonsterCfg *const a2);
+    RefreshMonsterCfg(const RefreshMonsterCfg\& a2);
 
     int32_t nIndex;
     int32_t nType;

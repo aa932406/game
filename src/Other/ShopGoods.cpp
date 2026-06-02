@@ -3,9 +3,9 @@
 #include <cstring>
 #include <algorithm>
 
-ShopGoods::ShopGoods(const ShopGoods *const a2)
+ShopGoods::ShopGoods(const ShopGoods& a2)
 {
-    std::vector<MemChrBag>::vector(&this->vItem, &a2->vItem);
-    this->nPrice = a2->nPrice;
+    this->vItem = a2.vItem;
+    this->nPrice = a2.nPrice;
 }
 

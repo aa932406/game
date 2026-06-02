@@ -29,8 +29,8 @@ class CfgLimitTimeTable
 {
 public:
 
-    void AddLimitTime(CfgLimitTimeTable * this, CfgLimitTime * cfg);
-    int32_t GetLimitTime(CfgLimitTimeTable * this, int32_t nIndex);
+    void AddLimitTime( CfgLimitTime * cfg);
+    int32_t GetLimitTime( int32_t nIndex);
 
 private:
         int64_t m_mLimitTime;

@@ -33,12 +33,12 @@ public:
     CfgTouZiTable();
     ~CfgTouZiTable();
 
-    void AddSevenTouZi(CfgTouZiTable * this, SevenTouZi *p_stu);
-    void AddMonthTouZi(CfgTouZiTable * this, MonthTouZi *p_stu);
-    void GetSevenTouZi(CfgTouZiTable * this, int32_t nId);
-    bool IsAllGetSevenDay(CfgTouZiTable * this, int32_t SevenDayRecord);
-    void GetMonthTouZi(CfgTouZiTable * this, int32_t nDay);
-    bool IsAllGetMonthTouZi(CfgTouZiTable * this, int32_t MonthTouZiRecord);
+    void AddSevenTouZi( SevenTouZi *p_stu);
+    void AddMonthTouZi( MonthTouZi *p_stu);
+    void GetSevenTouZi( int32_t nId);
+    bool IsAllGetSevenDay( int32_t SevenDayRecord);
+    void GetMonthTouZi( int32_t nDay);
+    bool IsAllGetMonthTouZi( int32_t MonthTouZiRecord);
 
 private:
         // TODO: 确认类型 m_MonthTouZiMap

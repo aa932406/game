@@ -25,7 +25,7 @@ struct ItemData;
 class cfgEquipUpPhase
 {
 public:
-    cfgEquipUpPhase(cfgEquipUpPhase *const this, const cfgEquipUpPhase *const a2);
+    cfgEquipUpPhase(const cfgEquipUpPhase\& a2);
 
 private:
     int32_t m_CostEquip;

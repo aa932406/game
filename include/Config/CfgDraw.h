@@ -32,7 +32,7 @@ public:
     CfgDraw(const CfgDraw& a2);
     CfgDraw& operator=(const CfgDraw& a2);
 
-    void Add(CfgDraw * this, CfgDrawReward * reward);
+    void Add( CfgDrawReward * reward);
 
 private:
         int32_t m_nMaxRate;

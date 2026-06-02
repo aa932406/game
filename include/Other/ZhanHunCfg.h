@@ -25,7 +25,7 @@ struct AddAttribute;
 class ZhanHunCfg
 {
 public:
-    ZhanHunCfg(ZhanHunCfg *const this, const ZhanHunCfg *const a2);
+    ZhanHunCfg(const ZhanHunCfg\& a2);
 
     int32_t nLevel;
     int32_t nMoney;

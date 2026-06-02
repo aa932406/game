@@ -5,7 +5,7 @@
 static std::map<int32_t, SevenTouZi> m_mSevenTouZi;   // 七日投资 [nId]
 static std::map<int32_t, MonthTouZi> m_mMonthTouZi;   // 月投资 [nDay]
 
-CfgTouZiTable::CfgTouZiTable(CfgTouZiTable *const this)
+CfgTouZiTable::CfgTouZiTable()
 {
     if (this)
     {
@@ -20,7 +20,7 @@ CfgTouZiTable::~CfgTouZiTable()
     m_mMonthTouZi.clear();
 }
 
-void CfgTouZiTable::AddSevenTouZi(CfgTouZiTable *const this, SevenTouZi *p_stu)
+void CfgTouZiTable::AddSevenTouZi(SevenTouZi *p_stu)
 {
     if (!this || !p_stu || p_stu->nId <= 0)
     {
@@ -32,7 +32,7 @@ void CfgTouZiTable::AddSevenTouZi(CfgTouZiTable *const this, SevenTouZi *p_stu)
     m_mSevenTouZi[p_stu->nId] = *p_stu;
 }
 
-void CfgTouZiTable::AddMonthTouZi(CfgTouZiTable *const this, MonthTouZi *p_stu)
+void CfgTouZiTable::AddMonthTouZi(MonthTouZi *p_stu)
 {
     if (!this || !p_stu || p_stu->nDay <= 0)
     {
@@ -44,7 +44,7 @@ void CfgTouZiTable::AddMonthTouZi(CfgTouZiTable *const this, MonthTouZi *p_stu)
     m_mMonthTouZi[p_stu->nDay] = *p_stu;
 }
 
-const SevenTouZi* CfgTouZiTable::GetSevenTouZi(const CfgTouZiTable *const this, int32_t nId)
+const SevenTouZi* CfgTouZiTable::GetSevenTouZi(int32_t nId)
 {
     if (!this || nId <= 0)
     {
@@ -59,7 +59,7 @@ const SevenTouZi* CfgTouZiTable::GetSevenTouZi(const CfgTouZiTable *const this, 
     return nullptr;
 }
 
-bool CfgTouZiTable::IsAllGetSevenDay(const CfgTouZiTable *const this, int32_t SevenDayRecord)
+bool CfgTouZiTable::IsAllGetSevenDay(int32_t SevenDayRecord)
 {
     if (!this)
     {
@@ -78,7 +78,7 @@ bool CfgTouZiTable::IsAllGetSevenDay(const CfgTouZiTable *const this, int32_t Se
     return true;
 }
 
-const MonthTouZi* CfgTouZiTable::GetMonthTouZi(const CfgTouZiTable *const this, int32_t nDay)
+const MonthTouZi* CfgTouZiTable::GetMonthTouZi(int32_t nDay)
 {
     if (!this || nDay <= 0)
     {
@@ -93,7 +93,7 @@ const MonthTouZi* CfgTouZiTable::GetMonthTouZi(const CfgTouZiTable *const this, 
     return nullptr;
 }
 
-bool CfgTouZiTable::IsAllGetMonthTouZi(const CfgTouZiTable *const this, int32_t MonthTouZiRecord)
+bool CfgTouZiTable::IsAllGetMonthTouZi(int32_t MonthTouZiRecord)
 {
     if (!this)
     {
@@ -112,7 +112,7 @@ bool CfgTouZiTable::IsAllGetMonthTouZi(const CfgTouZiTable *const this, int32_t 
     return true;
 }
 
-int32_t CfgTouZiTable::GetSevenTouZiCount(const CfgTouZiTable *const this)
+int32_t CfgTouZiTable::GetSevenTouZiCount()
 {
     if (!this)
     {
@@ -121,7 +121,7 @@ int32_t CfgTouZiTable::GetSevenTouZiCount(const CfgTouZiTable *const this)
     return static_cast<int32_t>(m_mSevenTouZi.size());
 }
 
-int32_t CfgTouZiTable::GetMonthTouZiCount(const CfgTouZiTable *const this)
+int32_t CfgTouZiTable::GetMonthTouZiCount()
 {
     if (!this)
     {

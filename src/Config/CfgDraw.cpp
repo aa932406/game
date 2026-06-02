@@ -3,11 +3,11 @@
 #include <cstring>
 #include <algorithm>
 
-CfgDraw::CfgDraw(CfgDraw *const this, int8_t type)
+CfgDraw::CfgDraw(int8_t type)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:
-    // void __cdecl CfgDraw::CfgDraw(CfgDraw *const this, int8_t type)
+    // void __cdecl CfgDraw::CfgDraw(int8_t type)
     // {
     // this->m_nType = type;
     // this->m_nMaxRate = 0;
@@ -15,22 +15,22 @@ CfgDraw::CfgDraw(CfgDraw *const this, int8_t type)
     // }
 }
 
-void CfgDraw::Add(CfgDraw *const this, const CfgDrawReward *const reward)
+void CfgDraw::Add(const CfgDrawReward *const reward)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:
-    // void __cdecl CfgDraw::Add(CfgDraw *const this, const CfgDrawReward *const reward
+    // void __cdecl CfgDraw::Add(const CfgDrawReward *const reward
     // {
     // std::list<CfgDrawReward>::push_back(&this->m_rewards, reward);
     // this->m_nMaxRate += reward->nRate;
     // }
 }
 
-CfgDraw::CfgDraw(CfgDraw *const this, const CfgDraw *const a2)
+CfgDraw::CfgDraw(const CfgDraw *const a2)
 {
     // TODO: 从反编译代码还原实现
     // 反编译代码片段:
-    // void __cdecl CfgDraw::CfgDraw(CfgDraw *const this, const CfgDraw *const a2)
+    // void __cdecl CfgDraw::CfgDraw(const CfgDraw *const a2)
     // {
     // this->m_nType = a2->m_nType;
     // this->m_nMaxRate = a2->m_nMaxRate;

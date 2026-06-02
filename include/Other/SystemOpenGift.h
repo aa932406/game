@@ -25,7 +25,7 @@ struct MemChrBag;
 class SystemOpenGift
 {
 public:
-    SystemOpenGift(SystemOpenGift *const this, const SystemOpenGift *const a2);
+    SystemOpenGift(const SystemOpenGift\& a2);
 
     int32_t Id;
     int32_t TypeId;

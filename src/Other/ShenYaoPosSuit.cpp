@@ -3,9 +3,9 @@
 #include <cstring>
 #include <algorithm>
 
-ShenYaoPosSuit::ShenYaoPosSuit(const ShenYaoPosSuit *const a2)
+ShenYaoPosSuit::ShenYaoPosSuit(const ShenYaoPosSuit& a2)
 {
-    this->nLevel = a2->nLevel;
-    std::vector<AttrAddon>::vector(&this->vAttrAddon, &a2->vAttrAddon);
+    this->nLevel = a2.nLevel;
+    this->vAttrAddon = a2.vAttrAddon;
 }
 

@@ -3,12 +3,12 @@
 #include <cstring>
 #include <algorithm>
 
-TestServerReward::TestServerReward(const TestServerReward *const a2)
+TestServerReward::TestServerReward(const TestServerReward& a2)
 {
-    this->nId = a2->nId;
-    this->nType = a2->nType;
-    this->nParm = a2->nParm;
-    std::vector<MemChrBag>::vector(&this->vItems, &a2->vItems);
-    this->nGongId = a2->nGongId;
+    this->nId = a2.nId;
+    this->nType = a2.nType;
+    this->nParm = a2.nParm;
+    this->vItems = a2.vItems;
+    this->nGongId = a2.nGongId;
 }
 

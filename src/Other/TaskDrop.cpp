@@ -3,9 +3,9 @@
 #include <cstring>
 #include <algorithm>
 
-TaskDrop::TaskDrop(const TaskDrop *const a2)
+TaskDrop::TaskDrop(const TaskDrop& a2)
 {
-    this->nCount = a2->nCount;
-    std::list<Param2>::list(&this->lstJobGroup, &a2->lstJobGroup);
+    this->nCount = a2.nCount;
+    this->lstJobGroup = a2.lstJobGroup;
 }
 

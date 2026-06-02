@@ -23,7 +23,7 @@ class Position;
 class RongHeRecord
 {
 public:
-    RongHeRecord(RongHeRecord *const this, const RongHeRecord *const a2);
+    RongHeRecord(const RongHeRecord\& a2);
 
     int32_t nCid;
     std::string strName;

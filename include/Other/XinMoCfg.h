@@ -25,7 +25,7 @@ struct AddAttribute;
 class XinMoCfg
 {
 public:
-    XinMoCfg(XinMoCfg *const this, const XinMoCfg *const a2);
+    XinMoCfg(const XinMoCfg\& a2);
 
     int32_t XinMoLevel;
     int32_t CostMoney;

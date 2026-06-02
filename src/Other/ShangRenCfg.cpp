@@ -3,10 +3,10 @@
 #include <cstring>
 #include <algorithm>
 
-ShangRenCfg::ShangRenCfg(const ShangRenCfg *const a2)
+ShangRenCfg::ShangRenCfg(const ShangRenCfg& a2)
 {
-    this->nId = a2->nId;
-    std::vector<MemChrBag>::vector(&this->vItem, &a2->vItem);
-    this->nPrice = a2->nPrice;
+    this->nId = a2.nId;
+    this->vItem = a2.vItem;
+    this->nPrice = a2.nPrice;
 }
 

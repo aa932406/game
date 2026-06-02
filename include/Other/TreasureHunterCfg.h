@@ -25,7 +25,7 @@ struct MemChrBag;
 class TreasureHunterCfg
 {
 public:
-    TreasureHunterCfg(TreasureHunterCfg *const this, const TreasureHunterCfg *const a2);
+    TreasureHunterCfg(const TreasureHunterCfg\& a2);
 
     int32_t nId;
     std::vector<MemChrBag> Items;

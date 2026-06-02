@@ -3,9 +3,9 @@
 #include <cstring>
 #include <algorithm>
 
-Wan360Reward::Wan360Reward(const Wan360Reward *const a2)
+Wan360Reward::Wan360Reward(const Wan360Reward& a2)
 {
-    this->Index = a2->Index;
-    std::vector<MemChrBag>::vector(&this->Items, &a2->Items);
+    this->Index = a2.Index;
+    this->Items = a2.Items;
 }
 

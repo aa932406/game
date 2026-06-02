@@ -23,7 +23,7 @@ class Position;
 class SummonSkill
 {
 public:
-    SummonSkill(SummonSkill *const this);
+    SummonSkill() = default;
 
     Position targetPos;
 };

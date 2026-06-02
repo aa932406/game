@@ -25,7 +25,7 @@ class ShiZhuangSuitInfo;
 class ShiZhuangSuitCfg
 {
 public:
-    ShiZhuangSuitCfg(ShiZhuangSuitCfg *const this, const ShiZhuangSuitCfg *const a2);
+    ShiZhuangSuitCfg(const ShiZhuangSuitCfg\& a2);
 
     int32_t nSuidId;
     int32_t nCount;
