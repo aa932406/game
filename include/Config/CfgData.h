@@ -1261,6 +1261,9 @@ struct cfgSpecialMonsterTable {
 struct cfgEquipUpPhaseTable {
     // 成员变量
 };
+struct CfgEquipUpPhaseTable {
+    static const void* GetData(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
+};
 
 struct CfgTouZi {
     // 成员变量
@@ -1713,8 +1716,19 @@ struct CfgYYGameApp {};
 struct CfgYYVip {};
 struct CfgYYSuperBuff {};
 struct CfgSgGameApp {};
-struct CfgEquipTable {};
-struct CfgItemGemTable {};
+struct CfgEquipTable {
+    static const void* GetEquip(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
+    static const void* GetEquipUpStar(const void* tbl, int32_t type, int32_t star) { (void)tbl; (void)type; (void)star; return nullptr; }
+    static const void* GetEquipUpPos(const void* tbl, int32_t pos, int32_t level) { (void)tbl; (void)pos; (void)level; return nullptr; }
+    static const void* GetEquipStrengthenCfg(const void* tbl, int32_t pos, int32_t level) { (void)tbl; (void)pos; (void)level; return nullptr; }
+    static const void* GetEquipSuit(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
+    static const void* GetShenYaoPosCfg(const void* tbl, int32_t pos, int32_t level) { (void)tbl; (void)pos; (void)level; return nullptr; }
+};
+struct CfgItemGemTable {
+    static const void* GetItemGem(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
+    static const void* GetGemOpenHole(const void* tbl, int32_t slot) { (void)tbl; (void)slot; return nullptr; }
+    static const void* GetGemLevelUp(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
+};
 struct CfgItemCombiTable {};
 struct CfgPetTable {};
 struct CfgSkillLevelUpTable {};
@@ -2110,6 +2124,12 @@ public:
     static int32_t getOutValue(CfgData* cfg, int32_t nId, int8_t nClass) { return cfg ? cfg->getOutValue(nId, nClass) : 0; }
     static bool canSell(CfgData* cfg, int32_t nId, int8_t nClass) { return cfg ? cfg->canSell(nId, nClass) : false; }
     static SelectItemCfg* GetSelectItemCfg(CfgData* cfg, int32_t nId) { return cfg ? cfg->GetSelectItemCfg(nId) : nullptr; }
+    static const CfgEquipTable* GetEquipTable(CfgData* cfg) { (void)cfg; return nullptr; }
+    static CfgEquipExchange* GetEquipExchange(CfgData* cfg, int8_t level) { return cfg ? cfg->GetEquipExchange(level) : nullptr; }
+    static CfgNpc* getNpc(CfgData* cfg, int32_t id) { return cfg ? cfg->getNpc(id) : nullptr; }
+    static MoFuDuiHuan* GetMoFuDuiHuanlCfg(CfgData* cfg, int32_t nId) { return cfg ? cfg->GetMoFuDuiHuanlCfg(nId) : nullptr; }
+    static const cfgEquipUpPhaseTable* GetEquipUpPhaseTable(CfgData* cfg) { (void)cfg; return nullptr; }
+    static const CfgItemGemTable* GetItemGemTable(CfgData* cfg) { (void)cfg; return nullptr; }
     int32_t InitXuWuTask(int32_t Level, int32_t Times);
     int32_t InitXinMoTask(int32_t Level, int32_t Times);
     int32_t RandPdbfTask(int32_t Level);

@@ -242,6 +242,10 @@ public:
     // 内部方法
     void checkCreate();
 
+    // 静态包装器
+    static int32_t GetFirstFreeSlot(CExtCharBag* bag) { return bag ? bag->GetFirstFreeSlot() : -1; }
+    static const MemChrBag* GetSlotData(CExtCharBag* bag, int32_t slot) { return bag ? bag->GetSlotData(slot) : nullptr; }
+
     // 排序比较器
     static bool GreaterItem(const MemChrBag& left, const MemChrBag& right);
 

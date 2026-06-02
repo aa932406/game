@@ -1,15 +1,17 @@
 // CExtEquip.cpp
 #include "CExtEquip.h"
-#include "GameService.h"
-#include "Answer/NetPacket.h"
-#include "Player.h"
-#include "CEquipManager.h"
-#include "CExtCharBag.h"
-#include "CExtCurrency.h"
-#include "CExtCharSkill.h"
+#include "Game/GameService.h"
+#include "Network/NetPacket.h"
+#include "Game/Player.h"
+#include "Other/CEquipManager.h"
+#include "Character/CExtCharBag.h"
+#include "Character/CExtCurrency.h"
+#include "Character/CExtCharSkill.h"
 #include "CRandom.h"
-#include "DBService.h"
-#include "CfgData.h"
+#include "Answer/Singleton.h"
+#include "Database/DBService.h"
+#include "Config/CfgData.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 #include <algorithm>
 
@@ -55,14 +57,9 @@ void CExtEquip::OnLoadFromDB(const PlayerDBData* dbData)
     updateEquipStar();
     updateEquipGem();
     
-    // 墨符技能处理
+    // 墨符技能处理 (stub)
     int32_t nLevel = GetMoFuSuitLevel();
-    CfgData* v2 = Answer::Singleton<CfgData>::instance();
-    const void* pMoFuSkillCfg = CfgData::GetMoFuSkillCfg(v2, nLevel);
-    if (pMoFuSkillCfg)
-    {
-        // 处理墨符技能
-    }
+    (void)nLevel;
 }
 
 void CExtEquip::OnSaveToDB(PlayerDBData* dbData)
@@ -109,7 +106,7 @@ int32_t CExtEquip::DispatchNetDatas(ProcId_t nProcId, Answer::NetPacket* inPacke
         case 706: return onMoFuDuiHuan(inPacket);
         case 521: return onRelieveBind(inPacket);
         case 701: return onEquipUpPos(inPacket);
-        case 712: return onXinMoEquipHuiShou(inPacket);
+        case 712: return OnXinMoEquipHuiShou(inPacket);
         case 714: return onEquipDress(inPacket);
         case 305: return onEquipUnDress(inPacket);
         default: return 0;
@@ -134,7 +131,7 @@ int32_t CExtEquip::onEquipUnDress(Answer::NetPacket* inPacket)
     if (GameService::getLine(v3) == 9) return 2;
     
     int8_t nEquipSlot = Answer::NetPacket::readInt8(inPacket);
-    int32_t nBagSlot = Player::getFirstFreeSlot(m_pPlayer);
+    int32_t nBagSlot = CExtCharBag::GetFirstFreeSlot(Player::GetBag(m_pPlayer));
     
     if (nBagSlot < 0) return 2;
     if (!onEquipExchange(nBagSlot, nEquipSlot)) return 2;
@@ -190,8 +187,8 @@ int32_t CExtEquip::onEquipExchangeStar(Answer::NetPacket* inPacket)
     
     if (srcEquip.base != srcSlot.itemId || desEquip.base != desSlot.itemId)
     {
-        MemEquip::~MemEquip(&srcEquip);
-        MemEquip::~MemEquip(&desEquip);
+        (void)(&srcEquip);
+        (void)(&desEquip);
         return 2;
     }
     
@@ -246,8 +243,8 @@ int32_t CExtEquip::onEquipExchangeStar(Answer::NetPacket* inPacket)
         }
     }
     
-    MemEquip::~MemEquip(&srcEquip);
-    MemEquip::~MemEquip(&desEquip);
+    (void)(&srcEquip);
+    (void)(&desEquip);
     return 0;
 }
 
@@ -433,7 +430,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
     
     if (equip.base != bagItem.itemId)
     {
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         return 2;
     }
     
@@ -443,7 +440,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
     
     if (!pCfgEquip)
     {
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         return 2;
     }
     
@@ -460,7 +457,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
     
     if (equip.star >= 20)  // 最大星级限制
     {
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         return 2;
     }
     
@@ -472,14 +469,14 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
     
     if (!pCfgUpStar)
     {
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         return 2;
     }
     
     int32_t nRate = 0; // 获取成功率
     if (nRate < 0)
     {
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         return 2;
     }
     
@@ -491,7 +488,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
         int64_t MoneyBindAndNoBind = CExtCurrency::GetMoneyBindAndNoBind(v18);
         if (MoneyBindAndNoBind < nCostMoney)
         {
-            MemEquip::~MemEquip(&equip);
+            (void)(&equip);
             return 2;
         }
     }
@@ -502,7 +499,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
         int64_t v21 = Player::GetCurrency(m_pPlayer, 8);
         if (v21 < nCostXingMai)
         {
-            MemEquip::~MemEquip(&equip);
+            (void)(&equip);
             return 2;
         }
     }
@@ -546,7 +543,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
             {
                 Answer::NetPacket::writeInt32(packet, 524);
                 std::string val;
-                Player::getName(m_pPlayer, &val);
+                std::string val; Player::getName(m_pPlayer, &val);
                 Answer::NetPacket::writeUTF8(packet, &val);
                 // ... 写入其他信息
                 GameService::worldBroadcast(v42, 0, packet);
@@ -572,7 +569,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
         GameService::replyfailure(v50, v49, GateIndex, Proc, 1, id);
     }
     
-    MemEquip::~MemEquip(&equip);
+    (void)(&equip);
     return 0;
 }
 
@@ -677,7 +674,7 @@ int32_t CExtEquip::onEquipUpPhase(Answer::NetPacket* inPacket)
     
     if (NowEquip.base != EquipBag.itemId)
     {
-        MemEquip::~MemEquip(&NowEquip);
+        (void)(&NowEquip);
         return 10002;
     }
     
@@ -688,7 +685,7 @@ int32_t CExtEquip::onEquipUpPhase(Answer::NetPacket* inPacket)
         int64_t MoneyBindAndNoBind = CExtCurrency::GetMoneyBindAndNoBind(Currency);
         if (MoneyBindAndNoBind < nCostMoney)
         {
-            MemEquip::~MemEquip(&NowEquip);
+            (void)(&NowEquip);
             return 2;
         }
     }
@@ -714,7 +711,7 @@ int32_t CExtEquip::onEquipUpPhase(Answer::NetPacket* inPacket)
         {
             Answer::NetPacket::writeInt32(packet, nGongGaoId);
             std::string val;
-            Player::getName(m_pPlayer, &val);
+            std::string val; Player::getName(m_pPlayer, &val);
             Answer::NetPacket::writeUTF8(packet, &val);
             // ... 写入其他信息
             GameService::worldBroadcast(v21, ConnId, packet);
@@ -752,7 +749,7 @@ int32_t CExtEquip::onEquipUpPhase(Answer::NetPacket* inPacket)
     GameService* v35 = Answer::Singleton<GameService>::instance();
     GameService::replySuccess(v35, v34, GateIndex, Proc, id);
     
-    MemEquip::~MemEquip(&NowEquip);
+    (void)(&NowEquip);
     return 0;
 }
 
@@ -845,7 +842,7 @@ int32_t CExtEquip::onEquipStrenGthen(Answer::NetPacket* inPacket)
                 {
                     Answer::NetPacket::writeInt32(packet, nGongGaoId);
                     std::string val;
-                    Player::getName(m_pPlayer, &val);
+                    std::string val; Player::getName(m_pPlayer, &val);
                     Answer::NetPacket::writeUTF8(packet, &val);
                     // ... 写入其他信息
                     GameService::worldBroadcast(v17, 0, packet);
@@ -945,7 +942,7 @@ int32_t CExtEquip::onEquipUpPos(Answer::NetPacket* inPacket)
                 if (packet)
                 {
                     Answer::NetPacket::writeInt32(packet, nGongGaoId);
-                    Player::getName(m_pPlayer, &val);
+                    std::string val; Player::getName(m_pPlayer, &val);
                     Answer::NetPacket::writeUTF8(packet, &val);
                     GameService::worldBroadcast(v50, 0, packet);
                 }
@@ -1125,7 +1122,7 @@ int32_t CExtEquip::GetMoFuSuitLevel()
             SuitId = 0;
         }
         
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         if (SuitId == 0) return 0;
     }
     
@@ -1486,7 +1483,7 @@ void CExtEquip::addEquipAttr()
                 }
             }
             
-            MemEquip::~MemEquip(&equip);
+            (void)(&equip);
         }
     }
 }
@@ -1863,7 +1860,7 @@ void CExtEquip::broadcastItemCombi(int32_t ItemId, int8_t ItemClass)
     Answer::NetPacket::writeInt64(packet, Cid);
     
     std::string val;
-    Player::getName(m_pPlayer, &val);
+    std::string val; Player::getName(m_pPlayer, &val);
     Answer::NetPacket::writeUTF8(packet, &val);
     
     Answer::NetPacket::writeInt32(packet, ItemId);
@@ -1892,7 +1889,7 @@ void CExtEquip::EquipUpStarGongGao(MemEquip* Equip)
     Answer::NetPacket::writeInt64(packet, Cid);
     
     std::string val;
-    Player::getName(m_pPlayer, &val);
+    std::string val; Player::getName(m_pPlayer, &val);
     Answer::NetPacket::writeUTF8(packet, &val);
     
     Answer::NetPacket::writeInt64(packet, Equip->id);
@@ -1924,7 +1921,7 @@ int32_t CExtEquip::GetLowestStar()
                 if (Equip.star < LowesetStar) LowesetStar = Equip.star;
             }
             
-            MemEquip::~MemEquip(&Equip);
+            (void)(&Equip);
         }
     }
     
@@ -1945,7 +1942,7 @@ int32_t CExtEquip::GetEquipAllCount()
             
             if (Equip.base == m_vMemEquip[i].itemId) ++Count;
             
-            MemEquip::~MemEquip(&Equip);
+            (void)(&Equip);
         }
     }
     
@@ -1966,7 +1963,7 @@ int32_t CExtEquip::GetEquipAllStar()
             
             if (Equip.base == m_vMemEquip[i].itemId) AllStar += Equip.star;
             
-            MemEquip::~MemEquip(&Equip);
+            (void)(&Equip);
         }
     }
     
@@ -2026,7 +2023,7 @@ int32_t CExtEquip::HaveStarEquipCount(int32_t Star)
             
             if (Equip.base == m_vMemEquip[i].itemId && Equip.star >= Star) ++Count;
             
-            MemEquip::~MemEquip(&Equip);
+            (void)(&Equip);
         }
     }
     
@@ -2078,7 +2075,7 @@ int32_t CExtEquip::GetWingEquipCount3SuitId()
                 }
             }
             
-            MemEquip::~MemEquip(&equip);
+            (void)(&equip);
         }
     }
     
@@ -2139,7 +2136,7 @@ int32_t CExtEquip::GetWingEquipCount6SuitId()
             SuitId = 0;
         }
         
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         if (SuitId == 0) return 0;
     }
     
@@ -2172,7 +2169,7 @@ int32_t CExtEquip::GetCount6SuitId()
                 }
             }
             
-            MemEquip::~MemEquip(&equip);
+            (void)(&equip);
         }
     }
     
@@ -2233,7 +2230,7 @@ int32_t CExtEquip::GetCount12SuitId()
             SuitId = 0;
         }
         
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         if (SuitId == 0) return 0;
     }
     
@@ -2250,7 +2247,7 @@ int32_t CExtEquip::GetWeaponBless()
     CEquipManager::GetMemEquip(&equip, v3, weapon->srcId);
     
     int32_t Lucky = equip.Lucky;
-    MemEquip::~MemEquip(&equip);
+    (void)(&equip);
     
     return Lucky;
 }
@@ -2278,7 +2275,7 @@ void CExtEquip::SetWeaponBless(int32_t nBless)
         CEquipManager::SendPlayerEquipInfo(v10, m_pPlayer, &equip);
     }
     
-    MemEquip::~MemEquip(&equip);
+    (void)(&equip);
 }
 
 void CExtEquip::checkEquipSuit(bool IsGongGao)
@@ -2432,7 +2429,7 @@ void CExtEquip::updateEquipStar()
             
             if (equip.base == m_vMemEquip[i].itemId) nSumValue += equip.star;
             
-            MemEquip::~MemEquip(&equip);
+            (void)(&equip);
         }
     }
     
@@ -2526,7 +2523,7 @@ int32_t CExtEquip::checkGongMingSuit()
             nSuitId = 0;
         }
         
-        MemEquip::~MemEquip(&equip);
+        (void)(&equip);
         if (nSuitId == 0) break;
     }
     

@@ -1,6 +1,9 @@
 #ifndef _MEMEQUIP_H_
 #define _MEMEQUIP_H_
 
+#ifndef MEM_EQUIP_DEFINED_HERE
+#define MEM_EQUIP_DEFINED_HERE
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -30,5 +33,6 @@ public:
     int32_t   MapId;
     int32_t   Mid;
 };
+#endif
 
 #endif

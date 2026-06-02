@@ -98,6 +98,27 @@ public:
         int64_t vCurrency[12];
     } m_CurrencyData;
 
+    // 装备数据 (供 CExtEquip 使用)
+    struct {
+        MemChrBag vEquip[93];
+    } equipData;
+
+    // 宝石/强化/神耀数据 (供 CExtEquip 使用)
+    struct {
+        std::string gemInfo;
+        std::string posLevel;
+        std::string Strengthen;
+        std::string ShenYaoEquipPos;
+    } gemData;
+
+    // 角色摘要数据 (供 CExtEquip 使用)
+    struct {
+        int32_t weapon;
+        int32_t cloth;
+        int32_t equipStar;
+        int32_t equipGem;
+    } chr;
+
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
         std::list<MysteryShop> lstShop;

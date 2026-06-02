@@ -7,6 +7,8 @@
 #include <map>
 #include <string>
 
+#ifndef MEM_CHR_BAG_DEFINED_HERE
+#define MEM_CHR_BAG_DEFINED_HERE
 struct MemChrBag
 {
     int32_t itemId;
@@ -16,7 +18,10 @@ struct MemChrBag
     int32_t endTime;
     int64_t srcId;
 };
+#endif
 
+#ifndef MEM_EQUIP_DEFINED_HERE
+#define MEM_EQUIP_DEFINED_HERE
 struct MemEquip
 {
     int64_t id;
@@ -25,13 +30,17 @@ struct MemEquip
     int32_t Lucky;
     int64_t owner;
 };
+#endif
 
+#ifndef ITEM_DATA_DEFINED_HERE
+#define ITEM_DATA_DEFINED_HERE
 struct ItemData
 {
     int32_t m_nId;
     int8_t m_nClass;
     int32_t m_nCount;
 };
+#endif
 
 class CExtEquip : public CExtSystemBase
 {
