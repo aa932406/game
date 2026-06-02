@@ -467,14 +467,10 @@ CfgChrShop *CfgData::getChrShop(int32_t Index)
     return nullptr;
 }
 
-CfgItemTable *CfgData::getAllItem(CfgItemTable )
+CfgItemTable *CfgData::getAllItem()
 {
-    Answer::RwLockRdGuard lock;
-    
-    std::map<int, CfgItem *>::map(retstr);
-    Answer::RwLockRdGuard::RwLockRdGuard(&lock, &this->m_itemsLock);
-    retstr = this->m_items;
-    return retstr;
+    Answer::RwLockRdGuard lock(&this->m_itemsLock);
+    return &this->m_items;
 }
 
 CfgItem *CfgData::getItem(int32_t id)
@@ -483,8 +479,7 @@ CfgItem *CfgData::getItem(int32_t id)
         return nullptr;
     
     int32_t ida = id;
-    Answer::RwLockRdGuard lock;
-    Answer::RwLockRdGuard::RwLockRdGuard(&lock, &this->m_itemsLock);
+    Answer::RwLockRdGuard lock(&this->m_itemsLock);
     
     auto it = this->m_items.find(ida);
     if (it != this->m_items.end())
@@ -499,8 +494,7 @@ CfgItem *CfgData::getItem(int32_t id)
 CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 {
     int32_t ida = id;
-    Answer::RwLockRdGuard lock;
-    Answer::RwLockRdGuard::RwLockRdGuard(&lock, &this->m_itemGiftsLock);
+    Answer::RwLockRdGuard lock(&this->m_itemGiftsLock);
     
     auto it = this->m_itemGifts.find(ida);
     if (it != this->m_itemGifts.end())
@@ -515,8 +509,7 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 {
     int32_t ida = id;
-    Answer::RwLockRdGuard lock;
-    Answer::RwLockRdGuard::RwLockRdGuard(&lock, &this->m_itemGiftRandomsLock);
+    Answer::RwLockRdGuard lock(&this->m_itemGiftRandomsLock);
     
     auto it = this->m_itemGiftRandoms.find(ida);
     if (it != this->m_itemGiftRandoms.end())
@@ -867,20 +860,15 @@ int32_t CfgData::GetAttrPoint(int32_t level)
     return 0;
 }
 
-CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr int32_t job, int32_t level)
+CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
 {
     int key = (job << 16) | level;
     auto it = this->m_levelAttrs.find(key);
     if (it != this->m_levelAttrs.end())
     {
-        CfgLevelAttr::CfgLevelAttr(retstr, &it->second);
+        return &it->second;
     }
-    else
-    {
-        CfgLevelAttr levelAttr{};
-        CfgLevelAttr::CfgLevelAttr(retstr, &levelAttr);
-        }
-    return retstr;
+    return nullptr;
 }
 
 int32_t CfgData::getBaseJob(int32_t job)
@@ -1018,7 +1006,6 @@ void CfgData::InitAppendAttrTable()
                 for (int32_t j = 0; j <= 9; ++j)
                 {
                     AddAttribute Attr;
-                    AddAttribute::AddAttribute(&Attr);
                     Attr.m_nAddAttrType = TabFile.Search_Posistion( i, nIndex++)->iValue;
                     Attr.m_nAddAttrValue = TabFile.Search_Posistion( i, nIndex++)->iValue;
                     if (Attr.m_nAddAttrValue > 0)
@@ -1291,7 +1278,6 @@ void CfgData::InitDungeonSummon()
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
                 CfgDungeonSummon stu;
-                CfgDungeonSummon::CfgDungeonSummon(&stu);
                 
                 int32_t nIndex = 0;
                 stu.nDungeon = DungeonTrapFile.Search_Posistion( i, nIndex++)->iValue;
@@ -1430,7 +1416,7 @@ void CfgData::InitMonsterAddAttrTable()
     }
 }
 
-AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector int32_t Mid, int32_t WorldLevel)
+AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 {
     int32_t Mida = Mid;
     auto it = this->m_MonstAddAttrMap.find(Mida);
@@ -1441,16 +1427,11 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector int32_t Mid, int32_
         {
             if (iter->WorldBossLevelMin <= WorldLevel && iter->WorldBossLevelMax >= WorldLevel)
             {
-                std::vector<AttrAddon>::vector(retstr, &iter->AttrVector);
-                return retstr;
+                return &iter->AttrVector;
             }
         }
     }
-    
-    AttrAddonVector AttrVector;
-    std::vector<AttrAddon>::vector(&AttrVector);
-    std::vector<AttrAddon>::vector(retstr, &AttrVector);
-    return retstr;
+    return nullptr;
 }
 
 void CfgData::InitDaZheQuanTable()
@@ -1724,7 +1705,6 @@ void CfgData::InitNewServerFavorable()
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
                 NewServerFavorable stu;
-                NewServerFavorable::NewServerFavorable(&stu);
                 
                 stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
                 
@@ -1771,7 +1751,6 @@ void CfgData::InitNewServerFavorable()
                     for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
                     {
                         NewServerFavorable stu;
-                        NewServerFavorable::NewServerFavorable(&stu);
                         
                         this->m_ThreePetGift.Index = TabFile2.Search_Posistion( i_0, 0)->iValue;
                         
@@ -1831,7 +1810,6 @@ void CfgData::InitShouChongLiBao()
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
                 CfgShouChong stu;
-                CfgShouChong::CfgShouChong(&stu);
                 
                 stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
                 stu.nGold = TabFile.Search_Posistion( i, 1)->iValue;
@@ -1978,7 +1956,6 @@ void CfgData::InitPlantEventTable()
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
                 CfgPlantEventEffect Event;
-                CfgPlantEventEffect::CfgPlantEventEffect(&Event);
                 
                 Event.EventId = ItemGiftFile.Search_Posistion( i, 0)->iValue;
                 Event.EventType = ItemGiftFile.Search_Posistion( i, 1)->iValue;
@@ -2415,7 +2392,6 @@ void CfgData::InitQQZoneRewardTable()
             {
                 int32_t nIndex = 0;
                 CfgQQGift gift;
-                CfgQQGift::CfgQQGift(&gift);
                 
                 gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 gift.nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
@@ -2458,7 +2434,6 @@ void CfgData::InitQQGameRewardTable()
             {
                 int32_t nIndex = 0;
                 CfgQQGift gift;
-                CfgQQGift::CfgQQGift(&gift);
                 
                 gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 gift.nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
@@ -2537,7 +2512,6 @@ void CfgData::InitTencentSevenDayLoginTable()
             {
                 int32_t nIndex = 0;
                 CfgTencentSevenDayLogin stu;
-                CfgTencentSevenDayLogin::CfgTencentSevenDayLogin(&stu);
                 
                 stu.nDays = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
@@ -2577,8 +2551,6 @@ void CfgData::InitYellowDailyRewardTable()
                 int32_t nIndex = 0;
                 CfgTencentGift daily;
                 CfgTencentGift year;
-                CfgTencentGift::CfgTencentGift(&daily);
-                CfgTencentGift::CfgTencentGift(&year);
                 
                 int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
@@ -2633,7 +2605,6 @@ void CfgData::InitYellowLevelRewardTable()
             {
                 int32_t nIndex = 0;
                 CfgTencentGift gift;
-                CfgTencentGift::CfgTencentGift(&gift);
                 
                 int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 gift.nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
@@ -2721,9 +2692,6 @@ void CfgData::InitBlueDailyRewardTable()
                 CfgTencentGift daily;
                 CfgTencentGift year;
                 CfgTencentGift high;
-                CfgTencentGift::CfgTencentGift(&daily);
-                CfgTencentGift::CfgTencentGift(&year);
-                CfgTencentGift::CfgTencentGift(&high);
                 
                 int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
@@ -2790,7 +2758,6 @@ void CfgData::InitBlueLevelRewardTable()
             {
                 int32_t nIndex = 0;
                 CfgTencentGift gift;
-                CfgTencentGift::CfgTencentGift(&gift);
                 
                 int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 gift.nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
@@ -2985,7 +2952,6 @@ void CfgData::fetchActivity()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgActivity cfg;
-            CfgActivity::CfgActivity(&cfg);
             
             int32_t nIndex = 0;
             cfg.id = ActivityFile.Search_Posistion( i, 0)->iValue;
@@ -3272,7 +3238,6 @@ void CfgData::fetchActivity()
                 for (int32_t i_0 = 0; i_0 < iBaseTableCount_Event; ++i_0)
                 {
                     CfgMapEvent event;
-                    CfgMapEvent::CfgMapEvent(&event);
                     
                     int32_t nIndex = 0;
                     event.id = ActivityEventFile.Search_Posistion( i_0, 0)->iValue;
@@ -3335,7 +3300,6 @@ void CfgData::fetchActivity()
                     for (int32_t i_1 = 0; i_1 < iBaseTableCount_Monster; ++i_1)
                     {
                         CfgActivityMonster monster;
-                        CfgActivityMonster::CfgActivityMonster(&monster);
                         
                         monster.id = ActivityMonsterFile.Search_Posistion( i_1, 0)->iValue;
                         monster.wave = ActivityMonsterFile.Search_Posistion( i_1, 1)->iValue;
@@ -3446,7 +3410,6 @@ void CfgData::fetchActivity()
                     for (int32_t i_2 = 0; i_2 < iBaseTableCount_Npc; ++i_2)
                     {
                         CfgActivityNpc npc;
-                        CfgActivityNpc::CfgActivityNpc(&npc);
                         
                         npc.id = ActivityNpcFile.Search_Posistion( i_2, 0)->iValue;
                         npc.activity_id = ActivityNpcFile.Search_Posistion( i_2, 1)->iValue;
@@ -3498,7 +3461,6 @@ void CfgData::fetchActivity()
                     for (int32_t i_3 = 0; i_3 < iBaseTableCount_Plant; ++i_3)
                     {
                         CfgActivityPlant plant;
-                        CfgActivityPlant::CfgActivityPlant(&plant);
                         
                         plant.id = ActivityPlantFile.Search_Posistion( i_3, 0)->iValue;
                         plant.activity_id = ActivityPlantFile.Search_Posistion( i_3, 1)->iValue;
@@ -3598,7 +3560,6 @@ void CfgData::fetchBuff()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgBuff buff;
-            CfgBuff::CfgBuff(&buff);
             
             int32_t nIndex = 0;
             buff.id = BuffFile.Search_Posistion( i, nIndex++)->iValue;
@@ -3949,7 +3910,7 @@ void CfgData::fetchDungeon()
 void CfgData::fetchItem(bool bSend)
 {
     CfgItemTable newItems;
-    std::map<int, CfgItem *>::map(&newItems);
+    // Already default-constructed
     
     Answer::RwLock::wrlock(&this->m_itemsLock);
     
@@ -4252,7 +4213,6 @@ void CfgData::fetchDungeonEvent()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMapEvent dungeonEvent;
-            CfgMapEvent::CfgMapEvent(&dungeonEvent);
             
             dungeonEvent.id = DungeonEventFile.Search_Posistion( i, 0)->iValue;
             dungeonEvent.trigger_id = DungeonEventFile.Search_Posistion( i, 1)->iValue;
@@ -4320,7 +4280,6 @@ void CfgData::fetchDungeonMonster()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgDungeonMonster monster;
-            CfgDungeonMonster::CfgDungeonMonster(&monster);
             
             monster.id = DungeonMonsterFile.Search_Posistion( i, 0)->iValue;
             monster.wave = DungeonMonsterFile.Search_Posistion( i, 1)->iValue;
@@ -4452,7 +4411,6 @@ void CfgData::fetchMap()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMap map;
-            CfgMap::CfgMap(&map);
             
             map.id = MapFile.Search_Posistion( i, 0)->iValue;
             
@@ -4794,7 +4752,6 @@ void CfgData::fetchNpc()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgNpc npc;
-            CfgNpc::CfgNpc(&npc);
             
             npc.id = TabFile.Search_Posistion( i, 0)->iValue;
             npc.npcid = TabFile.Search_Posistion( i, 4)->iValue;
@@ -5074,7 +5031,6 @@ void CfgData::fetchTask()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTask task;
-            CfgTask::CfgTask(&task);
             
             task.id = TabFile.Search_Posistion( i, 0)->iValue;
             
@@ -5214,7 +5170,6 @@ void CfgData::fetchTrap()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTrap trap;
-            CfgTrap::CfgTrap(&trap);
             
             trap.id = TabFile.Search_Posistion( i, 0)->iValue;
             trap.cd = TabFile.Search_Posistion( i, 2)->iValue;
@@ -5289,7 +5244,6 @@ void CfgData::fetchLevelAttr()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgLevelAttr levelAttr;
-            CfgLevelAttr::CfgLevelAttr(&levelAttr);
             
             levelAttr.level = LevelAttrFile.Search_Posistion( i, 0)->iValue;
             levelAttr.job = LevelAttrFile.Search_Posistion( i, 1)->iValue;
@@ -6008,7 +5962,7 @@ void CfgData::InitActiveSkillTable()
         {
             CfgActiveSkill skill;
             memset(&skill, 0, sizeof(skill));
-            std::vector<AttrAddon>::vector(&skill.summon_attr);
+            new (&skill.summon_attr) std::vector<AttrAddon>();
             
             int32_t nIndex = 0;
             skill.id = TabFile.Search_Posistion( i, 0)->iValue;
@@ -6094,7 +6048,7 @@ void CfgData::InitPassiveSkillTable()
         {
             CfgPassiveSkill stu;
             memset(&stu, 0, sizeof(stu));
-            std::vector<AttrAddon>::vector(&stu.vAttrs);
+            new (&stu.vAttrs) std::vector<AttrAddon>();
             std::list<TalentAddon>::list(&stu.lTalentAddon);
             
             int32_t nIndex = 0;
@@ -6162,7 +6116,6 @@ void CfgData::InitTrigSkillTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTrigSkill stu;
-            CfgTrigSkill::CfgTrigSkill(&stu);
             
             int32_t nIndex = 0;
             stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6204,7 +6157,6 @@ void CfgData::InitTalentTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTalent stu;
-            CfgTalent::CfgTalent(&stu);
             
             int32_t nIndex = 0;
             stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6276,7 +6228,6 @@ void CfgData::InitTalentPageTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTalentPage stu;
-            CfgTalentPage::CfgTalentPage(&stu);
             
             int32_t nIndex = 0;
             stu.job = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6322,7 +6273,6 @@ void CfgData::InitFamilySkillTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgFamilySkill stu;
-            CfgFamilySkill::CfgFamilySkill(&stu);
             
             int32_t nIndex = 0;
             stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6374,7 +6324,6 @@ void CfgData::InitTalentActiveTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTalentActive stu;
-            CfgTalentActive::CfgTalentActive(&stu);
             
             int32_t nIndex = 0;
             stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6527,7 +6476,6 @@ void CfgData::InitEquipUpStarTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgEquipUpStar stu;
-            CfgEquipUpStar::CfgEquipUpStar(&stu);
             
             int32_t nIndex = 0;
             stu.m_nType = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6597,8 +6545,8 @@ void CfgData::InitWingCfgTable()
         {
             WingCfg stu;
             memset(&stu, 0, sizeof(stu));
-            std::list<ItemData>::list(&stu.ConstItems);
-            std::vector<AttrAddon>::vector(&stu.AddonVector);
+            new (&stu.ConstItems) std::list<ItemData>();
+            new (&stu.AddonVector) std::vector<AttrAddon>();
             
             int32_t nIndex = 0;
             stu.Level = readFile.Search_Posistion( i, 0)->iValue;
@@ -6671,7 +6619,7 @@ void CfgData::InitCarrierTable()
         {
             CfgCarrier stu;
             memset(&stu, 0, sizeof(stu));
-            std::list<int>::list(&stu.lSkills);
+            new (&stu.lSkills) std::list<int>();
             
             int32_t nIndex = 0;
             stu.nId = readFile.Search_Posistion( i, 0)->iValue;
@@ -6718,7 +6666,6 @@ void CfgData::InitPetTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgPetData pet;
-            CfgPetData::CfgPetData(&pet);
             
             int32_t nIndex = 0;
             pet.m_nPetId = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6754,7 +6701,6 @@ void CfgData::InitFamilyTable()
     if (iBaseColumnCount > 0)
     {
         CfgFamily family;
-        CfgFamily::CfgFamily(&family);
         
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
@@ -6859,7 +6805,6 @@ void CfgData::InitTitleTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTitle title;
-            CfgTitle::CfgTitle(&title);
             
             int32_t nIndex = 0;
             title.nId = readFile.Search_Posistion( i, 0)->iValue;
@@ -6954,7 +6899,6 @@ void CfgData::InitGoldEggTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgGoldEgg stu;
-            CfgGoldEgg::CfgGoldEgg(&stu);
             
             int32_t nIndex = 0;
             stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7116,7 +7060,6 @@ void CfgData::InitBuyGiftTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgBuyGift stu;
-            CfgBuyGift::CfgBuyGift(&stu);
             
             int32_t nIndex = 0;
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7161,7 +7104,6 @@ void CfgData::InitExchangeTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgExchange stu;
-            CfgExchange::CfgExchange(&stu);
             
             int32_t nIndex = 0;
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7217,7 +7159,6 @@ void CfgData::InitMysteryGiftTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMysteryGift stu;
-            CfgMysteryGift::CfgMysteryGift(&stu);
             
             int32_t nIndex = 0;
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7262,7 +7203,6 @@ void CfgData::InitDrawTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgDrawReward stu;
-            CfgDrawReward::CfgDrawReward(&stu);
             
             int32_t nIndex = 0;
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7303,7 +7243,6 @@ void CfgData::InitMapRoadTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMapRoad stu;
-            CfgMapRoad::CfgMapRoad(&stu);
             
             int32_t nIndex = 0;
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7370,7 +7309,6 @@ void CfgData::InitTrailerTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgTrailer stu;
-            CfgTrailer::CfgTrailer(&stu);
             
             int32_t nIndex = 0;
             stu.nId = TabFile.Search_Posistion( i, 0)->iValue;
@@ -7479,7 +7417,6 @@ void CfgData::InitMaintainCompensateTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMaintainCompensate stu;
-            CfgMaintainCompensate::CfgMaintainCompensate(&stu);
             
             int32_t nIndex = 0;
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7528,7 +7465,6 @@ void CfgData::InitWishRewardTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgWishReward stu;
-            CfgWishReward::CfgWishReward(&stu);
             
             int32_t nIndex = 0;
             int32_t nId = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -8353,7 +8289,7 @@ void CfgData::InitBossDistribution()
         {
             BossLevelInfo stu;
             memset(&stu, 0, sizeof(stu));
-            std::list<int>::list(&stu.BossMapList);
+            new (&stu.BossMapList) std::list<int>();
             
             int32_t nIndex = 0;
             stu.BossLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
@@ -8391,7 +8327,7 @@ void CfgData::InitBossDistribution()
             {
                 MapBossInfo stu;
                 memset(&stu, 0, sizeof(stu));
-                std::list<int>::list(&stu.BossMapList);
+                new (&stu.BossMapList) std::list<int>();
                 
                 int32_t nIndex_0 = 0;
                 stu.nId = TabFile2.Search_Posistion( i_0, nIndex_0++)->iValue;
@@ -8998,7 +8934,6 @@ void CfgData::InitShiZhuangTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgShiZhuang stu;
-            CfgShiZhuang::CfgShiZhuang(&stu);
             
             int32_t nIndex = 0;
             stu.nId = readFile.Search_Posistion( i, 0)->iValue;
@@ -9009,7 +8944,6 @@ void CfgData::InitShiZhuangTable()
             for (int32_t j = 0; j <= 6; ++j)
             {
                 AddAttribute AddAttr;
-                AddAttribute::AddAttribute(&AddAttr);
                 AddAttr.m_nAddAttrType = readFile.Search_Posistion( i, nIndex++)->iValue;
                 AddAttr.m_nAddAttrValue = readFile.Search_Posistion( i, nIndex++)->iValue;
                 if (AddAttr.m_nAddAttrValue > 0)
@@ -9044,7 +8978,6 @@ void CfgData::InitShiZhuangLevelTable()
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgShiZhuangLevel stu;
-            CfgShiZhuangLevel::CfgShiZhuangLevel(&stu);
             
             int32_t nIndex = 0;
             stu.nType = readFile.Search_Posistion( i, 0)->iValue;
@@ -9061,7 +8994,6 @@ void CfgData::InitShiZhuangLevelTable()
             for (int32_t j = 0; j <= 6; ++j)
             {
                 AddAttribute AddAttr;
-                AddAttribute::AddAttribute(&AddAttr);
                 AddAttr.m_nAddAttrType = readFile.Search_Posistion( i, nIndex++)->iValue;
                 AddAttr.m_nAddAttrValue = readFile.Search_Posistion( i, nIndex++)->iValue;
                 if (AddAttr.m_nAddAttrValue > 0)
@@ -9443,7 +9375,7 @@ void CfgData::InitYYDaTing()
         {
             CfgYYGameApp stu;
             memset(&stu, 0, sizeof(stu));
-            std::vector<MemChrBag>::vector(&stu.Rewards);
+            new (&stu.Rewards) std::vector<MemChrBag>();
             
             stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
             stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
@@ -9551,7 +9483,7 @@ void CfgData::InitYYVip()
         {
             CfgYYVip stu;
             memset(&stu, 0, sizeof(stu));
-            std::vector<MemChrBag>::vector(&stu.Rewards);
+            new (&stu.Rewards) std::vector<MemChrBag>();
             
             stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
             stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
@@ -9607,7 +9539,7 @@ void CfgData::InitSouGouDaTing()
         {
             CfgSgGameApp stu;
             memset(&stu, 0, sizeof(stu));
-            std::vector<MemChrBag>::vector(&stu.vRewards);
+            // stu.vRewards initialized by default constructor
             
             stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
             stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
@@ -10024,7 +9956,7 @@ int32_t CfgData::GetAttrPoint(int32_t level)
     return 0;
 }
 
-CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr int32_t job, int32_t level)
+CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
 {
     int key = (job << 16) | level;
     auto it = this->m_levelAttrs.find(key);
@@ -10048,7 +9980,7 @@ int32_t CfgData::getBaseJob(int32_t job)
     return (job == 1) ? 1 : 0;
 }
 
-AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector int32_t Mid, int32_t WorldLevel)
+AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 {
     auto it = this->m_MonstAddAttrMap.find(Mid);
     if (it != this->m_MonstAddAttrMap.end())
@@ -10057,13 +9989,11 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector int32_t Mid, int32_
         {
             if (attrs.WorldBossLevelMin <= WorldLevel && attrs.WorldBossLevelMax >= WorldLevel)
             {
-                std::vector<AttrAddon>::vector(retstr, &attrs.AttrVector);
-                return retstr;
+                return &attrs.AttrVector;
             }
         }
     }
-    std::vector<AttrAddon>::vector(retstr);
-    return retstr;
+    return nullptr;
 }
 
 DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)

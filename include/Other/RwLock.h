@@ -1,6 +1,8 @@
 #ifndef _RWLOCK_H_
 #define _RWLOCK_H_
 
+#include <mutex>
+
 namespace Answer {
 
 // 读写锁（简化桩）
@@ -33,6 +35,7 @@ class RwLockRdGuard {
 public:
     RwLockRdGuard() : m_lock(nullptr) {}
     explicit RwLockRdGuard(RwLock* lock) : m_lock(lock) {}
+    explicit RwLockRdGuard(std::mutex* lock) : m_lock(reinterpret_cast<RwLock*>(lock)) {}
     ~RwLockRdGuard() = default;
 private:
     RwLock* m_lock;
