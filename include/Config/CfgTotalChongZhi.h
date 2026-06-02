@@ -15,7 +15,7 @@ class CfgTotalChongZhi
 public:
     int32_t Index;
     int32_t NeedGold;
-    std::vector<CfgEquipItem> ItemVector;
+    MemChrEquipBagVector ItemVector;
     std::list<CfgGongGao> GongGaoInfo;
     int32_t NewServerday;
 

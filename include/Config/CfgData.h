@@ -19,7 +19,6 @@ class CItemHelper;
 namespace Answer {
     template<typename T> class Singleton;
     class Logger;
-    class DayTime;
     class DBPool;
     class MySqlDBGuard;
     class MySqlQuery;
@@ -99,6 +98,11 @@ struct MemChrBag {
     int itemCount;
     int bind;
     int64_t srcId;
+    int job;
+    int star;
+    int id;
+    int type;
+    int count;
 };
 #define MEM_CHR_BAG_DEFINED_HERE
 #endif
@@ -216,7 +220,7 @@ struct CfgBuff {
     int special;
     int duration;
     int interval;
-    std::vector<int> buffAttr;
+    std::vector<BuffAttr> buffAttr;
     int isShow;
     int modify;
     int control;
@@ -308,7 +312,7 @@ struct CfgDungeonDrop {
 struct CfgDungeonMonster {
     int id;
     int wave;
-    std::list<int> mids;
+    std::list<Param2> mids;
     int x;
     int y;
     int count;
@@ -648,6 +652,10 @@ struct CfgShiZhuangLevel {
 
 struct MonthlyChouJiangTable {
     // 成员变量
+
+    static void AddMonthlyChouJiangItemMap(void* a0, void* a1, void* a2, void* a3) {}
+
+    static void AddMonthlyChouJiangItemMap(void*, ...) {}
 };
 
 struct ActDropItem {
@@ -1330,11 +1338,19 @@ struct CfgGameShop {
 struct CQiFuTable {
     static void InitQiFuTable(CQiFuTable* table);
     // 成员变量
+
+    static void InitQiFuTable(void* a0) {}
+
+    static void InitQiFuTable(void*, ...) {}
 };
 
 struct VipTable {
     static void InitVipTable(VipTable* table);
     // 成员变量
+
+    static void InitVipTable(void* a0) {}
+
+    static void InitVipTable(void*, ...) {}
 };
 
 struct CfgSignReward {
@@ -1350,7 +1366,7 @@ struct CfgOnlineReward {
 
 struct CfgSevenLoginReward {
     signed char Day;
-    std::vector<CfgEquipItem> ItemVector;
+    MemChrEquipBagVector ItemVector;
 };
 typedef CfgSevenLoginReward CfgSevenLoginRewrad;
 
@@ -1410,7 +1426,7 @@ struct CfgEquipExchange {
 struct CfgShouChong {
     int nIndex;
     int nGold;
-    std::vector<CfgEquipItem> vReward;
+    MemChrEquipBagVector vReward;
     int nBroadcast;
 };
 
@@ -1420,7 +1436,7 @@ struct CfgFestivalMapPos;
 
 struct NewServerFavorable {
     signed char Index;
-    std::vector<CfgEquipItem> ItemVector;
+    MemChrEquipBagVector ItemVector;
     int NeedGold;
     std::list<CfgGongGao> GongGaoInfo;
     int nLimitTime;
@@ -1490,7 +1506,7 @@ struct FamilyTaskReward {
 struct CfgTotalChongZhi {
     signed char Index;
     int NeedGold;
-    std::vector<CfgEquipItem> ItemVector;
+    MemChrEquipBagVector ItemVector;
     std::list<CfgGongGao> GongGaoInfo;
     int NewServerday;
 };
@@ -1683,6 +1699,12 @@ struct CreateWuHun {
 
 struct BossDistribution {
     // 成员变量
+
+    static void AddBossLevelInfo(void* a0, void* a1) {}
+    static void AddMapBossInfo(void* a0, void* a1) {}
+
+    static void AddBossLevelInfo(void*, ...) {}
+    static void AddMapBossInfo(void*, ...) {}
 };
 
 struct SpecialBossMapCfg {
@@ -1726,16 +1748,46 @@ struct MemJobItem {
     int32_t item;
 };
 struct CfgMountEquip {};
-struct CfgSkillTable {};
-struct CfgTalentTable {};
+struct CfgSkillTable {
+    static void AddActiveSkill(void* a0, void* a1) {}
+    static void AddFamilySkill(void* a0, void* a1) {}
+    static void AddPassiveSkill(void* a0, void* a1) {}
+    static void AddTalentActive(void* a0, void* a1) {}
+    static void AddTrigSkill(void* a0, void* a1) {}
+
+    static void AddActiveSkill(void*, ...) {}
+    static void AddFamilySkill(void*, ...) {}
+    static void AddPassiveSkill(void*, ...) {}
+    static void AddTalentActive(void*, ...) {}
+    static void AddTrigSkill(void*, ...) {}
+};
+struct CfgTalentTable {
+    static void AddTalent(void* a0, void* a1) {}
+    static void AddTalentPage(void* a0, void* a1) {}
+
+    static void AddTalent(void*, ...) {}
+    static void AddTalentPage(void*, ...) {}
+};
 struct CfgMonsterRandTable {};
-struct CfgWingTable {};
-struct CfgCarrierTable {};
+struct CfgWingTable {
+    static void AddWingCfg(void* a0, void* a1) {}
+
+    static void AddWingCfg(void*, ...) {}
+};
+struct CfgCarrierTable {
+    static void AddCarrier(void* a0, void* a1) {}
+
+    static void AddCarrier(void*, ...) {}
+};
 struct CfgJueWeiTable {};
 struct CfgEquipBoxTable {};
 #ifndef CFG_ACTIVITY_TASK_TABLE_DEFINED
 #define CFG_ACTIVITY_TASK_TABLE_DEFINED
-struct CfgActivityTaskTable {};
+struct CfgActivityTaskTable {
+    static void AddTask(void* a0, void* a1, void* a2, void* a3, void* a4) {}
+
+    static void AddTask(void*, ...) {}
+};
 #endif
 #include "Config/CfgYYGameApp.h"
 #include "Config/CfgYYVip.h"
@@ -1751,17 +1803,43 @@ struct CfgEquipTable {
     static const void* GetEquipStrengthenCfg(const void* tbl, int32_t pos, int32_t level) { (void)tbl; (void)pos; (void)level; return nullptr; }
     static const void* GetEquipSuit(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
     static const void* GetShenYaoPosCfg(const void* tbl, int32_t pos, int32_t level) { (void)tbl; (void)pos; (void)level; return nullptr; }
+
+    static void AddEquip(void* a0, void* a1) {}
+    static void AddEquipUpStar(void* a0, void* a1) {}
+    static void GetEquip(void* a0, void* a1) {}
+
+    static void AddEquip(void*, ...) {}
+    static void AddEquipUpStar(void*, ...) {}
+    static void GetEquip(void*, ...) {}
 };
 struct CfgItemGemTable {
     static const void* GetItemGem(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
     static const void* GetGemOpenHole(const void* tbl, int32_t slot) { (void)tbl; (void)slot; return nullptr; }
     static const void* GetGemLevelUp(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
+
+    static void GetItemGem(void* a0, void* a1) {}
+
+    static void GetItemGem(void*, ...) {}
 };
 struct CfgItemCombiTable {};
-struct CfgPetTable {};
+struct CfgPetTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
 struct CfgSkillLevelUpTable {};
-struct CfgTaskCycleTable {};
-struct CfgFamilyTable {};
+struct CfgTaskCycleTable {
+    static void AddTask(void* a0, void* a1, void* a2, void* a3) {}
+
+    static void AddTask(void*, ...) {}
+};
+struct CfgFamilyTable {
+    static void Add(void* a0, void* a1) {}
+    static void AddFamilyBoss(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+    static void AddFamilyBoss(void*, ...) {}
+};
 struct CfgFamilyWarTable {};
 struct CfgFamilyLightExpTable {};
 struct CfgHorseRacingRewardTable {};
@@ -1774,34 +1852,144 @@ struct CfgHorseRacingRewardTable {};
 struct CfgCityWarTable {};
 #endif
 struct CfgHallOfFameTable {};
-struct CfgTitleTable {};
-struct CfgDungeonScoreTable {};
-struct CfgGoldEggTable {};
-struct CfgLimitTimeTable {};
-struct CfgMysteryShopTable {};
-struct CfgExchangeTable {};
-struct CfgMysteryGiftTable {};
-struct CfgDrawTable {};
-struct CfgMapRoadTable {};
-struct CfgTrailerTable {};
-struct CfgMYSJRewardTable {};
-struct CfgMaintainCompensateTable {};
-struct CfgWishRewardTable {};
-struct CfgBFZLEnterCostTable {};
-struct CfgBlacketMarketTable {};
-struct CfgPetEquipTable {};
-struct CfgWeiXinTable {};
-struct CfgAdultGiftTable {};
-struct CfgTencentTable {};
-struct CfgFamilyDungeonTable {};
+struct CfgTitleTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgDungeonScoreTable {
+    static void AddDungeonScore(void*, const void*) {}
+};
+struct CfgGoldEggTable {
+    static void AddGoldEgg(void* a0, void* a1) {}
+    static void AddGoldEggProduce(void* a0, void* a1, void* a2) {}
+
+    static void AddGoldEgg(void*, ...) {}
+    static void AddGoldEggProduce(void*, ...) {}
+};
+struct CfgLimitTimeTable {
+    static void AddLimitTime(void* a0, void* a1) {}
+
+    static void AddLimitTime(void*, ...) {}
+};
+struct CfgMysteryShopTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgExchangeTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgMysteryGiftTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgDrawTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgMapRoadTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgTrailerTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgMYSJRewardTable {
+    static void Add(void* a0, void* a1, void* a2) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgMaintainCompensateTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgWishRewardTable {
+    static void Add(void* a0, void* a1, void* a2) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgBFZLEnterCostTable {
+    static void AddEnterCost(void* a0, void* a1, void* a2) {}
+
+    static void AddEnterCost(void*, ...) {}
+};
+struct CfgBlacketMarketTable {
+    static void Add(void* a0, void* a1, void* a2, void* a3, void* a4, void* a5, void* a6) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgPetEquipTable {
+    static void AddEquip(void* a0, void* a1) {}
+    static void GetEquip(void* a0, void* a1) {}
+
+    static void AddEquip(void*, ...) {}
+    static void GetEquip(void*, ...) {}
+};
+struct CfgWeiXinTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgAdultGiftTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgTencentTable {
+    void AddQQZoneGift(void*, const void*) {}
+    void AddQQGameGift(void*, const void*) {}
+    void AddYellowDailyGift(void*, const void*) {}
+    void AddYellowYearGift(void*, const void*) {}
+    void AddYellowLevelGift(void*, int32_t, const void*) {}
+    void AddSevenDayLogin(void*, const void*) {}
+    void AddBlueDailyGift(void*, const void*) {}
+    void AddBlueYearGift(void*, const void*) {}
+    void AddBlueHighGift(void*, const void*) {}
+    void AddBlueLevelGift(void*, int32_t, const void*) {}
+    void AddTGPNewerGift(void*, const void*) {}
+    void AddTGPDailyGift(void*, const void*) {}
+    void AddTGPLevelGift(void*, const void*) {}
+    void SetYellowNewerGift(void*, const void*) {}
+    void SetBlueNewerGift(void*, const void*) {}
+};
+struct CfgFamilyDungeonTable {
+    static void AddDungeon(void*, const void*) {}
+};
 struct CfgTouZiTable {};
-struct CfgSearchBackTable {};
+struct CfgSearchBackTable {
+    static void AddSearchBack(void*, const void*) {}
+};
 struct CfgEquipBlessTable {};
-struct CfgShouChongTable {};
-struct CfgShiZhuangTable {};
+struct CfgShouChongTable {
+    static void Add(void*, const void*) {}
+
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
+struct CfgShiZhuangTable {
+    static void AddShiZhuang(void* a0, void* a1) {}
+    static void AddShiZhuangLevel(void* a0, void* a1) {}
+
+    static void AddShiZhuang(void*, ...) {}
+    static void AddShiZhuangLevel(void*, ...) {}
+};
 struct CfgGuardPrivilegeTable {};
 struct CfgBeastShrineTable {};
-struct CfgOutLinkFestivalTable {};
+struct CfgOutLinkFestivalTable {
+    static void Add(void* a0, void* a1) {}
+
+    static void Add(void*, ...) {}
+};
 struct ChargeDungeonCfg {};
 struct PkDropRate {
     int32_t PkValues;
@@ -2334,8 +2522,8 @@ private:
     CfgInt32VtVector* paraseInt32VtVector(const std::string* str, const std::string* path);
     void parseTaskItemJobString(MemChrJobBagVector& result, int32_t id, const std::string* strItems);
     MemJobItemTable* parseGambleEquip(int32_t id, const std::string* strItems);
-    void parseEquipItemString(int32_t nIndex, const std::string* strItems);
-    void parseGongGaoString(int32_t nIndex, const std::string* strItems);
+    static void parseEquipItemString(MemChrEquipBagVector* result, CfgData* cfg, int32_t nIndex, const std::string* strItems);
+    static void parseGongGaoString(std::list<CfgGongGao>* result, int32_t nIndex, const std::string* strItems);
     
     // 成员变量
     int32_t m_debug;

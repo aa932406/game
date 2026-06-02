@@ -2,6 +2,8 @@
 #include "Answer/Singleton.h"
 #include "Answer/Logger.h"
 #include "Answer/DayTime.h"
+#include "Answer/MySqlDBGuard.h"
+#include "Answer/MySqlQuery.h"
 #include "CTimer.h"
 #include "DB/DBService.h"
 #include "GameService/GameService.h"
@@ -25,6 +27,22 @@ CfgData::CfgData()
 
 CfgData::~CfgData()
 {}
+
+// ==================== 单例与初始化 ====================
+
+// ==================== Stub implementations ====================
+
+void CfgData::parseEquipItemString(MemChrEquipBagVector* result, CfgData* cfg, int32_t nIndex, const std::string* strItems)
+{
+    // TODO: implement from gameserver.cc
+    (void)result; (void)cfg; (void)nIndex; (void)strItems;
+}
+
+void CfgData::parseGongGaoString(std::list<CfgGongGao>* result, int32_t nIndex, const std::string* strItems)
+{
+    // TODO: implement from gameserver.cc
+    (void)result; (void)nIndex; (void)strItems;
+}
 
 // ==================== 单例与初始化 ====================
 
@@ -279,7 +297,7 @@ void CfgData::reload()
 
     fetchItem(1);
     v1 = Answer::Singleton<ItemEffectManager>::instance();
-    ItemEffectManager::init(v1);
+    v1->init();
 }
 
 // ==================== Getter 方法示例 ====================
@@ -455,7 +473,7 @@ CfgDungeonNpc *CfgData::getDungeonNpc(int32_t id)
 
 const CfgEquip *CfgData::getEquip(int32_t id)
 {
-    return CfgEquipTable::GetEquip(&this->m_cfgEquip, id);
+    return static_cast<const CfgEquip*>(CfgEquipTable::GetEquip(&this->m_cfgEquip, id));
 }
 
 CfgChrShop *CfgData::getChrShop(int32_t Index)
@@ -961,7 +979,7 @@ void CfgData::InitFamilyRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 stu.Rewards = __x;
                                                     
                 auto *v2 = &this->m_FamilyTaskReward[stu.Index];
@@ -1081,7 +1099,7 @@ void CfgData::InitHuoYueDuTable()
                         strItems = v2->pString;
                         
                         MemChrBagVector __x;
-                        CItemHelper::parseItemVectorString(&__x, &strItems);
+                        CItemHelper().parseItemVectorString(&__x, &strItems);
                         stu_0.Items = __x;
                                                                                     
                         char __k = stu_0.Id;
@@ -1156,7 +1174,7 @@ void CfgData::InitKaiFuHuoDongTable()
                     strItems = v2->pString;
                     
                     MemChrBagVector __x;
-                    CItemHelper::parseItemVectorString(&__x, &strItems);
+                    CItemHelper().parseItemVectorString(&__x, &strItems);
                     stu.ItemVector = __x;
                                                                 }
                 
@@ -1251,12 +1269,13 @@ void CfgData::InitDungeonScoreTable()
                 strItem = v1->pString;
                 
                 MemChrBag v2;
-                CItemHelper::parseItemString(&v2, &strItem);
+                CItemHelper().parseItemString(v2, &strItem);
                 score.Item = v2;
                 
                                         ++nIndex;
                 
-                CfgDungeonScoreTable::AddDungeonScore(&this->m_cfgDungeonScoreTable, &score);
+                // TODO: // TODO: implement AddDungeonScore
+                    // this->m_cfgDungeonScoreTable.AddDungeonScore(score);
             }
         }
     }
@@ -1289,7 +1308,8 @@ void CfgData::InitDungeonSummon()
                 
                 std::string path;
                 char v9;
-                            path = v1->pString;
+                            const CDBCFile::FIELD *v1 = DungeonTrapFile.Search_Posistion(i, nIndex);
+                path = v1->pString;
                 
                 std::list<int> __x;
                 paraseInt32List(&__x, &path, 0, nullptr);
@@ -1302,7 +1322,7 @@ void CfgData::InitDungeonSummon()
                 strItem = v2->pString;
                 
                 ItemData v20;
-                v20 = CItemHelper::parseItemDataString(&strItem);
+                v20 = CItemHelper().parseItemDataString(&strItem);
                 stu.ConstItem.m_nId = v20.m_nId;
                 stu.ConstItem.m_nClass = v20.m_nClass;
                 stu.ConstItem.m_nCount = v20.m_nCount;
@@ -1311,8 +1331,7 @@ void CfgData::InitDungeonSummon()
                 ++nIndex;
                 
                 auto __k = std::make_pair(stu.nDungeon, stu.nIndex);
-                auto *v3 = std::map<std::pair<int, int>, CfgDungeonSummon>::operator[](&this->m_cfgDungeonSummon, &__k);
-                *v3 = stu;
+                this->m_cfgDungeonSummon[__k] = stu;
                         }
         }
     }
@@ -1357,7 +1376,7 @@ void CfgData::InitSpecialTreasureMapRandTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 stu.vGetItems = __x;
                                                     
                 stu.nRate = TabFile.Search_Posistion( i, 3)->iValue;
@@ -1368,7 +1387,7 @@ void CfgData::InitSpecialTreasureMapRandTable()
                 strItem = v2->pString;
                 
                 MemChrBag v3;
-                CItemHelper::parseItemString(&v3, &strItem);
+                CItemHelper().parseItemString(v3, &strItem);
                 stu.vShowItem = v3;
                 
                                         stu.nGongGaoId = TabFile.Search_Posistion( i, 5)->iValue;
@@ -1411,7 +1430,7 @@ void CfgData::InitMonsterAddAttrTable()
                     AddAttrs.AttrVector.push_back(stu);
                 }
                 
-                auto *v1 = this->m_MonstAddAttrMap[Mid];
+                auto &v1 = this->m_MonstAddAttrMap[Mid];
                 v1.push_back(AddAttrs);
                         }
         }
@@ -1465,7 +1484,7 @@ void CfgData::InitDaZheQuanTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 stu.Items = __x;
                                                     
                 auto *v2 = &this->m_DaZheQuanMap[stu.Index];
@@ -1513,7 +1532,7 @@ void CfgData::Init360RewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 stu.Items = __x;
                                                     
                 auto *v2 = &this->m_Wan360RewardMap[stu.Index];
@@ -1566,7 +1585,7 @@ Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 
 int32_t CfgData::Get360RewardIcon(const std::string *const platform)
 {
-    return *std::map<std::string, int>::operator[](&this->m_Wan360RewardTypeMap, platform);
+    return this->m_Wan360RewardTypeMap[*platform];
 }
 
 void CfgData::InitTotalChongZhiTable()
@@ -1606,7 +1625,7 @@ void CfgData::InitTotalChongZhiTable()
                 v10 = v2->pString;
                 
                 std::list<CfgGongGao> v9;
-                CfgData::parseGongGaoString((CfgData *const)&v9, stu.Index, &v10);
+                CfgData::parseGongGaoString(&v9, stu.Index, &v10);
                 stu.GongGaoInfo = v9;
                                                     
                 stu.NewServerday = TabFile.Search_Posistion( i, 4)->iValue;
@@ -1667,7 +1686,7 @@ void CfgData::InitEveryDayChongZhi()
                 v9 = v2->pString;
                 
                 std::list<CfgGongGao> v8;
-                CfgData::parseGongGaoString((CfgData *const)&v8, stu.Index, &v9);
+                CfgData::parseGongGaoString(&v8, stu.Index, &v9);
                 stu.GongGaoInfo = v8;
                                                     
                 this->m_EveryDayChongZhiTable.push_back(stu);
@@ -1727,7 +1746,7 @@ void CfgData::InitNewServerFavorable()
                 v13 = v2->pString;
                 
                 std::list<CfgGongGao> v12;
-                CfgData::parseGongGaoString((CfgData *const)&v12, stu.Index, &v13);
+                CfgData::parseGongGaoString(&v12, stu.Index, &v13);
                 stu.GongGaoInfo = v12;
                                                     
                 stu.nLimitTime = TabFile.Search_Posistion( i, 4)->iValue;
@@ -1773,7 +1792,7 @@ void CfgData::InitNewServerFavorable()
                         v19 = v5->pString;
                         
                         std::list<CfgGongGao> v18;
-                        CfgData::parseGongGaoString((CfgData *const)&v18, stu.Index, &v19);
+                        CfgData::parseGongGaoString(&v18, stu.Index, &v19);
                         this->m_ThreePetGift.GongGaoInfo = v18;
                                                                                     
                         this->m_ThreePetGift.nLimitTime = TabFile2.Search_Posistion( i_0, 4)->iValue;
@@ -1861,7 +1880,7 @@ void CfgData::InitMoHuaHuanYiTable()
                             const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 2);
                 strItem = v1->pString;
                 
-                ItemData v12 = CItemHelper::parseItemDataString(&strItem);
+                ItemData v12 = CItemHelper().parseItemDataString(&strItem);
                 stu.CostItem.m_nId = v12.m_nId;
                 stu.CostItem.m_nClass = v12.m_nClass;
                 stu.CostItem.m_nCount = v12.m_nCount;
@@ -1920,7 +1939,7 @@ void CfgData::InitZiYuanZhaoHuiTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 stu.vFreeReward = __x;
                                                     ++nIndex;
                 
@@ -1930,11 +1949,11 @@ void CfgData::InitZiYuanZhaoHuiTable()
                 v9 = v2->pString;
                 
                 MemChrBagVector v8;
-                CItemHelper::parseItemVectorString(&v8, &v9);
+                CItemHelper().parseItemVectorString(&v8, &v9);
                 stu.vItemReward = v8;
                                                     ++nIndex;
                 
-                CfgSearchBackTable::AddSearchBack(&this->m_cfgSearchBackTable, &stu);
+                // TODO: this->m_cfgSearchBackTable.AddSearchBack(stu);
                         }
         }
     }
@@ -2206,7 +2225,7 @@ void CfgData::InitLevelGift()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 reward.ItemVector = __x;
                                                     
                 int __k = reward.Index;
@@ -2304,7 +2323,7 @@ void CfgData::InitOnLimeReward()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 reward.ItemVector = __x;
                                                     
                 auto *v2 = &this->m_OnLineReward[reward.Id];
@@ -2352,7 +2371,7 @@ void CfgData::fetchSignReward()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 reward.ItemVector = __x;
                                                     
                 char __k = reward.count;
@@ -2402,13 +2421,13 @@ void CfgData::InitQQZoneRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 gift.vReward = __x;
                                                     
                 gift.nCondition = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
-                CfgTencentTable::AddQQZoneGift(&this->m_cfgTencentTable, &gift);
+                // TODO: this->m_cfgTencentTable.AddQQZoneGift(gift);
                         }
         }
     }
@@ -2444,13 +2463,13 @@ void CfgData::InitQQGameRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 gift.vReward = __x;
                                                     
                 gift.nCondition = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
-                CfgTencentTable::AddQQGameGift(&this->m_cfgTencentTable, &gift);
+                // TODO: this->m_cfgTencentTable.AddQQGameGift(gift);
                         }
         }
     }
@@ -2483,10 +2502,10 @@ void CfgData::InitYellowRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector vReward;
-                CItemHelper::parseItemVectorString(&vReward, &strItems);
+                CItemHelper().parseItemVectorString(&vReward, &strItems);
                                         ++nIndex;
                 
-                CfgTencentTable::SetYellowNewerGift(&this->m_cfgTencentTable, &vReward);
+                // TODO: this->m_cfgTencentTable.SetYellowNewerGift(vReward);
                         }
         }
     }
@@ -2520,11 +2539,11 @@ void CfgData::InitTencentSevenDayLoginTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 stu.vReward = __x;
                                                     ++nIndex;
                 
-                CfgTencentTable::AddSevenDayLogin(&this->m_cfgTencentTable, &stu);
+                // TODO: this->m_cfgTencentTable.AddSevenDayLogin(stu);
                         }
         }
     }
@@ -2560,7 +2579,7 @@ void CfgData::InitYellowDailyRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 daily.vRewards = __x;
                                                     ++nIndex;
                 
@@ -2570,15 +2589,15 @@ void CfgData::InitYellowDailyRewardTable()
                 v10 = v2->pString;
                 
                 MemChrBagVector v9;
-                CItemHelper::parseItemVectorString(&v9, &v10);
+                CItemHelper().parseItemVectorString(&v9, &v10);
                 year.vRewards = v9;
                                                     ++nIndex;
                 
                 daily.nLevel = nLevel;
                 year.nLevel = nLevel;
                 
-                CfgTencentTable::AddYellowDailyGift(&this->m_cfgTencentTable, &daily);
-                CfgTencentTable::AddYellowYearGift(&this->m_cfgTencentTable, &year);
+                // TODO: this->m_cfgTencentTable.AddYellowDailyGift(daily);
+                // TODO: this->m_cfgTencentTable.AddYellowYearGift(year);
                 
                                     }
         }
@@ -2614,7 +2633,7 @@ void CfgData::InitYellowLevelRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 gift.vRewards = __x;
                                                     ++nIndex;
                 
@@ -2624,11 +2643,11 @@ void CfgData::InitYellowLevelRewardTable()
                 v9 = v2->pString;
                 
                 MemChrBagVector v8;
-                CItemHelper::parseItemVectorString(&v8, &v9);
+                CItemHelper().parseItemVectorString(&v8, &v9);
                 gift.vVipRewards = v8;
                                                     ++nIndex;
                 
-                CfgTencentTable::AddYellowLevelGift(&this->m_cfgTencentTable, nId, &gift);
+                // TODO: this->m_cfgTencentTable.AddYellowLevelGift(nId, gift);
                         }
         }
     }
@@ -2661,10 +2680,10 @@ void CfgData::InitBlueRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector vReward;
-                CItemHelper::parseItemVectorString(&vReward, &strItems);
+                CItemHelper().parseItemVectorString(&vReward, &strItems);
                                         ++nIndex;
                 
-                CfgTencentTable::SetBlueNewerGift(&this->m_cfgTencentTable, &vReward);
+                // TODO: this->m_cfgTencentTable.SetBlueNewerGift(vReward);
                         }
         }
     }
@@ -2701,7 +2720,7 @@ void CfgData::InitBlueDailyRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 daily.vRewards = __x;
                                                     ++nIndex;
                 
@@ -2711,7 +2730,7 @@ void CfgData::InitBlueDailyRewardTable()
                 v12 = v2->pString;
                 
                 MemChrBagVector v11;
-                CItemHelper::parseItemVectorString(&v11, &v12);
+                CItemHelper().parseItemVectorString(&v11, &v12);
                 year.vRewards = v11;
                                                     ++nIndex;
                 
@@ -2721,7 +2740,7 @@ void CfgData::InitBlueDailyRewardTable()
                 v15 = v3->pString;
                 
                 MemChrBagVector v14;
-                CItemHelper::parseItemVectorString(&v14, &v15);
+                CItemHelper().parseItemVectorString(&v14, &v15);
                 high.vRewards = v14;
                                                     ++nIndex;
                 
@@ -2729,9 +2748,9 @@ void CfgData::InitBlueDailyRewardTable()
                 year.nLevel = nLevel;
                 high.nLevel = nLevel;
                 
-                CfgTencentTable::AddBlueDailyGift(&this->m_cfgTencentTable, &daily);
-                CfgTencentTable::AddBlueYearGift(&this->m_cfgTencentTable, &year);
-                CfgTencentTable::AddBlueHighGift(&this->m_cfgTencentTable, &high);
+                // TODO: this->m_cfgTencentTable.AddBlueDailyGift(daily);
+                // TODO: this->m_cfgTencentTable.AddBlueYearGift(year);
+                // TODO: this->m_cfgTencentTable.AddBlueHighGift(high);
                 
                                                 }
         }
@@ -2767,11 +2786,11 @@ void CfgData::InitBlueLevelRewardTable()
                 strItems = v1->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 gift.vRewards = __x;
                                                     ++nIndex;
                 
-                CfgTencentTable::AddBlueLevelGift(&this->m_cfgTencentTable, nId, &gift);
+                // TODO: this->m_cfgTencentTable.AddBlueLevelGift(nId, gift);
                         }
         }
     }
@@ -2797,7 +2816,8 @@ void CfgData::InitTGPRewardTable()
                 int32_t nIndex = 0;
                 
                 const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
-                gift = v1->pString;
+                CfgTGPGift gift;
+                gift.strPF = v1->pString;
                 ++nIndex;
                 
                 std::string strItems;
@@ -2806,11 +2826,13 @@ void CfgData::InitTGPRewardTable()
                 strItems = v2->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 gift.vReward = __x;
                                                     ++nIndex;
                 
-                CfgTencentTable::AddTGPNewerGift(&this->m_cfgTencentTable, &gift);
+                CfgTGPGift gift;
+                gift.strPF = v1->pString;
+                // TODO: this->m_cfgTencentTable.AddTGPNewerGift(gift);
                         }
         }
     }
@@ -2836,7 +2858,8 @@ void CfgData::InitTGPDailyRewardTable()
                 int32_t nIndex = 0;
                 
                 const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
-                gift = v1->pString;
+                CfgTGPGift gift;
+                gift.strPF = v1->pString;
                 ++nIndex;
                 
                 std::string strItems;
@@ -2845,11 +2868,11 @@ void CfgData::InitTGPDailyRewardTable()
                 strItems = v2->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 gift.vReward = __x;
                                                     ++nIndex;
                 
-                CfgTencentTable::AddTGPDailyGift(&this->m_cfgTencentTable, &gift);
+                // TODO: this->m_cfgTencentTable.AddTGPDailyGift(gift);
                         }
         }
     }
@@ -2877,7 +2900,8 @@ void CfgData::InitTGPLevelRewardTable()
                 gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
-                gift = v1->pString;
+                CfgTGPGift gift;
+                gift.strPF = v1->pString;
                 gift.nLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
@@ -2887,11 +2911,11 @@ void CfgData::InitTGPLevelRewardTable()
                 strItems = v2->pString;
                 
                 MemChrBagVector __x;
-                CItemHelper::parseItemVectorString(&__x, &strItems);
+                CItemHelper().parseItemVectorString(&__x, &strItems);
                 gift.vReward = __x;
                                                     ++nIndex;
                 
-                CfgTencentTable::AddTGPLevelGift(&this->m_cfgTencentTable, &gift);
+                // TODO: this->m_cfgTencentTable.AddTGPLevelGift(gift);
                         }
         }
     }
@@ -2928,7 +2952,7 @@ void CfgData::InitFamilyDungeonTable()
                 stu.Y = TabFile.Search_Posistion( i, ++i)->iValue;
                 stu.nTime = TabFile.Search_Posistion( i, ++i)->iValue;
                 
-                CfgFamilyDungeonTable::AddDungeon(&this->m_cfgFamilyDungeonTable, &stu);
+                // TODO: this->m_cfgFamilyDungeonTable.AddDungeon(stu);
             }
         }
     }
@@ -3016,7 +3040,7 @@ void CfgData::fetchActivity()
                             str = awards.c_str();
                 
                 StringVector strParams;
-                StringUtility::split(&strParams, &str, &delims, 0);
+                StringUtility::split(strParams, str, delims);
                                                                 
                 int16_t nsize = (int16_t)strParams.size();
                 switch (cfg.typeId)
@@ -3033,11 +3057,10 @@ void CfgData::fetchActivity()
                 v77.resize(nsize, 0);
                 for (int32_t j = 0; j < nsize; ++j)
                 {
-                    std::string* v8 = strParams[j];
+                    std::string v8 = strParams[j];
                     int val = atoi(v8.c_str());
                     v77[j] = val;
                 }
-                strParams.~vector();
                 
                 // 根据类型设置 gift_id
                 for (int32_t j = 0; j < nsize; ++j)
@@ -3058,18 +3081,17 @@ void CfgData::fetchActivity()
                             v132 = daily.c_str();
                 
                 StringVector strParams_0;
-                StringUtility::split(&strParams_0, &v132, &v130, 0);
+                StringUtility::split(strParams_0, v132, v130);
                                                                 
                 int16_t nsize_0 = (int16_t)strParams_0.size();
                 std::vector<int> v78;
                 v78.resize(nsize_0, 0);
                 for (int32_t j_0 = 0; j_0 < nsize_0; ++j_0)
                 {
-                    std::string* v12 = strParams_0[j_0];
+                    std::stringv12 = strParams_0[j_0];
                     int val = atoi(v12.c_str());
                     v78[j_0] = val;
                 }
-                strParams_0.~vector();
                 
                 for (int32_t j_0 = 0; j_0 < nsize_0; ++j_0)
                 {
@@ -3088,15 +3110,14 @@ void CfgData::fetchActivity()
                             v136 = maps.c_str();
                 
                 StringVector strMaps;
-                StringUtility::split(&strMaps, &v136, &v134, 0);
+                StringUtility::split(strMaps, v136, v134);
                                                                 
                 for (size_t j_1 = 0; j_1 < strMaps.size(); ++j_1)
                 {
-                    std::string* v15 = strMaps[j_1];
+                    std::stringv15 = strMaps[j_1];
                     int val = atoi(v15.c_str());
                     cfg.maps.push_back(val);
                 }
-                strMaps.~vector();
             }
             
             // 解析目标区域
@@ -3110,11 +3131,11 @@ void CfgData::fetchActivity()
                             v141 = position.c_str();
                 
                 StringVector strParams_1;
-                StringUtility::split(&strParams_1, &v141, &v139, 0);
+                StringUtility::split(strParams_1, v141, v139);
                                                                 
                 if (strParams_1.size() == 2)
                 {
-                    std::string* v19 = strParams_1[0];
+                    std::stringv19 = strParams_1[0];
                     cfg.target_mapid = atoi(v19.c_str());
                     
                     std::string v143;
@@ -3123,23 +3144,22 @@ void CfgData::fetchActivity()
                                     v143 = "|";
                     
                     char v146;
-                                    std::string* v21 = strParams_1[1];
+                                    std::stringv21 = strParams_1[1];
                     v145 = v21.c_str();
                     
                     StringVector stritemParams;
-                    StringUtility::split(&stritemParams, &v145, &v143, 0);
+                    StringUtility::split(stritemParams, v145, v143);
                                                                                     
                     for (size_t j_2 = 0; j_2 < stritemParams.size(); ++j_2)
                     {
-                        std::string* v23 = stritemParams[j_2];
+                        std::stringv23 = stritemParams[j_2];
                         int val = atoi(v23.c_str());
                         cfg.target_regiona.push_back(val);
                     }
-                    stritemParams.~vector();
                 }
                 else if (strParams_1.size() == 3)
                 {
-                    std::string* v25 = strParams_1[0];
+                    std::stringv25 = strParams_1[0];
                     cfg.target_mapid = atoi(v25.c_str());
                     
                     std::string v148;
@@ -3148,15 +3168,15 @@ void CfgData::fetchActivity()
                                     v148 = "|";
                     
                     char v151;
-                                    std::string* v27 = strParams_1[1];
+                                    std::stringv27 = strParams_1[1];
                     v150 = v27.c_str();
                     
                     StringVector stritemParams_0;
-                    StringUtility::split(&stritemParams_0, &v150, &v148, 0);
+                    StringUtility::split(stritemParams_0, v150, v148);
                                                                                     
                     for (size_t j_3 = 0; j_3 < stritemParams_0.size(); ++j_3)
                     {
-                        std::string* v29 = stritemParams_0[j_3];
+                        std::stringv29 = stritemParams_0[j_3];
                         int val = atoi(v29.c_str());
                         cfg.target_regiona.push_back(val);
                     }
@@ -3167,23 +3187,20 @@ void CfgData::fetchActivity()
                                     v154 = "|";
                     
                     char v157;
-                                    std::string* v31 = strParams_1[2];
+                                    std::stringv31 = strParams_1[2];
                     v156 = v31.c_str();
                     
                     StringVector v153;
-                    StringUtility::split(&v153, &v156, &v154, 0);
+                    StringUtility::split(v153, v156, v154);
                     stritemParams_0.operator=(v153);
-                    v153.~vector();
                                                                                     
                     for (size_t k = 0; k < stritemParams_0.size(); ++k)
                     {
-                        std::string* v33 = stritemParams_0[k];
+                        std::stringv33 = stritemParams_0[k];
                         int val = atoi(v33.c_str());
                         cfg.target_regionb.push_back(val);
                     }
-                    stritemParams_0.~vector();
                 }
-                strParams_1.~vector();
             }
             
             // 解析开始时间
@@ -3193,7 +3210,7 @@ void CfgData::fetchActivity()
                             v159 = ":";
                 
                 StringVector vStartHour;
-                StringUtility::split(&vStartHour, &start_hour, &v159, 0);
+                StringUtility::split(vStartHour, start_hour, v159);
                                         
                 for (size_t j_4 = 0; j_4 < vStartHour.size(); ++j_4)
                 {
@@ -3208,7 +3225,6 @@ void CfgData::fetchActivity()
                         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "wrong activity data with id=%d\n", cfg.id);
                     }
                 }
-                vStartHour.~vector();
             }
             
             // 存储到 map
@@ -3216,12 +3232,6 @@ void CfgData::fetchActivity()
             *v38 = cfg;
             
             // 清理
-            daily.~string();
-            awards.~string();
-            position.~string();
-            start_hour.~string();
-            maps.~string();
-            cfg.~CfgActivity();
         }
         
         // 加载活动事件
@@ -3267,22 +3277,19 @@ void CfgData::fetchActivity()
                                     v164 = triggerParam.c_str();
                     
                     StringVector strParams_2;
-                    StringUtility::split(&strParams_2, &v164, &v162, 0);
+                    StringUtility::split(strParams_2, v164, v162);
                                                                                     
                     for (auto& strParam : strParams_2)
                     {
                         int val = atoi(strParam.c_str());
                         event.trigger_param.push_back(val);
                     }
-                    strParams_2.~vector();
-                    triggerParam.~string();
                     
                     // 存储事件
                     auto v44 = std::map<int, std::map<int, std::list<CfgMapEvent>>>::operator[](&this->m_activityEvents, &event.id);
                     auto v45 = std::map<int, std::list<CfgMapEvent>>::operator[](v44, &event.mapid);
                     v45.push_back(event);
                     
-                    event.~CfgMapEvent();
                 }
             }
                     
@@ -3332,7 +3339,7 @@ void CfgData::fetchActivity()
                                                     v170 = ":";
                             
                             StringVector vRoad;
-                            StringUtility::split(&vRoad, &road, &v170, 0);
+                            StringUtility::split(vRoad, road, v170);
                                                                             
                             for (size_t j_5 = 0; j_5 < vRoad.size(); ++j_5)
                             {
@@ -3350,9 +3357,7 @@ void CfgData::fetchActivity()
                                     pos.y = atoi(std::string::c_str(vPos[1]));
                                     monster.road.push_back(pos);
                                 }
-                                vPos.~vector();
                             }
-                            vRoad.~vector();
                         }
                         
                         // 解析随机位置
@@ -3363,7 +3368,7 @@ void CfgData::fetchActivity()
                                                     v175 = "|";
                             
                             StringVector vRandPos;
-                            StringUtility::split(&vRandPos, &randpos, &v175, 0);
+                            StringUtility::split(vRandPos, randpos, v175);
                                                                             
                             for (size_t j_6 = 0; j_6 < vRandPos.size(); ++j_6)
                             {
@@ -3381,17 +3386,12 @@ void CfgData::fetchActivity()
                                     pos.y = atoi(std::string::c_str(vPos_0[1]));
                                     monster.randpos.push_back(pos);
                                 }
-                                vPos_0.~vector();
                             }
-                            vRandPos.~vector();
                         }
                         
                         auto *v64 = &this->m_activityMonsters[monster.id];
                         *v64 = monster;
                         
-                        randpos.~string();
-                        road.~string();
-                        monster.~CfgActivityMonster();
                     }
                 }
                         }
@@ -3429,20 +3429,17 @@ void CfgData::fetchActivity()
                         v183 = regionId.c_str();
                         
                         StringVector strRegions;
-                        StringUtility::split(&strRegions, &v183, &v181, 0);
+                        StringUtility::split(strRegions, v183, v181);
                                                                                                         
                         for (size_t it_0 = 0; it_0 < strRegions.size(); ++it_0)
                         {
-                            std::string* v67 = strRegions[it_0];
+                            std::stringv67 = strRegions[it_0];
                             int val = atoi(v67.c_str());
                             npc.region_id.push_back(val);
                         }
-                        strRegions.~vector();
-                        regionId.~string();
                         
                         auto *v69 = &this->m_activityNpcs[npc.id];
                         *v69 = npc;
-                        npc.~CfgActivityNpc();
                     }
                 }
                         }
@@ -3477,14 +3474,11 @@ void CfgData::fetchActivity()
                         std::vector<Position> v187;
                         CfgData::paresPosition(v187, &strPos);
                         plant.EnterPosVector = v187;
-                        v187.~vector();
-                        strPos.~string();
                                             
                         plant.life_time = ActivityPlantFile.Search_Posistion( i_3, 8)->iValue;
                         
                         auto *v71 = &this->m_activityPlants[plant.id];
                         *v71 = plant;
-                        plant.~CfgActivityPlant();
                     }
                 }
                         }
@@ -3580,8 +3574,6 @@ void CfgData::fetchBuff()
             BuffAttrVector __x;
             CfgData::paraseBuffAttr(__x, &str);
             buff.buffAttr = __x;
-            __x.~vector();
-            str.~string();
                     ++nIndex;
             
             buff.isShow = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -3607,14 +3599,12 @@ void CfgData::fetchBuff()
                     const CDBCFile::FIELD *v2 = BuffFile.Search_Posistion( i, nIndex);
             v9 = v2->pString;
             buff.angry = paraseParam2(&v9);
-            v9.~string();
                     
             buff.battle = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto *v3 = &this->m_buffs[buff.id];
             *v3 = buff;
-            buff.~CfgBuff();
         }
     }
 }
@@ -3631,7 +3621,6 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
         
         StringVector vstr;
         StringUtility::split(vstr, *str, delims);
-        delims.~string();
             
         if (!vstr.empty())
         {
@@ -3646,7 +3635,6 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
                 
                 StringVector vBuff;
                 StringUtility::split(vBuff, vstr[i], v17);
-                v17.~string();
                             
                 if (vBuff.size() == 3)
                 {
@@ -3656,10 +3644,8 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
                     stu.addon = atoi(std::string::c_str(vBuff[2]));
                     retstr.push_back(stu);
                 }
-                vBuff.~vector();
             }
         }
-        vstr.~vector();
     }
     return;
 }
@@ -3725,11 +3711,10 @@ void CfgData::fetchDungeon()
                     const CDBCFile::FIELD *v2 = DungeonFile.Search_Posistion( i, nIndex);
             strItem = v2->pString;
             
-            ItemData v55 = CItemHelper::parseItemDataString(&strItem);
+            ItemData v55 = CItemHelper().parseItemDataString(&strItem);
             dungeon.costItem.m_nId = v55.m_nId;
             dungeon.costItem.m_nClass = v55.m_nClass;
             dungeon.costItem.m_nCount = v55.m_nCount;
-            strItem.~string();
                     ++nIndex;
             
             std::string strItems;
@@ -3738,10 +3723,8 @@ void CfgData::fetchDungeon()
             strItems = v3->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             dungeon.rewardItem = __x;
-            __x.~vector();
-            strItems.~string();
                     ++nIndex;
             
             std::string v26;
@@ -3750,10 +3733,8 @@ void CfgData::fetchDungeon()
             v26 = v4->pString;
             
             MemChrBagVector v25;
-            CItemHelper::parseItemVectorString(&v25, &v26);
+            CItemHelper().parseItemVectorString(&v25, &v26);
             dungeon.rewardOnce = v25;
-            v25.~vector();
-            v26.~string();
                     ++nIndex;
             
             dungeon.Battle = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -3792,9 +3773,6 @@ void CfgData::fetchDungeon()
             Int32Vector v28;
             CfgData::paraseInt32Vector(v28, &str, &path, 0);
             dungeon.win_star = v28;
-            v28.~vector();
-            str.~string();
-                    path.~string();
                     ++nIndex;
             
             std::string v34;
@@ -3803,10 +3781,8 @@ void CfgData::fetchDungeon()
             v34 = v6->pString;
             
             MemChrBagVector v33;
-            CItemHelper::parseItemVectorString(&v33, &v34);
+            CItemHelper().parseItemVectorString(&v33, &v34);
             dungeon.star_reward = v33;
-            v33.~vector();
-            v34.~string();
                     ++nIndex;
             
             std::string v37;
@@ -3820,9 +3796,6 @@ void CfgData::fetchDungeon()
             Int32Vector v36;
             CfgData::paraseInt32Vector(v36, &v39, &v37, 0);
             dungeon.star_ratio = v36;
-            v36.~vector();
-            v39.~string();
-                    v37.~string();
                     ++nIndex;
             
             dungeon.TeQuan = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -3849,7 +3822,6 @@ void CfgData::fetchDungeon()
                 *v9 = dungeon;
             }
             
-            dungeon.~CfgDungeon();
         }
         
         // 加载副本奖励
@@ -3980,7 +3952,6 @@ void CfgData::fetchItem(bool bSend)
                             const CDBCFile::FIELD *v33 = ItemFile.Search_Posistion( i_1, 44);
                 str = v33->pString;
                 pItem->RongHeReceovery = paraseParam2(&str);
-                str.~string();
                             
                 auto it_1 = this->m_items.find(pItem->id);
                 if (it_1 == this->m_items.end())
@@ -3989,7 +3960,7 @@ void CfgData::fetchItem(bool bSend)
                     std::map<int, CfgItem *>::insert(&newItems, &v54);
                 }
                 
-                auto *v34 = std::map<int, CfgItem *>::operator[](&this->m_items, &pItem->id);
+                auto *v34 = this->m_items[pItem->id];
                 *v34 = pItem;
             }
         }
@@ -4002,7 +3973,6 @@ void CfgData::fetchItem(bool bSend)
         sendNewItems(&newItems);
     }
     
-    newItems.~map();
     
     // 加载物品礼包
     Answer::RwLock::wrlock(&this->m_itemGiftsLock);
@@ -4037,7 +4007,7 @@ void CfgData::fetchItem(bool bSend)
                 if (it_0 == this->m_itemGifts.end())
                 {
                     CfgItemGiftVector *v36 = new std::vector<CfgItemGift>();
-                    *this->m_itemGifts[itemGift.id] = v36;
+                    this->m_itemGifts[itemGift.id] = v36;
                 }
                 
                 auto *v37 = &this->m_itemGifts[itemGift.id];
@@ -4082,7 +4052,7 @@ void CfgData::fetchItem(bool bSend)
                 if (it == this->m_itemGiftRandoms.end())
                 {
                     CfgItemGiftRandomVector *v38 = new std::vector<CfgItemGiftRandom>();
-                    *this->m_itemGiftRandoms[itemGiftRandom.id] = v38;
+                    this->m_itemGiftRandoms[itemGiftRandom.id] = v38;
                 }
                 
                 auto *v39 = &this->m_itemGiftRandoms[itemGiftRandom.id];
@@ -4238,17 +4208,13 @@ void CfgData::fetchDungeonEvent()
                     str = triggerParam.c_str();
             
             StringVector strTriggerParam;
-            StringUtility::split(&strTriggerParam, &str, &delims, 0);
-            str.~string();
-                    delims.~string();
+            StringUtility::split(strTriggerParam, str, delims);
                     
             for (auto& param : strTriggerParam)
             {
                 int val = atoi(param.c_str());
                 dungeonEvent.trigger_param.push_back(val);
             }
-            strTriggerParam.~vector();
-            triggerParam.~string();
             
             if (!dungeonEvent.trigger_param.empty())
             {
@@ -4256,7 +4222,6 @@ void CfgData::fetchDungeonEvent()
                 v6.push_back(dungeonEvent);
             }
             
-            dungeonEvent.~CfgMapEvent();
         }
     }
 }
@@ -4291,8 +4256,6 @@ void CfgData::fetchDungeonMonster()
             std::list<Param2> __x;
             CfgData::paraseParam2List(&__x, this, atoi(nIndex.c_str()), nullptr);
             monster.mids = __x;
-            __x.~list();
-            nIndex.~string();
                     
             monster.x = DungeonMonsterFile.Search_Posistion( i, 3)->iValue;
             monster.y = DungeonMonsterFile.Search_Posistion( i, 4)->iValue;
@@ -4324,8 +4287,7 @@ void CfgData::fetchDungeonMonster()
                             delims = ":";
                 
                 StringVector vRoad;
-                StringUtility::split(&vRoad, &road, &delims, 0);
-                delims.~string();
+                StringUtility::split(vRoad, road, delims);
                             
                 for (size_t j = 0; j < vRoad.size(); ++j)
                 {
@@ -4335,7 +4297,6 @@ void CfgData::fetchDungeonMonster()
                     
                     StringVector vPos;
                     StringUtility::split(vPos, vRoad[j], v39);
-                    v39.~string();
                                     
                     if (vPos.size() == 2)
                     {
@@ -4344,9 +4305,7 @@ void CfgData::fetchDungeonMonster()
                         pos.y = atoi(vPos[1].c_str());
                         monster.road.push_back(pos);
                     }
-                    vPos.~vector();
                 }
-                vRoad.~vector();
             }
             
             // 解析随机位置
@@ -4357,8 +4316,7 @@ void CfgData::fetchDungeonMonster()
                             v42 = "|";
                 
                 StringVector vRandPos;
-                StringUtility::split(&vRandPos, &randpos, &v42, 0);
-                v42.~string();
+                StringUtility::split(vRandPos, randpos, v42);
                             
                 for (size_t j_0 = 0; j_0 < vRandPos.size(); ++j_0)
                 {
@@ -4368,26 +4326,20 @@ void CfgData::fetchDungeonMonster()
                     
                     StringVector vPos_0;
                     StringUtility::split(vPos_0, vRandPos[j_0], v44);
-                    v44.~string();
                                     
                     if (vPos_0.size() == 2)
                     {
                         Position pos;
-                        pos.x = atoi(vPos_0[0]->c_str());
-                        pos.y = atoi(vPos_0[1]->c_str());
+                        pos.x = atoi(vPos_0[0].c_str());
+                        pos.y = atoi(vPos_0[1].c_str());
                         monster.randpos.push_back(pos);
                     }
-                    vPos_0.~vector();
                 }
-                vRandPos.~vector();
             }
             
             auto *v21 = &this->m_dungeonMonsters[monster.id];
             *v21 = monster;
             
-            randpos.~string();
-            road.~string();
-            monster.~CfgDungeonMonster();
         }
     }
 }
@@ -4454,7 +4406,6 @@ void CfgData::fetchMap()
             
             auto *v2 = &this->m_maps[map.id];
             *v2 = map;
-            map.~CfgMap();
         }
     }
 }
@@ -4615,7 +4566,6 @@ void CfgData::fetchMonster()
                     const CDBCFile::FIELD *v2 = MonsterFile.Search_Posistion( i, nIndex);
             strSkill = v2->pString;
             parseMonsterSkill(monster.mid, &monster.unique_skill, &strSkill);
-            strSkill.~string();
                     ++nIndex;
             
             std::string v22;
@@ -4623,7 +4573,6 @@ void CfgData::fetchMonster()
                     const CDBCFile::FIELD *v3 = MonsterFile.Search_Posistion( i, nIndex);
             v22 = v3->pString;
             parseMonsterSkill(monster.mid, &monster.random_skill, &v22);
-            v22.~string();
                     
             monster.hpPercent = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             monster.ai = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -4680,8 +4629,7 @@ void CfgData::fetchMonster()
             char v25;
                     const CDBCFile::FIELD *v5 = MonsterFile.Search_Posistion( i, nIndex);
             strItem = v5->pString;
-            CItemHelper::parseItemString(&monster.cItem, &strItem);
-            strItem.~string();
+            CItemHelper().parseItemString(monster.cItem, &strItem);
                     
             monster.IsSunAndMoon = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
@@ -4695,22 +4643,18 @@ void CfgData::fetchMonster()
                             delims = ":";
                 
                 StringVector vRand;
-                StringUtility::split(&vRand, &randtypes, &delims, 0);
-                delims.~string();
+                StringUtility::split(vRand, randtypes, delims);
                             
                 for (auto& randStr : vRand)
                 {
-                    int val = atoi(randStr->c_str());
+                    int val = atoi(randStr.c_str());
                     monster.rand_types.push_back(val);
                 }
-                vRand.~vector();
             }
             
             auto *v9 = &this->m_monsters[monster.mid];
             *v9 = monster;
             
-            randtypes.~string();
-            monster.~CfgMonster();
         }
         
         // 加载怪物广播列表
@@ -4766,16 +4710,13 @@ void CfgData::fetchNpc()
             str = v1->pString;
             
             StringVector mapids;
-            StringUtility::split(&mapids, &str, &delims, 0);
-            str.~string();
-                    delims.~string();
+            StringUtility::split(mapids, str, delims);
                     
             for (auto& mapidStr : mapids)
             {
-                int val = atoi(mapidStr->c_str());
+                int val = atoi(mapidStr.c_str());
                 npc.mapids.push_back(val);
             }
-            mapids.~vector();
             
             npc.x = TabFile.Search_Posistion( i, 7)->iValue;
             npc.y = TabFile.Search_Posistion( i, 8)->iValue;
@@ -4792,16 +4733,13 @@ void CfgData::fetchNpc()
                     v49 = ":";
             
             StringVector vparam;
-            StringUtility::split(&vparam, &param, &v49, 0);
-            v49.~string();
+            StringUtility::split(vparam, param, v49);
                     
             for (size_t j = 0; j < vparam.size(); ++j)
             {
-                int val = atoi(vparam[j]->c_str());
+                int val = atoi(vparam[j].c_str());
                 npc.params.push_back(val);
             }
-            vparam.~vector();
-            param.~string();
             
             npc.unite_flag = TabFile.Search_Posistion( i, 23)->iValue;
             
@@ -4817,16 +4755,13 @@ void CfgData::fetchNpc()
                             v53 = "|";
                 
                 StringVector vpf;
-                StringUtility::split(&vpf, &platform, &v53, 0);
-                v53.~string();
+                StringUtility::split(vpf, platform, v53);
                             
                 for (auto& pf : vpf)
                 {
                     npc.platforms.push_back(pf);
                 }
-                vpf.~vector();
             }
-            platform.~string();
             
             // 解析消耗物品
             std::string v55;
@@ -4839,9 +4774,7 @@ void CfgData::fetchNpc()
             v57 = v11->pString;
             
             StringVector CostVector;
-            StringUtility::split(&CostVector, &v57, &v55, 0);
-            v57.~string();
-                    v55.~string();
+            StringUtility::split(CostVector, v57, v55);
                     
             for (auto& costStr : CostVector)
             {
@@ -4851,23 +4784,19 @@ void CfgData::fetchNpc()
                 
                 StringVector CostItem;
                 StringUtility::split(CostItem, *costStr, v60);
-                v60.~string();
                             
                 if (CostItem.size() == 3)
                 {
                     CfgDungeonNpcCost NpcCost;
-                    NpcCost.ItemType = atoi(CostItem[0]->c_str());
-                    NpcCost.ItemId = atoi(CostItem[1]->c_str());
-                    NpcCost.ItemCount = atoi(CostItem[2]->c_str());
+                    NpcCost.ItemType = atoi(CostItem[0].c_str());
+                    NpcCost.ItemId = atoi(CostItem[1].c_str());
+                    NpcCost.ItemCount = atoi(CostItem[2].c_str());
                     npc.m_vNpcCost.push_back(NpcCost);
                 }
-                CostItem.~vector();
             }
-            CostVector.~vector();
             
             auto *v19 = &this->m_npcs[npc.id];
             *v19 = npc;
-            npc.~CfgNpc();
         }
         
         // 加载NPC机场
@@ -4934,9 +4863,7 @@ void CfgData::fetchPlant()
             str = v1->pString;
             
             StringVector strItems;
-            StringUtility::split(&strItems, &str, &delims, 0);
-            str.~string();
-                    delims.~string();
+            StringUtility::split(strItems, str, delims);
                     
             for (auto& eventStr : strItems)
             {
@@ -4946,19 +4873,16 @@ void CfgData::fetchPlant()
                 
                 StringVector EventVt;
                 StringUtility::split(EventVt, *eventStr, v26);
-                v26.~string();
                             
                 if (EventVt.size() == 2)
                 {
                     CfgPlantEvent Event;
-                    Event.EventId = atoi(EventVt[0]->c_str());
-                    Event.Probability = atoi(EventVt[1]->c_str());
+                    Event.EventId = atoi(EventVt[0].c_str());
+                    Event.Probability = atoi(EventVt[1].c_str());
                     plant.EventMaxRate += Event.Probability;
                     plant.Events.push_back(Event);
                 }
-                EventVt.~vector();
             }
-            strItems.~vector();
             
             plant.item_cost = TabFile.Search_Posistion( i, 6)->iValue;
             plant.start_hour = TabFile.Search_Posistion( i, 7)->iValue;
@@ -4982,9 +4906,7 @@ void CfgData::fetchPlant()
             v30 = v7->pString;
             
             StringVector ItemString;
-            StringUtility::split(&ItemString, &v30, &v28, 0);
-            v30.~string();
-                    v28.~string();
+            StringUtility::split(ItemString, v30, v28);
                     
             for (auto& itemStr : ItemString)
             {
@@ -4994,20 +4916,16 @@ void CfgData::fetchPlant()
                 
                 StringVector RateVt;
                 StringUtility::split(RateVt, *itemStr, v33);
-                v33.~string();
                             
                 if (RateVt.size() == 2)
                 {
-                    int val = atoi(RateVt[0]->c_str());
+                    int val = atoi(RateVt[0].c_str());
                     plant.ItemVt.push_back(val);
                 }
-                RateVt.~vector();
             }
-            ItemString.~vector();
             
             auto *v11 = &this->m_plants[plant.id];
             *v11 = plant;
-            plant.~CfgPlant();
         }
     }
 }
@@ -5056,10 +4974,8 @@ void CfgData::fetchTask()
             strItems = v2->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             task.items_receive = __x;
-            __x.~vector();
-            strItems.~string();
                     
             task.award_exp = TabFile.Search_Posistion( i, 16)->iValue;
             task.award_money = TabFile.Search_Posistion( i, 17)->iValue;
@@ -5075,10 +4991,8 @@ void CfgData::fetchTask()
             v14 = v3->pString;
             
             MemChrBagVector v13;
-            CItemHelper::parseItemVectorString(&v13, &v14);
+            CItemHelper().parseItemVectorString(&v13, &v14);
             task.award_item = v13;
-            v13.~vector();
-            v14.~string();
                     
             std::string v17;
             char v18;
@@ -5088,8 +5002,6 @@ void CfgData::fetchTask()
             MemChrJobBagVector v16;
             CfgData::parseTaskItemJobString(v16, task.id, &v17);
             task.award_optional = v16;
-            v16.~vector();
-            v17.~string();
                     
             task.condition = TabFile.Search_Posistion( i, 35)->iValue;
             
@@ -5098,7 +5010,6 @@ void CfgData::fetchTask()
                     const CDBCFile::FIELD *v5 = TabFile.Search_Posistion( i, 36);
             strRequest = v5->pString;
             task.request = parseTaskCondition(task.id, task.condition, &strRequest);
-            strRequest.~string();
                     
             task.GongXian = TabFile.Search_Posistion( i, 50)->iValue;
             task.JunTuanZiJin = TabFile.Search_Posistion( i, 51)->iValue;
@@ -5123,9 +5034,6 @@ void CfgData::fetchTask()
             std::list<TaskDrop> v21;
             CfgData::parseTaskDrop((CfgData *const)&v21, task.id, &v22);
             task.drop_list = v21;
-            v21.~list();
-            v22.~string();
-                    path.~string();
                     
             task.DoubleGold = TabFile.Search_Posistion( i, 69)->iValue;
             task.BuffId = TabFile.Search_Posistion( i, 70)->iValue;
@@ -5146,7 +5054,6 @@ void CfgData::fetchTask()
                 CfgActivityTaskTable::AddTask(&this->m_cfgActivityTaskTable, task.id, task.level, task.max_level, task.ratio);
             }
             
-            task.~CfgTask();
         }
     }
 }
@@ -5182,7 +5089,6 @@ void CfgData::fetchTrap()
             
             auto *v2 = &this->m_traps[trap.id];
             *v2 = trap;
-            trap.~CfgTrap();
         }
     }
 }
@@ -5259,9 +5165,6 @@ void CfgData::fetchLevelAttr()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             levelAttr.addonattr = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     
             std::string v12;
             char v13;
@@ -5275,14 +5178,10 @@ void CfgData::fetchLevelAttr()
             AttrAddonVector v11;
             CfgData::paraseAttrAddon(v11, &v14, i, &v12);
             levelAttr.addonPoint = v11;
-            v11.~vector();
-            v14.~string();
-                    v12.~string();
                     
             int __k = (levelAttr.job << 16) | levelAttr.level;
             auto *v3 = &this->m_levelAttrs[__k];
             *v3 = levelAttr;
-            levelAttr.~CfgLevelAttr();
         }
     }
 }
@@ -5540,7 +5439,6 @@ void CfgData::fetchMonsterDropGroup()
                     const CDBCFile::FIELD *v1 = MonsterDropFile.Search_Posistion( i, nIndex);
             p_StringTime = v1->pString;
             monsterDropGroup.start_date = Answer::DayTime::StringToIntTime(&p_StringTime);
-            p_StringTime.~string();
                     ++nIndex;
             
             std::string v8;
@@ -5548,7 +5446,6 @@ void CfgData::fetchMonsterDropGroup()
                     const CDBCFile::FIELD *v2 = MonsterDropFile.Search_Posistion( i, nIndex);
             v8 = v2->pString;
             monsterDropGroup.end_date = Answer::DayTime::StringToIntTime(&v8);
-            v8.~string();
                     
             monsterDropGroup.record = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
             monsterDropGroup.festival_group = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -5656,7 +5553,6 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
         
         StringVector PosString;
         StringUtility::split(PosString, *strPos, delims);
-        delims.~string();
             
         for (auto& posStr : PosString)
         {
@@ -5666,18 +5562,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
             
             StringVector Pos;
             StringUtility::split(Pos, *posStr, v17);
-            v17.~string();
                     
             if (Pos.size() == 2)
             {
                 Position stu;
-                stu.x = atoi(Pos[0]->c_str());
-                stu.y = atoi(Pos[1]->c_str());
+                stu.x = atoi(Pos[0].c_str());
+                stu.y = atoi(Pos[1].c_str());
                 retstr.push_back(stu);
             }
-            Pos.~vector();
         }
-        PosString.~vector();
     }
     return;
 }
@@ -5698,13 +5591,12 @@ Param2 CfgData::paraseParam2(const std::string *const str)
     
     StringVector vParam;
     StringUtility::split(vParam, *str, delims);
-    delims.~string();
     
     Param2 result;
     if (vParam.size() == 2)
     {
-        result.nParam1 = atoi(vParam[0]->c_str());
-        result.nParam2 = atoi(vParam[1]->c_str());
+        result.nParam1 = atoi(vParam[0].c_str());
+        result.nParam2 = atoi(vParam[1].c_str());
     }
     else
     {
@@ -5712,7 +5604,6 @@ Param2 CfgData::paraseParam2(const std::string *const str)
         result.nParam2 = 0;
     }
     
-    vParam.~vector();
     return result;
 }
 
@@ -5728,13 +5619,12 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
     
     StringVector vstr;
     StringUtility::split(vstr, *str, delims);
-    delims.~string();
     
     if (size > 0 && (int32_t)vstr.size() != size)
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, 
             "CfgData::paraseInt32Vector() check size err from %s, where size = %d, str = %s\n",
-            path->c_str(), size, str->c_str());
+            path.c_str(), size, str.c_str());
     }
     else
     {
@@ -5746,7 +5636,6 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
         }
     }
     
-    vstr.~vector();
     return;
 }
 
@@ -5762,7 +5651,6 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
     
     StringVector strAttrAddons;
     StringUtility::split(strAttrAddons, *addonAttr, delims);
-    delims.~string();
     
     for (auto& addonStr : strAttrAddons)
     {
@@ -5772,13 +5660,12 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
         
         StringVector strAttrAddon;
         StringUtility::split(strAttrAddon, *addonStr, v24);
-        v24.~string();
             
         if (strAttrAddon.size() == 2)
         {
             AttrAddon attrAddon;
-            attrAddon.index = atoi(strAttrAddon[0]->c_str());
-            attrAddon.addon = atoi(strAttrAddon[1]->c_str());
+            attrAddon.index = atoi(strAttrAddon[0].c_str());
+            attrAddon.addon = atoi(strAttrAddon[1].c_str());
             if (attrAddon.index > 0 && attrAddon.addon > 0)
             {
                 retstr.push_back(attrAddon);
@@ -5788,12 +5675,10 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
         {
             Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
                 "CfgData::paraseAttrAddon() wrong data from %s, where index = %d, str = %s\n",
-                path->c_str(), nIndex, addonAttr->c_str());
+                path.c_str(), nIndex, addonAttr.c_str());
         }
-        strAttrAddon.~vector();
     }
     
-    strAttrAddons.~vector();
     return;
 }
 
@@ -6009,9 +5894,6 @@ void CfgData::InitActiveSkillTable()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             skill.summon_attr = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     
             skill.summon_limit = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
@@ -6022,7 +5904,6 @@ void CfgData::InitActiveSkillTable()
             skill.cd += skill.cd_adjust;
             
             CfgSkillTable::AddActiveSkill(&this->m_cfgSkillTable, &skill);
-            skill.~CfgActiveSkill();
         }
     }
 }
@@ -6066,9 +5947,6 @@ void CfgData::InitPassiveSkillTable()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.vAttrs = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     ++nIndex;
             
             std::string v11;
@@ -6083,15 +5961,11 @@ void CfgData::InitPassiveSkillTable()
             std::list<TalentAddon> v10;
             CfgData::paraseTalentAddon(&v10, &v13, i, &v11);
             stu.lTalentAddon = v10;
-            v10.~list();
-            v13.~string();
-                    v11.~string();
                     
             stu.dropMoneyRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgSkillTable::AddPassiveSkill(&this->m_cfgSkillTable, &stu);
-            stu.~CfgPassiveSkill();
         }
     }
 }
@@ -6132,7 +6006,6 @@ void CfgData::InitTrigSkillTable()
             ++nIndex;
             
             CfgSkillTable::AddTrigSkill(&this->m_cfgSkillTable, &stu);
-            stu.~CfgTrigSkill();
         }
     }
 }
@@ -6174,8 +6047,6 @@ void CfgData::InitTalentTable()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.costItem = strItems;
-            strItems.~list();
-            bCombi.~string();
                     ++nIndex;
             
             std::string size;
@@ -6190,9 +6061,6 @@ void CfgData::InitTalentTable()
             std::list<int> __x;
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.powerSkills = __x;
-            __x.~list();
-            path.~string();
-                    size.~string();
                     ++nIndex;
             ++nIndex;
             
@@ -6203,7 +6071,6 @@ void CfgData::InitTalentTable()
             ++nIndex;
             
             CfgTalentTable::AddTalent(&this->m_cfgTalentTable, &stu);
-            stu.~CfgTalent();
         }
     }
 }
@@ -6242,13 +6109,9 @@ void CfgData::InitTalentPageTable()
             std::list<int> __x;
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.talents = __x;
-            __x.~list();
-            path.~string();
-                    size.~string();
                     ++nIndex;
             
             CfgTalentTable::AddTalentPage(&this->m_cfgTalentTable, &stu);
-            stu.~CfgTalentPage();
         }
     }
 }
@@ -6290,16 +6153,12 @@ void CfgData::InitFamilySkillTable()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.vAttrAddon = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     
             stu.nCostMoney = readFile.Search_Posistion( i, ++nIndex)->iValue;
             stu.PlayerLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgSkillTable::AddFamilySkill(&this->m_cfgSkillTable, &stu);
-            stu.~CfgFamilySkill();
         }
     }
 }
@@ -6334,12 +6193,9 @@ void CfgData::InitTalentActiveTable()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.lItems = strItems;
-            strItems.~list();
-            bCombi.~string();
                     ++nIndex;
             
             CfgSkillTable::AddTalentActive(&this->m_cfgSkillTable, &stu);
-            stu.~CfgTalentActive();
         }
     }
 }
@@ -6387,9 +6243,6 @@ void CfgData::InitEquipTable()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             equip.m_vAttrAddon = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     ++nIndex;
             
             std::string v12;
@@ -6404,9 +6257,6 @@ void CfgData::InitEquipTable()
             AttrAddonVector v11;
             CfgData::paraseAttrAddon(v11, &v14, i, &v12);
             equip.m_vElement = v11;
-            v11.~vector();
-            v14.~string();
-                    v12.~string();
                     ++nIndex;
             nIndex += 10;
             equip.m_DropLuck = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -6434,9 +6284,6 @@ void CfgData::InitEquipTable()
             AttrAddonVector v16;
             CfgData::paraseAttrAddon(v16, &v19, i, &v17);
             equip.m_BaseAttr = v16;
-            v16.~vector();
-            v19.~string();
-                    v17.~string();
                     
             equip.m_PolishLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
@@ -6451,7 +6298,6 @@ void CfgData::InitEquipTable()
             ++nIndex;
             
             CfgEquipTable::AddEquip(&this->m_cfgEquip, &equip);
-            equip.~CfgEquip();
         }
     }
 }
@@ -6490,8 +6336,6 @@ void CfgData::InitEquipUpStarTable()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.m_lCosItem = strItems;
-            strItems.~list();
-            bCombi.~string();
                     
             stu.m_nCostMoney = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
@@ -6508,9 +6352,6 @@ void CfgData::InitEquipUpStarTable()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.m_vAttrAddon = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     ++nIndex;
             ++nIndex;
             
@@ -6519,7 +6360,6 @@ void CfgData::InitEquipUpStarTable()
             ++nIndex;
             
             CfgEquipTable::AddEquipUpStar(&this->m_cfgEquip, &stu);
-            stu.~CfgEquipUpStar();
         }
     }
 }
@@ -6558,8 +6398,6 @@ void CfgData::InitWingCfgTable()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.ConstItems = strItems;
-            strItems.~list();
-            bCombi.~string();
                     
             stu.StartPoints = readFile.Search_Posistion( i, ++nIndex)->iValue;
             stu.SuccessPoints = readFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -6584,16 +6422,11 @@ void CfgData::InitWingCfgTable()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.AddonVector = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     ++nIndex;
             
             WingCfg p_stu;
             WingCfg::WingCfg(&p_stu, &stu);
             CfgWingTable::AddWingCfg(&this->m_cfgWing, &p_stu);
-            p_stu.~WingCfg();
-            stu.~WingCfg();
         }
     }
 }
@@ -6635,13 +6468,9 @@ void CfgData::InitCarrierTable()
             std::list<int> __x;
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.lSkills = __x;
-            __x.~list();
-            path.~string();
-                    size.~string();
                     ++nIndex;
             
             CfgCarrierTable::AddCarrier(&this->m_cfgCarrierTable, &stu);
-            stu.~CfgCarrier();
         }
     }
 }
@@ -6677,7 +6506,6 @@ void CfgData::InitPetTable()
             }
             
             CfgPetTable::Add(&this->m_cfgPetTable, &pet);
-            pet.~CfgPetData();
         }
     }
 }
@@ -6714,7 +6542,6 @@ void CfgData::InitFamilyTable()
             
             CfgFamilyTable::Add(&this->m_cfgFamilyTable, &family);
         }
-        family.~CfgFamily();
     }
     
     // 加载家族Boss表
@@ -6840,16 +6667,13 @@ void CfgData::InitTitleTable()
                     delims = ":";
             
             StringVector strParams;
-            StringUtility::split(&strParams, &params, &delims, 0);
-            delims.~string();
+            StringUtility::split(strParams, params, delims);
                     
             for (auto& param : strParams)
             {
-                int val = atoi(param->c_str());
+                int val = atoi(param.c_str());
                 title.vParams.push_back(val);
             }
-            strParams.~vector();
-            params.~string();
             
             std::string path;
             char v23;
@@ -6858,8 +6682,6 @@ void CfgData::InitTitleTable()
             AttrAddonVector v21;
             CfgData::paraseAttrAddon(v21, &getttr, i, &path);
             title.vGetAttr = v21;
-            v21.~vector();
-            path.~string();
                     
             std::string v25;
             char v26;
@@ -6868,14 +6690,9 @@ void CfgData::InitTitleTable()
             AttrAddonVector v24;
             CfgData::paraseAttrAddon(v24, &dressattr, i, &v25);
             title.vDressAttr = v24;
-            v24.~vector();
-            v25.~string();
                     
-            dressattr.~string();
-            getttr.~string();
             
             CfgTitleTable::Add(&this->m_cfgTitleTable, &title);
-            title.~CfgTitle();
         }
     }
 }
@@ -6906,7 +6723,6 @@ void CfgData::InitGoldEggTable()
             stu.nCostGold = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             CfgGoldEggTable::AddGoldEgg(&this->m_cfgGoldEggTable, &stu);
-            stu.~CfgGoldEgg();
         }
     }
     
@@ -6974,7 +6790,6 @@ void CfgData::InitLimitTimeTable()
             }
             
             CfgLimitTimeTable::AddLimitTime(&this->m_cfgLimitTimeTable, &stu);
-            strTime.~string();
         }
     }
 }
@@ -7010,9 +6825,8 @@ void CfgData::InitMysteryShopTable()
             strItem = v1->pString;
             
             MemChrBag v4;
-            CItemHelper::parseItemString(&v4, &strItem);
+            CItemHelper().parseItemString(v4, &strItem);
             stu.item = v4;
-            strItem.~string();
                     
             stu.nCostType = readFile.Search_Posistion( i, ++nIndex)->iValue;
             stu.nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -7028,11 +6842,10 @@ void CfgData::InitMysteryShopTable()
                     const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
             v10 = v2->pString;
             
-            ItemData v17 = CItemHelper::parseItemDataString(&v10);
+            ItemData v17 = CItemHelper().parseItemDataString(&v10);
             stu.exchange.m_nId = v17.m_nId;
             stu.exchange.m_nClass = v17.m_nClass;
             stu.exchange.m_nCount = v17.m_nCount;
-            v10.~string();
                     ++nIndex;
             
             CfgMysteryShopTable::Add(&this->m_cfgMysteryShopTable, &stu);
@@ -7072,14 +6885,11 @@ void CfgData::InitBuyGiftTable()
             stu.nBroad = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &items);
+            CItemHelper().parseItemVectorString(&__x, &items);
             stu.vGift = __x;
-            __x.~vector();
             
             auto *v2 = &this->m_cfgBuyGiftTable[stu.nIndex];
             *v2 = stu;
-            items.~string();
-            stu.~CfgBuyGift();
         }
     }
 }
@@ -7124,17 +6934,12 @@ void CfgData::InitExchangeTable()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.vCost = strItems;
-            strItems.~list();
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &rewards);
+            CItemHelper().parseItemVectorString(&__x, &rewards);
             stu.vReward = __x;
-            __x.~vector();
             
             CfgExchangeTable::Add(&this->m_cfgExchangeTable, &stu);
-            rewards.~string();
-            items.~string();
-            stu.~CfgExchange();
         }
     }
 }
@@ -7169,16 +6974,13 @@ void CfgData::InitMysteryGiftTable()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vItem = __x;
-            __x.~vector();
-            strItems.~string();
                     ++nIndex;
             nIndex += 3;
             stu.nBroadId = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             CfgMysteryGiftTable::Add(&this->m_cfgMysteryGiftTable, &stu);
-            stu.~CfgMysteryGift();
         }
     }
 }
@@ -7218,7 +7020,6 @@ void CfgData::InitDrawTable()
             stu.vItem.push_back(item);
             
             CfgDrawTable::Add(&this->m_cfgDrawTable, &stu);
-            stu.~CfgDrawReward();
         }
     }
 }
@@ -7258,8 +7059,7 @@ void CfgData::InitMapRoadTable()
                     delims = "|";
             
             StringVector vRoad;
-            StringUtility::split(&vRoad, &strRoad, &delims, 0);
-            delims.~string();
+            StringUtility::split(vRoad, strRoad, delims);
                     
             for (auto& roadStr : vRoad)
             {
@@ -7269,7 +7069,6 @@ void CfgData::InitMapRoadTable()
                 
                 StringVector vPos;
                 StringUtility::split(vPos, *roadStr, v17);
-                v17.~string();
                             
                 if (vPos.size() == 2)
                 {
@@ -7278,13 +7077,9 @@ void CfgData::InitMapRoadTable()
                     __x.y = atoi(vPos[1].c_str());
                     stu.road.push_back(__x);
                 }
-                vPos.~vector();
             }
-            vRoad.~vector();
-            strRoad.~string();
             
             CfgMapRoadTable::Add(&this->m_cfgMapRoadTable, &stu);
-            stu.~CfgMapRoad();
         }
     }
 }
@@ -7317,7 +7112,6 @@ void CfgData::InitTrailerTable()
             ++nIndex;
             
             CfgTrailerTable::Add(&this->m_cfgTrailerTable, &stu);
-            stu.~CfgTrailer();
         }
     }
 }
@@ -7393,7 +7187,6 @@ void CfgData::InitMYSJRewardTable()
             CCardGroupBoxManager *v2 = Answer::Singleton<CCardGroupBoxManager>::instance();
             v2->Add(nGroupId, &cardList);
         }
-        cardList.~list();
     }
 }
 
@@ -7424,7 +7217,6 @@ void CfgData::InitMaintainCompensateTable()
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
             p_StringTime = v1->pString;
             stu.nTime = Answer::DayTime::StringToIntTime(&p_StringTime);
-            p_StringTime.~string();
                     ++nIndex;
             
             std::string strItems;
@@ -7433,14 +7225,11 @@ void CfgData::InitMaintainCompensateTable()
             strItems = v2->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vItems = __x;
-            __x.~vector();
-            strItems.~string();
                     ++nIndex;
             
             CfgMaintainCompensateTable::Add(&this->m_cfgMaintainCompensateTable, &stu);
-            stu.~CfgMaintainCompensate();
         }
     }
 }
@@ -7474,14 +7263,11 @@ void CfgData::InitWishRewardTable()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
-            __x.~vector();
-            strItems.~string();
                     ++nIndex;
             
             CfgWishRewardTable::Add(&this->m_cfgWishRewardTable, nId, &stu);
-            stu.~CfgWishReward();
         }
     }
 }
@@ -7513,11 +7299,9 @@ void CfgData::InitBFZLEnterCostTable()
             
             std::list<ItemData> vItem;
             // TODO: fix CItemHelper::parseItemDataListString call
-            bCombi.~string();
                     ++nIndex;
             
             CfgBFZLEnterCostTable::AddEnterCost(&this->m_cfgBFZLEnterCostTable, nTimes, &vItem);
-            vItem.~list();
         }
     }
 }
@@ -7549,8 +7333,7 @@ void CfgData::InitBlacketMarketTable()
             strItem = v1->pString;
             
             MemChrBag item1;
-            CItemHelper::parseItemString(&item1, &strItem);
-            strItem.~string();
+            CItemHelper().parseItemString(item1, &strItem);
                     ++nIndex;
             
             std::string v10;
@@ -7559,8 +7342,7 @@ void CfgData::InitBlacketMarketTable()
             v10 = v2->pString;
             
             MemChrBag item2;
-            CItemHelper::parseItemString(&item2, &v10);
-            v10.~string();
+            CItemHelper().parseItemString(item2, &v10);
                     ++nIndex;
             
             std::string v12;
@@ -7569,8 +7351,7 @@ void CfgData::InitBlacketMarketTable()
             v12 = v3->pString;
             
             MemChrBag item3;
-            CItemHelper::parseItemString(&item3, &v12);
-            v12.~string();
+            CItemHelper().parseItemString(item3, &v12);
                     
             int32_t nOldPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
             int32_t nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -7652,7 +7433,6 @@ void CfgData::InitSuperMemberTable()
             
             auto *v2 = &this->m_cfgSuperMember[platform];
             *v2 = stu;
-            platform.~string();
         }
     }
 }
@@ -7699,18 +7479,14 @@ void CfgData::InitSouGouSkinTable()
             strItems = v2->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
-            __x.~vector();
-            strItems.~string();
                     
             stu.nIcon = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto *v3 = &this->m_cfgSouGouSkin[platform];
             *v3 = stu;
-            platform.~string();
-            stu.~CfgSouGouSkin();
         }
     }
 }
@@ -7764,9 +7540,6 @@ void CfgData::InitPetEquipTable()
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
             stu.vAttr = __x;
-            __x.~vector();
-            addonAttr.~string();
-                    path.~string();
                     ++nIndex;
             nIndex += 5;
             stu.nBroadcast = readFile.Search_Posistion( i, nIndex++)->iValue;
@@ -7785,15 +7558,11 @@ void CfgData::InitPetEquipTable()
             AttrAddonVector v10;
             CfgData::paraseAttrAddon(v10, &v13, i, &v11);
             stu.vOwnerAttr = v10;
-            v10.~vector();
-            v13.~string();
-                    v11.~string();
                     
             stu.nNeedStar = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgPetEquipTable::AddEquip(&this->m_cfgPetEquipTable, &stu);
-            stu.~CfgPetEquip();
         }
     }
 }
@@ -7830,14 +7599,11 @@ void CfgData::InitWeiXinTable()
             strItems = v2->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
-            __x.~vector();
-            strItems.~string();
                     ++nIndex;
             
             CfgWeiXinTable::Add(&this->m_cfgWeiXinTable, &stu);
-            stu.~CfgWeiXingGift();
         }
     }
 }
@@ -7868,10 +7634,8 @@ void CfgData::InitAdultGiftTable()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
-            __x.~vector();
-            strItems.~string();
                     
             const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, ++nIndex);
             stu = v2->pString;
@@ -7879,7 +7643,6 @@ void CfgData::InitAdultGiftTable()
             ++nIndex;
             
             CfgAdultGiftTable::Add(&this->m_cfgAdultGiftTable, &stu);
-            stu.~CfgAdultGift();
         }
     }
 }
@@ -7896,7 +7659,6 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
     
     StringVector skills;
     StringUtility::split(skills, *strSkill, delims);
-    delims.~string();
     
     int32_t isize = (int32_t)skills.size();
     if (isize > 9) isize = 10;
@@ -7909,23 +7671,20 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
         
         StringVector skill;
         StringUtility::split(skill, skills[i], v23);
-        v23.~string();
             
         if (skill.size() == 3)
         {
-            (*vSkill)[i].maxHp = atoi(skill[0]->c_str());
-            (*vSkill)[i].minHp = atoi(skill[1]->c_str());
-            (*vSkill)[i].skillid = atoi(skill[2]->c_str());
+            (*vSkill)[i].maxHp = atoi(skill[0].c_str());
+            (*vSkill)[i].minHp = atoi(skill[1].c_str());
+            (*vSkill)[i].skillid = atoi(skill[2].c_str());
         }
         else
         {
             Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
                 "CfgData::parseMonsterSkill wrong data with id = %d, string = %s\n",
-                id, strSkill->c_str());
+                id, strSkill.c_str());
         }
-        skill.~vector();
     }
-    skills.~vector();
 }
 
 TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std::string *const strRequest)
@@ -7939,32 +7698,30 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
     
     StringVector requests;
     StringUtility::split(requests, *strRequest, delims);
-    delims.~string();
     
     int32_t nSize = (int32_t)requests.size();
     
     switch (nSize)
     {
     case 3:
-        request.param1 = atoi(requests[0]->c_str());
-        request.param2 = atoi(requests[1]->c_str());
-        request.param3 = atoi(requests[2]->c_str());
+        request.param1 = atoi(requests[0].c_str());
+        request.param2 = atoi(requests[1].c_str());
+        request.param3 = atoi(requests[2].c_str());
         break;
     case 2:
-        request.param1 = atoi(requests[0]->c_str());
-        request.param2 = atoi(requests[1]->c_str());
+        request.param1 = atoi(requests[0].c_str());
+        request.param2 = atoi(requests[1].c_str());
         break;
     case 1:
-        request.param1 = atoi(requests[0]->c_str());
+        request.param1 = atoi(requests[0].c_str());
         break;
     default:
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
             "CfgData::parseTaskCondition wrong data with id = %d, string = %s\n",
-            id, strRequest->c_str());
+            id, strRequest.c_str());
         break;
     }
     
-    requests.~vector();
     return request;
 }
 
@@ -8023,10 +7780,8 @@ void CfgData::InitMobilePhoneGiftTable()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vItem = __x;
-            __x.~vector();
-            strItems.~string();
                     
             const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, ++nIndex);
             stu = v2->pString;
@@ -8035,7 +7790,6 @@ void CfgData::InitMobilePhoneGiftTable()
             
             auto *v3 = &this->m_CfgMobilePhoneGift[stu.strPlatfrom];
             *v3 = stu;
-            stu.~CfgMobilePhoneGift();
         }
     }
 }
@@ -8070,15 +7824,12 @@ void CfgData::InitMiniClientTable()
             strItems = v2->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
-            __x.~vector();
-            strItems.~string();
                     ++nIndex;
             
             auto *v3 = &this->m_CfgMiniClient[stu.strPlatfrom];
             *v3 = stu;
-            stu.~CfgMiniClient();
         }
     }
 }
@@ -8114,9 +7865,8 @@ void CfgData::InitWuHunShopTable()
             strItem = v1->pString;
             
             MemChrBag v4;
-            CItemHelper::parseItemString(&v4, &strItem);
+            CItemHelper().parseItemString(v4, &strItem);
             stu.Item = v4;
-            strItem.~string();
                     
             stu.Rate = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
@@ -8170,9 +7920,6 @@ void CfgData::InitWuHunItemTable()
             std::list<AddAttribute> __x;
             CfgData::parseAddAttribues(&__x, &v8, i, &v6);
             stu.lAttrList = __x;
-            __x.~list();
-            v8.~string();
-                    v6.~string();
                     
             stu.nTalentId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             stu.nTalentLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -8184,7 +7931,6 @@ void CfgData::InitWuHunItemTable()
             
             auto *v2 = &this->m_WuHunItemMap[stu.nId];
             *v2 = stu;
-            stu.~WuHunItem();
         }
     }
 }
@@ -8220,8 +7966,6 @@ void CfgData::InitWuHunCreateTable()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.ConstItem = strItems;
-            strItems.~list();
-            bCombi.~string();
                     ++nIndex;
             
             std::string v13;
@@ -8232,8 +7976,6 @@ void CfgData::InitWuHunCreateTable()
             std::list<RateItem> v12;
             // TODO: fix CItemHelper::parseRateItemDataListString call
             stu.GetItemRate = v12;
-            v12.~list();
-            v13.~string();
                     ++nIndex;
             nIndex += 3;
             
@@ -8242,11 +7984,10 @@ void CfgData::InitWuHunCreateTable()
                     const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, nIndex);
             strItem = v3->pString;
             
-            ItemData v25 = CItemHelper::parseItemDataString(&strItem);
+            ItemData v25 = CItemHelper().parseItemDataString(&strItem);
             stu.SpecialCost.m_nId = v25.m_nId;
             stu.SpecialCost.m_nClass = v25.m_nClass;
             stu.SpecialCost.m_nCount = v25.m_nCount;
-            strItem.~string();
                     ++nIndex;
             
             std::string v18;
@@ -8257,13 +7998,10 @@ void CfgData::InitWuHunCreateTable()
             std::list<RateItem> v17;
             // TODO: fix CItemHelper::parseRateItemDataListString call
             stu.GetItemRate2 = v17;
-            v17.~list();
-            v18.~string();
                     ++nIndex;
             
             auto *v5 = &this->m_CreateWuHunMap[stu.nId];
             *v5 = stu;
-            stu.~CreateWuHun();
         }
     }
 }
@@ -8301,14 +8039,10 @@ void CfgData::InitBossDistribution()
             std::list<int> __x;
             paraseInt32List(&__x, &BossMapListString, 0, nullptr);
             stu.BossMapList = __x;
-            __x.~list();
-            BossMapListString.~string();
             
             BossLevelInfo p_stu;
             BossLevelInfo::BossLevelInfo(&p_stu, &stu);
             BossDistribution::AddBossLevelInfo(&this->m_BossDistribution, &p_stu);
-            p_stu.~BossLevelInfo();
-            stu.~BossLevelInfo();
         }
     }
     
@@ -8339,14 +8073,10 @@ void CfgData::InitBossDistribution()
                 std::list<int> v13;
                 paraseInt32List(&v13, &BossMapListString_0, 0, nullptr);
                 stu.BossMapList = v13;
-                v13.~list();
-                BossMapListString_0.~string();
                 
                 MapBossInfo v14;
                 MapBossInfo::MapBossInfo(&v14, &stu);
                 BossDistribution::AddMapBossInfo(&this->m_BossDistribution, &v14);
-                v14.~MapBossInfo();
-                stu.~MapBossInfo();
             }
         }
         }
@@ -8381,11 +8111,10 @@ void CfgData::InitSpecialBossMapCfgMap()
                     const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
             strItem = v1->pString;
             
-            ItemData v13 = CItemHelper::parseItemDataString(&strItem);
+            ItemData v13 = CItemHelper().parseItemDataString(&strItem);
             stu.ConstItem.m_nId = v13.m_nId;
             stu.ConstItem.m_nClass = v13.m_nClass;
             stu.ConstItem.m_nCount = v13.m_nCount;
-            strItem.~string();
                     
             stu.StartCD = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             stu.ContinuedTime = TabFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -8472,10 +8201,8 @@ void CfgData::InitSuperTeHuiTable()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.Items = __x;
-            __x.~vector();
-            strItems.~string();
                     
             stu.nPrice = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             stu.nGongGaoId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -8483,7 +8210,6 @@ void CfgData::InitSuperTeHuiTable()
             
             auto *v2 = &this->m_SuperTeHuiCfgMap[stu.nIndex];
             *v2 = stu;
-            stu.~SuperTeHuiCfg();
         }
     }
 }
@@ -8531,9 +8257,8 @@ void CfgData::InitJewelPavilionTable()
             strItem = v1->pString;
             
             MemChrBag v3;
-            CItemHelper::parseItemString(&v3, &strItem);
+            CItemHelper().parseItemString(v3, &strItem);
             stu.Item = v3;
-            strItem.~string();
                     
             stu.nPrice = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
@@ -8634,8 +8359,6 @@ void CfgData::InitShouHuRefining()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.lCostList = strItems;
-            strItems.~list();
-            bCombi.~string();
                     ++nIndex;
             
             std::string v14;
@@ -8650,16 +8373,12 @@ void CfgData::InitShouHuRefining()
             std::list<AddAttribute> __x;
             CfgData::parseAddAttribues(&__x, &v16, i, &v14);
             stu.lAttrList = __x;
-            __x.~list();
-            v16.~string();
-                    v14.~string();
                     
             stu.SuitId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto key = std::make_pair(nType, nLevel);
             this->m_ShouHuRefinishingCfgMap.insert(std::make_pair(key, stu));
-            stu.~ShouHuRefinishingCfg();
         }
     }
 }
@@ -8712,9 +8431,6 @@ void CfgData::InitWingEquipPolish()
             std::list<AddAttribute> __x;
             CfgData::parseAddAttribues(&__x, &v20, i, &v18);
             stu.lAttrList = __x;
-            __x.~list();
-            v20.~string();
-                    v18.~string();
                     ++nIndex;
             
             std::string bCombi;
@@ -8725,8 +8441,6 @@ void CfgData::InitWingEquipPolish()
             std::list<ItemData> strItems;
             // TODO: fix CItemHelper::parseItemDataListString call
             stu.lCostList = strItems;
-            strItems.~list();
-            bCombi.~string();
                     
             stu.nConstMoney = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             stu.SuitId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -8735,7 +8449,6 @@ void CfgData::InitWingEquipPolish()
             
             auto key = std::make_pair(nType, nLevel);
             this->m_WingEquipPolishCfgMap.insert(std::make_pair(key, stu));
-            stu.~WingEquipPolish();
         }
     }
     
@@ -8766,13 +8479,10 @@ void CfgData::InitWingEquipPolish()
                 
                 std::list<AddAttribute> AddAttrs;
                 CfgData::parseAddAttribues(&AddAttrs, &v30, i_0, &v28);
-                v30.~string();
-                            v28.~string();
                             ++nIndex;
                 
                 auto v6 = this->m_WingEquipPolishSuitMap[nId];
                 *v6 = AddAttrs;
-                AddAttrs.~list();
             }
         }
         }
@@ -8826,8 +8536,7 @@ void CfgData::InitGuiGuDaoRenTable()
                     delims = "|";
             
             StringVector SplitStr;
-            StringUtility::split(&SplitStr, &RefreshMonsterString, &delims, 0);
-            delims.~string();
+            StringUtility::split(SplitStr, RefreshMonsterString, delims);
                     
             for (auto& monsterStr : SplitStr)
             {
@@ -8837,21 +8546,17 @@ void CfgData::InitGuiGuDaoRenTable()
                 
                 StringVector vstr;
                 StringUtility::split(vstr, *monsterStr, v28);
-                v28.~string();
                             
                 if (vstr.size() == 4)
                 {
                     RefreshMonster tmpStu;
-                    tmpStu.nCount = atoi(vstr[0]->c_str());
-                    tmpStu.BossId = atoi(vstr[1]->c_str());
-                    tmpStu.AliveTime = atoi(vstr[2]->c_str());
-                    tmpStu.GongGaoId = atoi(vstr[3]->c_str());
+                    tmpStu.nCount = atoi(vstr[0].c_str());
+                    tmpStu.BossId = atoi(vstr[1].c_str());
+                    tmpStu.AliveTime = atoi(vstr[2].c_str());
+                    tmpStu.GongGaoId = atoi(vstr[3].c_str());
                     stu.lRefreshMonster.push_back(tmpStu);
                 }
-                vstr.~vector();
             }
-            SplitStr.~vector();
-            RefreshMonsterString.~string();
             
             stu.vItemData.reserve(3);
             stu.vItem.reserve(3);
@@ -8863,9 +8568,8 @@ void CfgData::InitGuiGuDaoRenTable()
                             const CDBCFile::FIELD *v11 = TabFile.Search_Posistion( i, nIndex);
                 strItem = v11->pString;
                 
-                ItemData __x = CItemHelper::parseItemDataString(&strItem);
+                ItemData __x = CItemHelper().parseItemDataString(&strItem);
                 stu.vItemData.push_back(__x);
-                strItem.~string();
                             ++nIndex;
                 
                 std::string v34;
@@ -8874,9 +8578,8 @@ void CfgData::InitGuiGuDaoRenTable()
                 v34 = v12->pString;
                 
                 MemChrBag v33;
-                CItemHelper::parseItemString(&v33, &v34);
+                CItemHelper().parseItemString(v33, &v34);
                 stu.vItem.push_back(v33);
-                v34.~string();
                             ++nIndex;
             }
             
@@ -8892,14 +8595,10 @@ void CfgData::InitGuiGuDaoRenTable()
             Int32Vector v36;
             CfgData::paraseInt32Vector(v36, &str, &path, 0);
             stu.vMapId = v36;
-            v36.~vector();
-            str.~string();
-                    path.~string();
                     ++nIndex;
             
             auto *v14 = &this->m_GuiGuDaoRenCfgMap[stu.nNpcId];
             *v14 = stu;
-            stu.~GuiGuDaoRenCfg();
         }
     }
 }
@@ -8953,7 +8652,6 @@ void CfgData::InitShiZhuangTable()
             stu.nSuitId = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             CfgShiZhuangTable::AddShiZhuang(&this->m_cfgShiZhuangTable, &stu);
-            stu.~CfgShiZhuang();
         }
     }
 }
@@ -9001,7 +8699,6 @@ void CfgData::InitShiZhuangLevelTable()
             }
             
             CfgShiZhuangTable::AddShiZhuangLevel(&this->m_cfgShiZhuangTable, &stu);
-            stu.~CfgShiZhuangLevel();
         }
     }
 }
@@ -9034,8 +8731,7 @@ void CfgData::InitMonthlyChouJiangTable()
             strItem = v2->pString;
             
             RateItem ItemRate;
-            CItemHelper::parseRateItemDataString(&ItemRate, &strItem);
-            strItem.~string();
+            CItemHelper().parseRateItemDataString(ItemRate, strItem);
                     ++nIndex;
             
             MonthlyChouJiangTable::AddMonthlyChouJiangItemMap(&this->m_MonthlyChouJiangTable, Month, nId, ItemRate);
@@ -9079,7 +8775,6 @@ void CfgData::InitActDropTable()
                     const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
             p_StringTime = v1->pString;
             stu.nStartTime = Answer::DayTime::StringToIntTime(&p_StringTime);
-            p_StringTime.~string();
                     ++nIndex;
             
             std::string v9;
@@ -9087,7 +8782,6 @@ void CfgData::InitActDropTable()
                     const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
             v9 = v2->pString;
             stu.nEndTime = Answer::DayTime::StringToIntTime(&v9);
-            v9.~string();
                     
             stu.nProbability = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
@@ -9127,7 +8821,6 @@ void CfgData::InitOutLinkFestivalTable()
                     const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
             p_StringTime = v1->pString;
             stu.nStartTime = Answer::DayTime::StringToIntTime(&p_StringTime);
-            p_StringTime.~string();
                     ++nIndex;
             
             std::string v8;
@@ -9135,7 +8828,6 @@ void CfgData::InitOutLinkFestivalTable()
                     const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
             v8 = v2->pString;
             stu.nEndTime = Answer::DayTime::StringToIntTime(&v8);
-            v8.~string();
                     
             stu.nIcon = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             
@@ -9144,7 +8836,6 @@ void CfgData::InitOutLinkFestivalTable()
             ++nIndex;
             
             CfgOutLinkFestivalTable::Add(&this->m_cfgOutLinkFestivalTable, &stu);
-            stu.~CfgOutLinkFestival();
         }
     }
 }
@@ -9260,7 +8951,7 @@ void CfgData::InitFestivalActivityTable()
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
                 strDayGift = pField->pString;
                 
-                CItemHelper::parseItemString(stu.dayGift, &strDayGift);
+                CItemHelper().parseItemString(stu.dayGift, strDayGift);
                 
                                     }
             
@@ -9270,7 +8961,7 @@ void CfgData::InitFestivalActivityTable()
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
                 strActGift = pField->pString;
                 
-                CItemHelper::parseItemString(stu.actGift, &strActGift);
+                CItemHelper().parseItemString(stu.actGift, strActGift);
                 
                                     }
             
@@ -9302,7 +8993,7 @@ void CfgData::InitFestivalActivityTable()
                             {
                                 MemChrBag item;
                                 std::string strItem = itemStr;
-                                CItemHelper::parseItemString(item, &strItem);
+                                CItemHelper().parseItemString(item, strItem);
                                 cfgItem.vGetItems.push_back(item);
                             }
                         }
@@ -9315,7 +9006,7 @@ void CfgData::InitFestivalActivityTable()
                             {
                                 MemChrBag item;
                                 std::string strItem = itemStr;
-                                CItemHelper::parseItemString(item, &strItem);
+                                CItemHelper().parseItemString(item, strItem);
                                 cfgItem.vCostItems.push_back(item);
                             }
                         }
@@ -9384,16 +9075,13 @@ void CfgData::InitYYDaTing()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.Rewards = __x;
-            __x.~vector();
-            strItems.~string();
                     
             stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
             
             auto *v2 = &this->m_CfgYYGameAppMap[stu.nIndex];
             *v2 = stu;
-            stu.~CfgYYGameApp();
         }
     }
 }
@@ -9436,10 +9124,8 @@ void CfgData::InitLaDaShiHuiYuan()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.Rewards = __x;
-            __x.~vector();
-            strItems.~string();
                     
             stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
             stu.nVipType = TabFile.Search_Posistion( i, 8)->iValue;
@@ -9447,7 +9133,6 @@ void CfgData::InitLaDaShiHuiYuan()
             
             auto *v2 = &this->m_LuDaShiVipMap[stu.nIndex];
             *v2 = stu;
-            stu.~LuDaShiVip();
         }
     }
 }
@@ -9492,10 +9177,8 @@ void CfgData::InitYYVip()
             strItems = v2->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.Rewards = __x;
-            __x.~vector();
-            strItems.~string();
                     
             stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
             stu.nPric = TabFile.Search_Posistion( i, 5)->iValue;
@@ -9503,7 +9186,6 @@ void CfgData::InitYYVip()
             
             auto *v3 = &this->m_CfgYYVipMap[stu.nIndex];
             *v3 = stu;
-            stu.~CfgYYVip();
         }
     }
 }
@@ -9548,16 +9230,13 @@ void CfgData::InitSouGouDaTing()
             strItems = v1->pString;
             
             MemChrBagVector __x;
-            CItemHelper::parseItemVectorString(&__x, &strItems);
+            CItemHelper().parseItemVectorString(&__x, &strItems);
             stu.vRewards = __x;
-            __x.~vector();
-            strItems.~string();
                     
             stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
             
             auto *v2 = &this->m_CfgSgGameAppMap[stu.nIndex];
             *v2 = stu;
-            stu.~CfgSgGameApp();
         }
     }
 }
@@ -9603,7 +9282,6 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
     
     StringVector strAttrAddons;
     StringUtility::split(strAttrAddons, *addonAttr, delims);
-    delims.~string();
     
     for (auto& addonStr : strAttrAddons)
     {
@@ -9613,13 +9291,12 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
         
         StringVector strAttrAddon;
         StringUtility::split(strAttrAddon, *addonStr, v24);
-        v24.~string();
             
         if (strAttrAddon.size() == 2)
         {
             AddAttribute attr;
-            attr.m_nAddAttrType = atoi(strAttrAddon[0]->c_str());
-            attr.m_nAddAttrValue = atoi(strAttrAddon[1]->c_str());
+            attr.m_nAddAttrType = atoi(strAttrAddon[0].c_str());
+            attr.m_nAddAttrValue = atoi(strAttrAddon[1].c_str());
             if (attr.m_nAddAttrValue > 0)
             {
                 result->push_back(attr);
@@ -9629,11 +9306,9 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
         {
             Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
                 "CfgData::parseAddAttribues() wrong data from %s, where index = %d, str = %s\n",
-                path->c_str(), nIndex, addonAttr->c_str());
+                path.c_str(), nIndex, addonAttr.c_str());
         }
-        strAttrAddon.~vector();
     }
-    strAttrAddons.~vector();
 }
 
 void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
@@ -9647,7 +9322,6 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
     
     StringVector strTalentAddons;
     StringUtility::split(strTalentAddons, *str, delims);
-    delims.~string();
     
     for (auto& talentStr : strTalentAddons)
     {
@@ -9657,18 +9331,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
         
         StringVector vParam;
         StringUtility::split(vParam, *talentStr, v12);
-        v12.~string();
             
         if (vParam.size() == 2)
         {
             TalentAddon addon;
-            addon.nSkillId = atoi(vParam[0]->c_str());
-            addon.nSkillLevel = atoi(vParam[1]->c_str());
+            addon.nSkillId = atoi(vParam[0].c_str());
+            addon.nSkillLevel = atoi(vParam[1].c_str());
             result->push_back(addon);
         }
-        vParam.~vector();
     }
-    strTalentAddons.~vector();
 }
 
 void CfgData::paraseParam2List(std::list<Param2> *result,
@@ -9682,7 +9353,6 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
     
     StringVector strParams;
     StringUtility::split(strParams, *str, delims);
-    delims.~string();
     
     for (auto& paramStr : strParams)
     {
@@ -9692,18 +9362,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
         
         StringVector vParam;
         StringUtility::split(vParam, *paramStr, v16);
-        v16.~string();
             
         if (vParam.size() == 2)
         {
             Param2 param;
-            param.nParam1 = atoi(vParam[0]->c_str());
-            param.nParam2 = atoi(vParam[1]->c_str());
+            param.nParam1 = atoi(vParam[0].c_str());
+            param.nParam2 = atoi(vParam[1].c_str());
             result->push_back(param);
         }
-        vParam.~vector();
     }
-    strParams.~vector();
 }
 
 void CfgData::paraseInt32List(std::list<int> *result,
@@ -9717,13 +9384,12 @@ void CfgData::paraseInt32List(std::list<int> *result,
     
     StringVector vstr;
     StringUtility::split(vstr, *str, delims);
-    delims.~string();
     
     if (size > 0 && (int32_t)vstr.size() != size)
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
             "CfgData::paraseInt32List() check size err from %s, where size = %d, str = %s\n",
-            path ? path->c_str() : "unknown", size, str->c_str());
+            path ? path.c_str() : "unknown", size, str.c_str());
     }
     else
     {
@@ -9733,7 +9399,6 @@ void CfgData::paraseInt32List(std::list<int> *result,
             result->push_back(val);
         }
     }
-    vstr.~vector();
 }
 
 CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const std::string *const path, int32_t size)
@@ -9747,13 +9412,12 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
     
     StringVector vstr;
     StringUtility::split(vstr, *str, delims);
-    delims.~string();
     
     if (size > 0 && (int32_t)vstr.size() != size)
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
             "CfgData::paraseInt32Vector2() check size err from %s, where size = %d, str = %s\n",
-            path->c_str(), size, str->c_str());
+            path.c_str(), size, str.c_str());
     }
     else
     {
@@ -9764,7 +9428,6 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
             retstr.push_back(val);
         }
     }
-    vstr.~vector();
     return retstr;
 }
 
@@ -9779,7 +9442,6 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
     
     StringVector SplitStr;
     StringUtility::split(SplitStr, *str, delims);
-    delims.~string();
     
     retstr->reserve(SplitStr.size());
     
@@ -9791,7 +9453,6 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
         
         StringVector vstr;
         StringUtility::split(vstr, *splitItem, v21);
-        v21.~string();
             
         std::vector<int> probability;
         probability.reserve(vstr.size());
@@ -9802,9 +9463,7 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
             probability.push_back(val);
         }
         retstr.push_back(probability);
-        vstr.~vector();
     }
-    SplitStr.~vector();
     return retstr;
 }
 
@@ -9820,7 +9479,6 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
     
     StringVector items_receive;
     StringUtility::split(items_receive, *strItems, delims);
-    delims.~string();
     
     for (auto& itemStr : items_receive)
     {
@@ -9830,39 +9488,38 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
         
         StringVector item;
         StringUtility::split(item, *itemStr, v49);
-        v49.~string();
             
         if (item.size() == 4)
         {
             MemChrJobBag itemData;
             memset(&itemData, 0, sizeof(itemData));
-            itemData.id = atoi(item[0]->c_str());
-            itemData.type = atoi(item[1]->c_str());
-            itemData.count = atoi(item[2]->c_str());
-            itemData.job = atoi(item[3]->c_str());
+            itemData.id = atoi(item[0].c_str());
+            itemData.type = atoi(item[1].c_str());
+            itemData.count = atoi(item[2].c_str());
+            itemData.job = atoi(item[3].c_str());
             retstr.push_back(itemData);
         }
         else if (item.size() == 5)
         {
             MemChrJobBag itemData;
             memset(&itemData, 0, sizeof(itemData));
-            itemData.id = atoi(item[0]->c_str());
-            itemData.type = atoi(item[1]->c_str());
-            itemData.count = atoi(item[2]->c_str());
-            itemData.bind = atoi(item[3]->c_str());
-            itemData.job = atoi(item[4]->c_str());
+            itemData.id = atoi(item[0].c_str());
+            itemData.type = atoi(item[1].c_str());
+            itemData.count = atoi(item[2].c_str());
+            itemData.bind = atoi(item[3].c_str());
+            itemData.job = atoi(item[4].c_str());
             retstr.push_back(itemData);
         }
         else if (item.size() == 6)
         {
             MemChrJobBag itemData;
             memset(&itemData, 0, sizeof(itemData));
-            itemData.id = atoi(item[0]->c_str());
-            itemData.type = atoi(item[1]->c_str());
-            itemData.count = atoi(item[2]->c_str());
-            itemData.bind = atoi(item[3]->c_str());
-            itemData.job = atoi(item[4]->c_str());
-            itemData.time = atoi(item[5]->c_str());
+            itemData.id = atoi(item[0].c_str());
+            itemData.type = atoi(item[1].c_str());
+            itemData.count = atoi(item[2].c_str());
+            itemData.bind = atoi(item[3].c_str());
+            itemData.job = atoi(item[4].c_str());
+            itemData.time = atoi(item[5].c_str());
             retstr.push_back(itemData);
         }
         else
@@ -9871,9 +9528,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
                 "CfgData::parseTaskItemJobString wrong data with id = %d, string = %s\n",
                 id, strItems.c_str());
         }
-        item.~vector();
     }
-    items_receive.~vector();
 }
 
 MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const strItems)
@@ -9887,7 +9542,6 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
     
     StringVector items_receive;
     StringUtility::split(items_receive, *strItems, delims);
-    delims.~string();
     
     for (auto& itemStr : items_receive)
     {
@@ -9897,13 +9551,12 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
         
         StringVector item;
         StringUtility::split(item, *itemStr, v21);
-        v21.~string();
             
         if (item.size() == 2)
         {
             MemJobItem itemData;
-            itemData.job = atoi(item[0]->c_str());
-            itemData.item = atoi(item[1]->c_str());
+            itemData.job = atoi(item[0].c_str());
+            itemData.item = atoi(item[1].c_str());
             auto *v9 = &retstr[itemData.job];
             *v9 = itemData;
         }
@@ -9913,9 +9566,7 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
                 "CfgData::parseGambleEquip wrong data with id = %d, string = %s\n",
                 id, strItems.c_str());
         }
-        item.~vector();
     }
-    items_receive.~vector();
     return retstr;
 }
 

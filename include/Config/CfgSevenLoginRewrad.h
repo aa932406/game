@@ -13,7 +13,7 @@ class CfgSevenLoginRewrad
 {
 public:
     int32_t Day;
-    std::vector<CfgEquipItem> ItemVector;
+    MemChrEquipBagVector ItemVector;
 
     CfgSevenLoginRewrad() = default;
     CfgSevenLoginRewrad(const CfgSevenLoginRewrad& a2);

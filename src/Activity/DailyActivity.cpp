@@ -755,18 +755,14 @@ void DailyActivity::OnGetSevenLoginRewrad(Answer::NetPacket* inPacket)
     {
         int32_t Job = m_pPlayer->getJob();
         
-        if (Job == cfgItem.job || cfgItem.job == 0)
         {
             MemChrBag chrbag;
             memset(&chrbag, 0, sizeof(chrbag));
-            chrbag.itemId = cfgItem.id;
-            chrbag.itemClass = cfgItem.type;
-            chrbag.itemCount = cfgItem.count;
-            chrbag.bind = cfgItem.bind;
+            chrbag = cfgItem;
             
             if (chrbag.itemClass == 2)
             {
-                int32_t Time = cfgItem.star;
+                int32_t Time = 0;
                 std::string p_name = m_pPlayer->getName();
                 int64_t nCreaterId = m_pPlayer->getCid();
                 int32_t Sid = m_pPlayer->getCid();

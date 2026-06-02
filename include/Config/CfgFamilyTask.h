@@ -18,6 +18,8 @@ public:
     int32_t nRewardCount;
     int32_t nUnitReward;
 
+    static void AddFamilyTask(void*, ...) {}
+
     CfgFamilyTask() = default;
     ~CfgFamilyTask() = default;
     CfgFamilyTask(const CfgFamilyTask& a2);

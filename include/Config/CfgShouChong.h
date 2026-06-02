@@ -15,7 +15,7 @@ public:
     int32_t nIndex;
     int32_t nGold;
     int32_t nBroadcast;
-    std::vector<CfgEquipItem> vReward;
+    MemChrEquipBagVector vReward;
 
     CfgShouChong() = default;
     CfgShouChong(const CfgShouChong& a2);

@@ -16,7 +16,7 @@ public:
     int32_t Index;
     int32_t Type;
     int32_t NeedGold;
-    std::vector<CfgEquipItem> ItemVector;
+    MemChrEquipBagVector ItemVector;
     std::list<CfgGongGao> GongGaoInfo;
 
     CfgEverydayChongZhi() = default;
