@@ -12,6 +12,7 @@
 #include "Character/CExtCharBag.h"
 #include "Character/CExtCharExchange.h"
 #include "Character/CExtCharMysteryShop.h"
+#include "Character/CExtCharPortal.h"
 #include "Other/RwLock.h"
 
 namespace Answer { class MySqlDBGuard; }
@@ -53,6 +54,12 @@ public:
             int32_t nHuanHua;
         } petData;
     } m_CharPets;
+
+    // 传送门数据 (供 CExtCharPortal 使用)
+    struct {
+        PortalInfoList lstPortal;
+        int32_t nPortalId;
+    } m_PortalDBData;
 
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {

@@ -1,5 +1,6 @@
 // CExtCharPortal.cpp
 #include "CExtCharPortal.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharPortal::CExtCharPortal()
