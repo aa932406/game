@@ -12159,3 +12159,244 @@ const RongHeCfg *CfgData::GetRongHeCfg(int32_t nId)
     }
     return nullptr;
 }
+void CfgData::InitAttrBattleTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitBeastShrineEnterCostTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitBossFirstKilledTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitBossInfo()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitBossKilledReward()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitBuyFaBaoResTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitCachetCfg()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitChouJiangTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitDaTiHD()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitDamnationTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitEquipBackTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitEquipBackTask()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitEquipBlessTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitEquipUpPhase()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitFaBaoTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitFunctionOpenMailMap()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitGoblinData()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitGongMinTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitGroupMonster()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitGuWuCfgMap()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitLevelRefiningTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitLibraryTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitLuckDropTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitPkDropRateTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitScoreShopTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitShangChengTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitShenWeiTaskTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitShunWangTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitSpeciaEquipCfgMap()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitSpeciaSkillDistanceTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitSpecialMap()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitSpecialMonster()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitStrengthenTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitSysMail()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitSystemOpenReward()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitTestServerReward()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitTianLingTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitTouZiTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitTreasureMapTabale()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitUltimateChallengeCfg()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitVplanTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitWingCfgTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitXianYaoTaskTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitXingMaiSlotTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitXingMaiTable()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CfgData::InitSpeed360Reward()
+{
+    // TODO: Implement from IDA pseudocode
+}
+
+void CQiFuTable::InitQiFuTable(CQiFuTable* table)
+{
+    (void)table;
+    // TODO: Implement from IDA pseudocode
+}
+
+void VipTable::InitVipTable(VipTable* table)
+{
+    (void)table;
+    // TODO: Implement from IDA pseudocode
+}

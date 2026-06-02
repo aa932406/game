@@ -1338,10 +1338,12 @@ struct CfgGameShop {
 };
 
 struct CQiFuTable {
+    static void InitQiFuTable(CQiFuTable* table);
     // 成员变量
 };
 
 struct VipTable {
+    static void InitVipTable(VipTable* table);
     // 成员变量
 };
 
@@ -2141,6 +2143,52 @@ public:
     void InitNationalDayTask();
     void InitRongHeCfg();
     void InitFestivalActivityTable();
+    void InitAttrBattleTable();
+    void InitBeastShrineEnterCostTable();
+    void InitBossFirstKilledTable();
+    void InitBossInfo();
+    void InitBossKilledReward();
+    void InitBuyFaBaoResTable();
+    void InitCachetCfg();
+    void InitChouJiangTable();
+    void InitDaTiHD();
+    void InitDamnationTable();
+    void InitEquipBackTable();
+    void InitEquipBackTask();
+    void InitEquipBlessTable();
+    void InitEquipUpPhase();
+    void InitFaBaoTable();
+    void InitFunctionOpenMailMap();
+    void InitGoblinData();
+    void InitGongMinTable();
+    void InitGroupMonster();
+    void InitGuWuCfgMap();
+    void InitLevelRefiningTable();
+    void InitLibraryTable();
+    void InitLuckDropTable();
+    void InitPkDropRateTable();
+    void InitScoreShopTable();
+    void InitShangChengTable();
+    void InitShenWeiTaskTable();
+    void InitShunWangTable();
+    void InitSpeciaEquipCfgMap();
+    void InitSpeciaSkillDistanceTable();
+    void InitSpecialMap();
+    void InitSpecialMonster();
+    void InitStrengthenTable();
+    void InitSysMail();
+    void InitSystemOpenReward();
+    void InitTestServerReward();
+    void InitTianLingTable();
+    void InitTouZiTable();
+    void InitTreasureMapTabale();
+    void InitUltimateChallengeCfg();
+    void InitVplanTable();
+    void InitWingCfgTable();
+    void InitXianYaoTaskTable();
+    void InitXingMaiSlotTable();
+    void InitXingMaiTable();
+    void InitSpeed360Reward();
     CfgFestivalActivityTable* GetFestivalActivityTable();
     
     // 补充方法（适配 DailyActivity 等使用）
