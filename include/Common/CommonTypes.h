@@ -319,6 +319,9 @@ struct MemChrBag {
 };
 #endif
 
+// 字符串向量
+typedef std::vector<std::string> StringVector;
+
 // SQL 字符串列表
 typedef std::list<std::string> SqlStringList;
 

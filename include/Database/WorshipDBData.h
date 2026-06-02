@@ -8,16 +8,17 @@
 #include <set>
 #include <cstring>
 
+#include "Database/PlayerDBData.h"
+
 class WorshipDBData : public IDataStruct {
 public:
     WorshipDBData();
     ~WorshipDBData();
-    void CleanUp(WorshipDBData *const this);
-    void SaveToSqlString(WorshipDBData *const this, SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
-    bool LoadFromDB(WorshipDBData *const this, Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
-    void PackageData(WorshipDBData *const this, Answer::NetPacket *packet);
+    void CleanUp();
+    void SaveToSqlString(SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
+    bool LoadFromDB(Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
+    void PackageData(Answer::NetPacket *packet);
 
-private:
-    // TODO: member variables
+    int32_t nTimes;
+    std::string strCharList;
 };
-（内容由AI生成，仅供参考）

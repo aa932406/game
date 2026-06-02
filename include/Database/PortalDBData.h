@@ -8,16 +8,18 @@
 #include <set>
 #include <cstring>
 
+#include "Database/PlayerDBData.h"
+#include "Character/CExtCharPortal.h"
+
 class PortalDBData : public IDataStruct {
 public:
     PortalDBData();
     ~PortalDBData();
-    void CleanUp(PortalDBData *const this);
-    void SaveToSqlString(PortalDBData *const this, SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
-    bool LoadFromDB(PortalDBData *const this, Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
-    void PackageData(PortalDBData *const this, Answer::NetPacket *packet);
+    void CleanUp();
+    void SaveToSqlString(SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
+    bool LoadFromDB(Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
+    void PackageData(Answer::NetPacket *packet);
 
-private:
-    // TODO: member variables
+    PortalInfoList lstPortal;
+    int32_t nPortalId;
 };
-（内容由AI生成，仅供参考）
