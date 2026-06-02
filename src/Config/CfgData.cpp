@@ -9920,244 +9920,27 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 // ==================== 剩余的 Getter 方法 ====================
 
-int32_t CfgData::GetPetExp(int32_t level)
-{
-    auto it = this->m_levelExps.find(level);
-    if (it != this->m_levelExps.end())
-    {
-        return it->second.pet_exp;
-    }
-    return INT32_MAX;
-}
 
-int32_t CfgData::GetTalentPoint(int32_t level)
-{
-    auto it = this->m_levelExps.find(level);
-    if (it != this->m_levelExps.end())
-    {
-        return it->second.talent_point;
-    }
-    return 0;
-}
 
-int32_t CfgData::GetAttrPoint(int32_t level)
-{
-    auto it = this->m_levelExps.find(level);
-    if (it != this->m_levelExps.end())
-    {
-        return it->second.attr_point;
-    }
-    return 0;
-}
 
-CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
-{
-    int key = (job << 16) | level;
-    auto it = this->m_levelAttrs.find(key);
-    if (it != this->m_levelAttrs.end())
-    {
-        CfgLevelAttr::CfgLevelAttr(retstr, &it->second);
-    }
-    else
-    {
-        CfgLevelAttr levelAttr{};
-        CfgLevelAttr::CfgLevelAttr(retstr, &levelAttr);
-        levelAttr.~CfgLevelAttr();
-    }
-    return retstr;
-}
 
-int32_t CfgData::getBaseJob(int32_t job)
-{
-    if (job == 2) return 2;
-    if (job == 3) return 3;
-    return (job == 1) ? 1 : 0;
-}
 
-AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
-{
-    auto it = this->m_MonstAddAttrMap.find(Mid);
-    if (it != this->m_MonstAddAttrMap.end())
-    {
-        for (auto& attrs : it->second)
-        {
-            if (attrs.WorldBossLevelMin <= WorldLevel && attrs.WorldBossLevelMax >= WorldLevel)
-            {
-                return &attrs.AttrVector;
-            }
-        }
-    }
-    return nullptr;
-}
 
-DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
-{
-    auto it = this->m_DaZheQuanMap.find(Index);
-    if (it != this->m_DaZheQuanMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
-{
-    auto it = this->m_Wan360RewardMap.find(Index);
-    if (it != this->m_Wan360RewardMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-int32_t CfgData::Get360RewardIcon(const std::string *const platform)
-{
-    auto it = this->m_Wan360RewardTypeMap.find(*platform);
-    if (it != this->m_Wan360RewardTypeMap.end())
-    {
-        return it->second;
-    }
-    return 0;
-}
 
-CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
-{
-    auto it = this->m_TotalChongZhiTable.find(Index);
-    if (it != this->m_TotalChongZhiTable.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
-{
-    for (auto& item : this->m_EveryDayChongZhiTable)
-    {
-        if (item.Type == nType && item.Index == Index)
-        {
-            return &item;
-        }
-    }
-    return nullptr;
-}
 
-NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
-{
-    auto it = this->m_NewServerFavorable.find(Index);
-    if (it != this->m_NewServerFavorable.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
-{
-    auto it = this->m_CfgEquipExchangeMap.find(Level);
-    if (it != this->m_CfgEquipExchangeMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
-{
-    auto it = this->m_PlantEventMap.find(EventId);
-    if (it != this->m_PlantEventMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
-{
-    auto it = this->m_FunctionOpenCfg.find(FunctionId);
-    if (it != this->m_FunctionOpenCfg.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
-{
-    auto it = this->m_VipCardTable.find(VipType);
-    if (it != this->m_VipCardTable.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
-{
-    auto it = this->m_OffLineExpTable.lower_bound(Level);
-    if (it != this->m_OffLineExpTable.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
-{
-    if (Week <= 0) return nullptr;
-    
-    auto it = this->m_WeekOnlineReward.find(Week);
-    if (it != this->m_WeekOnlineReward.end())
-    {
-        return &it->second;
-    }
-    
-    if (!this->m_WeekOnlineReward.empty())
-    {
-        return &this->m_WeekOnlineReward.rbegin()->second;
-    }
-    return nullptr;
-}
 
-CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
-{
-    auto it = this->m_LevelGift.find(Index);
-    if (it != this->m_LevelGift.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
-{
-    auto it = this->m_SevenLoginReward.find(Day);
-    if (it != this->m_SevenLoginReward.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
-{
-    auto it = this->m_OnLineReward.find(id);
-    if (it != this->m_OnLineReward.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgMemChrBagVector *CfgData::GetSignReward(int8_t SiginCount)
-{
-    auto it = this->m_signReward.find(SiginCount);
-    if (it != this->m_signReward.end())
-    {
-        return &it->second.ItemVector;
-    }
-    return nullptr;
-}
 
 QuestionsVector *CfgData::GetAllQuestions(int8_t nType)
 {
@@ -10468,25 +10251,6 @@ ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(int32_t nId)
     return nullptr;
 }
 
-int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
-{
-    if (BossId != 1) return Time;
-    if (Time <= 0) return Time;
-    
-    int32_t diffDay = getServerDiffDay(SERVER_TYPE::SVT_NORMAL);
-    
-    switch (diffDay)
-    {
-    case 0: return 10 * (Time / 100);
-    case 1:
-    case 2: return 30 * (Time / 100);
-    case 3: return 50 * (Time / 100);
-    case 4: return 60 * (Time / 100);
-    case 5: return 70 * (Time / 100);
-    case 6: return 80 * (Time / 100);
-    default: return Time;
-    }
-}
 
 const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const std::string *const platform)
 {
@@ -10498,15 +10262,6 @@ const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const std::string *const p
     return nullptr;
 }
 
-const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
-{
-    auto it = this->m_CfgMiniClient.find(*platform);
-    if (it != this->m_CfgMiniClient.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
 CfgWuHunShop *CfgData::GetWuHunShopItem(int32_t nIndex)
 {
@@ -10548,59 +10303,10 @@ SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(int32_t MapId)
     return nullptr;
 }
 
-SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
-{
-    auto it = this->m_SuperTeHuiCfgMap.find(nIndex);
-    if (it != this->m_SuperTeHuiCfgMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
-{
-    auto key = std::make_pair(nDay, nIndex);
-    auto it = this->m_JewelPavilionCfgMap.find(key);
-    if (it != this->m_JewelPavilionCfgMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
-{
-    auto key = std::make_pair(nType, nLevel);
-    auto it = this->m_GoblinCfgMap.find(key);
-    if (it != this->m_GoblinCfgMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nLevel)
-{
-    auto key = std::make_pair(nType, nLevel);
-    auto it = this->m_ShouHuRefinishingCfgMap.find(key);
-    if (it != this->m_ShouHuRefinishingCfgMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
-{
-    auto key = std::make_pair(nType, nLevel);
-    auto it = this->m_WingEquipPolishCfgMap.find(key);
-    if (it != this->m_WingEquipPolishCfgMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
 WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
 {
@@ -10613,45 +10319,9 @@ WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
     return nullptr;
 }
 
-GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
-{
-    auto it = this->m_GuiGuDaoRenCfgMap.find(NpcId);
-    if (it != this->m_GuiGuDaoRenCfgMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
-{
-    auto it = this->m_CfgYYGameAppMap.find(nIndex);
-    if (it != this->m_CfgYYGameAppMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
-{
-    auto it = this->m_LuDaShiVipMap.find(nIndex);
-    if (it != this->m_LuDaShiVipMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
-CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
-{
-    auto it = this->m_CfgYYVipMap.find(nIndex);
-    if (it != this->m_CfgYYVipMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
 const CfgYYSuperBuff *CfgData::GetSuperBuff(int32_t SuperLevel)
 {
@@ -10677,15 +10347,6 @@ const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(int32_t SuperLevel)
     return nullptr;
 }
 
-CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
-{
-    auto it = this->m_CfgSgGameAppMap.find(nIndex);
-    if (it != this->m_CfgSgGameAppMap.end())
-    {
-        return &it->second;
-    }
-    return nullptr;
-}
 
 PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(std::string *p_Platform, int32_t nId)
 {
@@ -11221,10 +10882,6 @@ void CfgData::InitVplanTable()
     // TODO: Implement from IDA pseudocode
 }
 
-void CfgData::InitWingCfgTable()
-{
-    // TODO: Implement from IDA pseudocode
-}
 
 void CfgData::InitXianYaoTaskTable()
 {
