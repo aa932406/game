@@ -3,6 +3,7 @@
 #define CEXTCURRENCY_H
 
 #include "CExtSystemBase.h"
+#include "Common/CommonTypes.h"
 
 #define CURRENCY_MONEY 0
 #define CURRENCY_BIND_MONEY 1

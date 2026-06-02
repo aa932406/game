@@ -93,6 +93,11 @@ public:
         int8_t nState;
     } taskCycleData;
 
+    // 货币数据 (供 CExtCurrency 使用)
+    struct {
+        int64_t vCurrency[12];
+    } m_CurrencyData;
+
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
         std::list<MysteryShop> lstShop;

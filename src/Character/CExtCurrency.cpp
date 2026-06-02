@@ -1,5 +1,6 @@
 // CExtCurrency.cpp
 #include "CExtCurrency.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCurrency::CExtCurrency()
