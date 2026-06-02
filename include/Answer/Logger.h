@@ -1,3 +1,6 @@
+#ifndef ANSWER_LOGGER_H
+#define ANSWER_LOGGER_H
+
 #include "../Other/Logger.h"
 #include "../Other/Answer.h"
 #include <cstdarg>
@@ -28,3 +31,5 @@ public:
 };
 
 } // namespace Answer
+
+#endif // ANSWER_LOGGER_H

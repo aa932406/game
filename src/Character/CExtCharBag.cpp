@@ -1,5 +1,6 @@
 // CExtCharBag.cpp
 #include "CExtCharBag.h"
+#include "Answer/Logger.h"
 #include "Game/Player.h"
 #include "Game/GameService.h"
 #include "Config/CfgData.h"

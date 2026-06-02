@@ -27,13 +27,8 @@ enum class LogLevel : uint8_t {
     LOG_LEVEL_ERROR = 3
 };
 
-class Logger {
-public:
-    static void print(const char* format, ...);
-    static void print(int level, const char* format, ...);
-    static void info(const char* format, ...);
-    static void error(const char* format, ...);
-};
+// Logger is defined in Answer/Logger.h with inline implementations
+class Logger;
 
 class MySqlDBGuard;
 class MySqlQuery;
