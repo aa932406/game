@@ -13,13 +13,12 @@ public:
     int _ConvertStringToVector(const char *strStrINTgSource, std::vector<std::string> *const vRet, const char *szKey, bool bOneOfKey, bool bIgnoreEmpty);
     CDBCFile();
     ~CDBCFile();
-    bool OpenFromMemory(CDBCFile *const this, const char *pMemory, const char *pDeadEnd, const char *szFileName);
-    bool OpenFromMemoryImpl_Binary(CDBCFile *const this, const char *pMemory, const char *pDeadEnd, const char *szFileName);
-    bool OpenFromMemoryImpl_Text(CDBCFile *const this, const char *pMemory, const char *pDeadEnd, const char *szFileName);
-    bool OpenFromTXT(CDBCFile *const this, const char *szFileName);
-    void CreateIndex(CDBCFile *const this, int nColum, const char *szFileName);
+    bool OpenFromMemory(const char *pMemory, const char *pDeadEnd, const char *szFileName);
+    bool OpenFromMemoryImpl_Binary(const char *pMemory, const char *pDeadEnd, const char *szFileName);
+    bool OpenFromMemoryImpl_Text(const char *pMemory, const char *pDeadEnd, const char *szFileName);
+    bool OpenFromTXT(const char *szFileName);
+    void CreateIndex(int nColum, const char *szFileName);
 
 private:
     // TODO: member variables
 };
-（内容由AI生成，仅供参考）

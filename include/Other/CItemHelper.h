@@ -21,6 +21,18 @@ typedef std::list<ItemData> ItemDataList;
 typedef std::vector<RateItem> RateItemList;
 typedef std::vector<std::string> StringVector;
 
+#ifndef CURRENCY_ITEM_ID_DEFINED
+#define CURRENCY_ITEM_ID_DEFINED
+enum CURRENCY_ITEM_ID : int32_t
+{
+    CURRENCY_ITEM_MONEY     = 1,
+    CURRENCY_ITEM_GOLD      = 2,
+    CURRENCY_ITEM_BIND_GOLD = 3,
+    CURRENCY_ITEM_HONOR     = 4,
+    CURRENCY_ITEM_XUWU      = 5,
+};
+#endif
+
 class CItemHelper
 {
 public:

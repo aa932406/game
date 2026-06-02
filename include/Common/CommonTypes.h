@@ -287,14 +287,58 @@ enum class ITEM_CHANGE_REASON
 // 结构体定义 (仅定义 CfgData.h 中未定义的类型)
 // ============================================================
 
-// 注意: Position, ItemData, AttrAddon, AddAttribute, MemChrBag, CfgMapRegion
-// 已在 Config/CfgData.h 中定义，在此只做前置声明
+// ============================================================
+// 通用结构体完整定义
+// ============================================================
+
 struct Position;
-struct ItemData;
-struct AttrAddon;
-struct AddAttribute;
-struct MemChrBag;
 struct CfgMapRegion;
+
+#ifndef ATTR_ADDON_DEFINED
+#define ATTR_ADDON_DEFINED
+struct AttrAddon {
+    int index;
+    int addon;
+};
+#endif
+
+#ifndef ADD_ATTRIBUTE_DEFINED
+#define ADD_ATTRIBUTE_DEFINED
+struct AddAttribute {
+    int m_nAddAttrType;
+    int m_nAddAttrValue;
+};
+#endif
+
+#ifndef BUFF_ATTR_DEFINED
+#define BUFF_ATTR_DEFINED
+struct BuffAttr {
+    int attr;
+    int ratio;
+    int addon;
+};
+#endif
+
+#ifndef ITEM_DATA_DEFINED_HERE
+struct ItemData {
+    int m_nId;
+    int m_nClass;
+    int m_nCount;
+};
+#define ITEM_DATA_DEFINED_HERE
+#endif
+
+#ifndef MEM_CHR_BAG_DEFINED_HERE
+struct MemChrBag {
+    int32_t itemId;
+    int8_t itemClass;
+    int32_t itemCount;
+    int8_t bind;
+    int32_t endTime;
+    int64_t srcId;
+};
+#define MEM_CHR_BAG_DEFINED_HERE
+#endif
 
 // 角色背包容器
 typedef std::vector<MemChrBag> MemChrBagVector;

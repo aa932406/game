@@ -6,9 +6,19 @@
 #include <list>
 
 
+#ifndef ADD_ATTRIBUTE_DEFINED
+#define ADD_ATTRIBUTE_DEFINED
+struct AddAttribute {
+    int m_nAddAttrType;
+    int m_nAddAttrValue;
+};
+#endif
+
 /**
  * @brief CfgCachet - Config data class
  */
+#ifndef CFG_CACHET_DEFINED
+#define CFG_CACHET_DEFINED
 class CfgCachet
 {
 public:
@@ -24,4 +34,5 @@ public:
     CfgCachet& operator=(const CfgCachet& a2);
 };
 
+#endif // CFG_CACHET_DEFINED
 #endif // _CFGCACHET_H_

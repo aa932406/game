@@ -16,505 +16,13 @@
 
 // ==================== 构造函数 ====================
 
-CfgData::CfgData(CfgData *const this)
-{
-    std::list<CfgMapEvent>::list(&this->m_emptyEvents);
-    std::map<int, CfgActivity>::map(&this->m_activities);
-    std::map<int, std::map<int, std::list<CfgMapEvent>>>::map(&this->m_activityEvents);
-    std::map<int, CfgActivityMonster>::map(&this->m_activityMonsters);
-    std::map<int, CfgActivityNpc>::map(&this->m_activityNpcs);
-    std::map<int, CfgActivityPlant>::map(&this->m_activityPlants);
-    std::map<int, CfgActivityDrop>::map(&this->m_activityDrops);
-    std::map<int, CfgActivityTrap>::map(&this->m_activityTraps);
-    std::map<int, CfgBuff>::map(&this->m_buffs);
-    std::map<int, CfgDungeon>::map(&this->m_dungeons);
-    std::map<int, CfgDungeon>::map(&this->m_mUpTowerDungeon);
-    std::map<int, CfgDungeonReward>::map(&this->m_dungeonReward);
-    std::map<int, CfgDungeonDropGroup>::map(&this->m_dungeonDropGroup);
-    std::map<int, std::list<CfgMapEvent>>::map(&this->m_dungeonEvents);
-    std::map<int, CfgDungeonMonster>::map(&this->m_dungeonMonsters);
-    std::map<int, CfgDungeonPlant>::map(&this->m_dungeonPlants);
-    std::map<int, CfgDungeonTrap>::map(&this->m_dungeonTraps);
-    std::map<int, CfgDungeonNpc>::map(&this->m_dungeonNpcs);
-    std::map<int, CfgItem *>::map(&this->m_items);
-    Answer::RwLock::RwLock(&this->m_itemsLock);
-    std::map<int, std::vector<CfgItemGift> *>::map(&this->m_itemGifts);
-    Answer::RwLock::RwLock(&this->m_itemGiftsLock);
-    std::map<int, std::vector<CfgItemGiftRandom> *>::map(&this->m_itemGiftRandoms);
-    Answer::RwLock::RwLock(&this->m_itemGiftRandomsLock);
-    std::map<int, CfgMountEquip>::map(&this->m_mountEquip);
-    std::map<int, CfgJob>::map(&this->m_jobs);
-    std::map<int, CfgMovie>::map(&this->m_movie);
-    std::map<int, CfgLevelExp>::map(&this->m_levelExps);
-    std::map<int, CfgMap>::map(&this->m_maps);
-    std::map<int, std::vector<CfgMapMonster>>::map(&this->m_mapMonsters);
-    std::map<int, CfgMapMonster>::map(&this->m_CfgMapMonsters);
-    std::map<int, std::vector<CfgMapPlant>>::map(&this->m_mapPlants);
-    std::map<int, CfgMapPlant>::map(&this->m_mMapPlants);
-    std::map<int, CfgMapRegion>::map(&this->m_mapRegions);
-    std::map<int, std::vector<CfgMapRegion>>::map(&this->m_mapRegionsByMapId);
-    std::map<int, CfgMonster>::map(&this->m_monsters);
-    std::map<int, CfgMonsterAI>::map(&this->m_mMonsterAI);
-    std::map<std::pair<int, int>, CfgMonsterAdjust>::map(&this->m_mMonsterAdjust);
-    std::vector<int>::vector(&this->m_monsterBroadcasts);
-    std::map<int, std::vector<CfgMonsterDropGroup>>::map(&this->m_monsterDropGroups);
-    std::map<int, std::vector<CfgMonsterGroupDrop>>::map(&this->m_monsterGroupDrops);
-    std::map<int, std::vector<CfgMonsterTaskDrop>>::map(&this->m_monsterTaskDrops);
-    std::map<int, CfgNpc>::map(&this->m_npcs);
-    std::map<int, CfgNpcAirport>::map(&this->m_npcAirports);
-    std::map<int, CfgChrShop>::map(&this->m_chrShops);
-    std::map<int, CfgPlant>::map(&this->m_plants);
-    std::map<int, CfgTask>::map(&this->m_tasks);
-    std::map<int, CfgTrap>::map(&this->m_traps);
-    std::map<int, CfgLevelAttr>::map(&this->m_levelAttrs);
-    std::map<int, CfgGroupIcon>::map(&this->m_cfgGroupIcons);
-    CfgSkillTable::CfgSkillTable(&this->m_cfgSkillTable);
-    CfgTalentTable::CfgTalentTable(&this->m_cfgTalentTable);
-    CfgMonsterRandTable::CfgMonsterRandTable(&this->m_cfgMonsterRandTable);
-    CfgWingTable::CfgWingTable(&this->m_cfgWing);
-    CfgCarrierTable::CfgCarrierTable(&this->m_cfgCarrierTable);
-    CfgJueWeiTable::CfgJueWeiTable(&this->m_cfgJueWeiTable);
-    CfgEquipBoxTable::CfgEquipBoxTable(&this->m_cfgEquipBoxTalbe);
-    CfgActivityTaskTable::CfgActivityTaskTable(&this->m_cfgActivityTaskTable);
-    CfgOutLinkFestivalTable::CfgOutLinkFestivalTable(&this->m_cfgOutLinkFestivalTable);
-    std::map<int, CfgYYGameApp>::map(&this->m_CfgYYGameAppMap);
-    std::map<int, CfgYYVip>::map(&this->m_CfgYYVipMap);
-    std::list<CfgYYSuperBuff>::list(&this->m_CfgYYSuperBuffList);
-    std::list<CfgYYSuperBuff>::list(&this->m_Cfg37wanSuperBuffList);
-    std::map<int, CfgSgGameApp>::map(&this->m_CfgSgGameAppMap);
-    CfgEquipTable::CfgEquipTable(&this->m_cfgEquip);
-    CfgItemGemTable::CfgItemGemTable(&this->m_cfgItemGem);
-    CfgItemCombiTable::CfgItemCombiTable(&this->m_cfgItemCombi);
-    CfgPetTable::CfgPetTable(&this->m_cfgPetTable);
-    CfgSkillLevelUpTable::CfgSkillLevelUpTable(&this->m_cfgSkillLevelUpTable);
-    CfgTaskCycleTable::CfgTaskCycleTable(&this->m_cfgTaskCycleTable);
-    CfgFamilyTable::CfgFamilyTable(&this->m_cfgFamilyTable);
-    CfgFamilyWarTable::CfgFamilyWarTable(&this->m_cfgFamilyWarTable);
-    CfgFamilyLightExpTable::CfgFamilyLightExpTable(&this->m_cfgFamilyLightExpTable);
-    CfgHorseRacingRewardTable::CfgHorseRacingRewardTable(&this->m_cfgHorseRacingRewardTable);
-    CfgCampWarTable::CfgCampWarTable(&this->m_cfgCampWarTable);
-    CfgCityWarTable::CfgCityWarTable(&this->m_cfgCityWarTable);
-    CfgHallOfFameTable::CfgHallOfFameTable(&this->m_cfgHallOfFameTable);
-    CfgTitleTable::CfgTitleTable(&this->m_cfgTitleTable);
-    std::map<int, CfgDropRecord>::map(&this->m_cfgDropRecordTable);
-    CfgDungeonScoreTable::CfgDungeonScoreTable(&this->m_cfgDungeonScoreTable);
-    std::map<std::pair<int, int>, CfgDungeonSummon>::map(&this->m_cfgDungeonSummon);
-    CfgGoldEggTable::CfgGoldEggTable(&this->m_cfgGoldEggTable);
-    CfgLimitTimeTable::CfgLimitTimeTable(&this->m_cfgLimitTimeTable);
-    CfgMysteryShopTable::CfgMysteryShopTable(&this->m_cfgMysteryShopTable);
-    std::map<int, CfgBuyGift>::map(&this->m_cfgBuyGiftTable);
-    CfgExchangeTable::CfgExchangeTable(&this->m_cfgExchangeTable);
-    CfgMysteryGiftTable::CfgMysteryGiftTable(&this->m_cfgMysteryGiftTable);
-    CfgDrawTable::CfgDrawTable(&this->m_cfgDrawTable);
-    CfgMapRoadTable::CfgMapRoadTable(&this->m_cfgMapRoadTable);
-    CfgTrailerTable::CfgTrailerTable(&this->m_cfgTrailerTable);
-    CfgMYSJRewardTable::CfgMYSJRewardTable(&this->m_cfgMYSJRewardTable);
-    CfgMaintainCompensateTable::CfgMaintainCompensateTable(&this->m_cfgMaintainCompensateTable);
-    CfgWishRewardTable::CfgWishRewardTable(&this->m_cfgWishRewardTable);
-    CfgBFZLEnterCostTable::CfgBFZLEnterCostTable(&this->m_cfgBFZLEnterCostTable);
-    CfgBlacketMarketTable::CfgBlacketMarketTable(&this->m_cfgBlacketMarketTable);
-    std::map<int, int>::map(&this->m_cfgLevelChatTable);
-    std::map<std::string, CfgSuperMember>::map(&this->m_cfgSuperMember);
-    std::map<std::string, CfgSouGouSkin>::map(&this->m_cfgSouGouSkin);
-    CfgPetEquipTable::CfgPetEquipTable(&this->m_cfgPetEquipTable);
-    CfgWeiXinTable::CfgWeiXinTable(&this->m_cfgWeiXinTable);
-    CfgAdultGiftTable::CfgAdultGiftTable(&this->m_cfgAdultGiftTable);
-    CfgTencentTable::CfgTencentTable(&this->m_cfgTencentTable);
-    CfgFamilyDungeonTable::CfgFamilyDungeonTable(&this->m_cfgFamilyDungeonTable);
-    cfgGoblinTableData::cfgGoblinTableData(&this->m_cfgGoblinTableData);
-    cfgSpecialMonsterTable::cfgSpecialMonsterTable(&this->m_cfgSpecialMonsterTable);
-    cfgEquipUpPhaseTable::cfgEquipUpPhaseTable(&this->m_cfgEquipUpPhaseTable);
-    CfgTouZiTable::CfgTouZiTable(&this->m_cfgTouZiTable);
-    CfgSearchBackTable::CfgSearchBackTable(&this->m_cfgSearchBackTable);
-    CfgEquipBlessTable::CfgEquipBlessTable(&this->m_cfgEquipBlessTable);
-    std::list<PkDropRate>::list(&this->m_PkDropRateList);
-    this->m_debug = 0;
-    this->m_serverType = 0;
-    std::map<int, CfgSysMail>::map(&this->m_sysMail);
-    std::map<int, BossInfo>::map(&this->m_BossInfo);
-    FaBaoTable::FaBaoTable(&this->m_FaBaoTable);
-    std::map<int, std::vector<CfgQuestions>>::map(&this->m_mQuestions);
-    std::map<int, CfgGameShop>::map(&this->m_GameShopMap);
-    CQiFuTable::CQiFuTable(&this->m_QiFuTable);
-    VipTable::VipTable(&this->m_VipTable);
-    std::map<signed char, CfgSignReward>::map(&this->m_signReward);
-    std::map<signed char, CfgOnlineReward>::map(&this->m_OnLineReward);
-    std::map<signed char, CfgSevenLoginRewrad>::map(&this->m_SevenLoginReward);
-    std::map<int, CfgLevelGift>::map(&this->m_LevelGift);
-    std::map<int, CfgWeekOnlineReward>::map(&this->m_WeekOnlineReward);
-    std::map<int, CfgOffLineExp>::map(&this->m_OffLineExpTable);
-    std::map<int, VipCardCfg>::map(&this->m_VipCardTable);
-    std::map<int, FunctionOpenCfg>::map(&this->m_FunctionOpenCfg);
-    std::map<int, std::vector<CfgItemGift> *>::map(&this->m_PetGifts);
-    std::map<int, CfgPlantEventEffect>::map(&this->m_PlantEventMap);
-    std::map<signed char, CfgEquipExchange>::map(&this->m_CfgEquipExchangeMap);
-    CfgShouChongTable::CfgShouChongTable(&this->m_cfgShouChongTable);
-    std::map<signed char, NewServerFavorable>::map(&this->m_NewServerFavorable);
-    NewServerFavorable::NewServerFavorable(&this->m_ThreePetGift);
-    std::list<CfgEverydayChongZhi>::list(&this->m_EveryDayChongZhiTable);
-    std::map<int, CfgKaiFuHuoDongData>::map(&this->m_KaiFuHuoDongTable);
-    std::map<int, CfgHuoYueDu>::map(&this->m_HuoYueDuTable);
-    std::map<signed char, CfgHuoYueDuReward>::map(&this->m_HuoYueDuRewardTable);
-    std::list<CfgAppendAttr>::list(&this->m_AppendAttrTable);
-    std::list<SpecialTreasureMapRandCfg>::list(&this->m_SpecialTreasureMapRandCfgList);
-    CfgFamilyTask::CfgFamilyTask(&this->m_FamilyTaskTable);
-    std::map<int, FamilyTaskReward>::map(&this->m_FamilyTaskReward);
-    std::map<signed char, CfgTotalChongZhi>::map(&this->m_TotalChongZhiTable);
-    std::map<int, std::list<CfgMonsterAddAttr>>::map(&this->m_MonstAddAttrMap);
-    std::map<int, DaZheQuan>::map(&this->m_DaZheQuanMap);
-    std::map<int, Wan360Reward>::map(&this->m_Wan360RewardMap);
-    std::map<std::string, int>::map(&this->m_Wan360RewardTypeMap);
-    std::set<std::string>::set(&this->m_ItemLog);
-    CfgVplan::CfgVplan(&this->m_CfgVplan);
-    Speed360Reward::Speed360Reward(&this->m_Speed360Reward);
-    std::map<int, std::vector<GroupMonster>>::map(&this->m_GroupMonsterMap);
-    std::map<int, BuyFaBaoResCfg>::map(&this->m_FaBaoResMap);
-    std::map<int, XingMaiCfg>::map(&this->m_XingMaiCfgTable);
-    std::map<int, CfgXingMaiSlot>::map(&this->m_cfgXingMaiSlotTable);
-    std::map<int, TianLingCfg>::map(&this->m_TianLingCfgTable);
-    std::map<int, DamnationCfg>::map(&this->m_DamnationCfgTable);
-    std::map<int, ScoreShopCfg>::map(&this->m_ScoreShopCfgTable);
-    ChouJiangTable::ChouJiangTable(&this->m_ChouJiangTable);
-    CLibraryTable::CLibraryTable(&this->m_CLibraryTable);
-    TreasureMapTabale::TreasureMapTabale(&this->m_TreasureMapTabale);
-    std::map<int, BackEquipTask>::map(&this->m_EquipBackTable);
-    std::map<int, std::map<int, std::list<Param2>>>::map(&this->m_EquipBackTaskRate);
-    std::map<int, SpeciaEquipCfg>::map(&this->m_SpeciaEquipCfgMap);
-    std::map<std::pair<int, int>, SpeciaSkillDistance>::map(&this->m_SpeciaSkillDistanceTable);
-    LuckDropTable::LuckDropTable(&this->m_LuckDropTable);
-    std::map<int, LevelRefinCfg>::map(&this->m_LevelRefinCfgMap);
-    std::map<int, CfgBossFirstKilled>::map(&this->m_CfgBossFirstKilledMap);
-    std::map<int, UltimateChallengeCfg>::map(&this->m_UltimateChallengeCfgMap);
-    std::map<int, CfgCachet>::map(&this->m_CfgCachetMap);
-    std::map<signed char, BossKilledReward>::map(&this->m_BossKilledRewardMap);
-    std::map<int, SystemOpenGift>::map(&this->m_SystemOpenGiftMap);
-    std::map<int, SpecialMap>::map(&this->m_SpecialMapMap);
-    std::map<int, TestServerReward>::map(&this->m_TestServerRewardMap);
-    std::map<int, GuWuCfg>::map(&this->m_GuWuCfgMap);
-    std::map<int, FunctionOpenMail>::map(&this->m_FunctionOpenMailMap);
-    std::list<XiangYaoTaskCfg>::list(&this->m_XiangYaoTaskCfgList);
-    std::map<int, ShenWeiTaskCfg>::map(&this->m_ShenWeiTaskCfgMap);
-    std::map<std::string, CfgMobilePhoneGift>::map(&this->m_CfgMobilePhoneGift);
-    std::map<std::string, CfgMiniClient>::map(&this->m_CfgMiniClient);
-    std::map<int, std::list<CfgWuHunShop>>::map(&this->m_CfgWuHunShopMap);
-    std::map<int, CfgWuHunShop>::map(&this->m_CfgWuHunShopItemMap);
-    std::map<int, WuHunItem>::map(&this->m_WuHunItemMap);
-    std::map<int, CreateWuHun>::map(&this->m_CreateWuHunMap);
-    BossDistribution::BossDistribution(&this->m_BossDistribution);
-    std::map<int, SpecialBossMapCfg>::map(&this->m_SpecialBossMapCfgMap);
-    std::map<int, DuiHuanLimit>::map(&this->m_DuiHuanLimit);
-    std::map<std::pair<int, int>, JewelPavilionCfg>::map(&this->m_JewelPavilionCfgMap);
-    std::map<int, SuperTeHuiCfg>::map(&this->m_SuperTeHuiCfgMap);
-    std::map<std::pair<int, int>, GoblinCfg>::map(&this->m_GoblinCfgMap);
-    std::map<int, std::list<AddAttribute>>::map(&this->m_GoblinSuitMap);
-    std::map<std::pair<int, int>, ShouHuRefinishingCfg>::map(&this->m_ShouHuRefinishingCfgMap);
-    std::map<int, std::list<AddAttribute>>::map(&this->m_ShouHuRefinishingSuitMap);
-    std::map<std::pair<int, int>, WingEquipPolish>::map(&this->m_WingEquipPolishCfgMap);
-    std::map<int, std::list<AddAttribute>>::map(&this->m_WingEquipPolishSuitMap);
-    std::map<std::pair<int, int>, WinRefiningCfg>::map(&this->m_WinRefiningCfgMap);
-    std::map<int, std::list<AddAttribute>>::map(&this->m_WingEquipRefiningSuitMap);
-    std::map<int, GuiGuDaoRenCfg>::map(&this->m_GuiGuDaoRenCfgMap);
-    CfgShiZhuangTable::CfgShiZhuangTable(&this->m_cfgShiZhuangTable);
-    MonthlyChouJiangTable::MonthlyChouJiangTable(&this->m_MonthlyChouJiangTable);
-    std::map<int, std::list<ActDropItem>>::map(&this->m_ActDropItemListMap);
-    std::map<int, XunLeiCfg>::map(&this->m_XunLeiCfgMap);
-    CfgGuardPrivilegeTable::CfgGuardPrivilegeTable(&this->m_cfgGuardPrivilegeTable);
-    CycleTowerTable::CycleTowerTable(&this->m_CycleTowerTable);
-    std::map<std::pair<std::string, int>, PlatformDaTing>::map(&this->m_PlatformDaTingMap);
-    std::map<std::pair<std::string, int>, MiniClientCfg>::map(&this->m_GetMiniClientMap);
-    std::map<std::pair<std::string, int>, PlatformVip>::map(&this->m_PlatformVipMap);
-    std::map<int, ShangRenCfg>::map(&this->m_ShangRenCfgMap);
-    std::map<int, SelectItemCfg>::map(&this->m_SelectItemCfgMap);
-    std::map<std::pair<std::string, int>, PlatformRewardCfg>::map(&this->m_PlatformRewardCfgMap);
-    std::map<int, DiligenceCfg>::map(&this->m_DiligenceCfgMap);
-    std::map<int, ContributionCfg>::map(&this->m_ContributionCfgMap);
-    std::map<int, HoeCfg>::map(&this->m_HoeCfgMap);
-    CMingGeTable::CMingGeTable(&this->m_CMingGeTable);
-    std::map<int, CrossTowerCfg>::map(&this->m_CrossTowerCfgMap);
-    KunLingTable::KunLingTable(&this->m_KunLingTable);
-    std::map<int, LuDaShiVip>::map(&this->m_LuDaShiVipMap);
-    std::map<int, FlopDrawCfg>::map(&this->m_FlopDrawCfgMap);
-    SevenTaskTable::SevenTaskTable(&this->m_SevenTaskTable);
-    std::map<int, MoFuSkillCfg>::map(&this->m_MoFuSkillCfgMap);
-    std::map<std::pair<int, int>, ZhuNengCfg>::map(&this->m_ZhuNengCfgMap);
-    std::map<int, MoFuDuiHuan>::map(&this->m_MoFuDuiHuanMap);
-    std::map<int, ChristmasDuiHuan>::map(&this->m_ChristmasDuiHuanMap);
-    std::map<int, BaoKuFuBen>::map(&this->m_BaoKuFuBenMap);
-    std::map<int, BaoKuRandom>::map(&this->m_BaoKuRandomMap);
-    std::map<int, ChargeDungeonCfg>::map(&this->m_ChargeDungeonCfgMap);
-    std::map<int, GongMingCfg>::map(&this->m_GongMingCfgMap);
-    CfgBeastShrineTable::CfgBeastShrineTable(&this->m_CfgBeastShrineTable);
-    std::map<int, int>::map(&this->m_TongTianChiRankReward);
-    XinMoTable::XinMoTable(&this->m_XinMoTable);
-    std::map<int, std::list<RefreshMonsterCfg>>::map(&this->m_RefreshMonsterCfgListMap);
-    EnergyCfg::EnergyCfg(&this->m_EnergyCfg);
-    std::map<std::pair<int, int>, VipEquipPosLevelUp>::map(&this->m_VipEquipPosLevelUpMap);
-    std::list<VipEQuipPosSuit>::list(&this->m_VipEQuipPosSuitList);
-    std::map<std::pair<int, int>, ShiZhuLevelUp>::map(&this->m_ShiZhuLevelUpMap);
-    std::list<ClbAimCfg>::list(&this->m_ClbAimCfgList);
-    std::map<int, CVipClubLuckyDrop>::map(&this->m_CVipClubLuckyDropMap);
-    std::map<int, ZhanHunCfg>::map(&this->m_ZhanHunCfgMap);
-    std::map<int, LittleHelperCfg>::map(&this->m_LittleHelperCfgMap);
-    std::map<int, ShiQuCfg>::map(&this->m_ShiQuCfgMap);
-    ZeroBuyPetCfg::ZeroBuyPetCfg(&this->m_ZeroBuyPetCfg);
-    std::map<int, SunAndMoonCfg>::map(&this->m_SunAndMoonCfgMap);
-    std::map<int, TreasureHunterCfg>::map(&this->m_TreasureHunterCfgMap);
-    std::map<std::pair<int, int>, NationalDayTaskCfg>::map(&this->m_NationalDayTaskCfgMap);
-    std::map<int, NationalDayLevelCfg>::map(&this->m_NationalDayLevelCfgMap);
-    std::map<int, RongHeCfg>::map(&this->m_RongHeCfgMap);
-    std::map<int, EquipRongHe>::map(&this->m_EquipRongHeMap);
-    this->m_kaiFuTime = 0;
-    this->m_heFuTime = 0;
-}
+CfgData::CfgData()
+{}
 
 // ==================== 析构函数 ====================
 
-CfgData::~CfgData(CfgData *const this)
-{
-    std::map<int, EquipRongHe>::~map(&this->m_EquipRongHeMap);
-    std::map<int, RongHeCfg>::~map(&this->m_RongHeCfgMap);
-    std::map<int, NationalDayLevelCfg>::~map(&this->m_NationalDayLevelCfgMap);
-    std::map<std::pair<int, int>, NationalDayTaskCfg>::~map(&this->m_NationalDayTaskCfgMap);
-    std::map<int, TreasureHunterCfg>::~map(&this->m_TreasureHunterCfgMap);
-    std::map<int, SunAndMoonCfg>::~map(&this->m_SunAndMoonCfgMap);
-    ZeroBuyPetCfg::~ZeroBuyPetCfg(&this->m_ZeroBuyPetCfg);
-    std::map<int, ShiQuCfg>::~map(&this->m_ShiQuCfgMap);
-    std::map<int, LittleHelperCfg>::~map(&this->m_LittleHelperCfgMap);
-    std::map<int, ZhanHunCfg>::~map(&this->m_ZhanHunCfgMap);
-    std::map<int, CVipClubLuckyDrop>::~map(&this->m_CVipClubLuckyDropMap);
-    std::list<ClbAimCfg>::~list(&this->m_ClbAimCfgList);
-    std::map<std::pair<int, int>, ShiZhuLevelUp>::~map(&this->m_ShiZhuLevelUpMap);
-    std::list<VipEQuipPosSuit>::~list(&this->m_VipEQuipPosSuitList);
-    std::map<std::pair<int, int>, VipEquipPosLevelUp>::~map(&this->m_VipEquipPosLevelUpMap);
-    EnergyCfg::~EnergyCfg(&this->m_EnergyCfg);
-    std::map<int, std::list<RefreshMonsterCfg>>::~map(&this->m_RefreshMonsterCfgListMap);
-    XinMoTable::~XinMoTable(&this->m_XinMoTable);
-    std::map<int, int>::~map(&this->m_TongTianChiRankReward);
-    CfgBeastShrineTable::~CfgBeastShrineTable(&this->m_CfgBeastShrineTable);
-    std::map<int, GongMingCfg>::~map(&this->m_GongMingCfgMap);
-    std::map<int, ChargeDungeonCfg>::~map(&this->m_ChargeDungeonCfgMap);
-    std::map<int, BaoKuRandom>::~map(&this->m_BaoKuRandomMap);
-    std::map<int, BaoKuFuBen>::~map(&this->m_BaoKuFuBenMap);
-    std::map<int, ChristmasDuiHuan>::~map(&this->m_ChristmasDuiHuanMap);
-    std::map<int, MoFuDuiHuan>::~map(&this->m_MoFuDuiHuanMap);
-    std::map<std::pair<int, int>, ZhuNengCfg>::~map(&this->m_ZhuNengCfgMap);
-    std::map<int, MoFuSkillCfg>::~map(&this->m_MoFuSkillCfgMap);
-    SevenTaskTable::~SevenTaskTable(&this->m_SevenTaskTable);
-    std::map<int, FlopDrawCfg>::~map(&this->m_FlopDrawCfgMap);
-    std::map<int, LuDaShiVip>::~map(&this->m_LuDaShiVipMap);
-    KunLingTable::~KunLingTable(&this->m_KunLingTable);
-    std::map<int, CrossTowerCfg>::~map(&this->m_CrossTowerCfgMap);
-    CMingGeTable::~CMingGeTable(&this->m_CMingGeTable);
-    std::map<int, HoeCfg>::~map(&this->m_HoeCfgMap);
-    std::map<int, ContributionCfg>::~map(&this->m_ContributionCfgMap);
-    std::map<int, DiligenceCfg>::~map(&this->m_DiligenceCfgMap);
-    std::map<std::pair<std::string, int>, PlatformRewardCfg>::~map(&this->m_PlatformRewardCfgMap);
-    std::map<int, SelectItemCfg>::~map(&this->m_SelectItemCfgMap);
-    std::map<int, ShangRenCfg>::~map(&this->m_ShangRenCfgMap);
-    std::map<std::pair<std::string, int>, PlatformVip>::~map(&this->m_PlatformVipMap);
-    std::map<std::pair<std::string, int>, MiniClientCfg>::~map(&this->m_GetMiniClientMap);
-    std::map<std::pair<std::string, int>, PlatformDaTing>::~map(&this->m_PlatformDaTingMap);
-    CycleTowerTable::~CycleTowerTable(&this->m_CycleTowerTable);
-    CfgGuardPrivilegeTable::~CfgGuardPrivilegeTable(&this->m_cfgGuardPrivilegeTable);
-    std::map<int, XunLeiCfg>::~map(&this->m_XunLeiCfgMap);
-    std::map<int, std::list<ActDropItem>>::~map(&this->m_ActDropItemListMap);
-    MonthlyChouJiangTable::~MonthlyChouJiangTable(&this->m_MonthlyChouJiangTable);
-    CfgShiZhuangTable::~CfgShiZhuangTable(&this->m_cfgShiZhuangTable);
-    std::map<int, GuiGuDaoRenCfg>::~map(&this->m_GuiGuDaoRenCfgMap);
-    std::map<int, std::list<AddAttribute>>::~map(&this->m_WingEquipRefiningSuitMap);
-    std::map<std::pair<int, int>, WinRefiningCfg>::~map(&this->m_WinRefiningCfgMap);
-    std::map<int, std::list<AddAttribute>>::~map(&this->m_WingEquipPolishSuitMap);
-    std::map<std::pair<int, int>, WingEquipPolish>::~map(&this->m_WingEquipPolishCfgMap);
-    std::map<int, std::list<AddAttribute>>::~map(&this->m_ShouHuRefinishingSuitMap);
-    std::map<std::pair<int, int>, ShouHuRefinishingCfg>::~map(&this->m_ShouHuRefinishingCfgMap);
-    std::map<int, std::list<AddAttribute>>::~map(&this->m_GoblinSuitMap);
-    std::map<std::pair<int, int>, GoblinCfg>::~map(&this->m_GoblinCfgMap);
-    std::map<int, SuperTeHuiCfg>::~map(&this->m_SuperTeHuiCfgMap);
-    std::map<std::pair<int, int>, JewelPavilionCfg>::~map(&this->m_JewelPavilionCfgMap);
-    std::map<int, DuiHuanLimit>::~map(&this->m_DuiHuanLimit);
-    std::map<int, SpecialBossMapCfg>::~map(&this->m_SpecialBossMapCfgMap);
-    BossDistribution::~BossDistribution(&this->m_BossDistribution);
-    std::map<int, CreateWuHun>::~map(&this->m_CreateWuHunMap);
-    std::map<int, WuHunItem>::~map(&this->m_WuHunItemMap);
-    std::map<int, CfgWuHunShop>::~map(&this->m_CfgWuHunShopItemMap);
-    std::map<int, std::list<CfgWuHunShop>>::~map(&this->m_CfgWuHunShopMap);
-    std::map<std::string, CfgMiniClient>::~map(&this->m_CfgMiniClient);
-    std::map<std::string, CfgMobilePhoneGift>::~map(&this->m_CfgMobilePhoneGift);
-    std::map<int, ShenWeiTaskCfg>::~map(&this->m_ShenWeiTaskCfgMap);
-    std::list<XiangYaoTaskCfg>::~list(&this->m_XiangYaoTaskCfgList);
-    std::map<int, FunctionOpenMail>::~map(&this->m_FunctionOpenMailMap);
-    std::map<int, GuWuCfg>::~map(&this->m_GuWuCfgMap);
-    std::map<int, TestServerReward>::~map(&this->m_TestServerRewardMap);
-    std::map<int, SpecialMap>::~map(&this->m_SpecialMapMap);
-    std::map<int, SystemOpenGift>::~map(&this->m_SystemOpenGiftMap);
-    std::map<signed char, BossKilledReward>::~map(&this->m_BossKilledRewardMap);
-    std::map<int, CfgCachet>::~map(&this->m_CfgCachetMap);
-    std::map<int, UltimateChallengeCfg>::~map(&this->m_UltimateChallengeCfgMap);
-    std::map<int, CfgBossFirstKilled>::~map(&this->m_CfgBossFirstKilledMap);
-    std::map<int, LevelRefinCfg>::~map(&this->m_LevelRefinCfgMap);
-    LuckDropTable::~LuckDropTable(&this->m_LuckDropTable);
-    std::map<std::pair<int, int>, SpeciaSkillDistance>::~map(&this->m_SpeciaSkillDistanceTable);
-    std::map<int, SpeciaEquipCfg>::~map(&this->m_SpeciaEquipCfgMap);
-    std::map<int, std::map<int, std::list<Param2>>>::~map(&this->m_EquipBackTaskRate);
-    std::map<int, BackEquipTask>::~map(&this->m_EquipBackTable);
-    TreasureMapTabale::~TreasureMapTabale(&this->m_TreasureMapTabale);
-    CLibraryTable::~CLibraryTable(&this->m_CLibraryTable);
-    ChouJiangTable::~ChouJiangTable(&this->m_ChouJiangTable);
-    std::map<int, ScoreShopCfg>::~map(&this->m_ScoreShopCfgTable);
-    std::map<int, DamnationCfg>::~map(&this->m_DamnationCfgTable);
-    std::map<int, TianLingCfg>::~map(&this->m_TianLingCfgTable);
-    std::map<int, CfgXingMaiSlot>::~map(&this->m_cfgXingMaiSlotTable);
-    std::map<int, XingMaiCfg>::~map(&this->m_XingMaiCfgTable);
-    std::map<int, BuyFaBaoResCfg>::~map(&this->m_FaBaoResMap);
-    std::map<int, std::vector<GroupMonster>>::~map(&this->m_GroupMonsterMap);
-    Speed360Reward::~Speed360Reward(&this->m_Speed360Reward);
-    CfgVplan::~CfgVplan(&this->m_CfgVplan);
-    std::set<std::string>::~set(&this->m_ItemLog);
-    std::map<std::string, int>::~map(&this->m_Wan360RewardTypeMap);
-    std::map<int, Wan360Reward>::~map(&this->m_Wan360RewardMap);
-    std::map<int, DaZheQuan>::~map(&this->m_DaZheQuanMap);
-    std::map<int, std::list<CfgMonsterAddAttr>>::~map(&this->m_MonstAddAttrMap);
-    std::map<signed char, CfgTotalChongZhi>::~map(&this->m_TotalChongZhiTable);
-    std::map<int, FamilyTaskReward>::~map(&this->m_FamilyTaskReward);
-    CfgFamilyTask::~CfgFamilyTask(&this->m_FamilyTaskTable);
-    std::list<SpecialTreasureMapRandCfg>::~list(&this->m_SpecialTreasureMapRandCfgList);
-    std::list<CfgAppendAttr>::~list(&this->m_AppendAttrTable);
-    std::map<signed char, CfgHuoYueDuReward>::~map(&this->m_HuoYueDuRewardTable);
-    std::map<int, CfgHuoYueDu>::~map(&this->m_HuoYueDuTable);
-    std::map<int, CfgKaiFuHuoDongData>::~map(&this->m_KaiFuHuoDongTable);
-    std::list<CfgEverydayChongZhi>::~list(&this->m_EveryDayChongZhiTable);
-    NewServerFavorable::~NewServerFavorable(&this->m_ThreePetGift);
-    std::map<signed char, NewServerFavorable>::~map(&this->m_NewServerFavorable);
-    CfgShouChongTable::~CfgShouChongTable(&this->m_cfgShouChongTable);
-    std::map<signed char, CfgEquipExchange>::~map(&this->m_CfgEquipExchangeMap);
-    std::map<int, CfgPlantEventEffect>::~map(&this->m_PlantEventMap);
-    std::map<int, std::vector<CfgItemGift> *>::~map(&this->m_PetGifts);
-    std::map<int, FunctionOpenCfg>::~map(&this->m_FunctionOpenCfg);
-    std::map<int, VipCardCfg>::~map(&this->m_VipCardTable);
-    std::map<int, CfgOffLineExp>::~map(&this->m_OffLineExpTable);
-    std::map<int, CfgWeekOnlineReward>::~map(&this->m_WeekOnlineReward);
-    std::map<int, CfgLevelGift>::~map(&this->m_LevelGift);
-    std::map<signed char, CfgSevenLoginRewrad>::~map(&this->m_SevenLoginReward);
-    std::map<signed char, CfgOnlineReward>::~map(&this->m_OnLineReward);
-    std::map<signed char, CfgSignReward>::~map(&this->m_signReward);
-    VipTable::~VipTable(&this->m_VipTable);
-    CQiFuTable::~CQiFuTable(&this->m_QiFuTable);
-    std::map<int, CfgGameShop>::~map(&this->m_GameShopMap);
-    std::map<int, std::vector<CfgQuestions>>::~map(&this->m_mQuestions);
-    FaBaoTable::~FaBaoTable(&this->m_FaBaoTable);
-    std::map<int, BossInfo>::~map(&this->m_BossInfo);
-    std::map<int, CfgSysMail>::~map(&this->m_sysMail);
-    std::list<PkDropRate>::~list(&this->m_PkDropRateList);
-    CfgEquipBlessTable::~CfgEquipBlessTable(&this->m_cfgEquipBlessTable);
-    CfgSearchBackTable::~CfgSearchBackTable(&this->m_cfgSearchBackTable);
-    CfgTouZiTable::~CfgTouZiTable(&this->m_cfgTouZiTable);
-    cfgEquipUpPhaseTable::~cfgEquipUpPhaseTable(&this->m_cfgEquipUpPhaseTable);
-    cfgSpecialMonsterTable::~cfgSpecialMonsterTable(&this->m_cfgSpecialMonsterTable);
-    cfgGoblinTableData::~cfgGoblinTableData(&this->m_cfgGoblinTableData);
-    CfgFamilyDungeonTable::~CfgFamilyDungeonTable(&this->m_cfgFamilyDungeonTable);
-    CfgTencentTable::~CfgTencentTable(&this->m_cfgTencentTable);
-    CfgAdultGiftTable::~CfgAdultGiftTable(&this->m_cfgAdultGiftTable);
-    CfgWeiXinTable::~CfgWeiXinTable(&this->m_cfgWeiXinTable);
-    CfgPetEquipTable::~CfgPetEquipTable(&this->m_cfgPetEquipTable);
-    std::map<std::string, CfgSouGouSkin>::~map(&this->m_cfgSouGouSkin);
-    std::map<std::string, CfgSuperMember>::~map(&this->m_cfgSuperMember);
-    std::map<int, int>::~map(&this->m_cfgLevelChatTable);
-    CfgBlacketMarketTable::~CfgBlacketMarketTable(&this->m_cfgBlacketMarketTable);
-    CfgBFZLEnterCostTable::~CfgBFZLEnterCostTable(&this->m_cfgBFZLEnterCostTable);
-    CfgWishRewardTable::~CfgWishRewardTable(&this->m_cfgWishRewardTable);
-    CfgMaintainCompensateTable::~CfgMaintainCompensateTable(&this->m_cfgMaintainCompensateTable);
-    CfgMYSJRewardTable::~CfgMYSJRewardTable(&this->m_cfgMYSJRewardTable);
-    CfgTrailerTable::~CfgTrailerTable(&this->m_cfgTrailerTable);
-    CfgMapRoadTable::~CfgMapRoadTable(&this->m_cfgMapRoadTable);
-    CfgDrawTable::~CfgDrawTable(&this->m_cfgDrawTable);
-    CfgMysteryGiftTable::~CfgMysteryGiftTable(&this->m_cfgMysteryGiftTable);
-    CfgExchangeTable::~CfgExchangeTable(&this->m_cfgExchangeTable);
-    std::map<int, CfgBuyGift>::~map(&this->m_cfgBuyGiftTable);
-    CfgMysteryShopTable::~CfgMysteryShopTable(&this->m_cfgMysteryShopTable);
-    CfgLimitTimeTable::~CfgLimitTimeTable(&this->m_cfgLimitTimeTable);
-    CfgGoldEggTable::~CfgGoldEggTable(&this->m_cfgGoldEggTable);
-    std::map<std::pair<int, int>, CfgDungeonSummon>::~map(&this->m_cfgDungeonSummon);
-    CfgDungeonScoreTable::~CfgDungeonScoreTable(&this->m_cfgDungeonScoreTable);
-    std::map<int, CfgDropRecord>::~map(&this->m_cfgDropRecordTable);
-    CfgTitleTable::~CfgTitleTable(&this->m_cfgTitleTable);
-    CfgHallOfFameTable::~CfgHallOfFameTable(&this->m_cfgHallOfFameTable);
-    CfgCityWarTable::~CfgCityWarTable(&this->m_cfgCityWarTable);
-    CfgCampWarTable::~CfgCampWarTable(&this->m_cfgCampWarTable);
-    CfgHorseRacingRewardTable::~CfgHorseRacingRewardTable(&this->m_cfgHorseRacingRewardTable);
-    CfgFamilyLightExpTable::~CfgFamilyLightExpTable(&this->m_cfgFamilyLightExpTable);
-    CfgFamilyWarTable::~CfgFamilyWarTable(&this->m_cfgFamilyWarTable);
-    CfgFamilyTable::~CfgFamilyTable(&this->m_cfgFamilyTable);
-    CfgTaskCycleTable::~CfgTaskCycleTable(&this->m_cfgTaskCycleTable);
-    CfgSkillLevelUpTable::~CfgSkillLevelUpTable(&this->m_cfgSkillLevelUpTable);
-    CfgPetTable::~CfgPetTable(&this->m_cfgPetTable);
-    CfgItemCombiTable::~CfgItemCombiTable(&this->m_cfgItemCombi);
-    CfgItemGemTable::~CfgItemGemTable(&this->m_cfgItemGem);
-    CfgEquipTable::~CfgEquipTable(&this->m_cfgEquip);
-    std::map<int, CfgSgGameApp>::~map(&this->m_CfgSgGameAppMap);
-    std::list<CfgYYSuperBuff>::~list(&this->m_Cfg37wanSuperBuffList);
-    std::list<CfgYYSuperBuff>::~list(&this->m_CfgYYSuperBuffList);
-    std::map<int, CfgYYVip>::~map(&this->m_CfgYYVipMap);
-    std::map<int, CfgYYGameApp>::~map(&this->m_CfgYYGameAppMap);
-    CfgOutLinkFestivalTable::~CfgOutLinkFestivalTable(&this->m_cfgOutLinkFestivalTable);
-    CfgActivityTaskTable::~CfgActivityTaskTable(&this->m_cfgActivityTaskTable);
-    CfgEquipBoxTable::~CfgEquipBoxTable(&this->m_cfgEquipBoxTalbe);
-    CfgJueWeiTable::~CfgJueWeiTable(&this->m_cfgJueWeiTable);
-    CfgCarrierTable::~CfgCarrierTable(&this->m_cfgCarrierTable);
-    CfgWingTable::~CfgWingTable(&this->m_cfgWing);
-    CfgMonsterRandTable::~CfgMonsterRandTable(&this->m_cfgMonsterRandTable);
-    CfgTalentTable::~CfgTalentTable(&this->m_cfgTalentTable);
-    CfgSkillTable::~CfgSkillTable(&this->m_cfgSkillTable);
-    std::map<int, CfgGroupIcon>::~map(&this->m_cfgGroupIcons);
-    std::map<int, CfgLevelAttr>::~map(&this->m_levelAttrs);
-    std::map<int, CfgTrap>::~map(&this->m_traps);
-    std::map<int, CfgTask>::~map(&this->m_tasks);
-    std::map<int, CfgPlant>::~map(&this->m_plants);
-    std::map<int, CfgChrShop>::~map(&this->m_chrShops);
-    std::map<int, CfgNpcAirport>::~map(&this->m_npcAirports);
-    std::map<int, CfgNpc>::~map(&this->m_npcs);
-    std::map<int, std::vector<CfgMonsterTaskDrop>>::~map(&this->m_monsterTaskDrops);
-    std::map<int, std::vector<CfgMonsterGroupDrop>>::~map(&this->m_monsterGroupDrops);
-    std::map<int, std::vector<CfgMonsterDropGroup>>::~map(&this->m_monsterDropGroups);
-    std::vector<int>::~vector(&this->m_monsterBroadcasts);
-    std::map<std::pair<int, int>, CfgMonsterAdjust>::~map(&this->m_mMonsterAdjust);
-    std::map<int, CfgMonsterAI>::~map(&this->m_mMonsterAI);
-    std::map<int, CfgMonster>::~map(&this->m_monsters);
-    std::map<int, std::vector<CfgMapRegion>>::~map(&this->m_mapRegionsByMapId);
-    std::map<int, CfgMapRegion>::~map(&this->m_mapRegions);
-    std::map<int, CfgMapPlant>::~map(&this->m_mMapPlants);
-    std::map<int, std::vector<CfgMapPlant>>::~map(&this->m_mapPlants);
-    std::map<int, CfgMapMonster>::~map(&this->m_CfgMapMonsters);
-    std::map<int, std::vector<CfgMapMonster>>::~map(&this->m_mapMonsters);
-    std::map<int, CfgMap>::~map(&this->m_maps);
-    std::map<int, CfgLevelExp>::~map(&this->m_levelExps);
-    std::map<int, CfgMovie>::~map(&this->m_movie);
-    std::map<int, CfgJob>::~map(&this->m_jobs);
-    std::map<int, CfgMountEquip>::~map(&this->m_mountEquip);
-    Answer::RwLock::~RwLock(&this->m_itemGiftRandomsLock);
-    std::map<int, std::vector<CfgItemGiftRandom> *>::~map(&this->m_itemGiftRandoms);
-    Answer::RwLock::~RwLock(&this->m_itemGiftsLock);
-    std::map<int, std::vector<CfgItemGift> *>::~map(&this->m_itemGifts);
-    Answer::RwLock::~RwLock(&this->m_itemsLock);
-    std::map<int, CfgItem *>::~map(&this->m_items);
-    std::map<int, CfgDungeonNpc>::~map(&this->m_dungeonNpcs);
-    std::map<int, CfgDungeonTrap>::~map(&this->m_dungeonTraps);
-    std::map<int, CfgDungeonPlant>::~map(&this->m_dungeonPlants);
-    std::map<int, CfgDungeonMonster>::~map(&this->m_dungeonMonsters);
-    std::map<int, std::list<CfgMapEvent>>::~map(&this->m_dungeonEvents);
-    std::map<int, CfgDungeonDropGroup>::~map(&this->m_dungeonDropGroup);
-    std::map<int, CfgDungeonReward>::~map(&this->m_dungeonReward);
-    std::map<int, CfgDungeon>::~map(&this->m_mUpTowerDungeon);
-    std::map<int, CfgDungeon>::~map(&this->m_dungeons);
-    std::map<int, CfgBuff>::~map(&this->m_buffs);
-    std::map<int, CfgActivityTrap>::~map(&this->m_activityTraps);
-    std::map<int, CfgActivityDrop>::~map(&this->m_activityDrops);
-    std::map<int, CfgActivityPlant>::~map(&this->m_activityPlants);
-    std::map<int, CfgActivityNpc>::~map(&this->m_activityNpcs);
-    std::map<int, CfgActivityMonster>::~map(&this->m_activityMonsters);
-    std::map<int, std::map<int, std::list<CfgMapEvent>>>::~map(&this->m_activityEvents);
-    std::map<int, CfgActivity>::~map(&this->m_activities);
-    std::list<CfgMapEvent>::~list(&this->m_emptyEvents);
-}
+CfgData::~CfgData()
+{}
 
 // ==================== 单例与初始化 ====================
 
@@ -523,263 +31,263 @@ CfgData *CfgData::instance()
     return Answer::Singleton<CfgData>::instance();
 }
 
-bool CfgData::init(CfgData *const this, int32_t line, int32_t debug)
+bool CfgData::init(int32_t line, int32_t debug)
 {
-    CfgData::fetchServerConfig(this, line);
-    CfgData::fetchActivity(this);
-    CfgData::fetchBuff(this);
-    CfgData::fetchDungeon(this);
-    CfgData::fetchDungeonEvent(this);
-    CfgData::fetchDungeonMonster(this);
-    CfgData::fetchDungeonPlant(this);
-    CfgData::fetchDungeonTrap(this);
-    CfgData::fetchDungeonNpc(this);
-    CfgData::fetchItem(this, 0);
-    CfgData::fetchJob(this);
-    CfgData::fetchLevelAttr(this);
-    CfgData::fetchMap(this);
-    CfgData::fetchMapMonster(this);
-    CfgData::fetchMapPlant(this);
-    CfgData::fetchChrShop(this);
-    CfgData::fetchMapRegion(this);
-    CfgData::fetchMonster(this);
-    CfgData::fetchMonsterAI(this);
-    CfgData::fetchMonsterAdjustTable(this);
-    CfgData::fetchMonsterDropGroup(this);
-    CfgData::fetchMonsterGroupDrop(this);
-    CfgData::fetchMonsterTaskDrop(this);
-    CfgData::fetchNpc(this);
-    CfgData::fetchMovie(this);
-    CfgData::fetchPlant(this);
-    CfgData::fetchTask(this);
-    CfgData::fetchTrap(this);
-    CfgData::fetchLevelExp(this);
-    CfgData::fetchSignReward(this);
-    CfgData::InitGroupIconTable(this);
-    CfgData::InitActiveSkillTable(this);
-    CfgData::InitPassiveSkillTable(this);
-    CfgData::InitTrigSkillTable(this);
-    CfgData::InitTalentTable(this);
-    CfgData::InitTalentPageTable(this);
-    CfgData::InitFamilySkillTable(this);
-    CfgData::InitTalentActiveTable(this);
-    CfgData::InitEquipTable(this);
-    CfgData::InitEquipUpStarTable(this);
-    CfgData::InitEquipSuitTable(this);
-    CfgData::InitEquipDecomposeTable(this);
-    CfgData::InitEquipUpPosTable(this);
-    CfgData::InitEquipPosSuitTable(this);
-    CfgData::InitEquipBoxTable(this);
-    CfgData::InitItemGemTable(this);
-    CfgData::InitGemOpenHoleTable(this);
-    CfgData::InitGemLevelUpTable(this);
-    CfgData::InitGemSuitTable(this);
-    CfgData::InitItemCombiTable(this);
-    CfgData::InitMonsterRandTable(this);
-    CfgData::InitCarrierTable(this);
-    CfgData::InitCarrierAttrTable(this);
-    CfgData::InitJueWeiTable(this);
-    CfgData::InitPetTable(this);
-    CfgData::InitPetAttrTable(this);
-    CfgData::InitPetUpStarTable(this);
-    CfgData::InitSkillLevelUpTable(this);
-    CfgData::InitTaskCycleStarTable(this);
-    CfgData::InitTaskCycleRewardTable(this);
-    CfgData::InitFamilyTable(this);
-    CfgData::InitFamilyWarJoinRewardTable(this);
-    CfgData::InitFamilyWarReliveTable(this);
-    CfgData::InitFamilyLightExpTable(this);
-    CfgData::InitHorseRacingRewardTable(this);
-    CfgData::InitCampWarRewardTable(this);
-    CfgData::InitCampWarContKillTable(this);
-    CfgData::InitCityWarContRewardTable(this);
-    CfgData::InitHallOfFameRewardTable(this);
-    CfgData::InitTitleTable(this);
-    CfgData::InitGoldEggTable(this);
-    CfgData::InitLimitTimeTable(this);
-    CfgData::InitMysteryShopTable(this);
-    CfgData::InitBuyGiftTable(this);
-    CfgData::InitExchangeTable(this);
-    CfgData::InitMysteryGiftTable(this);
-    CfgData::InitDrawTable(this);
-    CfgData::InitMapRoadTable(this);
-    CfgData::InitTrailerTable(this);
-    CfgData::InitMYSJRewardTable(this);
-    CfgData::InitMaintainCompensateTable(this);
-    CfgData::InitWishRewardTable(this);
-    CfgData::InitBFZLEnterCostTable(this);
-    CfgData::InitBlacketMarketTable(this);
-    CfgData::InitLevelChatTimesTable(this);
-    CfgData::InitSuperMemberTable(this);
-    CfgData::InitSouGouSkinTable(this);
-    CfgData::InitPetEquipTable(this);
-    CfgData::InitWeiXinTable(this);
-    CfgData::InitAdultGiftTable(this);
-    CfgData::InitQQZoneRewardTable(this);
-    CfgData::InitQQGameRewardTable(this);
-    CfgData::InitYellowRewardTable(this);
-    CfgData::InitYellowDailyRewardTable(this);
-    CfgData::InitYellowLevelRewardTable(this);
-    CfgData::InitBlueRewardTable(this);
-    CfgData::InitBlueDailyRewardTable(this);
-    CfgData::InitBlueLevelRewardTable(this);
-    CfgData::InitTGPRewardTable(this);
-    CfgData::InitTGPDailyRewardTable(this);
-    CfgData::InitTGPLevelRewardTable(this);
-    CfgData::InitFamilyDungeonTable(this);
-    CfgData::InitDropRecordTable(this);
-    CfgData::InitDungeonScoreTable(this);
-    CfgData::InitDungeonSummon(this);
-    CfgData::InitSysMail(this);
-    CfgData::InitBossInfo(this);
-    CfgData::InitFaBaoTable(this);
-    CfgData::InitDaTiHD(this);
-    CfgData::InitShangChengTable(this);
-    CfgData::InitOnLimeReward(this);
-    CfgData::InitSevenLoginReward(this);
-    CfgData::InitLevelGift(this);
-    CfgData::InitWeekOnlineReward(this);
-    CfgData::InitOffLineExpTable(this);
-    CfgData::InitVipCardTable(this);
-    CfgData::InitFunctionOpenTable(this);
-    CfgData::InitPlantEventTable(this);
-    CfgData::InitZiYuanZhaoHuiTable(this);
-    CfgData::InitMoHuaHuanYiTable(this);
-    CfgData::InitShouChongLiBao(this);
-    CfgData::InitNewServerFavorable(this);
-    CfgData::InitMobilePhoneGiftTable(this);
-    CfgData::InitEveryDayChongZhi(this);
-    CfgData::InitKaiFuHuoDongTable(this);
-    CfgData::InitHuoYueDuTable(this);
-    CfgData::InitAppendAttrTable(this);
-    CfgData::InitFamilyRewardTable(this);
-    CfgData::InitTotalChongZhiTable(this);
-    CfgData::InitSpecialTreasureMapRandTable(this);
-    CfgData::InitMonsterAddAttrTable(this);
-    CfgData::InitDaZheQuanTable(this);
-    CfgData::Init360RewardTable(this);
-    CfgData::Init360RewardTypeTable(this);
-    CfgData::InitVplanTable(this);
-    CfgData::InitShunWangTable(this);
-    CfgData::InitSpeed360Reward(this);
-    CfgData::InitTencentSevenDayLoginTable(this);
-    CfgData::InitGoblinData(this);
-    CfgData::InitSpecialMonster(this);
-    CfgData::InitEquipUpPhase(this);
-    CfgData::InitTouZiTable(this);
-    CfgData::InitGroupMonster(this);
-    CfgData::InitPkDropRateTable(this);
-    CfgData::InitEquipBackTable(this);
-    CfgData::InitStrengthenTable(this);
-    CfgData::InitBuyFaBaoResTable(this);
-    CfgData::InitXingMaiTable(this);
-    CfgData::InitXingMaiSlotTable(this);
-    CfgData::InitTianLingTable(this);
-    CfgData::InitGongMinTable(this);
-    CfgData::InitBeastShrineEnterCostTable(this);
-    CfgData::InitDamnationTable(this);
-    CfgData::InitAttrBattleTable(this);
-    CfgData::InitScoreShopTable(this);
-    CfgData::InitChouJiangTable(this);
-    CfgData::InitWingCfgTable(this);
-    CfgData::InitLibraryTable(this);
-    CfgData::InitTreasureMapTabale(this);
-    CfgData::InitEquipBackTask(this);
-    CfgData::InitSpeciaEquipCfgMap(this);
-    CfgData::InitSpeciaSkillDistanceTable(this);
-    CfgData::InitLuckDropTable(this);
-    CfgData::InitLevelRefiningTable(this);
-    CfgData::InitBossFirstKilledTable(this);
-    CfgData::InitUltimateChallengeCfg(this);
-    CfgData::InitCachetCfg(this);
-    CfgData::InitBossKilledReward(this);
-    CfgData::InitSystemOpenReward(this);
-    CfgData::InitSpecialMap(this);
-    CfgData::InitTestServerReward(this);
-    CfgData::InitEquipBlessTable(this);
-    CfgData::InitGuWuCfgMap(this);
-    CfgData::InitFunctionOpenMailMap(this);
-    CfgData::InitXianYaoTaskTable(this);
-    CfgData::InitShenWeiTaskTable(this);
-    CfgData::InitMiniClientTable(this);
-    CfgData::InitWuHunShopTable(this);
-    CfgData::InitWuHunItemTable(this);
-    CfgData::InitWuHunCreateTable(this);
-    CfgData::InitBossDistribution(this);
-    CfgData::InitSpecialBossMapCfgMap(this);
-    CfgData::InitDuiHuanLimitTable(this);
-    CfgData::InitSuperTeHuiTable(this);
-    CfgData::InitJewelPavilionTable(this);
-    CfgData::InitGoblinTable(this);
-    CfgData::InitShouHuRefining(this);
-    CfgData::InitWingEquipPolish(this);
-    CfgData::InitGuiGuDaoRenTable(this);
-    CfgData::InitShiZhuangTable(this);
-    CfgData::InitShiZhuangLevelTable(this);
-    CfgData::InitMonthlyChouJiangTable(this);
-    CfgData::InitActDropTable(this);
-    CfgData::InitSevenTaskTable(this);
+    fetchServerConfig(line);
+    fetchActivity();
+    fetchBuff();
+    fetchDungeon();
+    fetchDungeonEvent();
+    fetchDungeonMonster();
+    fetchDungeonPlant();
+    fetchDungeonTrap();
+    fetchDungeonNpc();
+    fetchItem(0);
+    fetchJob();
+    fetchLevelAttr();
+    fetchMap();
+    fetchMapMonster();
+    fetchMapPlant();
+    fetchChrShop();
+    fetchMapRegion();
+    fetchMonster();
+    fetchMonsterAI();
+    fetchMonsterAdjustTable();
+    fetchMonsterDropGroup();
+    fetchMonsterGroupDrop();
+    fetchMonsterTaskDrop();
+    fetchNpc();
+    fetchMovie();
+    fetchPlant();
+    fetchTask();
+    fetchTrap();
+    fetchLevelExp();
+    fetchSignReward();
+    InitGroupIconTable();
+    InitActiveSkillTable();
+    InitPassiveSkillTable();
+    InitTrigSkillTable();
+    InitTalentTable();
+    InitTalentPageTable();
+    InitFamilySkillTable();
+    InitTalentActiveTable();
+    InitEquipTable();
+    InitEquipUpStarTable();
+    InitEquipSuitTable();
+    InitEquipDecomposeTable();
+    InitEquipUpPosTable();
+    InitEquipPosSuitTable();
+    InitEquipBoxTable();
+    InitItemGemTable();
+    InitGemOpenHoleTable();
+    InitGemLevelUpTable();
+    InitGemSuitTable();
+    InitItemCombiTable();
+    InitMonsterRandTable();
+    InitCarrierTable();
+    InitCarrierAttrTable();
+    InitJueWeiTable();
+    InitPetTable();
+    InitPetAttrTable();
+    InitPetUpStarTable();
+    InitSkillLevelUpTable();
+    InitTaskCycleStarTable();
+    InitTaskCycleRewardTable();
+    InitFamilyTable();
+    InitFamilyWarJoinRewardTable();
+    InitFamilyWarReliveTable();
+    InitFamilyLightExpTable();
+    InitHorseRacingRewardTable();
+    InitCampWarRewardTable();
+    InitCampWarContKillTable();
+    InitCityWarContRewardTable();
+    InitHallOfFameRewardTable();
+    InitTitleTable();
+    InitGoldEggTable();
+    InitLimitTimeTable();
+    InitMysteryShopTable();
+    InitBuyGiftTable();
+    InitExchangeTable();
+    InitMysteryGiftTable();
+    InitDrawTable();
+    InitMapRoadTable();
+    InitTrailerTable();
+    InitMYSJRewardTable();
+    InitMaintainCompensateTable();
+    InitWishRewardTable();
+    InitBFZLEnterCostTable();
+    InitBlacketMarketTable();
+    InitLevelChatTimesTable();
+    InitSuperMemberTable();
+    InitSouGouSkinTable();
+    InitPetEquipTable();
+    InitWeiXinTable();
+    InitAdultGiftTable();
+    InitQQZoneRewardTable();
+    InitQQGameRewardTable();
+    InitYellowRewardTable();
+    InitYellowDailyRewardTable();
+    InitYellowLevelRewardTable();
+    InitBlueRewardTable();
+    InitBlueDailyRewardTable();
+    InitBlueLevelRewardTable();
+    InitTGPRewardTable();
+    InitTGPDailyRewardTable();
+    InitTGPLevelRewardTable();
+    InitFamilyDungeonTable();
+    InitDropRecordTable();
+    InitDungeonScoreTable();
+    InitDungeonSummon();
+    InitSysMail();
+    InitBossInfo();
+    InitFaBaoTable();
+    InitDaTiHD();
+    InitShangChengTable();
+    InitOnLimeReward();
+    InitSevenLoginReward();
+    InitLevelGift();
+    InitWeekOnlineReward();
+    InitOffLineExpTable();
+    InitVipCardTable();
+    InitFunctionOpenTable();
+    InitPlantEventTable();
+    InitZiYuanZhaoHuiTable();
+    InitMoHuaHuanYiTable();
+    InitShouChongLiBao();
+    InitNewServerFavorable();
+    InitMobilePhoneGiftTable();
+    InitEveryDayChongZhi();
+    InitKaiFuHuoDongTable();
+    InitHuoYueDuTable();
+    InitAppendAttrTable();
+    InitFamilyRewardTable();
+    InitTotalChongZhiTable();
+    InitSpecialTreasureMapRandTable();
+    InitMonsterAddAttrTable();
+    InitDaZheQuanTable();
+    Init360RewardTable();
+    Init360RewardTypeTable();
+    InitVplanTable();
+    InitShunWangTable();
+    InitSpeed360Reward();
+    InitTencentSevenDayLoginTable();
+    InitGoblinData();
+    InitSpecialMonster();
+    InitEquipUpPhase();
+    InitTouZiTable();
+    InitGroupMonster();
+    InitPkDropRateTable();
+    InitEquipBackTable();
+    InitStrengthenTable();
+    InitBuyFaBaoResTable();
+    InitXingMaiTable();
+    InitXingMaiSlotTable();
+    InitTianLingTable();
+    InitGongMinTable();
+    InitBeastShrineEnterCostTable();
+    InitDamnationTable();
+    InitAttrBattleTable();
+    InitScoreShopTable();
+    InitChouJiangTable();
+    InitWingCfgTable();
+    InitLibraryTable();
+    InitTreasureMapTabale();
+    InitEquipBackTask();
+    InitSpeciaEquipCfgMap();
+    InitSpeciaSkillDistanceTable();
+    InitLuckDropTable();
+    InitLevelRefiningTable();
+    InitBossFirstKilledTable();
+    InitUltimateChallengeCfg();
+    InitCachetCfg();
+    InitBossKilledReward();
+    InitSystemOpenReward();
+    InitSpecialMap();
+    InitTestServerReward();
+    InitEquipBlessTable();
+    InitGuWuCfgMap();
+    InitFunctionOpenMailMap();
+    InitXianYaoTaskTable();
+    InitShenWeiTaskTable();
+    InitMiniClientTable();
+    InitWuHunShopTable();
+    InitWuHunItemTable();
+    InitWuHunCreateTable();
+    InitBossDistribution();
+    InitSpecialBossMapCfgMap();
+    InitDuiHuanLimitTable();
+    InitSuperTeHuiTable();
+    InitJewelPavilionTable();
+    InitGoblinTable();
+    InitShouHuRefining();
+    InitWingEquipPolish();
+    InitGuiGuDaoRenTable();
+    InitShiZhuangTable();
+    InitShiZhuangLevelTable();
+    InitMonthlyChouJiangTable();
+    InitActDropTable();
+    InitSevenTaskTable();
     CQiFuTable::InitQiFuTable(&this->m_QiFuTable);
     VipTable::InitVipTable(&this->m_VipTable);
-    CfgData::InitOutLinkFestivalTable(this);
-    CfgData::InitFestivalActivityTable(this);
-    CfgData::InitYYDaTing(this);
-    CfgData::InitYYVip(this);
-    CfgData::InitSouGouDaTing(this);
-    CfgData::InitXunLeiTable(this);
-    CfgData::InitCycleTowerTable(this);
-    CfgData::InitPlatformDaTingMap(this);
-    CfgData::InitMiniClientMap(this);
-    CfgData::InitPlatformVipMap(this);
-    CfgData::InitShangRenCfgMap(this);
-    CfgData::InitSelectItemCfgMap(this);
-    CfgData::InitGuardPrivilegeTable(this);
-    CfgData::InitPlatformReward(this);
-    CfgData::InitDiligenceCfgMap(this);
-    CfgData::InitFamilyDonateTable(this);
-    CfgData::InitFamilyMedalTable(this);
-    CfgData::InitHoeTable(this);
-    CfgData::InitMingGeTable(this);
-    CfgData::InitCrossTowerCfgMap(this);
-    CfgData::InitKunLingTable(this);
-    CfgData::InitLaDaShiHuiYuan(this);
-    CfgData::InitFlopTable(this);
-    CfgData::InitMoFuTable(this);
-    CfgData::InitChristmasDuiHuanTable(this);
-    CfgData::InitBaoKuFuBen(this);
-    CfgData::InitChargeDungeon(this);
-    CfgData::InitShenYaoPosTable(this);
-    CfgData::InitShenYaoPosSuitTable(this);
-    CfgData::InitTongTianChiRanTable(this);
-    CfgData::InitXinMoTable(this);
-    CfgData::InitGameTable(this);
-    CfgData::InitRefreshMonsterCfgListMap(this);
-    CfgData::InitLittleHelperCfg(this);
-    CfgData::InitShiZhuLevelUp(this);
-    CfgData::InitNationalDayTask(this);
-    CfgData::InitRongHeCfg(this);
+    InitOutLinkFestivalTable();
+    InitFestivalActivityTable();
+    InitYYDaTing();
+    InitYYVip();
+    InitSouGouDaTing();
+    InitXunLeiTable();
+    InitCycleTowerTable();
+    InitPlatformDaTingMap();
+    InitMiniClientMap();
+    InitPlatformVipMap();
+    InitShangRenCfgMap();
+    InitSelectItemCfgMap();
+    InitGuardPrivilegeTable();
+    InitPlatformReward();
+    InitDiligenceCfgMap();
+    InitFamilyDonateTable();
+    InitFamilyMedalTable();
+    InitHoeTable();
+    InitMingGeTable();
+    InitCrossTowerCfgMap();
+    InitKunLingTable();
+    InitLaDaShiHuiYuan();
+    InitFlopTable();
+    InitMoFuTable();
+    InitChristmasDuiHuanTable();
+    InitBaoKuFuBen();
+    InitChargeDungeon();
+    InitShenYaoPosTable();
+    InitShenYaoPosSuitTable();
+    InitTongTianChiRanTable();
+    InitXinMoTable();
+    InitGameTable();
+    InitRefreshMonsterCfgListMap();
+    InitLittleHelperCfg();
+    InitShiZhuLevelUp();
+    InitNationalDayTask();
+    InitRongHeCfg();
     this->m_MapMonsterId = 100000;
     this->m_debug = debug;
     return 1;
 }
 
-void CfgData::reload(CfgData *const this)
+void CfgData::reload()
 {
     ItemEffectManager *v1;
 
-    CfgData::fetchItem(this, 1);
+    fetchItem(1);
     v1 = Answer::Singleton<ItemEffectManager>::instance();
     ItemEffectManager::init(v1);
 }
 
 // ==================== Getter 方法示例 ====================
 
-int32_t CfgData::GetMapMonsterId(CfgData *const this)
+int32_t CfgData::GetMapMonsterId()
 {
     return ++this->m_MapMonsterId;
 }
 
-CfgActivity *CfgData::getActivity(CfgData *const this, int32_t id)
+CfgActivity *CfgData::getActivity(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_activities.find(ida);
@@ -791,7 +299,7 @@ CfgActivity *CfgData::getActivity(CfgData *const this, int32_t id)
 }
 // ==================== Getter 方法 ====================
 
-const CfgMapEventList *CfgData::getActivityEvents(CfgData *const this, int32_t activity_id, MapId_t nMapId)
+const CfgMapEventList *CfgData::getActivityEvents(int32_t activity_id, MapId_t nMapId)
 {
     MapId_t nMapIda = nMapId;
     int32_t activity_ida = activity_id;
@@ -811,7 +319,7 @@ const CfgMapEventList *CfgData::getActivityEvents(CfgData *const this, int32_t a
     return &itMap->second;
 }
 
-CfgActivityMonster *CfgData::getActivityMonster(CfgData *const this, int32_t id)
+CfgActivityMonster *CfgData::getActivityMonster(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_activityMonsters.find(ida);
@@ -822,7 +330,7 @@ CfgActivityMonster *CfgData::getActivityMonster(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgActivityNpc *CfgData::getActivityNpc(CfgData *const this, int32_t id)
+CfgActivityNpc *CfgData::getActivityNpc(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_activityNpcs.find(ida);
@@ -833,7 +341,7 @@ CfgActivityNpc *CfgData::getActivityNpc(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgActivityPlant *CfgData::getActivityPlant(CfgData *const this, int32_t Id)
+CfgActivityPlant *CfgData::getActivityPlant(int32_t Id)
 {
     int32_t Ida = Id;
     auto it = this->m_activityPlants.find(Ida);
@@ -844,7 +352,7 @@ CfgActivityPlant *CfgData::getActivityPlant(CfgData *const this, int32_t Id)
     return nullptr;
 }
 
-CfgActivityTrap *CfgData::getActivityTrap(CfgData *const this, int32_t id)
+CfgActivityTrap *CfgData::getActivityTrap(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_activityTraps.find(ida);
@@ -855,7 +363,7 @@ CfgActivityTrap *CfgData::getActivityTrap(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgBuff *CfgData::getBuff(CfgData *const this, int32_t id)
+CfgBuff *CfgData::getBuff(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_buffs.find(ida);
@@ -866,7 +374,7 @@ CfgBuff *CfgData::getBuff(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgDungeon *CfgData::getDungeon(CfgData *const this, int32_t id)
+CfgDungeon *CfgData::getDungeon(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_dungeons.find(ida);
@@ -877,7 +385,7 @@ CfgDungeon *CfgData::getDungeon(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-const CfgDungeon *CfgData::GetUpTowerDungeon(const CfgData *const this, int32_t nFloor)
+const CfgDungeon *CfgData::GetUpTowerDungeon(int32_t nFloor)
 {
     int32_t nFloora = nFloor;
     auto it = this->m_mUpTowerDungeon.find(nFloora);
@@ -888,7 +396,7 @@ const CfgDungeon *CfgData::GetUpTowerDungeon(const CfgData *const this, int32_t 
     return nullptr;
 }
 
-const CfgMapEventList *CfgData::getDungeonEvent(CfgData *const this, int32_t dungonid)
+const CfgMapEventList *CfgData::getDungeonEvent(int32_t dungonid)
 {
     int32_t dungonida = dungonid;
     auto it = this->m_dungeonEvents.find(dungonida);
@@ -899,7 +407,7 @@ const CfgMapEventList *CfgData::getDungeonEvent(CfgData *const this, int32_t dun
     return &this->m_emptyEvents;
 }
 
-CfgDungeonMonster *CfgData::getDungeonMonster(CfgData *const this, int32_t id)
+CfgDungeonMonster *CfgData::getDungeonMonster(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_dungeonMonsters.find(ida);
@@ -910,7 +418,7 @@ CfgDungeonMonster *CfgData::getDungeonMonster(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgDungeonPlant *CfgData::getDungeonPlant(CfgData *const this, int32_t id)
+CfgDungeonPlant *CfgData::getDungeonPlant(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_dungeonPlants.find(ida);
@@ -921,7 +429,7 @@ CfgDungeonPlant *CfgData::getDungeonPlant(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgDungeonTrap *CfgData::getDungeonTrap(CfgData *const this, int32_t id)
+CfgDungeonTrap *CfgData::getDungeonTrap(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_dungeonTraps.find(ida);
@@ -932,7 +440,7 @@ CfgDungeonTrap *CfgData::getDungeonTrap(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgDungeonNpc *CfgData::getDungeonNpc(CfgData *const this, int32_t id)
+CfgDungeonNpc *CfgData::getDungeonNpc(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_dungeonNpcs.find(ida);
@@ -943,12 +451,12 @@ CfgDungeonNpc *CfgData::getDungeonNpc(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-const CfgEquip *CfgData::getEquip(const CfgData *const this, int32_t id)
+const CfgEquip *CfgData::getEquip(int32_t id)
 {
     return CfgEquipTable::GetEquip(&this->m_cfgEquip, id);
 }
 
-CfgChrShop *CfgData::getChrShop(CfgData *const this, int32_t Index)
+CfgChrShop *CfgData::getChrShop(int32_t Index)
 {
     int32_t Indexa = Index;
     auto it = this->m_chrShops.find(Indexa);
@@ -959,7 +467,7 @@ CfgChrShop *CfgData::getChrShop(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-CfgItemTable *CfgData::getAllItem(CfgItemTable *__return_ptr retstr, CfgData *const this)
+CfgItemTable *CfgData::getAllItem(CfgItemTable *__return_ptr retstr, )
 {
     Answer::RwLockRdGuard lock;
     
@@ -970,7 +478,7 @@ CfgItemTable *CfgData::getAllItem(CfgItemTable *__return_ptr retstr, CfgData *co
     return retstr;
 }
 
-CfgItem *CfgData::getItem(CfgData *const this, int32_t id)
+CfgItem *CfgData::getItem(int32_t id)
 {
     if (id <= 0)
         return nullptr;
@@ -991,7 +499,7 @@ CfgItem *CfgData::getItem(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgItemGiftVector *CfgData::getItemGift(CfgData *const this, int32_t id)
+CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 {
     int32_t ida = id;
     Answer::RwLockRdGuard lock;
@@ -1009,7 +517,7 @@ CfgItemGiftVector *CfgData::getItemGift(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgItemGiftRandomVector *CfgData::getItemGiftRandom(CfgData *const this, int32_t id)
+CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 {
     int32_t ida = id;
     Answer::RwLockRdGuard lock;
@@ -1027,7 +535,7 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(CfgData *const this, int32_t
     return nullptr;
 }
 
-CfgJob *CfgData::getJob(CfgData *const this, int32_t id)
+CfgJob *CfgData::getJob(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_jobs.find(ida);
@@ -1038,14 +546,14 @@ CfgJob *CfgData::getJob(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-bool CfgData::getMovie(CfgData *const this, int32_t id)
+bool CfgData::getMovie(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_movie.find(ida);
     return it != this->m_movie.end();
 }
 
-CfgMap *CfgData::getMap(CfgData *const this, int32_t id)
+CfgMap *CfgData::getMap(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_maps.find(ida);
@@ -1056,7 +564,7 @@ CfgMap *CfgData::getMap(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgMapMonsterVector *CfgData::getMonstersOnMap(CfgData *const this, int32_t mapid)
+CfgMapMonsterVector *CfgData::getMonstersOnMap(int32_t mapid)
 {
     int32_t mapida = mapid;
     auto it = this->m_mapMonsters.find(mapida);
@@ -1067,7 +575,7 @@ CfgMapMonsterVector *CfgData::getMonstersOnMap(CfgData *const this, int32_t mapi
     return nullptr;
 }
 
-CfgMapMonster *CfgData::GetMapMonsterInfo(CfgData *const this, int32_t id)
+CfgMapMonster *CfgData::GetMapMonsterInfo(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_CfgMapMonsters.find(ida);
@@ -1078,7 +586,7 @@ CfgMapMonster *CfgData::GetMapMonsterInfo(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgMapPlantVector *CfgData::getPlantOnMap(CfgData *const this, int32_t mapid)
+CfgMapPlantVector *CfgData::getPlantOnMap(int32_t mapid)
 {
     int32_t mapida = mapid;
     auto it = this->m_mapPlants.find(mapida);
@@ -1089,7 +597,7 @@ CfgMapPlantVector *CfgData::getPlantOnMap(CfgData *const this, int32_t mapid)
     return nullptr;
 }
 
-CfgMapPlant *CfgData::GetMapPlantInfo(CfgData *const this, int32_t id)
+CfgMapPlant *CfgData::GetMapPlantInfo(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_mMapPlants.find(ida);
@@ -1100,7 +608,7 @@ CfgMapPlant *CfgData::GetMapPlantInfo(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgMapRegion *CfgData::getMapRegion(CfgData *const this, int32_t id)
+CfgMapRegion *CfgData::getMapRegion(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_mapRegions.find(ida);
@@ -1111,7 +619,7 @@ CfgMapRegion *CfgData::getMapRegion(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgMapRegionVector *CfgData::getRegionOnMap(CfgData *const this, int32_t mapid)
+CfgMapRegionVector *CfgData::getRegionOnMap(int32_t mapid)
 {
     int32_t mapida = mapid;
     auto it = this->m_mapRegionsByMapId.find(mapida);
@@ -1122,7 +630,7 @@ CfgMapRegionVector *CfgData::getRegionOnMap(CfgData *const this, int32_t mapid)
     return nullptr;
 }
 
-CfgMonster *CfgData::getMonster(CfgData *const this, int32_t mid)
+CfgMonster *CfgData::getMonster(int32_t mid)
 {
     int32_t mida = mid;
     auto it = this->m_monsters.find(mida);
@@ -1133,7 +641,7 @@ CfgMonster *CfgData::getMonster(CfgData *const this, int32_t mid)
     return nullptr;
 }
 
-CfgMonsterAI *CfgData::GetMonsterAI(CfgData *const this, int32_t nId)
+CfgMonsterAI *CfgData::GetMonsterAI(int32_t nId)
 {
     int32_t nIda = nId;
     auto it = this->m_mMonsterAI.find(nIda);
@@ -1144,7 +652,7 @@ CfgMonsterAI *CfgData::GetMonsterAI(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-CfgMonsterAdjust *CfgData::GetMonsterAdjust(CfgData *const this, int32_t mid, int32_t adj_level, bool bAutoLow)
+CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool bAutoLow)
 {
     auto key = std::make_pair(mid, adj_level);
     auto it = this->m_mMonsterAdjust.find(key);
@@ -1172,14 +680,14 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(CfgData *const this, int32_t mid, in
     return nullptr;
 }
 
-bool CfgData::isMonsterBroadcast(CfgData *const this, int32_t mid)
+bool CfgData::isMonsterBroadcast(int32_t mid)
 {
     int32_t mida = mid;
     auto it = std::find(this->m_monsterBroadcasts.begin(), this->m_monsterBroadcasts.end(), mida);
     return it != this->m_monsterBroadcasts.end();
 }
 
-CfgDungeonReward *CfgData::getDungeonReward(CfgData *const this, int32_t dungeonID)
+CfgDungeonReward *CfgData::getDungeonReward(int32_t dungeonID)
 {
     int32_t dungeonIDa = dungeonID;
     auto it = this->m_dungeonReward.find(dungeonIDa);
@@ -1190,7 +698,7 @@ CfgDungeonReward *CfgData::getDungeonReward(CfgData *const this, int32_t dungeon
     return nullptr;
 }
 
-const CfgDungeonDrop *CfgData::randDungeonDrop(CfgData *const this, int32_t dungeonID)
+const CfgDungeonDrop *CfgData::randDungeonDrop(int32_t dungeonID)
 {
     int32_t dungeonIDa = dungeonID;
     auto it = this->m_dungeonDropGroup.find(dungeonIDa);
@@ -1201,7 +709,7 @@ const CfgDungeonDrop *CfgData::randDungeonDrop(CfgData *const this, int32_t dung
     return CfgDungeonDropGroup::RandDrop(&it->second);
 }
 
-CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(CfgData *const this, int32_t group_id)
+CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(int32_t group_id)
 {
     int32_t group_ida = group_id;
     auto it = this->m_monsterDropGroups.find(group_ida);
@@ -1212,7 +720,7 @@ CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(CfgData *const this, int
     return nullptr;
 }
 
-CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(CfgData *const this, int32_t mid)
+CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(int32_t mid)
 {
     int32_t mida = mid;
     auto it = this->m_monsterGroupDrops.find(mida);
@@ -1223,7 +731,7 @@ CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(CfgData *const this, int
     return nullptr;
 }
 
-CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(CfgData *const this, int32_t mid)
+CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(int32_t mid)
 {
     int32_t mida = mid;
     auto it = this->m_monsterTaskDrops.find(mida);
@@ -1234,7 +742,7 @@ CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(CfgData *const this, int32
     return nullptr;
 }
 
-CfgNpc *CfgData::getNpc(CfgData *const this, int32_t npcid)
+CfgNpc *CfgData::getNpc(int32_t npcid)
 {
     int32_t npcida = npcid;
     auto it = this->m_npcs.find(npcida);
@@ -1245,7 +753,7 @@ CfgNpc *CfgData::getNpc(CfgData *const this, int32_t npcid)
     return nullptr;
 }
 
-CfgNpcAirport *CfgData::getNpcAirport(CfgData *const this, int32_t id)
+CfgNpcAirport *CfgData::getNpcAirport(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_npcAirports.find(ida);
@@ -1256,7 +764,7 @@ CfgNpcAirport *CfgData::getNpcAirport(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgPlant *CfgData::getPlant(CfgData *const this, int32_t id)
+CfgPlant *CfgData::getPlant(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_plants.find(ida);
@@ -1267,7 +775,7 @@ CfgPlant *CfgData::getPlant(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgTask *CfgData::getTask(CfgData *const this, int32_t id)
+CfgTask *CfgData::getTask(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_tasks.find(ida);
@@ -1278,7 +786,7 @@ CfgTask *CfgData::getTask(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-int8_t CfgData::GetTaskType(CfgData *const this, int32_t id)
+int8_t CfgData::GetTaskType(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_tasks.find(ida);
@@ -1289,7 +797,7 @@ int8_t CfgData::GetTaskType(CfgData *const this, int32_t id)
     return 0;
 }
 
-CfgTrap *CfgData::getTrap(CfgData *const this, int32_t id)
+CfgTrap *CfgData::getTrap(int32_t id)
 {
     int32_t ida = id;
     auto it = this->m_traps.find(ida);
@@ -1300,7 +808,7 @@ CfgTrap *CfgData::getTrap(CfgData *const this, int32_t id)
     return nullptr;
 }
 
-CfgLevelExp *CfgData::getUpgradeExp(CfgData *const this, int32_t level)
+CfgLevelExp *CfgData::getUpgradeExp(int32_t level)
 {
     int32_t levela = level;
     auto it = this->m_levelExps.find(levela);
@@ -1311,7 +819,7 @@ CfgLevelExp *CfgData::getUpgradeExp(CfgData *const this, int32_t level)
     return nullptr;
 }
 
-int64_t CfgData::getNeedLevelExp(CfgData *const this, int32_t level)
+int64_t CfgData::getNeedLevelExp(int32_t level)
 {
     int32_t levela = level;
     auto it = this->m_levelExps.find(levela);
@@ -1322,7 +830,7 @@ int64_t CfgData::getNeedLevelExp(CfgData *const this, int32_t level)
     return INT64_MAX;
 }
 
-int64_t CfgData::getMaxExp(CfgData *const this, int32_t level)
+int64_t CfgData::getMaxExp(int32_t level)
 {
     int32_t levela = level;
     auto it = this->m_levelExps.find(levela);
@@ -1333,7 +841,7 @@ int64_t CfgData::getMaxExp(CfgData *const this, int32_t level)
     return INT64_MAX;
 }
 
-int32_t CfgData::GetPetExp(CfgData *const this, int32_t level)
+int32_t CfgData::GetPetExp(int32_t level)
 {
     int32_t levela = level;
     auto it = this->m_levelExps.find(levela);
@@ -1344,7 +852,7 @@ int32_t CfgData::GetPetExp(CfgData *const this, int32_t level)
     return INT32_MAX;
 }
 
-int32_t CfgData::GetTalentPoint(CfgData *const this, int32_t level)
+int32_t CfgData::GetTalentPoint(int32_t level)
 {
     int32_t levela = level;
     auto it = this->m_levelExps.find(levela);
@@ -1355,7 +863,7 @@ int32_t CfgData::GetTalentPoint(CfgData *const this, int32_t level)
     return 0;
 }
 
-int32_t CfgData::GetAttrPoint(CfgData *const this, int32_t level)
+int32_t CfgData::GetAttrPoint(int32_t level)
 {
     int32_t levela = level;
     auto it = this->m_levelExps.find(levela);
@@ -1366,7 +874,7 @@ int32_t CfgData::GetAttrPoint(CfgData *const this, int32_t level)
     return 0;
 }
 
-CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, CfgData *const this, int32_t job, int32_t level)
+CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, int32_t job, int32_t level)
 {
     int key = (job << 16) | level;
     auto it = this->m_levelAttrs.find(key);
@@ -1383,7 +891,7 @@ CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, CfgData *
     return retstr;
 }
 
-int32_t CfgData::getBaseJob(CfgData *const this, int32_t job)
+int32_t CfgData::getBaseJob(int32_t job)
 {
     if (job == 2) return 2;
     if (job == 3) return 3;
@@ -1392,7 +900,7 @@ int32_t CfgData::getBaseJob(CfgData *const this, int32_t job)
 
 // ==================== Init 方法 1-10 ====================
 
-void CfgData::InitGroupIconTable(CfgData *const this)
+void CfgData::InitGroupIconTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -1426,7 +934,7 @@ void CfgData::InitGroupIconTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-bool CfgData::IsShowIcon(CfgData *const this, int32_t nIconId, const std::string *const platform)
+bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 {
     int32_t nIconIda = nIconId;
     auto __it = this->m_cfgGroupIcons.find(nIconIda);
@@ -1445,7 +953,7 @@ bool CfgData::IsShowIcon(CfgData *const this, int32_t nIconId, const std::string
     return !(std::operator!=<char>(&icon->platfrom, "-1") && std::operator!=<char>(platform, &icon->platfrom));
 }
 
-void CfgData::InitFamilyRewardTable(CfgData *const this)
+void CfgData::InitFamilyRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1491,7 +999,7 @@ void CfgData::InitFamilyRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-FamilyTaskReward *CfgData::GetFamilyReward(CfgData *const this, int32_t Index)
+FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
 {
     int32_t Indexa = Index;
     auto it = this->m_FamilyTaskReward.find(Indexa);
@@ -1502,7 +1010,7 @@ FamilyTaskReward *CfgData::GetFamilyReward(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-void CfgData::InitAppendAttrTable(CfgData *const this)
+void CfgData::InitAppendAttrTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1546,7 +1054,7 @@ void CfgData::InitAppendAttrTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitHuoYueDuTable(CfgData *const this)
+void CfgData::InitHuoYueDuTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1627,7 +1135,7 @@ void CfgData::InitHuoYueDuTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgHuoYueDu *CfgData::GetHuoYueDuCfg(CfgData *const this, int32_t Index)
+CfgHuoYueDu *CfgData::GetHuoYueDuCfg(int32_t Index)
 {
     int32_t Indexa = Index;
     auto it = this->m_HuoYueDuTable.find(Indexa);
@@ -1638,7 +1146,7 @@ CfgHuoYueDu *CfgData::GetHuoYueDuCfg(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(CfgData *const this, int32_t Index)
+CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(int32_t Index)
 {
     char __x = Index;
     auto it = this->m_HuoYueDuRewardTable.find(__x);
@@ -1649,7 +1157,7 @@ CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(CfgData *const this, int32_t Index
     return nullptr;
 }
 
-void CfgData::InitKaiFuHuoDongTable(CfgData *const this)
+void CfgData::InitKaiFuHuoDongTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1717,7 +1225,7 @@ void CfgData::InitKaiFuHuoDongTable(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&TabFile);
 }
-void CfgData::InitDropRecordTable(CfgData *const this)
+void CfgData::InitDropRecordTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1752,7 +1260,7 @@ void CfgData::InitDropRecordTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-const CfgDropRecord *CfgData::GetDropRecord(const CfgData *const this, int32_t nIndex)
+const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
 {
     int32_t nIndexa = nIndex;
     auto iter = this->m_cfgDropRecordTable.find(nIndexa);
@@ -1763,7 +1271,7 @@ const CfgDropRecord *CfgData::GetDropRecord(const CfgData *const this, int32_t n
     return nullptr;
 }
 
-void CfgData::InitDungeonScoreTable(CfgData *const this)
+void CfgData::InitDungeonScoreTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1809,7 +1317,7 @@ void CfgData::InitDungeonScoreTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitDungeonSummon(CfgData *const this)
+void CfgData::InitDungeonSummon()
 {
     CDBCFile DungeonTrapFile;
     CDBCFile::CDBCFile(&DungeonTrapFile, 0);
@@ -1842,7 +1350,7 @@ void CfgData::InitDungeonSummon(CfgData *const this)
                 std::string::string(&path, v1->pString, &v9);
                 
                 std::list<int> __x;
-                CfgData::paraseInt32List(this, &__x, &path, 0, nullptr);
+                paraseInt32List(&__x, &path, 0, nullptr);
                 std::list<int>::operator=(&stu.lMonsters, &__x);
                 std::list<int>::~list(&__x);
                 std::string::~string(&path);
@@ -1876,7 +1384,7 @@ void CfgData::InitDungeonSummon(CfgData *const this)
     CDBCFile::~CDBCFile(&DungeonTrapFile);
 }
 
-const CfgDungeonSummon *CfgData::GetDungeonSummon(const CfgData *const this, int32_t nDungeon, int32_t nIndex)
+const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nIndex)
 {
     auto __x = std::make_pair(nDungeon, nIndex);
     auto iter = this->m_cfgDungeonSummon.find(__x);
@@ -1887,7 +1395,7 @@ const CfgDungeonSummon *CfgData::GetDungeonSummon(const CfgData *const this, int
     return nullptr;
 }
 
-void CfgData::InitSpecialTreasureMapRandTable(CfgData *const this)
+void CfgData::InitSpecialTreasureMapRandTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1947,7 +1455,7 @@ void CfgData::InitSpecialTreasureMapRandTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitMonsterAddAttrTable(CfgData *const this)
+void CfgData::InitMonsterAddAttrTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -1989,7 +1497,7 @@ void CfgData::InitMonsterAddAttrTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retstr, CfgData *const this, int32_t Mid, int32_t WorldLevel)
+AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retstr, int32_t Mid, int32_t WorldLevel)
 {
     int32_t Mida = Mid;
     auto it = this->m_MonstAddAttrMap.find(Mida);
@@ -2013,7 +1521,7 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retst
     return retstr;
 }
 
-void CfgData::InitDaZheQuanTable(CfgData *const this)
+void CfgData::InitDaZheQuanTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2059,7 +1567,7 @@ void CfgData::InitDaZheQuanTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-DaZheQuan *CfgData::GetDaZheQuanCfg(CfgData *const this, int32_t Index)
+DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 {
     int32_t Indexa = Index;
     auto it = this->m_DaZheQuanMap.find(Indexa);
@@ -2070,7 +1578,7 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-void CfgData::Init360RewardTable(CfgData *const this)
+void CfgData::Init360RewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2114,7 +1622,7 @@ void CfgData::Init360RewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::Init360RewardTypeTable(CfgData *const this)
+void CfgData::Init360RewardTypeTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2149,7 +1657,7 @@ void CfgData::Init360RewardTypeTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-Wan360Reward *CfgData::Get360RewardCfg(CfgData *const this, int32_t Index)
+Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 {
     int32_t Indexa = Index;
     auto it = this->m_Wan360RewardMap.find(Indexa);
@@ -2160,12 +1668,12 @@ Wan360Reward *CfgData::Get360RewardCfg(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-int32_t CfgData::Get360RewardIcon(CfgData *const this, const std::string *const platform)
+int32_t CfgData::Get360RewardIcon(const std::string *const platform)
 {
     return *std::map<std::string, int>::operator[](&this->m_Wan360RewardTypeMap, platform);
 }
 
-void CfgData::InitTotalChongZhiTable(CfgData *const this)
+void CfgData::InitTotalChongZhiTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2225,7 +1733,7 @@ void CfgData::InitTotalChongZhiTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(CfgData *const this, int8_t Index)
+CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 {
     int8_t Indexa[4] = {Index};
     auto it = this->m_TotalChongZhiTable.find(Indexa[0]);
@@ -2236,7 +1744,7 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(CfgData *const this, int8_t Index
     return nullptr;
 }
 
-void CfgData::InitEveryDayChongZhi(CfgData *const this)
+void CfgData::InitEveryDayChongZhi()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2294,7 +1802,7 @@ void CfgData::InitEveryDayChongZhi(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(CfgData *const this, int8_t nType, int8_t Index)
+CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 {
     for (auto it = this->m_EveryDayChongZhiTable.begin(); it != this->m_EveryDayChongZhiTable.end(); ++it)
     {
@@ -2306,7 +1814,7 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(CfgData *const this, int8_t
     return nullptr;
 }
 
-void CfgData::InitNewServerFavorable(CfgData *const this)
+void CfgData::InitNewServerFavorable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2426,7 +1934,7 @@ void CfgData::InitNewServerFavorable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-NewServerFavorable *CfgData::GetNewServerFavorable(CfgData *const this, int8_t Index)
+NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 {
     int8_t Indexa[4] = {Index};
     auto it = this->m_NewServerFavorable.find(Indexa[0]);
@@ -2436,7 +1944,7 @@ NewServerFavorable *CfgData::GetNewServerFavorable(CfgData *const this, int8_t I
     }
     return nullptr;
 }
-void CfgData::InitShouChongLiBao(CfgData *const this)
+void CfgData::InitShouChongLiBao()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2483,7 +1991,7 @@ void CfgData::InitShouChongLiBao(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitMoHuaHuanYiTable(CfgData *const this)
+void CfgData::InitMoHuaHuanYiTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2529,7 +2037,7 @@ void CfgData::InitMoHuaHuanYiTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgEquipExchange *CfgData::GetEquipExchange(CfgData *const this, int8_t Level)
+CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 {
     int8_t Levela[4] = {Level};
     auto it = this->m_CfgEquipExchangeMap.find(Levela[0]);
@@ -2540,7 +2048,7 @@ CfgEquipExchange *CfgData::GetEquipExchange(CfgData *const this, int8_t Level)
     return nullptr;
 }
 
-void CfgData::InitZiYuanZhaoHuiTable(CfgData *const this)
+void CfgData::InitZiYuanZhaoHuiTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -2606,7 +2114,7 @@ void CfgData::InitZiYuanZhaoHuiTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitPlantEventTable(CfgData *const this)
+void CfgData::InitPlantEventTable()
 {
     CDBCFile ItemGiftFile;
     CDBCFile::CDBCFile(&ItemGiftFile, 0);
@@ -2643,7 +2151,7 @@ void CfgData::InitPlantEventTable(CfgData *const this)
     CDBCFile::~CDBCFile(&ItemGiftFile);
 }
 
-CfgPlantEventEffect *CfgData::GetPlantEvent(CfgData *const this, int32_t EventId)
+CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 {
     int32_t EventIda = EventId;
     auto it = this->m_PlantEventMap.find(EventIda);
@@ -2654,7 +2162,7 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(CfgData *const this, int32_t EventId
     return nullptr;
 }
 
-void CfgData::InitFunctionOpenTable(CfgData *const this)
+void CfgData::InitFunctionOpenTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2687,7 +2195,7 @@ void CfgData::InitFunctionOpenTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-FunctionOpenCfg *CfgData::GetOpenFunctionCfg(CfgData *const this, int32_t FunctionId)
+FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 {
     int32_t FunctionIda = FunctionId;
     auto it = this->m_FunctionOpenCfg.find(FunctionIda);
@@ -2698,7 +2206,7 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(CfgData *const this, int32_t Functi
     return nullptr;
 }
 
-void CfgData::InitVipCardTable(CfgData *const this)
+void CfgData::InitVipCardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2754,7 +2262,7 @@ void CfgData::InitVipCardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-VipCardCfg *CfgData::GetVipCardCfg(CfgData *const this, int8_t VipType)
+VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 {
     int __x = VipType;
     auto it = this->m_VipCardTable.find(__x);
@@ -2765,7 +2273,7 @@ VipCardCfg *CfgData::GetVipCardCfg(CfgData *const this, int8_t VipType)
     return nullptr;
 }
 
-void CfgData::InitOffLineExpTable(CfgData *const this)
+void CfgData::InitOffLineExpTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2800,7 +2308,7 @@ void CfgData::InitOffLineExpTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgOffLineExp *CfgData::GetOfflineExpCfg(CfgData *const this, int32_t Level)
+CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 {
     int32_t Levela = Level;
     auto it = this->m_OffLineExpTable.lower_bound(Levela);
@@ -2811,7 +2319,7 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(CfgData *const this, int32_t Level)
     return nullptr;
 }
 
-void CfgData::InitWeekOnlineReward(CfgData *const this)
+void CfgData::InitWeekOnlineReward()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2844,7 +2352,7 @@ void CfgData::InitWeekOnlineReward(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(CfgData *const this, int32_t Week)
+CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 {
     if (Week <= 0) return nullptr;
     
@@ -2861,7 +2369,7 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(CfgData *const this, int32_t W
     return nullptr;
 }
 
-void CfgData::InitLevelGift(CfgData *const this)
+void CfgData::InitLevelGift()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2907,7 +2415,7 @@ void CfgData::InitLevelGift(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgLevelGift *CfgData::GetLevelGiftCfg(CfgData *const this, int8_t Index)
+CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 {
     int __x = Index;
     auto it = this->m_LevelGift.find(__x);
@@ -2918,7 +2426,7 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(CfgData *const this, int8_t Index)
     return nullptr;
 }
 
-void CfgData::InitSevenLoginReward(CfgData *const this)
+void CfgData::InitSevenLoginReward()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -2962,7 +2470,7 @@ void CfgData::InitSevenLoginReward(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(CfgData *const this, int8_t Day)
+CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 {
     int8_t Daya[4] = {Day};
     auto it = this->m_SevenLoginReward.find(Daya[0]);
@@ -2973,7 +2481,7 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(CfgData *const this, int8_t
     return nullptr;
 }
 
-void CfgData::InitOnLimeReward(CfgData *const this)
+void CfgData::InitOnLimeReward()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3018,7 +2526,7 @@ void CfgData::InitOnLimeReward(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgOnlineReward *CfgData::GetOnlineRewardCfg(CfgData *const this, int8_t id)
+CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 {
     int8_t ida[4] = {id};
     auto it = this->m_OnLineReward.find(ida[0]);
@@ -3029,7 +2537,7 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(CfgData *const this, int8_t id)
     return nullptr;
 }
 
-void CfgData::fetchSignReward(CfgData *const this)
+void CfgData::fetchSignReward()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3074,7 +2582,7 @@ void CfgData::fetchSignReward(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, CfgData *const this, int8_t SiginCount)
+MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, int8_t SiginCount)
 {
     int8_t SiginCounta[4] = {SiginCount};
     std::vector<MemChrBag>::vector(retstr);
@@ -3086,7 +2594,7 @@ MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, Cf
     }
     return retstr;
 }
-void CfgData::InitQQZoneRewardTable(CfgData *const this)
+void CfgData::InitQQZoneRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3136,7 +2644,7 @@ void CfgData::InitQQZoneRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitQQGameRewardTable(CfgData *const this)
+void CfgData::InitQQGameRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3186,7 +2694,7 @@ void CfgData::InitQQGameRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitYellowRewardTable(CfgData *const this)
+void CfgData::InitYellowRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3228,7 +2736,7 @@ void CfgData::InitYellowRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitTencentSevenDayLoginTable(CfgData *const this)
+void CfgData::InitTencentSevenDayLoginTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3274,7 +2782,7 @@ void CfgData::InitTencentSevenDayLoginTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitYellowDailyRewardTable(CfgData *const this)
+void CfgData::InitYellowDailyRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3343,7 +2851,7 @@ void CfgData::InitYellowDailyRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitYellowLevelRewardTable(CfgData *const this)
+void CfgData::InitYellowLevelRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3404,7 +2912,7 @@ void CfgData::InitYellowLevelRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitBlueRewardTable(CfgData *const this)
+void CfgData::InitBlueRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3446,7 +2954,7 @@ void CfgData::InitBlueRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitBlueDailyRewardTable(CfgData *const this)
+void CfgData::InitBlueDailyRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3534,7 +3042,7 @@ void CfgData::InitBlueDailyRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitBlueLevelRewardTable(CfgData *const this)
+void CfgData::InitBlueLevelRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3581,7 +3089,7 @@ void CfgData::InitBlueLevelRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitTGPRewardTable(CfgData *const this)
+void CfgData::InitTGPRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3627,7 +3135,7 @@ void CfgData::InitTGPRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitTGPDailyRewardTable(CfgData *const this)
+void CfgData::InitTGPDailyRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3673,7 +3181,7 @@ void CfgData::InitTGPDailyRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitTGPLevelRewardTable(CfgData *const this)
+void CfgData::InitTGPLevelRewardTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3722,7 +3230,7 @@ void CfgData::InitTGPLevelRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitFamilyDungeonTable(CfgData *const this)
+void CfgData::InitFamilyDungeonTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -3760,7 +3268,7 @@ void CfgData::InitFamilyDungeonTable(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&TabFile);
 }
-void CfgData::fetchActivity(CfgData *const this)
+void CfgData::fetchActivity()
 {
     CDBCFile ActivityFile;
     CDBCFile::CDBCFile(&ActivityFile, 0);
@@ -4477,7 +3985,7 @@ void CfgData::fetchActivity(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&ActivityFile);
 }
-void CfgData::fetchBuff(CfgData *const this)
+void CfgData::fetchBuff()
 {
     CDBCFile BuffFile;
     CDBCFile::CDBCFile(&BuffFile, 0);
@@ -4548,7 +4056,7 @@ void CfgData::fetchBuff(CfgData *const this)
             std::allocator<char>::allocator(&v10);
             const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&BuffFile, i, nIndex);
             std::string::string(&v9, v2->pString, &v10);
-            buff.angry = CfgData::paraseParam2(this, &v9);
+            buff.angry = paraseParam2(&v9);
             v9.~string();
             std::allocator<char>::~allocator(&v10);
             
@@ -4563,7 +4071,7 @@ void CfgData::fetchBuff(CfgData *const this)
     CDBCFile::~CDBCFile(&BuffFile);
 }
 
-BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector *__return_ptr retstr, CfgData *const this, const std::string *const str)
+BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector *__return_ptr retstr, const std::string *const str)
 {
     std::vector<BuffAttr>::vector(retstr);
     
@@ -4612,7 +4120,7 @@ BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector *__return_ptr retstr, Cfg
     return retstr;
 }
 
-void CfgData::fetchDungeon(CfgData *const this)
+void CfgData::fetchDungeon()
 {
     CDBCFile DungeonFile;
     CDBCFile::CDBCFile(&DungeonFile, 0);
@@ -4877,7 +4385,7 @@ void CfgData::fetchDungeon(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&DungeonFile);
 }
-void CfgData::fetchItem(CfgData *const this, bool bSend)
+void CfgData::fetchItem(bool bSend)
 {
     CfgItemTable newItems;
     std::map<int, CfgItem *>::map(&newItems);
@@ -4952,7 +4460,7 @@ void CfgData::fetchItem(CfgData *const this, bool bSend)
                 std::allocator<char>::allocator(&v51);
                 const CDBCFile::FIELD *v33 = CDBCFile::Search_Posistion(&ItemFile, i_1, 44);
                 std::string::string(&str, v33->pString, &v51);
-                pItem->RongHeReceovery = CfgData::paraseParam2(this, &str);
+                pItem->RongHeReceovery = paraseParam2(&str);
                 str.~string();
                 std::allocator<char>::~allocator(&v51);
                 
@@ -4974,7 +4482,7 @@ void CfgData::fetchItem(CfgData *const this, bool bSend)
     
     if (!std::map<int, CfgItem *>::empty(&newItems) && bSend)
     {
-        CfgData::sendNewItems(this, &newItems);
+        sendNewItems(&newItems);
     }
     
     newItems.~map();
@@ -5072,7 +4580,7 @@ void CfgData::fetchItem(CfgData *const this, bool bSend)
     Answer::RwLock::unlock(&this->m_itemGiftRandomsLock);
 }
 
-void CfgData::sendNewItems(CfgData *const this, const CfgItemTable *const items)
+void CfgData::sendNewItems(const CfgItemTable *const items)
 {
     GameService *v2 = Answer::Singleton<GameService>::instance();
     Answer::NetPacket *packet = GameService::popNetpacket(v2, 0, Answer::PackType::PACK_DISPATCH, 0x2752u);
@@ -5116,7 +4624,7 @@ void CfgData::sendNewItems(CfgData *const this, const CfgItemTable *const items)
     GameService::broadcast(v5, packet);
 }
 
-void CfgData::fetchServerConfig(CfgData *const this, int32_t line)
+void CfgData::fetchServerConfig(int32_t line)
 {
     if (line == 9) return;
     
@@ -5143,7 +4651,7 @@ void CfgData::fetchServerConfig(CfgData *const this, int32_t line)
     Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
-int32_t CfgData::getServerStartTime(CfgData *const this, SERVER_TYPE nType)
+int32_t CfgData::getServerStartTime(SERVER_TYPE nType)
 {
     if (nType == SERVER_TYPE::SVT_UNITE)
         return this->m_heFuTime;
@@ -5151,7 +4659,7 @@ int32_t CfgData::getServerStartTime(CfgData *const this, SERVER_TYPE nType)
         return this->m_kaiFuTime;
 }
 
-int32_t CfgData::getServerStartDayZeroTime(CfgData *const this, SERVER_TYPE nType)
+int32_t CfgData::getServerStartDayZeroTime(SERVER_TYPE nType)
 {
     if (nType == SERVER_TYPE::SVT_UNITE)
         return Answer::DayTime::dayzero(this->m_heFuTime);
@@ -5159,7 +4667,7 @@ int32_t CfgData::getServerStartDayZeroTime(CfgData *const this, SERVER_TYPE nTyp
         return Answer::DayTime::dayzero(this->m_kaiFuTime);
 }
 
-int32_t CfgData::getServerDiffDay(CfgData *const this, SERVER_TYPE nType)
+int32_t CfgData::getServerDiffDay(SERVER_TYPE nType)
 {
     if (nType == SERVER_TYPE::SVT_UNITE)
         return Answer::DayTime::daydiff(this->m_heFuTime);
@@ -5167,15 +4675,15 @@ int32_t CfgData::getServerDiffDay(CfgData *const this, SERVER_TYPE nType)
         return Answer::DayTime::daydiff(this->m_kaiFuTime);
 }
 
-void CfgData::updateServerStartTime(CfgData *const this, int32_t kaiFuTime)
+void CfgData::updateServerStartTime(int32_t kaiFuTime)
 {
-    if (CfgData::getServerType(this) != 0) return;
+    if (getServerType() != 0) return;
     
     this->m_kaiFuTime = kaiFuTime;
     COpenBeta *v2 = Answer::Singleton<COpenBeta>::instance();
     COpenBeta::updateStartTime(v2);
 }
-void CfgData::fetchDungeonEvent(CfgData *const this)
+void CfgData::fetchDungeonEvent()
 {
     CDBCFile DungeonEventFile;
     CDBCFile::CDBCFile(&DungeonEventFile, 0);
@@ -5252,7 +4760,7 @@ void CfgData::fetchDungeonEvent(CfgData *const this)
     CDBCFile::~CDBCFile(&DungeonEventFile);
 }
 
-void CfgData::fetchDungeonMonster(CfgData *const this)
+void CfgData::fetchDungeonMonster()
 {
     CDBCFile DungeonMonsterFile;
     CDBCFile::CDBCFile(&DungeonMonsterFile, 0);
@@ -5401,7 +4909,7 @@ void CfgData::fetchDungeonMonster(CfgData *const this)
     CDBCFile::~CDBCFile(&DungeonMonsterFile);
 }
 
-void CfgData::fetchMap(CfgData *const this)
+void CfgData::fetchMap()
 {
     CDBCFile MapFile;
     CDBCFile::CDBCFile(&MapFile, 0);
@@ -5472,7 +4980,7 @@ void CfgData::fetchMap(CfgData *const this)
     CDBCFile::~CDBCFile(&MapFile);
 }
 
-void CfgData::fetchMapMonster(CfgData *const this)
+void CfgData::fetchMapMonster()
 {
     CDBCFile MapMonsterFile;
     CDBCFile::CDBCFile(&MapMonsterFile, 0);
@@ -5513,7 +5021,7 @@ void CfgData::fetchMapMonster(CfgData *const this)
     CDBCFile::~CDBCFile(&MapMonsterFile);
 }
 
-void CfgData::fetchMapPlant(CfgData *const this)
+void CfgData::fetchMapPlant()
 {
     CDBCFile MapPlantFile;
     CDBCFile::CDBCFile(&MapPlantFile, 0);
@@ -5549,7 +5057,7 @@ void CfgData::fetchMapPlant(CfgData *const this)
     CDBCFile::~CDBCFile(&MapPlantFile);
 }
 
-void CfgData::fetchMapRegion(CfgData *const this)
+void CfgData::fetchMapRegion()
 {
     CDBCFile MapRegionFile;
     CDBCFile::CDBCFile(&MapRegionFile, 0);
@@ -5588,7 +5096,7 @@ void CfgData::fetchMapRegion(CfgData *const this)
     CDBCFile::~CDBCFile(&MapRegionFile);
 }
 
-void CfgData::fetchMonster(CfgData *const this)
+void CfgData::fetchMonster()
 {
     CDBCFile MonsterFile;
     CDBCFile::CDBCFile(&MonsterFile, 0);
@@ -5641,7 +5149,7 @@ void CfgData::fetchMonster(CfgData *const this)
             std::allocator<char>::allocator(&v21);
             const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex);
             std::string::string(&strSkill, v2->pString, &v21);
-            CfgData::parseMonsterSkill(this, monster.mid, &monster.unique_skill, &strSkill);
+            parseMonsterSkill(monster.mid, &monster.unique_skill, &strSkill);
             strSkill.~string();
             std::allocator<char>::~allocator(&v21);
             ++nIndex;
@@ -5651,7 +5159,7 @@ void CfgData::fetchMonster(CfgData *const this)
             std::allocator<char>::allocator(&v23);
             const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex);
             std::string::string(&v22, v3->pString, &v23);
-            CfgData::parseMonsterSkill(this, monster.mid, &monster.random_skill, &v22);
+            parseMonsterSkill(monster.mid, &monster.random_skill, &v22);
             v22.~string();
             std::allocator<char>::~allocator(&v23);
             
@@ -5769,7 +5277,7 @@ void CfgData::fetchMonster(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&MonsterFile);
 }
-void CfgData::fetchNpc(CfgData *const this)
+void CfgData::fetchNpc()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -5962,7 +5470,7 @@ void CfgData::fetchNpc(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::fetchPlant(CfgData *const this)
+void CfgData::fetchPlant()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -6088,7 +5596,7 @@ void CfgData::fetchPlant(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::fetchTask(CfgData *const this)
+void CfgData::fetchTask()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -6183,7 +5691,7 @@ void CfgData::fetchTask(CfgData *const this)
             std::allocator<char>::allocator(&v20);
             const CDBCFile::FIELD *v5 = CDBCFile::Search_Posistion(&TabFile, i, 36);
             std::string::string(&strRequest, v5->pString, &v20);
-            task.request = CfgData::parseTaskCondition(this, task.id, task.condition, &strRequest);
+            task.request = parseTaskCondition(task.id, task.condition, &strRequest);
             strRequest.~string();
             std::allocator<char>::~allocator(&v20);
             
@@ -6243,7 +5751,7 @@ void CfgData::fetchTask(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::fetchTrap(CfgData *const this)
+void CfgData::fetchTrap()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -6283,7 +5791,7 @@ void CfgData::fetchTrap(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::fetchLevelExp(CfgData *const this)
+void CfgData::fetchLevelExp()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -6324,7 +5832,7 @@ void CfgData::fetchLevelExp(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::fetchLevelAttr(CfgData *const this)
+void CfgData::fetchLevelAttr()
 {
     CDBCFile LevelAttrFile;
     CDBCFile::CDBCFile(&LevelAttrFile, 0);
@@ -6398,7 +5906,7 @@ void CfgData::fetchLevelAttr(CfgData *const this)
     CDBCFile::~CDBCFile(&LevelAttrFile);
 }
 
-void CfgData::fetchJob(CfgData *const this)
+void CfgData::fetchJob()
 {
     CDBCFile JobFile;
     CDBCFile::CDBCFile(&JobFile, 0);
@@ -6430,7 +5938,7 @@ void CfgData::fetchJob(CfgData *const this)
     CDBCFile::~CDBCFile(&JobFile);
 }
 
-void CfgData::fetchChrShop(CfgData *const this)
+void CfgData::fetchChrShop()
 {
     CDBCFile ChrShopFile;
     CDBCFile::CDBCFile(&ChrShopFile, 0);
@@ -6465,7 +5973,7 @@ void CfgData::fetchChrShop(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&ChrShopFile);
 }
-void CfgData::fetchMovie(CfgData *const this)
+void CfgData::fetchMovie()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -6498,7 +6006,7 @@ void CfgData::fetchMovie(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::fetchMonsterAI(CfgData *const this)
+void CfgData::fetchMonsterAI()
 {
     CDBCFile MonsterFile;
     CDBCFile::CDBCFile(&MonsterFile, 0);
@@ -6544,7 +6052,7 @@ void CfgData::fetchMonsterAI(CfgData *const this)
     CDBCFile::~CDBCFile(&MonsterFile);
 }
 
-void CfgData::fetchMonsterAdjustTable(CfgData *const this)
+void CfgData::fetchMonsterAdjustTable()
 {
     CDBCFile MonsterFile;
     CDBCFile::CDBCFile(&MonsterFile, 0);
@@ -6629,7 +6137,7 @@ void CfgData::fetchMonsterAdjustTable(CfgData *const this)
     }
 }
 
-void CfgData::fetchMonsterDropGroup(CfgData *const this)
+void CfgData::fetchMonsterDropGroup()
 {
     CDBCFile MonsterDropFile;
     CDBCFile::CDBCFile(&MonsterDropFile, 0);
@@ -6695,7 +6203,7 @@ void CfgData::fetchMonsterDropGroup(CfgData *const this)
     CDBCFile::~CDBCFile(&MonsterDropFile);
 }
 
-void CfgData::fetchMonsterGroupDrop(CfgData *const this)
+void CfgData::fetchMonsterGroupDrop()
 {
     CDBCFile MonsterGroupFile;
     CDBCFile::CDBCFile(&MonsterGroupFile, 0);
@@ -6751,7 +6259,7 @@ void CfgData::fetchMonsterGroupDrop(CfgData *const this)
     CDBCFile::~CDBCFile(&MonsterGroupFile);
 }
 
-void CfgData::fetchMonsterTaskDrop(CfgData *const this)
+void CfgData::fetchMonsterTaskDrop()
 {
     CDBCFile MonsterTaskFile;
     CDBCFile::CDBCFile(&MonsterTaskFile, 0);
@@ -6785,7 +6293,7 @@ void CfgData::fetchMonsterTaskDrop(CfgData *const this)
 
 // ==================== 辅助方法 ====================
 
-std::vector<Position> *CfgData::paresPosition(std::vector<Position> *__return_ptr retstr, CfgData *const this, const std::string *const strPos)
+std::vector<Position> *CfgData::paresPosition(std::vector<Position> *__return_ptr retstr, const std::string *const strPos)
 {
     std::vector<Position>::vector(retstr);
     
@@ -6827,7 +6335,7 @@ std::vector<Position> *CfgData::paresPosition(std::vector<Position> *__return_pt
     return retstr;
 }
 
-Param2 CfgData::paraseParam2(CfgData *const this, const std::string *const str)
+Param2 CfgData::paraseParam2(const std::string *const str)
 {
     if (str->empty() || *str == "-1")
     {
@@ -6863,7 +6371,7 @@ Param2 CfgData::paraseParam2(CfgData *const this, const std::string *const str)
     return result;
 }
 
-Int32Vector *CfgData::paraseInt32Vector(Int32Vector *__return_ptr retstr, CfgData *const this, 
+Int32Vector *CfgData::paraseInt32Vector(Int32Vector *__return_ptr retstr, 
                                          const std::string *const str, const std::string *const path, int32_t size)
 {
     std::vector<int>::vector(retstr);
@@ -6900,7 +6408,7 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector *__return_ptr retstr, CfgDat
     return retstr;
 }
 
-AttrAddonVector *CfgData::paraseAttrAddon(AttrAddonVector *__return_ptr retstr, CfgData *const this,
+AttrAddonVector *CfgData::paraseAttrAddon(AttrAddonVector *__return_ptr retstr, ,
                                            const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
 {
     std::vector<AttrAddon>::vector(retstr);
@@ -6952,7 +6460,7 @@ AttrAddonVector *CfgData::paraseAttrAddon(AttrAddonVector *__return_ptr retstr, 
     return retstr;
 }
 
-int32_t CfgData::getOverlay(CfgData *const this, int32_t nId, int8_t nClass)
+int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 {
     if (nClass == 3)
     {
@@ -6963,14 +6471,14 @@ int32_t CfgData::getOverlay(CfgData *const this, int32_t nId, int8_t nClass)
     }
     else if (nClass == 1)
     {
-        CfgItem *cfgItem = CfgData::getItem(this, nId);
+        CfgItem *cfgItem = getItem(nId);
         if (!cfgItem) return 0;
         int32_t overlay = cfgItem->overlay;
         return (overlay == 0) ? 1 : overlay;
     }
     else if (nClass == 8)
     {
-        WuHunItem *pWuHun = CfgData::GetWuHunItem(this, nId);
+        WuHunItem *pWuHun = GetWuHunItem(nId);
         if (!pWuHun) return 0;
         int32_t overlay = pWuHun->overlay;
         return (overlay == 0) ? 1 : overlay;
@@ -6982,11 +6490,11 @@ int32_t CfgData::getOverlay(CfgData *const this, int32_t nId, int8_t nClass)
     return 1;
 }
 
-int32_t CfgData::getOutValue(CfgData *const this, int32_t nId, int8_t nClass)
+int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 {
     if (nClass == 2)
     {
-        const CfgEquip *pEquip = CfgData::getEquip(this, nId);
+        const CfgEquip *pEquip = getEquip(nId);
         if (pEquip) return pEquip->m_nPrice;
     }
     else if (nClass == 3)
@@ -7001,19 +6509,19 @@ int32_t CfgData::getOutValue(CfgData *const this, int32_t nId, int8_t nClass)
     }
     else if (nClass == 1)
     {
-        CfgItem *pItem = CfgData::getItem(this, nId);
+        CfgItem *pItem = getItem(nId);
         if (pItem) return pItem->out_value;
     }
     return -1;
 }
 
-bool CfgData::dropBroadcast(CfgData *const this, int32_t nId, int8_t nClass)
+bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 {
     switch (nClass)
     {
     case 2:
     {
-        const CfgEquip *pEquip = CfgData::getEquip(this, nId);
+        const CfgEquip *pEquip = getEquip(nId);
         if (pEquip) return pEquip->m_nBroadcast > 0;
         break;
     }
@@ -7025,7 +6533,7 @@ bool CfgData::dropBroadcast(CfgData *const this, int32_t nId, int8_t nClass)
     }
     case 1:
     {
-        CfgItem *pItem = CfgData::getItem(this, nId);
+        CfgItem *pItem = getItem(nId);
         if (pItem) return pItem->broadcast > 0;
         break;
     }
@@ -7033,14 +6541,14 @@ bool CfgData::dropBroadcast(CfgData *const this, int32_t nId, int8_t nClass)
     return false;
 }
 
-bool CfgData::canSell(CfgData *const this, int32_t nId, int8_t nClass)
+bool CfgData::canSell(int32_t nId, int8_t nClass)
 {
     if (nClass != 1) return true;
-    CfgItem *pCfgItem = CfgData::getItem(this, nId);
+    CfgItem *pCfgItem = getItem(nId);
     return (pCfgItem == nullptr) || (pCfgItem->can_sell != 0);
 }
 
-int32_t CfgData::InitXuWuTask(CfgData *const this, int32_t Level, int32_t Times)
+int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 {
     std::vector<int> TaskIdVt;
     
@@ -7059,7 +6567,7 @@ int32_t CfgData::InitXuWuTask(CfgData *const this, int32_t Level, int32_t Times)
     return TaskIdVt.front();
 }
 
-int32_t CfgData::InitXinMoTask(CfgData *const this, int32_t Level, int32_t Times)
+int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 {
     std::vector<int> TaskIdVt;
     
@@ -7078,7 +6586,7 @@ int32_t CfgData::InitXinMoTask(CfgData *const this, int32_t Level, int32_t Times
     return TaskIdVt.front();
 }
 
-int32_t CfgData::RandPdbfTask(CfgData *const this, int32_t Level)
+int32_t CfgData::RandPdbfTask(int32_t Level)
 {
     std::vector<int> TaskVt;
     
@@ -7096,7 +6604,7 @@ int32_t CfgData::RandPdbfTask(CfgData *const this, int32_t Level)
     std::random_shuffle(TaskVt.begin(), TaskVt.end());
     return TaskVt.front();
 }
-void CfgData::InitActiveSkillTable(CfgData *const this)
+void CfgData::InitActiveSkillTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -7189,7 +6697,7 @@ void CfgData::InitActiveSkillTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitPassiveSkillTable(CfgData *const this)
+void CfgData::InitPassiveSkillTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7269,7 +6777,7 @@ void CfgData::InitPassiveSkillTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitTrigSkillTable(CfgData *const this)
+void CfgData::InitTrigSkillTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7314,7 +6822,7 @@ void CfgData::InitTrigSkillTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitTalentTable(CfgData *const this)
+void CfgData::InitTalentTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7372,7 +6880,7 @@ void CfgData::InitTalentTable(CfgData *const this)
             std::string::string(&path, v2->pString, &v12);
             
             std::list<int> __x;
-            CfgData::paraseInt32List(this, &__x, &path, atoi(size.c_str()), nullptr);
+            paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.powerSkills = __x;
             __x.~list();
             path.~string();
@@ -7395,7 +6903,7 @@ void CfgData::InitTalentTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitTalentPageTable(CfgData *const this)
+void CfgData::InitTalentPageTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7432,7 +6940,7 @@ void CfgData::InitTalentPageTable(CfgData *const this)
             std::string::string(&path, v1->pString, &v8);
             
             std::list<int> __x;
-            CfgData::paraseInt32List(this, &__x, &path, atoi(size.c_str()), nullptr);
+            paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.talents = __x;
             __x.~list();
             path.~string();
@@ -7448,7 +6956,7 @@ void CfgData::InitTalentPageTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitFamilySkillTable(CfgData *const this)
+void CfgData::InitFamilySkillTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7507,7 +7015,7 @@ void CfgData::InitFamilySkillTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitTalentActiveTable(CfgData *const this)
+void CfgData::InitTalentActiveTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7552,7 +7060,7 @@ void CfgData::InitTalentActiveTable(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&readFile);
 }
-void CfgData::InitEquipTable(CfgData *const this)
+void CfgData::InitEquipTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7680,7 +7188,7 @@ void CfgData::InitEquipTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitEquipUpStarTable(CfgData *const this)
+void CfgData::InitEquipUpStarTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7758,7 +7266,7 @@ void CfgData::InitEquipUpStarTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitWingCfgTable(CfgData *const this)
+void CfgData::InitWingCfgTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7841,7 +7349,7 @@ void CfgData::InitWingCfgTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitCarrierTable(CfgData *const this)
+void CfgData::InitCarrierTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7880,7 +7388,7 @@ void CfgData::InitCarrierTable(CfgData *const this)
             std::string::string(&path, v1->pString, &v8);
             
             std::list<int> __x;
-            CfgData::paraseInt32List(this, &__x, &path, atoi(size.c_str()), nullptr);
+            paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.lSkills = __x;
             __x.~list();
             path.~string();
@@ -7896,7 +7404,7 @@ void CfgData::InitCarrierTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitPetTable(CfgData *const this)
+void CfgData::InitPetTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -7936,7 +7444,7 @@ void CfgData::InitPetTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitFamilyTable(CfgData *const this)
+void CfgData::InitFamilyTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8004,7 +7512,7 @@ void CfgData::InitFamilyTable(CfgData *const this)
     }
 }
 
-void CfgData::InitHoeTable(CfgData *const this)
+void CfgData::InitHoeTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8038,7 +7546,7 @@ void CfgData::InitHoeTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-HoeCfg *CfgData::GetHoeCfg(CfgData *const this, int32_t nId)
+HoeCfg *CfgData::GetHoeCfg(int32_t nId)
 {
     auto it = this->m_HoeCfgMap.find(nId);
     if (it != this->m_HoeCfgMap.end())
@@ -8048,7 +7556,7 @@ HoeCfg *CfgData::GetHoeCfg(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-void CfgData::InitTitleTable(CfgData *const this)
+void CfgData::InitTitleTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8158,7 +7666,7 @@ void CfgData::InitTitleTable(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&readFile);
 }
-void CfgData::InitGoldEggTable(CfgData *const this)
+void CfgData::InitGoldEggTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8220,7 +7728,7 @@ void CfgData::InitGoldEggTable(CfgData *const this)
     }
 }
 
-void CfgData::InitLimitTimeTable(CfgData *const this)
+void CfgData::InitLimitTimeTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8269,7 +7777,7 @@ void CfgData::InitLimitTimeTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitMysteryShopTable(CfgData *const this)
+void CfgData::InitMysteryShopTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8337,7 +7845,7 @@ void CfgData::InitMysteryShopTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitBuyGiftTable(CfgData *const this)
+void CfgData::InitBuyGiftTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8387,7 +7895,7 @@ void CfgData::InitBuyGiftTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitExchangeTable(CfgData *const this)
+void CfgData::InitExchangeTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8450,7 +7958,7 @@ void CfgData::InitExchangeTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitMysteryGiftTable(CfgData *const this)
+void CfgData::InitMysteryGiftTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8500,7 +8008,7 @@ void CfgData::InitMysteryGiftTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitDrawTable(CfgData *const this)
+void CfgData::InitDrawTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8544,7 +8052,7 @@ void CfgData::InitDrawTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitMapRoadTable(CfgData *const this)
+void CfgData::InitMapRoadTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8620,7 +8128,7 @@ void CfgData::InitMapRoadTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitTrailerTable(CfgData *const this)
+void CfgData::InitTrailerTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -8657,7 +8165,7 @@ void CfgData::InitTrailerTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitMYSJRewardTable(CfgData *const this)
+void CfgData::InitMYSJRewardTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8735,7 +8243,7 @@ void CfgData::InitMYSJRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitMaintainCompensateTable(CfgData *const this)
+void CfgData::InitMaintainCompensateTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8791,7 +8299,7 @@ void CfgData::InitMaintainCompensateTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitWishRewardTable(CfgData *const this)
+void CfgData::InitWishRewardTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8838,7 +8346,7 @@ void CfgData::InitWishRewardTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitBFZLEnterCostTable(CfgData *const this)
+void CfgData::InitBFZLEnterCostTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8879,7 +8387,7 @@ void CfgData::InitBFZLEnterCostTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitBlacketMarketTable(CfgData *const this)
+void CfgData::InitBlacketMarketTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8950,7 +8458,7 @@ void CfgData::InitBlacketMarketTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitLevelChatTimesTable(CfgData *const this)
+void CfgData::InitLevelChatTimesTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -8980,7 +8488,7 @@ void CfgData::InitLevelChatTimesTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-int32_t CfgData::GetChatTimes(const CfgData *const this, int32_t nLevel)
+int32_t CfgData::GetChatTimes(int32_t nLevel)
 {
     auto it = this->m_cfgLevelChatTable.find(nLevel);
     if (it != this->m_cfgLevelChatTable.end())
@@ -8990,7 +8498,7 @@ int32_t CfgData::GetChatTimes(const CfgData *const this, int32_t nLevel)
     return -1;
 }
 
-void CfgData::InitSuperMemberTable(CfgData *const this)
+void CfgData::InitSuperMemberTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -9031,7 +8539,7 @@ void CfgData::InitSuperMemberTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-const CfgSuperMember *CfgData::GetSuperMember(const CfgData *const this, const std::string *const platform)
+const CfgSuperMember *CfgData::GetSuperMember(const std::string *const platform)
 {
     auto it = this->m_cfgSuperMember.find(*platform);
     if (it != this->m_cfgSuperMember.end())
@@ -9041,7 +8549,7 @@ const CfgSuperMember *CfgData::GetSuperMember(const CfgData *const this, const s
     return nullptr;
 }
 
-void CfgData::InitSouGouSkinTable(CfgData *const this)
+void CfgData::InitSouGouSkinTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -9096,7 +8604,7 @@ void CfgData::InitSouGouSkinTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-const CfgSouGouSkin *CfgData::GetSouGouSkin(const CfgData *const this, const std::string *const platform)
+const CfgSouGouSkin *CfgData::GetSouGouSkin(const std::string *const platform)
 {
     auto it = this->m_cfgSouGouSkin.find(*platform);
     if (it != this->m_cfgSouGouSkin.end())
@@ -9106,7 +8614,7 @@ const CfgSouGouSkin *CfgData::GetSouGouSkin(const CfgData *const this, const std
     return nullptr;
 }
 
-void CfgData::InitPetEquipTable(CfgData *const this)
+void CfgData::InitPetEquipTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -9190,7 +8698,7 @@ void CfgData::InitPetEquipTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitWeiXinTable(CfgData *const this)
+void CfgData::InitWeiXinTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -9239,7 +8747,7 @@ void CfgData::InitWeiXinTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitAdultGiftTable(CfgData *const this)
+void CfgData::InitAdultGiftTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -9288,7 +8796,7 @@ void CfgData::InitAdultGiftTable(CfgData *const this)
 
 // ==================== 解析辅助方法 ====================
 
-void CfgData::parseMonsterSkill(CfgData *const this, int32_t id, MonsterSkill (*const vSkill)[10], const std::string *const strSkill)
+void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], const std::string *const strSkill)
 {
     if (strSkill->empty() || strSkill->size() <= 3) return;
     
@@ -9334,7 +8842,7 @@ void CfgData::parseMonsterSkill(CfgData *const this, int32_t id, MonsterSkill (*
     skills.~vector();
 }
 
-TaskRequest CfgData::parseTaskCondition(CfgData *const this, int32_t id, int32_t condition, const std::string *const strRequest)
+TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std::string *const strRequest)
 {
     TaskRequest request;
     memset(&request, 0, sizeof(request));
@@ -9376,7 +8884,7 @@ TaskRequest CfgData::parseTaskCondition(CfgData *const this, int32_t id, int32_t
     return request;
 }
 
-void CfgData::parseTaskDrop(CfgData *const this, int32_t id, const std::string *const strDrop)
+void CfgData::parseTaskDrop(int32_t id, const std::string *const strDrop)
 {
     // 解析任务掉落
     if (strDrop->empty() || *strDrop == "-1") return;
@@ -9384,7 +8892,7 @@ void CfgData::parseTaskDrop(CfgData *const this, int32_t id, const std::string *
     // 实现解析逻辑...
 }
 
-int32_t CfgData::GetMonsterReviveTime(CfgData *const this, int32_t Time, int32_t BossId)
+int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 {
     if (BossId != 1) return Time;
     if (Time <= 0) return Time;
@@ -9405,7 +8913,7 @@ int32_t CfgData::GetMonsterReviveTime(CfgData *const this, int32_t Time, int32_t
     }
 }
 
-void CfgData::InitMobilePhoneGiftTable(CfgData *const this)
+void CfgData::InitMobilePhoneGiftTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9452,7 +8960,7 @@ void CfgData::InitMobilePhoneGiftTable(CfgData *const this)
     }
     CDBCFile::~CDBCFile(&TabFile);
 }
-void CfgData::InitMiniClientTable(CfgData *const this)
+void CfgData::InitMiniClientTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9501,7 +9009,7 @@ void CfgData::InitMiniClientTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitWuHunShopTable(CfgData *const this)
+void CfgData::InitWuHunShopTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9555,7 +9063,7 @@ void CfgData::InitWuHunShopTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitWuHunItemTable(CfgData *const this)
+void CfgData::InitWuHunItemTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9619,7 +9127,7 @@ void CfgData::InitWuHunItemTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitWuHunCreateTable(CfgData *const this)
+void CfgData::InitWuHunCreateTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9709,7 +9217,7 @@ void CfgData::InitWuHunCreateTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitBossDistribution(CfgData *const this)
+void CfgData::InitBossDistribution()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9744,7 +9252,7 @@ void CfgData::InitBossDistribution(CfgData *const this)
             ++nIndex;
             
             std::list<int> __x;
-            CfgData::paraseInt32List(this, &__x, &BossMapListString, 0, nullptr);
+            paraseInt32List(&__x, &BossMapListString, 0, nullptr);
             stu.BossMapList = __x;
             __x.~list();
             BossMapListString.~string();
@@ -9786,7 +9294,7 @@ void CfgData::InitBossDistribution(CfgData *const this)
                 ++nIndex_0;
                 
                 std::list<int> v13;
-                CfgData::paraseInt32List(this, &v13, &BossMapListString_0, 0, nullptr);
+                paraseInt32List(&v13, &BossMapListString_0, 0, nullptr);
                 stu.BossMapList = v13;
                 v13.~list();
                 BossMapListString_0.~string();
@@ -9802,7 +9310,7 @@ void CfgData::InitBossDistribution(CfgData *const this)
     }
 }
 
-void CfgData::InitSpecialBossMapCfgMap(CfgData *const this)
+void CfgData::InitSpecialBossMapCfgMap()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9852,7 +9360,7 @@ void CfgData::InitSpecialBossMapCfgMap(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitDuiHuanLimitTable(CfgData *const this)
+void CfgData::InitDuiHuanLimitTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9889,7 +9397,7 @@ void CfgData::InitDuiHuanLimitTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-DuiHuanLimit *CfgData::GetDuiHuanLimitCount(CfgData *const this, int32_t Level)
+DuiHuanLimit *CfgData::GetDuiHuanLimitCount(int32_t Level)
 {
     auto it = this->m_DuiHuanLimit.lower_bound(Level);
     if (it != this->m_DuiHuanLimit.end())
@@ -9899,7 +9407,7 @@ DuiHuanLimit *CfgData::GetDuiHuanLimitCount(CfgData *const this, int32_t Level)
     return nullptr;
 }
 
-void CfgData::InitSuperTeHuiTable(CfgData *const this)
+void CfgData::InitSuperTeHuiTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -9951,7 +9459,7 @@ void CfgData::InitSuperTeHuiTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(CfgData *const this, int32_t nIndex)
+SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
 {
     auto it = this->m_SuperTeHuiCfgMap.find(nIndex);
     if (it != this->m_SuperTeHuiCfgMap.end())
@@ -9961,7 +9469,7 @@ SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-void CfgData::InitJewelPavilionTable(CfgData *const this)
+void CfgData::InitJewelPavilionTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10012,7 +9520,7 @@ void CfgData::InitJewelPavilionTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-JewelPavilionCfg *CfgData::GetJewelPavilionCfg(CfgData *const this, int32_t nDay, int32_t nIndex)
+JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 {
     auto key = std::make_pair(nDay, nIndex);
     auto it = this->m_JewelPavilionCfgMap.find(key);
@@ -10023,7 +9531,7 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(CfgData *const this, int32_t nDay
     return nullptr;
 }
 
-void CfgData::InitGoblinTable(CfgData *const this)
+void CfgData::InitGoblinTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10061,7 +9569,7 @@ void CfgData::InitGoblinTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-GoblinCfg *CfgData::GetGoblinCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_GoblinCfgMap.find(key);
@@ -10072,7 +9580,7 @@ GoblinCfg *CfgData::GetGoblinCfg(CfgData *const this, int32_t nType, int32_t nLe
     return nullptr;
 }
 
-void CfgData::InitShouHuRefining(CfgData *const this)
+void CfgData::InitShouHuRefining()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10144,7 +9652,7 @@ void CfgData::InitShouHuRefining(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_ShouHuRefinishingCfgMap.find(key);
@@ -10155,7 +9663,7 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(CfgData *const this, int3
     return nullptr;
 }
 
-void CfgData::InitWingEquipPolish(CfgData *const this)
+void CfgData::InitWingEquipPolish()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10273,7 +9781,7 @@ void CfgData::InitWingEquipPolish(CfgData *const this)
     }
 }
 
-WingEquipPolish *CfgData::GetWingEquipPolishCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_WingEquipPolishCfgMap.find(key);
@@ -10284,7 +9792,7 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(CfgData *const this, int32_t nTy
     return nullptr;
 }
 
-void CfgData::InitGuiGuDaoRenTable(CfgData *const this)
+void CfgData::InitGuiGuDaoRenTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10416,7 +9924,7 @@ void CfgData::InitGuiGuDaoRenTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(CfgData *const this, int32_t NpcId)
+GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
 {
     auto it = this->m_GuiGuDaoRenCfgMap.find(NpcId);
     if (it != this->m_GuiGuDaoRenCfgMap.end())
@@ -10426,7 +9934,7 @@ GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(CfgData *const this, int32_t NpcId)
     return nullptr;
 }
 
-void CfgData::InitShiZhuangTable(CfgData *const this)
+void CfgData::InitShiZhuangTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -10475,7 +9983,7 @@ void CfgData::InitShiZhuangTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitShiZhuangLevelTable(CfgData *const this)
+void CfgData::InitShiZhuangLevelTable()
 {
     CDBCFile readFile;
     CDBCFile::CDBCFile(&readFile, 0);
@@ -10528,7 +10036,7 @@ void CfgData::InitShiZhuangLevelTable(CfgData *const this)
     CDBCFile::~CDBCFile(&readFile);
 }
 
-void CfgData::InitMonthlyChouJiangTable(CfgData *const this)
+void CfgData::InitMonthlyChouJiangTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10570,7 +10078,7 @@ void CfgData::InitMonthlyChouJiangTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitActDropTable(CfgData *const this)
+void CfgData::InitActDropTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10632,7 +10140,7 @@ void CfgData::InitActDropTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitOutLinkFestivalTable(CfgData *const this)
+void CfgData::InitOutLinkFestivalTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10690,15 +10198,14 @@ void CfgData::InitOutLinkFestivalTable(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-void CfgData::InitFestivalActivityTable(CfgData *const this)
+void CfgData::InitFestivalActivityTable()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
     
     if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/FestivalActivity.txt"))
     {
-        Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_FESTIVAL_ACTIVITY_TABLE failed, please check!!!
-");
+        Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_FESTIVAL_ACTIVITY_TABLE failed, please check!!!");
         CDBCFile::~CDBCFile(&TabFile);
         return;
     }
@@ -10732,7 +10239,7 @@ void CfgData::InitFestivalActivityTable(CfgData *const this)
                 std::string::string(&strStartDay, pField->pString, &vAlloc);
                 
                 std::vector<int> vStart;
-                CfgData::paraseInt32List(this, &vStart, &strStartDay, 0, nullptr);
+                paraseInt32List(&vStart, &strStartDay, 0, nullptr);
                 for (size_t idx = 0; idx < vStart.size() && idx < 5; ++idx)
                     stu.vStartDayList.push_back(vStart[idx]);
                 std::vector<int>::~vector(&vStart);
@@ -10748,7 +10255,7 @@ void CfgData::InitFestivalActivityTable(CfgData *const this)
                 std::string::string(&strEndDay, pField->pString, &vAlloc);
                 
                 std::vector<int> vEnd;
-                CfgData::paraseInt32List(this, &vEnd, &strEndDay, 0, nullptr);
+                paraseInt32List(&vEnd, &strEndDay, 0, nullptr);
                 for (size_t idx = 0; idx < vEnd.size() && idx < 5; ++idx)
                     stu.vEndDayList.push_back(vEnd[idx]);
                 std::vector<int>::~vector(&vEnd);
@@ -10925,7 +10432,7 @@ CfgFestivalActivityTable *CfgData::GetFestivalActivityTable()
     return &this->m_festivalActivityTable;
 }
 
-void CfgData::InitYYDaTing(CfgData *const this)
+void CfgData::InitYYDaTing()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -10974,7 +10481,7 @@ void CfgData::InitYYDaTing(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgYYGameApp *CfgData::GetYYGameApp(CfgData *const this, int32_t nIndex)
+CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
 {
     auto it = this->m_CfgYYGameAppMap.find(nIndex);
     if (it != this->m_CfgYYGameAppMap.end())
@@ -10984,7 +10491,7 @@ CfgYYGameApp *CfgData::GetYYGameApp(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-void CfgData::InitLaDaShiHuiYuan(CfgData *const this)
+void CfgData::InitLaDaShiHuiYuan()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -11033,7 +10540,7 @@ void CfgData::InitLaDaShiHuiYuan(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-LuDaShiVip *CfgData::GetLaDaShiHuiYuan(CfgData *const this, int32_t nIndex)
+LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
 {
     auto it = this->m_LuDaShiVipMap.find(nIndex);
     if (it != this->m_LuDaShiVipMap.end())
@@ -11043,7 +10550,7 @@ LuDaShiVip *CfgData::GetLaDaShiHuiYuan(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-void CfgData::InitYYVip(CfgData *const this)
+void CfgData::InitYYVip()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -11094,7 +10601,7 @@ void CfgData::InitYYVip(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgYYVip *CfgData::GetYYVip(CfgData *const this, int32_t nIndex)
+CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
 {
     auto it = this->m_CfgYYVipMap.find(nIndex);
     if (it != this->m_CfgYYVipMap.end())
@@ -11104,7 +10611,7 @@ CfgYYVip *CfgData::GetYYVip(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-void CfgData::InitSouGouDaTing(CfgData *const this)
+void CfgData::InitSouGouDaTing()
 {
     CDBCFile TabFile;
     CDBCFile::CDBCFile(&TabFile, 0);
@@ -11153,7 +10660,7 @@ void CfgData::InitSouGouDaTing(CfgData *const this)
     CDBCFile::~CDBCFile(&TabFile);
 }
 
-CfgSgGameApp *CfgData::GetSoGouGameApp(CfgData *const this, int32_t nIndex)
+CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
 {
     auto it = this->m_CfgSgGameAppMap.find(nIndex);
     if (it != this->m_CfgSgGameAppMap.end())
@@ -11165,14 +10672,14 @@ CfgSgGameApp *CfgData::GetSoGouGameApp(CfgData *const this, int32_t nIndex)
 
 // ==================== 解析辅助方法（续） ====================
 
-void CfgData::parseAddAttribues(CfgData *const this, const std::string *const addonAttr, 
+void CfgData::parseAddAttribues(const std::string *const addonAttr, 
                                  int32_t nIndex, const std::string *const path)
 {
     // 实现解析添加属性列表
     // 此方法在多个地方被调用，用于解析 AddAttribute 列表
 }
 
-const CfgMiniClient *CfgData::GetMiniClient(const CfgData *const this, const std::string *const platform)
+const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
 {
     auto it = this->m_CfgMiniClient.find(*platform);
     if (it != this->m_CfgMiniClient.end())
@@ -11183,7 +10690,7 @@ const CfgMiniClient *CfgData::GetMiniClient(const CfgData *const this, const std
 }
 // ==================== 解析辅助方法 ====================
 
-void CfgData::parseAddAttribues(CfgData *const this, std::list<AddAttribute> *result, 
+void CfgData::parseAddAttribues(std::list<AddAttribute> *result, 
                                  const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
 {
     if (addonAttr->empty() || *addonAttr == "-1" || *addonAttr == "0") return;
@@ -11231,7 +10738,7 @@ void CfgData::parseAddAttribues(CfgData *const this, std::list<AddAttribute> *re
     strAttrAddons.~vector();
 }
 
-void CfgData::paraseTalentAddon(CfgData *const this, std::list<TalentAddon> *result,
+void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
                                  const std::string *const str, int32_t nIndex, const std::string *const path)
 {
     if (str->empty() || *str == "-1") return;
@@ -11270,7 +10777,7 @@ void CfgData::paraseTalentAddon(CfgData *const this, std::list<TalentAddon> *res
     strTalentAddons.~vector();
 }
 
-void CfgData::paraseParam2List(CfgData *const this, std::list<Param2> *result,
+void CfgData::paraseParam2List(std::list<Param2> *result,
                                 const std::string *const str, int32_t nIndex, const std::string *const path)
 {
     if (str->empty() || *str == "-1") return;
@@ -11309,7 +10816,7 @@ void CfgData::paraseParam2List(CfgData *const this, std::list<Param2> *result,
     strParams.~vector();
 }
 
-void CfgData::paraseInt32List(CfgData *const this, std::list<int> *result,
+void CfgData::paraseInt32List(std::list<int> *result,
                                const std::string *const str, int32_t size, const std::string *const path)
 {
     if (str->empty() || *str == "-1") return;
@@ -11341,7 +10848,7 @@ void CfgData::paraseInt32List(CfgData *const this, std::list<int> *result,
     vstr.~vector();
 }
 
-Int32Vector *CfgData::paraseInt32Vector2(Int32Vector *__return_ptr retstr, CfgData *const this,
+Int32Vector *CfgData::paraseInt32Vector2(Int32Vector *__return_ptr retstr, ,
                                           const std::string *const str, const std::string *const path, int32_t size)
 {
     std::vector<int>::vector(retstr);
@@ -11376,7 +10883,7 @@ Int32Vector *CfgData::paraseInt32Vector2(Int32Vector *__return_ptr retstr, CfgDa
     return retstr;
 }
 
-Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector *__return_ptr retstr, CfgData *const this,
+Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector *__return_ptr retstr, ,
                                              const std::string *const str, const std::string *const path)
 {
     std::vector<std::vector<int>>::vector(retstr);
@@ -11421,7 +10928,7 @@ Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector *__return_ptr retstr, 
     return retstr;
 }
 
-void CfgData::parseTaskItemJobString(MemChrJobBagVector *__return_ptr retstr, CfgData *const this,
+void CfgData::parseTaskItemJobString(MemChrJobBagVector *__return_ptr retstr, ,
                                       int32_t id, const std::string *const strItems)
 {
     std::vector<MemChrJobBag>::vector(retstr);
@@ -11493,7 +11000,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector *__return_ptr retstr, Cf
     items_receive.~vector();
 }
 
-MemJobItemTable *CfgData::parseGambleEquip(MemJobItemTable *__return_ptr retstr, CfgData *const this,
+MemJobItemTable *CfgData::parseGambleEquip(MemJobItemTable *__return_ptr retstr, ,
                                             int32_t id, const std::string *const strItems)
 {
     std::map<int, MemJobItem>::map(retstr);
@@ -11543,7 +11050,7 @@ MemJobItemTable *CfgData::parseGambleEquip(MemJobItemTable *__return_ptr retstr,
 
 // ==================== 剩余的 Getter 方法 ====================
 
-int32_t CfgData::GetPetExp(CfgData *const this, int32_t level)
+int32_t CfgData::GetPetExp(int32_t level)
 {
     auto it = this->m_levelExps.find(level);
     if (it != this->m_levelExps.end())
@@ -11553,7 +11060,7 @@ int32_t CfgData::GetPetExp(CfgData *const this, int32_t level)
     return INT32_MAX;
 }
 
-int32_t CfgData::GetTalentPoint(CfgData *const this, int32_t level)
+int32_t CfgData::GetTalentPoint(int32_t level)
 {
     auto it = this->m_levelExps.find(level);
     if (it != this->m_levelExps.end())
@@ -11563,7 +11070,7 @@ int32_t CfgData::GetTalentPoint(CfgData *const this, int32_t level)
     return 0;
 }
 
-int32_t CfgData::GetAttrPoint(CfgData *const this, int32_t level)
+int32_t CfgData::GetAttrPoint(int32_t level)
 {
     auto it = this->m_levelExps.find(level);
     if (it != this->m_levelExps.end())
@@ -11573,7 +11080,7 @@ int32_t CfgData::GetAttrPoint(CfgData *const this, int32_t level)
     return 0;
 }
 
-CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, CfgData *const this, int32_t job, int32_t level)
+CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, int32_t job, int32_t level)
 {
     int key = (job << 16) | level;
     auto it = this->m_levelAttrs.find(key);
@@ -11590,14 +11097,14 @@ CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, CfgData *
     return retstr;
 }
 
-int32_t CfgData::getBaseJob(CfgData *const this, int32_t job)
+int32_t CfgData::getBaseJob(int32_t job)
 {
     if (job == 2) return 2;
     if (job == 3) return 3;
     return (job == 1) ? 1 : 0;
 }
 
-AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retstr, CfgData *const this, int32_t Mid, int32_t WorldLevel)
+AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retstr, int32_t Mid, int32_t WorldLevel)
 {
     auto it = this->m_MonstAddAttrMap.find(Mid);
     if (it != this->m_MonstAddAttrMap.end())
@@ -11615,7 +11122,7 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retst
     return retstr;
 }
 
-DaZheQuan *CfgData::GetDaZheQuanCfg(CfgData *const this, int32_t Index)
+DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 {
     auto it = this->m_DaZheQuanMap.find(Index);
     if (it != this->m_DaZheQuanMap.end())
@@ -11625,7 +11132,7 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-Wan360Reward *CfgData::Get360RewardCfg(CfgData *const this, int32_t Index)
+Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 {
     auto it = this->m_Wan360RewardMap.find(Index);
     if (it != this->m_Wan360RewardMap.end())
@@ -11635,7 +11142,7 @@ Wan360Reward *CfgData::Get360RewardCfg(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-int32_t CfgData::Get360RewardIcon(CfgData *const this, const std::string *const platform)
+int32_t CfgData::Get360RewardIcon(const std::string *const platform)
 {
     auto it = this->m_Wan360RewardTypeMap.find(*platform);
     if (it != this->m_Wan360RewardTypeMap.end())
@@ -11645,7 +11152,7 @@ int32_t CfgData::Get360RewardIcon(CfgData *const this, const std::string *const 
     return 0;
 }
 
-CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(CfgData *const this, int8_t Index)
+CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 {
     auto it = this->m_TotalChongZhiTable.find(Index);
     if (it != this->m_TotalChongZhiTable.end())
@@ -11655,7 +11162,7 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(CfgData *const this, int8_t Index
     return nullptr;
 }
 
-CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(CfgData *const this, int8_t nType, int8_t Index)
+CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 {
     for (auto& item : this->m_EveryDayChongZhiTable)
     {
@@ -11667,7 +11174,7 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(CfgData *const this, int8_t
     return nullptr;
 }
 
-NewServerFavorable *CfgData::GetNewServerFavorable(CfgData *const this, int8_t Index)
+NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 {
     auto it = this->m_NewServerFavorable.find(Index);
     if (it != this->m_NewServerFavorable.end())
@@ -11677,7 +11184,7 @@ NewServerFavorable *CfgData::GetNewServerFavorable(CfgData *const this, int8_t I
     return nullptr;
 }
 
-CfgEquipExchange *CfgData::GetEquipExchange(CfgData *const this, int8_t Level)
+CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 {
     auto it = this->m_CfgEquipExchangeMap.find(Level);
     if (it != this->m_CfgEquipExchangeMap.end())
@@ -11687,7 +11194,7 @@ CfgEquipExchange *CfgData::GetEquipExchange(CfgData *const this, int8_t Level)
     return nullptr;
 }
 
-CfgPlantEventEffect *CfgData::GetPlantEvent(CfgData *const this, int32_t EventId)
+CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 {
     auto it = this->m_PlantEventMap.find(EventId);
     if (it != this->m_PlantEventMap.end())
@@ -11697,7 +11204,7 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(CfgData *const this, int32_t EventId
     return nullptr;
 }
 
-FunctionOpenCfg *CfgData::GetOpenFunctionCfg(CfgData *const this, int32_t FunctionId)
+FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 {
     auto it = this->m_FunctionOpenCfg.find(FunctionId);
     if (it != this->m_FunctionOpenCfg.end())
@@ -11707,7 +11214,7 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(CfgData *const this, int32_t Functi
     return nullptr;
 }
 
-VipCardCfg *CfgData::GetVipCardCfg(CfgData *const this, int8_t VipType)
+VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 {
     auto it = this->m_VipCardTable.find(VipType);
     if (it != this->m_VipCardTable.end())
@@ -11717,7 +11224,7 @@ VipCardCfg *CfgData::GetVipCardCfg(CfgData *const this, int8_t VipType)
     return nullptr;
 }
 
-CfgOffLineExp *CfgData::GetOfflineExpCfg(CfgData *const this, int32_t Level)
+CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 {
     auto it = this->m_OffLineExpTable.lower_bound(Level);
     if (it != this->m_OffLineExpTable.end())
@@ -11727,7 +11234,7 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(CfgData *const this, int32_t Level)
     return nullptr;
 }
 
-CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(CfgData *const this, int32_t Week)
+CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 {
     if (Week <= 0) return nullptr;
     
@@ -11744,7 +11251,7 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(CfgData *const this, int32_t W
     return nullptr;
 }
 
-CfgLevelGift *CfgData::GetLevelGiftCfg(CfgData *const this, int8_t Index)
+CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 {
     auto it = this->m_LevelGift.find(Index);
     if (it != this->m_LevelGift.end())
@@ -11754,7 +11261,7 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(CfgData *const this, int8_t Index)
     return nullptr;
 }
 
-CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(CfgData *const this, int8_t Day)
+CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 {
     auto it = this->m_SevenLoginReward.find(Day);
     if (it != this->m_SevenLoginReward.end())
@@ -11764,7 +11271,7 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(CfgData *const this, int8_t
     return nullptr;
 }
 
-CfgOnlineReward *CfgData::GetOnlineRewardCfg(CfgData *const this, int8_t id)
+CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 {
     auto it = this->m_OnLineReward.find(id);
     if (it != this->m_OnLineReward.end())
@@ -11774,7 +11281,7 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(CfgData *const this, int8_t id)
     return nullptr;
 }
 
-MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, CfgData *const this, int8_t SiginCount)
+MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, int8_t SiginCount)
 {
     std::vector<MemChrBag>::vector(retstr);
     
@@ -11786,7 +11293,7 @@ MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, Cf
     return retstr;
 }
 
-QuestionsVector *CfgData::GetAllQuestions(QuestionsVector *__return_ptr retstr, CfgData *const this, int8_t nType)
+QuestionsVector *CfgData::GetAllQuestions(QuestionsVector *__return_ptr retstr, int8_t nType)
 {
     auto it = this->m_mQuestions.find(nType);
     if (it != this->m_mQuestions.end())
@@ -11800,7 +11307,7 @@ QuestionsVector *CfgData::GetAllQuestions(QuestionsVector *__return_ptr retstr, 
     return retstr;
 }
 
-BossInfo *CfgData::GetBossInfo(CfgData *const this, int32_t BossId)
+BossInfo *CfgData::GetBossInfo(int32_t BossId)
 {
     auto it = this->m_BossInfo.find(BossId);
     if (it != this->m_BossInfo.end())
@@ -11810,7 +11317,7 @@ BossInfo *CfgData::GetBossInfo(CfgData *const this, int32_t BossId)
     return nullptr;
 }
 
-PkDropRate *CfgData::GetPkDropRate(CfgData *const this, int32_t PkValues)
+PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
 {
     for (auto& item : this->m_PkDropRateList)
     {
@@ -11822,7 +11329,7 @@ PkDropRate *CfgData::GetPkDropRate(CfgData *const this, int32_t PkValues)
     return nullptr;
 }
 
-GroupMonsterVector *CfgData::GetGroupMonsterVector(GroupMonsterVector *__return_ptr retstr, CfgData *const this, int32_t MapId)
+GroupMonsterVector *CfgData::GetGroupMonsterVector(GroupMonsterVector *__return_ptr retstr, int32_t MapId)
 {
     auto it = this->m_GroupMonsterMap.find(MapId);
     if (it != this->m_GroupMonsterMap.end())
@@ -11836,7 +11343,7 @@ GroupMonsterVector *CfgData::GetGroupMonsterVector(GroupMonsterVector *__return_
     return retstr;
 }
 
-CfgSysMail *CfgData::GetSysMail(CfgData *const this, int32_t Id)
+CfgSysMail *CfgData::GetSysMail(int32_t Id)
 {
     auto it = this->m_sysMail.find(Id);
     if (it != this->m_sysMail.end())
@@ -11846,7 +11353,7 @@ CfgSysMail *CfgData::GetSysMail(CfgData *const this, int32_t Id)
     return nullptr;
 }
 
-CfgGameShop *CfgData::GetGameShop(CfgData *const this, int32_t nShopId)
+CfgGameShop *CfgData::GetGameShop(int32_t nShopId)
 {
     auto it = this->m_GameShopMap.find(nShopId);
     if (it != this->m_GameShopMap.end())
@@ -11856,7 +11363,7 @@ CfgGameShop *CfgData::GetGameShop(CfgData *const this, int32_t nShopId)
     return nullptr;
 }
 
-CfgGameShop *CfgData::GetGameShopItem(CfgData *const this, int8_t Class, int32_t Id)
+CfgGameShop *CfgData::GetGameShopItem(int8_t Class, int32_t Id)
 {
     for (auto& pair : this->m_GameShopMap)
     {
@@ -11869,7 +11376,7 @@ CfgGameShop *CfgData::GetGameShopItem(CfgData *const this, int8_t Class, int32_t
     return nullptr;
 }
 
-BuyFaBaoResCfg *CfgData::GetBuyFaBaoResCfg(CfgData *const this, int32_t Id)
+BuyFaBaoResCfg *CfgData::GetBuyFaBaoResCfg(int32_t Id)
 {
     auto it = this->m_FaBaoResMap.find(Id);
     if (it != this->m_FaBaoResMap.end())
@@ -11879,7 +11386,7 @@ BuyFaBaoResCfg *CfgData::GetBuyFaBaoResCfg(CfgData *const this, int32_t Id)
     return nullptr;
 }
 
-XingMaiCfg *CfgData::GetXingMaiCfg(CfgData *const this, int32_t XingMaiLevel)
+XingMaiCfg *CfgData::GetXingMaiCfg(int32_t XingMaiLevel)
 {
     auto it = this->m_XingMaiCfgTable.find(XingMaiLevel);
     if (it != this->m_XingMaiCfgTable.end())
@@ -11889,7 +11396,7 @@ XingMaiCfg *CfgData::GetXingMaiCfg(CfgData *const this, int32_t XingMaiLevel)
     return nullptr;
 }
 
-const CfgXingMaiSlot *CfgData::GetXingMaiSlot(const CfgData *const this, int8_t nIndex)
+const CfgXingMaiSlot *CfgData::GetXingMaiSlot(int8_t nIndex)
 {
     auto it = this->m_cfgXingMaiSlotTable.find(nIndex);
     if (it != this->m_cfgXingMaiSlotTable.end())
@@ -11899,7 +11406,7 @@ const CfgXingMaiSlot *CfgData::GetXingMaiSlot(const CfgData *const this, int8_t 
     return nullptr;
 }
 
-TianLingCfg *CfgData::GetTianLingCfg(CfgData *const this, int32_t TianLingLevel)
+TianLingCfg *CfgData::GetTianLingCfg(int32_t TianLingLevel)
 {
     auto it = this->m_TianLingCfgTable.find(TianLingLevel);
     if (it != this->m_TianLingCfgTable.end())
@@ -11909,7 +11416,7 @@ TianLingCfg *CfgData::GetTianLingCfg(CfgData *const this, int32_t TianLingLevel)
     return nullptr;
 }
 
-GongMingCfg *CfgData::GetGongMingCfg(CfgData *const this, int32_t GongMinLevel)
+GongMingCfg *CfgData::GetGongMingCfg(int32_t GongMinLevel)
 {
     auto it = this->m_GongMingCfgMap.find(GongMinLevel);
     if (it != this->m_GongMingCfgMap.end())
@@ -11919,7 +11426,7 @@ GongMingCfg *CfgData::GetGongMingCfg(CfgData *const this, int32_t GongMinLevel)
     return nullptr;
 }
 
-DamnationCfg *CfgData::GetDamnationCfg(CfgData *const this, int32_t Level)
+DamnationCfg *CfgData::GetDamnationCfg(int32_t Level)
 {
     auto it = this->m_DamnationCfgTable.find(Level);
     if (it != this->m_DamnationCfgTable.end())
@@ -11929,13 +11436,13 @@ DamnationCfg *CfgData::GetDamnationCfg(CfgData *const this, int32_t Level)
     return nullptr;
 }
 
-int32_t CfgData::GetAttrBattle(CfgData *const this, int32_t nAttr)
+int32_t CfgData::GetAttrBattle(int32_t nAttr)
 {
     if (nAttr <= 0 || nAttr > 49) return 0;
     return this->m_cfgAttrBattle[nAttr];
 }
 
-ScoreShopCfg *CfgData::GetScoreShopCfg(CfgData *const this, int32_t Index)
+ScoreShopCfg *CfgData::GetScoreShopCfg(int32_t Index)
 {
     auto it = this->m_ScoreShopCfgTable.find(Index);
     if (it != this->m_ScoreShopCfgTable.end())
@@ -11945,7 +11452,7 @@ ScoreShopCfg *CfgData::GetScoreShopCfg(CfgData *const this, int32_t Index)
     return nullptr;
 }
 
-LevelRefinCfg *CfgData::GetRefining(CfgData *const this, int32_t Level)
+LevelRefinCfg *CfgData::GetRefining(int32_t Level)
 {
     auto it = this->m_LevelRefinCfgMap.find(Level);
     if (it != this->m_LevelRefinCfgMap.end())
@@ -11955,7 +11462,7 @@ LevelRefinCfg *CfgData::GetRefining(CfgData *const this, int32_t Level)
     return nullptr;
 }
 
-UltimateChallengeCfg *CfgData::GetUltimateChallengeCfgMap(CfgData *const this, int32_t MapId)
+UltimateChallengeCfg *CfgData::GetUltimateChallengeCfgMap(int32_t MapId)
 {
     auto it = this->m_UltimateChallengeCfgMap.find(MapId);
     if (it != this->m_UltimateChallengeCfgMap.end())
@@ -11965,7 +11472,7 @@ UltimateChallengeCfg *CfgData::GetUltimateChallengeCfgMap(CfgData *const this, i
     return nullptr;
 }
 
-CfgCachet *CfgData::GetCfgCachet(CfgData *const this, int32_t level)
+CfgCachet *CfgData::GetCfgCachet(int32_t level)
 {
     auto it = this->m_CfgCachetMap.find(level);
     if (it != this->m_CfgCachetMap.end())
@@ -11975,7 +11482,7 @@ CfgCachet *CfgData::GetCfgCachet(CfgData *const this, int32_t level)
     return nullptr;
 }
 
-int32_t CfgData::GetCachetLevel(CfgData *const this, int64_t Exp)
+int32_t CfgData::GetCachetLevel(int64_t Exp)
 {
     int32_t Level = 1;
     for (auto& pair : this->m_CfgCachetMap)
@@ -11988,7 +11495,7 @@ int32_t CfgData::GetCachetLevel(CfgData *const this, int64_t Exp)
     return Level;
 }
 
-BossKilledReward *CfgData::GetBossKilledReward(CfgData *const this, int32_t BossId)
+BossKilledReward *CfgData::GetBossKilledReward(int32_t BossId)
 {
     auto it = this->m_BossKilledRewardMap.find(BossId);
     if (it != this->m_BossKilledRewardMap.end())
@@ -11998,7 +11505,7 @@ BossKilledReward *CfgData::GetBossKilledReward(CfgData *const this, int32_t Boss
     return nullptr;
 }
 
-SystemOpenGift *CfgData::GetSystemOpenGift(CfgData *const this, int32_t Id)
+SystemOpenGift *CfgData::GetSystemOpenGift(int32_t Id)
 {
     auto it = this->m_SystemOpenGiftMap.find(Id);
     if (it != this->m_SystemOpenGiftMap.end())
@@ -12008,13 +11515,13 @@ SystemOpenGift *CfgData::GetSystemOpenGift(CfgData *const this, int32_t Id)
     return nullptr;
 }
 
-bool CfgData::IsSpecialMap(CfgData *const this, int32_t MapId)
+bool CfgData::IsSpecialMap(int32_t MapId)
 {
     auto it = this->m_SpecialMapMap.find(MapId);
     return it != this->m_SpecialMapMap.end();
 }
 
-TestServerReward *CfgData::GetTestServerReward(CfgData *const this, int32_t nId)
+TestServerReward *CfgData::GetTestServerReward(int32_t nId)
 {
     auto it = this->m_TestServerRewardMap.find(nId);
     if (it != this->m_TestServerRewardMap.end())
@@ -12024,7 +11531,7 @@ TestServerReward *CfgData::GetTestServerReward(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-GuWuCfg *CfgData::GetGuWuCfg(CfgData *const this, int32_t Level)
+GuWuCfg *CfgData::GetGuWuCfg(int32_t Level)
 {
     auto it = this->m_GuWuCfgMap.find(Level);
     if (it != this->m_GuWuCfgMap.end())
@@ -12034,7 +11541,7 @@ GuWuCfg *CfgData::GetGuWuCfg(CfgData *const this, int32_t Level)
     return nullptr;
 }
 
-FunctionOpenMail *CfgData::GetOpenFunctionMailnCfg(CfgData *const this, int32_t nId)
+FunctionOpenMail *CfgData::GetOpenFunctionMailnCfg(int32_t nId)
 {
     auto it = this->m_FunctionOpenMailMap.find(nId);
     if (it != this->m_FunctionOpenMailMap.end())
@@ -12044,7 +11551,7 @@ FunctionOpenMail *CfgData::GetOpenFunctionMailnCfg(CfgData *const this, int32_t 
     return nullptr;
 }
 
-int32_t CfgData::RandXiangYaoTaskId(CfgData *const this, int32_t Level, bool bBest)
+int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 {
     std::map<int, int> TaskIdRate;
     int32_t MaxRate = 0;
@@ -12081,7 +11588,7 @@ int32_t CfgData::RandXiangYaoTaskId(CfgData *const this, int32_t Level, bool bBe
     return SpareId;
 }
 
-int32_t CfgData::getXiangYaoStart(CfgData *const this, int32_t TaskId)
+int32_t CfgData::getXiangYaoStart(int32_t TaskId)
 {
     for (auto& task : this->m_XiangYaoTaskCfgList)
     {
@@ -12093,7 +11600,7 @@ int32_t CfgData::getXiangYaoStart(CfgData *const this, int32_t TaskId)
     return 0;
 }
 
-ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(CfgData *const this, int32_t nId)
+ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(int32_t nId)
 {
     auto it = this->m_ShenWeiTaskCfgMap.find(nId);
     if (it != this->m_ShenWeiTaskCfgMap.end())
@@ -12103,12 +11610,12 @@ ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-int32_t CfgData::GetMonsterReviveTime(CfgData *const this, int32_t Time, int32_t BossId)
+int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 {
     if (BossId != 1) return Time;
     if (Time <= 0) return Time;
     
-    int32_t diffDay = CfgData::getServerDiffDay(this, SERVER_TYPE::SVT_NORMAL);
+    int32_t diffDay = getServerDiffDay(SERVER_TYPE::SVT_NORMAL);
     
     switch (diffDay)
     {
@@ -12123,7 +11630,7 @@ int32_t CfgData::GetMonsterReviveTime(CfgData *const this, int32_t Time, int32_t
     }
 }
 
-const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const CfgData *const this, const std::string *const platform)
+const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const std::string *const platform)
 {
     auto it = this->m_CfgMobilePhoneGift.find(*platform);
     if (it != this->m_CfgMobilePhoneGift.end())
@@ -12133,7 +11640,7 @@ const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const CfgData *const this,
     return nullptr;
 }
 
-const CfgMiniClient *CfgData::GetMiniClient(const CfgData *const this, const std::string *const platform)
+const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
 {
     auto it = this->m_CfgMiniClient.find(*platform);
     if (it != this->m_CfgMiniClient.end())
@@ -12143,7 +11650,7 @@ const CfgMiniClient *CfgData::GetMiniClient(const CfgData *const this, const std
     return nullptr;
 }
 
-CfgWuHunShop *CfgData::GetWuHunShopItem(CfgData *const this, int32_t nIndex)
+CfgWuHunShop *CfgData::GetWuHunShopItem(int32_t nIndex)
 {
     auto it = this->m_CfgWuHunShopItemMap.find(nIndex);
     if (it != this->m_CfgWuHunShopItemMap.end())
@@ -12153,7 +11660,7 @@ CfgWuHunShop *CfgData::GetWuHunShopItem(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-WuHunItem *CfgData::GetWuHunItem(CfgData *const this, int32_t nId)
+WuHunItem *CfgData::GetWuHunItem(int32_t nId)
 {
     auto it = this->m_WuHunItemMap.find(nId);
     if (it != this->m_WuHunItemMap.end())
@@ -12163,7 +11670,7 @@ WuHunItem *CfgData::GetWuHunItem(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-CreateWuHun *CfgData::GetCreateWuHun(CfgData *const this, int32_t nId)
+CreateWuHun *CfgData::GetCreateWuHun(int32_t nId)
 {
     auto it = this->m_CreateWuHunMap.find(nId);
     if (it != this->m_CreateWuHunMap.end())
@@ -12173,7 +11680,7 @@ CreateWuHun *CfgData::GetCreateWuHun(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(CfgData *const this, int32_t MapId)
+SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(int32_t MapId)
 {
     auto it = this->m_SpecialBossMapCfgMap.find(MapId);
     if (it != this->m_SpecialBossMapCfgMap.end())
@@ -12183,7 +11690,7 @@ SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(CfgData *const this, int32_t Ma
     return nullptr;
 }
 
-SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(CfgData *const this, int32_t nIndex)
+SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
 {
     auto it = this->m_SuperTeHuiCfgMap.find(nIndex);
     if (it != this->m_SuperTeHuiCfgMap.end())
@@ -12193,7 +11700,7 @@ SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-JewelPavilionCfg *CfgData::GetJewelPavilionCfg(CfgData *const this, int32_t nDay, int32_t nIndex)
+JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 {
     auto key = std::make_pair(nDay, nIndex);
     auto it = this->m_JewelPavilionCfgMap.find(key);
@@ -12204,7 +11711,7 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(CfgData *const this, int32_t nDay
     return nullptr;
 }
 
-GoblinCfg *CfgData::GetGoblinCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_GoblinCfgMap.find(key);
@@ -12215,7 +11722,7 @@ GoblinCfg *CfgData::GetGoblinCfg(CfgData *const this, int32_t nType, int32_t nLe
     return nullptr;
 }
 
-ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_ShouHuRefinishingCfgMap.find(key);
@@ -12226,7 +11733,7 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(CfgData *const this, int3
     return nullptr;
 }
 
-WingEquipPolish *CfgData::GetWingEquipPolishCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_WingEquipPolishCfgMap.find(key);
@@ -12237,7 +11744,7 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(CfgData *const this, int32_t nTy
     return nullptr;
 }
 
-WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_WinRefiningCfgMap.find(key);
@@ -12248,7 +11755,7 @@ WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(CfgData *const this, int32_t nT
     return nullptr;
 }
 
-GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(CfgData *const this, int32_t NpcId)
+GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
 {
     auto it = this->m_GuiGuDaoRenCfgMap.find(NpcId);
     if (it != this->m_GuiGuDaoRenCfgMap.end())
@@ -12258,7 +11765,7 @@ GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(CfgData *const this, int32_t NpcId)
     return nullptr;
 }
 
-CfgYYGameApp *CfgData::GetYYGameApp(CfgData *const this, int32_t nIndex)
+CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
 {
     auto it = this->m_CfgYYGameAppMap.find(nIndex);
     if (it != this->m_CfgYYGameAppMap.end())
@@ -12268,7 +11775,7 @@ CfgYYGameApp *CfgData::GetYYGameApp(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-LuDaShiVip *CfgData::GetLaDaShiHuiYuan(CfgData *const this, int32_t nIndex)
+LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
 {
     auto it = this->m_LuDaShiVipMap.find(nIndex);
     if (it != this->m_LuDaShiVipMap.end())
@@ -12278,7 +11785,7 @@ LuDaShiVip *CfgData::GetLaDaShiHuiYuan(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-CfgYYVip *CfgData::GetYYVip(CfgData *const this, int32_t nIndex)
+CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
 {
     auto it = this->m_CfgYYVipMap.find(nIndex);
     if (it != this->m_CfgYYVipMap.end())
@@ -12288,7 +11795,7 @@ CfgYYVip *CfgData::GetYYVip(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-const CfgYYSuperBuff *CfgData::GetSuperBuff(const CfgData *const this, int32_t SuperLevel)
+const CfgYYSuperBuff *CfgData::GetSuperBuff(int32_t SuperLevel)
 {
     for (auto& buff : this->m_CfgYYSuperBuffList)
     {
@@ -12300,7 +11807,7 @@ const CfgYYSuperBuff *CfgData::GetSuperBuff(const CfgData *const this, int32_t S
     return nullptr;
 }
 
-const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(const CfgData *const this, int32_t SuperLevel)
+const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(int32_t SuperLevel)
 {
     for (auto& buff : this->m_Cfg37wanSuperBuffList)
     {
@@ -12312,7 +11819,7 @@ const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(const CfgData *const this, int3
     return nullptr;
 }
 
-CfgSgGameApp *CfgData::GetSoGouGameApp(CfgData *const this, int32_t nIndex)
+CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
 {
     auto it = this->m_CfgSgGameAppMap.find(nIndex);
     if (it != this->m_CfgSgGameAppMap.end())
@@ -12322,7 +11829,7 @@ CfgSgGameApp *CfgData::GetSoGouGameApp(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(CfgData *const this, std::string *p_Platform, int32_t nId)
+PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(std::string *p_Platform, int32_t nId)
 {
     auto key = std::make_pair(*p_Platform, nId);
     auto it = this->m_PlatformDaTingMap.find(key);
@@ -12333,7 +11840,7 @@ PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(CfgData *const this, std::strin
     return nullptr;
 }
 
-MiniClientCfg *CfgData::GetMiniClientCfg(CfgData *const this, std::string *p_Platform, int32_t nId)
+MiniClientCfg *CfgData::GetMiniClientCfg(std::string *p_Platform, int32_t nId)
 {
     auto key = std::make_pair(*p_Platform, nId);
     auto it = this->m_GetMiniClientMap.find(key);
@@ -12344,7 +11851,7 @@ MiniClientCfg *CfgData::GetMiniClientCfg(CfgData *const this, std::string *p_Pla
     return nullptr;
 }
 
-PlatformVip *CfgData::GetGetPlatformVipCfg(CfgData *const this, std::string *p_Platform, int32_t nId)
+PlatformVip *CfgData::GetGetPlatformVipCfg(std::string *p_Platform, int32_t nId)
 {
     auto key = std::make_pair(*p_Platform, nId);
     auto it = this->m_PlatformVipMap.find(key);
@@ -12355,7 +11862,7 @@ PlatformVip *CfgData::GetGetPlatformVipCfg(CfgData *const this, std::string *p_P
     return nullptr;
 }
 
-PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(CfgData *const this, std::string *p_Platform, int32_t nId)
+PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(std::string *p_Platform, int32_t nId)
 {
     auto key = std::make_pair(*p_Platform, nId);
     auto it = this->m_PlatformRewardCfgMap.find(key);
@@ -12366,7 +11873,7 @@ PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(CfgData *const this, std::st
     return nullptr;
 }
 
-DiligenceCfg *CfgData::GetDiligenceCfg(CfgData *const this, int32_t nType)
+DiligenceCfg *CfgData::GetDiligenceCfg(int32_t nType)
 {
     auto it = this->m_DiligenceCfgMap.find(nType);
     if (it != this->m_DiligenceCfgMap.end())
@@ -12376,7 +11883,7 @@ DiligenceCfg *CfgData::GetDiligenceCfg(CfgData *const this, int32_t nType)
     return nullptr;
 }
 
-ContributionCfg *CfgData::GettFamilyDonateCfg(CfgData *const this, int32_t nId)
+ContributionCfg *CfgData::GettFamilyDonateCfg(int32_t nId)
 {
     auto it = this->m_ContributionCfgMap.find(nId);
     if (it != this->m_ContributionCfgMap.end())
@@ -12386,7 +11893,7 @@ ContributionCfg *CfgData::GettFamilyDonateCfg(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-ShangRenCfg *CfgData::GetShangRenCfg(CfgData *const this, int32_t nId)
+ShangRenCfg *CfgData::GetShangRenCfg(int32_t nId)
 {
     auto it = this->m_ShangRenCfgMap.find(nId);
     if (it != this->m_ShangRenCfgMap.end())
@@ -12396,7 +11903,7 @@ ShangRenCfg *CfgData::GetShangRenCfg(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-SelectItemCfg *CfgData::GetSelectItemCfg(CfgData *const this, int32_t nId)
+SelectItemCfg *CfgData::GetSelectItemCfg(int32_t nId)
 {
     auto it = this->m_SelectItemCfgMap.find(nId);
     if (it != this->m_SelectItemCfgMap.end())
@@ -12406,7 +11913,7 @@ SelectItemCfg *CfgData::GetSelectItemCfg(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-XunLeiCfg *CfgData::GetXunLeiCfg(CfgData *const this, int32_t nIndex)
+XunLeiCfg *CfgData::GetXunLeiCfg(int32_t nIndex)
 {
     auto it = this->m_XunLeiCfgMap.find(nIndex);
     if (it != this->m_XunLeiCfgMap.end())
@@ -12416,7 +11923,7 @@ XunLeiCfg *CfgData::GetXunLeiCfg(CfgData *const this, int32_t nIndex)
     return nullptr;
 }
 
-CrossTowerCfg *CfgData::GetCrossTowerCfg(CfgData *const this, int32_t MapId)
+CrossTowerCfg *CfgData::GetCrossTowerCfg(int32_t MapId)
 {
     auto it = this->m_CrossTowerCfgMap.find(MapId);
     if (it != this->m_CrossTowerCfgMap.end())
@@ -12426,7 +11933,7 @@ CrossTowerCfg *CfgData::GetCrossTowerCfg(CfgData *const this, int32_t MapId)
     return nullptr;
 }
 
-MoFuSkillCfg *CfgData::GetMoFuSkillCfg(CfgData *const this, int32_t nLevel)
+MoFuSkillCfg *CfgData::GetMoFuSkillCfg(int32_t nLevel)
 {
     auto it = this->m_MoFuSkillCfgMap.find(nLevel);
     if (it != this->m_MoFuSkillCfgMap.end())
@@ -12436,7 +11943,7 @@ MoFuSkillCfg *CfgData::GetMoFuSkillCfg(CfgData *const this, int32_t nLevel)
     return nullptr;
 }
 
-ZhuNengCfg *CfgData::GetZhuNengCfg(CfgData *const this, int32_t nType, int32_t nLevel)
+ZhuNengCfg *CfgData::GetZhuNengCfg(int32_t nType, int32_t nLevel)
 {
     auto key = std::make_pair(nType, nLevel);
     auto it = this->m_ZhuNengCfgMap.find(key);
@@ -12447,7 +11954,7 @@ ZhuNengCfg *CfgData::GetZhuNengCfg(CfgData *const this, int32_t nType, int32_t n
     return nullptr;
 }
 
-MoFuDuiHuan *CfgData::GetMoFuDuiHuanlCfg(CfgData *const this, int32_t nId)
+MoFuDuiHuan *CfgData::GetMoFuDuiHuanlCfg(int32_t nId)
 {
     auto it = this->m_MoFuDuiHuanMap.find(nId);
     if (it != this->m_MoFuDuiHuanMap.end())
@@ -12457,7 +11964,7 @@ MoFuDuiHuan *CfgData::GetMoFuDuiHuanlCfg(CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-ChristmasDuiHuan *CfgData::GetChristmasDuiHuanCfg(CfgData *const this, int32_t nId)
+ChristmasDuiHuan *CfgData::GetChristmasDuiHuanCfg(int32_t nId)
 {
     auto it = this->m_ChristmasDuiHuanMap.find(nId);
     if (it != this->m_ChristmasDuiHuanMap.end())
@@ -12467,7 +11974,7 @@ ChristmasDuiHuan *CfgData::GetChristmasDuiHuanCfg(CfgData *const this, int32_t n
     return nullptr;
 }
 
-int32_t CfgData::GetTongTianChiReward(CfgData *const this, int32_t nId)
+int32_t CfgData::GetTongTianChiReward(int32_t nId)
 {
     auto it = this->m_TongTianChiRankReward.lower_bound(nId);
     if (it != this->m_TongTianChiRankReward.end())
@@ -12477,9 +11984,9 @@ int32_t CfgData::GetTongTianChiReward(CfgData *const this, int32_t nId)
     return 0;
 }
 
-int32_t CfgData::GetChargeDungeonId(CfgData *const this, int32_t nId, int32_t Todaycharge)
+int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 {
-    int32_t KaiFuDay = CfgData::getServerDiffDay(this, SERVER_TYPE::SVT_NORMAL) + 1;
+    int32_t KaiFuDay = getServerDiffDay(SERVER_TYPE::SVT_NORMAL) + 1;
     
     auto it = this->m_ChargeDungeonCfgMap.find(nId);
     if (it != this->m_ChargeDungeonCfgMap.end())
@@ -12493,7 +12000,7 @@ int32_t CfgData::GetChargeDungeonId(CfgData *const this, int32_t nId, int32_t To
     return 0;
 }
 
-BaoKuFuBen *CfgData::GetBaoKuFuBen(CfgData *const this, int32_t FuBenId)
+BaoKuFuBen *CfgData::GetBaoKuFuBen(int32_t FuBenId)
 {
     auto it = this->m_BaoKuFuBenMap.find(FuBenId);
     if (it != this->m_BaoKuFuBenMap.end())
@@ -12503,13 +12010,13 @@ BaoKuFuBen *CfgData::GetBaoKuFuBen(CfgData *const this, int32_t FuBenId)
     return nullptr;
 }
 
-BaoKuRandomMap *CfgData::GetBaoKuRandomMap(BaoKuRandomMap *__return_ptr retstr, CfgData *const this)
+BaoKuRandomMap *CfgData::GetBaoKuRandomMap(BaoKuRandomMap *__return_ptr retstr, )
 {
     std::map<int, BaoKuRandom>::map(retstr, &this->m_BaoKuRandomMap);
     return retstr;
 }
 
-const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(const CfgData *const this, int32_t nId)
+const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(int32_t nId)
 {
     auto it = this->m_TreasureHunterCfgMap.find(nId);
     if (it != this->m_TreasureHunterCfgMap.end())
@@ -12519,7 +12026,7 @@ const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(const CfgData *const this
     return nullptr;
 }
 
-const SunAndMoonCfg *CfgData::GetSunAndMoonCfg(const CfgData *const this, int32_t nLevel)
+const SunAndMoonCfg *CfgData::GetSunAndMoonCfg(int32_t nLevel)
 {
     auto it = this->m_SunAndMoonCfgMap.find(nLevel);
     if (it != this->m_SunAndMoonCfgMap.end())
@@ -12529,7 +12036,7 @@ const SunAndMoonCfg *CfgData::GetSunAndMoonCfg(const CfgData *const this, int32_
     return nullptr;
 }
 
-const ZhanHunCfg *CfgData::GetZhanHunCfg(const CfgData *const this, int32_t nLevel)
+const ZhanHunCfg *CfgData::GetZhanHunCfg(int32_t nLevel)
 {
     auto it = this->m_ZhanHunCfgMap.find(nLevel);
     if (it != this->m_ZhanHunCfgMap.end())
@@ -12539,7 +12046,7 @@ const ZhanHunCfg *CfgData::GetZhanHunCfg(const CfgData *const this, int32_t nLev
     return nullptr;
 }
 
-const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(const CfgData *const this, int32_t nSlot, int32_t nLevel)
+const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(int32_t nSlot, int32_t nLevel)
 {
     auto key = std::make_pair(nSlot, nLevel);
     auto it = this->m_VipEquipPosLevelUpMap.find(key);
@@ -12550,7 +12057,7 @@ const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(const CfgData *const th
     return nullptr;
 }
 
-const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(const CfgData *const this, int32_t nLevel)
+const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(int32_t nLevel)
 {
     for (auto it = this->m_VipEQuipPosSuitList.rbegin(); it != this->m_VipEQuipPosSuitList.rend(); ++it)
     {
@@ -12562,7 +12069,7 @@ const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(const CfgData *const this, in
     return nullptr;
 }
 
-const CVipClubLuckyDrop *CfgData::GetCVipClubLuckyDrop(CfgData *const this, int32_t nCondition)
+const CVipClubLuckyDrop *CfgData::GetCVipClubLuckyDrop(int32_t nCondition)
 {
     auto it = this->m_CVipClubLuckyDropMap.find(nCondition);
     if (it != this->m_CVipClubLuckyDropMap.end())
@@ -12572,7 +12079,7 @@ const CVipClubLuckyDrop *CfgData::GetCVipClubLuckyDrop(CfgData *const this, int3
     return nullptr;
 }
 
-const ZeroBuyPetCfg *CfgData::GetZeroBuyPetCfg(const CfgData *const this)
+const ZeroBuyPetCfg *CfgData::GetZeroBuyPetCfg()
 {
     if (ZeroBuyPetCfg::IsEmpty(&this->m_ZeroBuyPetCfg))
     {
@@ -12581,7 +12088,7 @@ const ZeroBuyPetCfg *CfgData::GetZeroBuyPetCfg(const CfgData *const this)
     return &this->m_ZeroBuyPetCfg;
 }
 
-const ShiQuCfg *CfgData::GetShiQuCfg(const CfgData *const this, int32_t nId)
+const ShiQuCfg *CfgData::GetShiQuCfg(int32_t nId)
 {
     auto it = this->m_ShiQuCfgMap.find(nId);
     if (it != this->m_ShiQuCfgMap.end())
@@ -12591,7 +12098,7 @@ const ShiQuCfg *CfgData::GetShiQuCfg(const CfgData *const this, int32_t nId)
     return nullptr;
 }
 
-const LittleHelperCfg *CfgData::GetLittleHelperCfg(const CfgData *const this, int32_t nId)
+const LittleHelperCfg *CfgData::GetLittleHelperCfg(int32_t nId)
 {
     auto it = this->m_LittleHelperCfgMap.find(nId);
     if (it != this->m_LittleHelperCfgMap.end())
@@ -12601,7 +12108,7 @@ const LittleHelperCfg *CfgData::GetLittleHelperCfg(const CfgData *const this, in
     return nullptr;
 }
 
-const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(const CfgData *const this, int32_t nId, int32_t nLevel)
+const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(int32_t nId, int32_t nLevel)
 {
     auto key = std::make_pair(nId, nLevel);
     auto it = this->m_ShiZhuLevelUpMap.find(key);
@@ -12612,7 +12119,7 @@ const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(const CfgData *const this, int32_
     return nullptr;
 }
 
-const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(const CfgData *const this, int32_t nType, int32_t nId)
+const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(int32_t nType, int32_t nId)
 {
     auto key = std::make_pair(nType, nId);
     auto it = this->m_NationalDayTaskCfgMap.find(key);
@@ -12623,7 +12130,7 @@ const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(const CfgData *const th
     return nullptr;
 }
 
-const NationalDayLevelCfg *CfgData::GetNationalDayLevelCfg(const CfgData *const this, int32_t nLevel)
+const NationalDayLevelCfg *CfgData::GetNationalDayLevelCfg(int32_t nLevel)
 {
     auto it = this->m_NationalDayLevelCfgMap.find(nLevel);
     if (it != this->m_NationalDayLevelCfgMap.end())
@@ -12633,7 +12140,7 @@ const NationalDayLevelCfg *CfgData::GetNationalDayLevelCfg(const CfgData *const 
     return nullptr;
 }
 
-const EquipRongHe *CfgData::GetEquipRongHe(const CfgData *const this, int32_t ItemId)
+const EquipRongHe *CfgData::GetEquipRongHe(int32_t ItemId)
 {
     auto it = this->m_EquipRongHeMap.find(ItemId);
     if (it != this->m_EquipRongHeMap.end())
@@ -12643,7 +12150,7 @@ const EquipRongHe *CfgData::GetEquipRongHe(const CfgData *const this, int32_t It
     return nullptr;
 }
 
-const RongHeCfg *CfgData::GetRongHeCfg(const CfgData *const this, int32_t nId)
+const RongHeCfg *CfgData::GetRongHeCfg(int32_t nId)
 {
     auto it = this->m_RongHeCfgMap.find(nId);
     if (it != this->m_RongHeCfgMap.end())

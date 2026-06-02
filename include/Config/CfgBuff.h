@@ -6,9 +6,20 @@
 #include <vector>
 
 
+#ifndef BUFF_ATTR_DEFINED
+#define BUFF_ATTR_DEFINED
+struct BuffAttr {
+    int attr;
+    int ratio;
+    int addon;
+};
+#endif
+
 /**
  * @brief CfgBuff - Config data class
  */
+#ifndef CFG_BUFF_DEFINED
+#define CFG_BUFF_DEFINED
 class CfgBuff
 {
 public:
@@ -41,4 +52,5 @@ public:
     CfgBuff& operator=(const CfgBuff& a2);
 };
 
+#endif // CFG_BUFF_DEFINED
 #endif // _CFGBUFF_H_

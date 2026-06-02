@@ -2,7 +2,13 @@
 #define _CFGCFGAPPENDATTR_H_
 
 #include "Common/CommonTypes.h"
-#include "Config/CfgData.h"
+#ifndef ADD_ATTRIBUTE_DEFINED
+#define ADD_ATTRIBUTE_DEFINED
+struct AddAttribute {
+    int m_nAddAttrType;
+    int m_nAddAttrValue;
+};
+#endif
 #include <cstdint>
 #include <list>
 

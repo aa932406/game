@@ -2,9 +2,21 @@
 #define _CFGBUYGIFT_H_
 
 #include "Common/CommonTypes.h"
-#include "Config/CfgData.h"
 #include <cstdint>
 #include <vector>
+
+
+#ifndef MEM_CHR_BAG_DEFINED_HERE
+#define MEM_CHR_BAG_DEFINED_HERE
+struct MemChrBag {
+    int32_t itemId;
+    int8_t itemClass;
+    int32_t itemCount;
+    int8_t bind;
+    int32_t endTime;
+    int64_t srcId;
+};
+#endif
 
 
 /**

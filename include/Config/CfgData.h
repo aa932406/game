@@ -73,10 +73,13 @@ enum class SERVER_TYPE {
 
 // ==================== 结构体定义（简化版） ====================
 
+#ifndef ATTR_ADDON_DEFINED
+#define ATTR_ADDON_DEFINED
 struct AttrAddon {
     int index;
     int addon;
 };
+#endif
 
 // Position is defined in Utility/Position.h (included above)
 
@@ -202,6 +205,8 @@ struct CfgActivityTrap {
     int y;
 };
 
+#ifndef CFG_BUFF_DEFINED
+#define CFG_BUFF_DEFINED
 struct CfgBuff {
     int id;
     int groupid;
@@ -226,6 +231,7 @@ struct CfgBuff {
     int angry;
     int battle;
 };
+#endif
 
 struct CfgDungeon {
     int id;
@@ -504,10 +510,13 @@ struct CfgMonsterTaskDrop {
     int probability;
 };
 
+#ifndef ADD_ATTRIBUTE_DEFINED
+#define ADD_ATTRIBUTE_DEFINED
 struct AddAttribute {
     int m_nAddAttrType;
     int m_nAddAttrValue;
 };
+#endif
 
 struct CfgEquipItem {
     int32_t id;
@@ -557,11 +566,14 @@ struct RateItem {
     // 成员变量
 };
 
+#ifndef BUFF_ATTR_DEFINED
+#define BUFF_ATTR_DEFINED
 struct BuffAttr {
     int attr;
     int ratio;
     int addon;
 };
+#endif
 
 struct MonsterSkill {
     int maxHp;
@@ -1598,11 +1610,14 @@ struct UltimateChallengeCfg {
     // 成员变量
 };
 
+#ifndef CFG_CACHET_DEFINED
+#define CFG_CACHET_DEFINED
 struct CfgCachet {
     int nLevel;
     int64_t nNeedCacht;
     // 其他成员
 };
+#endif
 
 struct BossKilledReward {
     // 成员变量
@@ -1759,8 +1774,15 @@ struct CfgFamilyTable {};
 struct CfgFamilyWarTable {};
 struct CfgFamilyLightExpTable {};
 struct CfgHorseRacingRewardTable {};
-struct CfgCampWarTable {};
+#ifndef CFG_CAMP_WAR_TABLE_DEFINED
+#define CFG_CAMP_WAR_TABLE_DEFINED
+struct CfgCampWarTable {
+};
+#endif
+#ifndef CFG_CITY_WAR_TABLE_DEFINED
+#define CFG_CITY_WAR_TABLE_DEFINED
 struct CfgCityWarTable {};
+#endif
 struct CfgHallOfFameTable {};
 struct CfgTitleTable {};
 struct CfgDungeonScoreTable {};
