@@ -8486,9 +8486,9 @@ void CfgData::InitHuoYueDuTable()
 
 
 
-            CfgOutLinkFestival stu;
+            // CfgOutLinkFestival stu; (inserted in wrong location)
 
-                memset(&stu, 0, sizeof(stu));
+                // memset(&stu, 0, sizeof(stu)); (wrong location)
 
 
 
@@ -53905,7 +53905,7 @@ void CfgData::InitGoldEggTable()
 
 
 
-                CfgGoldEggItem stu;
+                CfgGoldEgg stu;
 
 
 
