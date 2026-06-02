@@ -2054,7 +2054,7 @@ void CfgData::InitVipCardTable()
                 v8 = v1->pString;
                 
                 std::list<AddAttribute> __x;
-                CfgData::parseAddAttribues((CfgData *const)&__x, &v8, i, nullptr);
+                CfgData::parseAddAttribues(&__x, &v8, i, nullptr);
                 VipCard.AddAttr = __x;
                                                     
                 VipCard.VipLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
@@ -2361,17 +2361,14 @@ void CfgData::fetchSignReward()
     }
 }
 
-MemChrBagVector *CfgData::GetSignReward(MemChrBagVector int8_t SiginCount)
+CfgMemChrBagVector *CfgData::GetSignReward(int8_t SiginCount)
 {
-    int8_t SiginCounta[4] = {SiginCount};
-    std::vector<MemChrBag>::vector(retstr);
-    
-    auto it = this->m_signReward.find(SiginCounta[0]);
+    auto it = this->m_signReward.find(SiginCount);
     if (it != this->m_signReward.end())
     {
-        retstr = it->second.ItemVector;
+        return &it->second.ItemVector;
     }
-    return retstr;
+    return nullptr;
 }
 void CfgData::InitQQZoneRewardTable()
 {
@@ -4290,7 +4287,7 @@ void CfgData::fetchDungeonMonster()
             nIndex = v2->pString;
             
             std::list<Param2> __x;
-            CfgData::paraseParam2List((CfgData *const)&__x, this, atoi(nIndex.c_str()), nullptr);
+            CfgData::paraseParam2List(&__x, this, atoi(nIndex.c_str()), nullptr);
             monster.mids = __x;
             __x.~list();
             nIndex.~string();
@@ -5751,10 +5748,9 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector const std::string *const str
     return retstr;
 }
 
-AttrAddonVector *CfgData::paraseAttrAddon(AttrAddonVector ,
-                                           const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
+AttrAddonVector *CfgData::paraseAttrAddon(const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
 {
-    std::vector<AttrAddon>::vector(retstr);
+    AttrAddonVector *retstr = new AttrAddonVector();
     
     if (addonAttr->empty() || *addonAttr == "-1" || *addonAttr == "0") return retstr;
     
@@ -6083,7 +6079,7 @@ void CfgData::InitPassiveSkillTable()
             v13 = v2->pString;
             
             std::list<TalentAddon> v10;
-            CfgData::paraseTalentAddon((CfgData *const)&v10, &v13, i, &v11);
+            CfgData::paraseTalentAddon(&v10, &v13, i, &v11);
             stu.lTalentAddon = v10;
             v10.~list();
             v13.~string();
@@ -8170,7 +8166,7 @@ void CfgData::InitWuHunItemTable()
             v8 = v1->pString;
             
             std::list<AddAttribute> __x;
-            CfgData::parseAddAttribues((CfgData *const)&__x, &v8, i, &v6);
+            CfgData::parseAddAttribues(&__x, &v8, i, &v6);
             stu.lAttrList = __x;
             __x.~list();
             v8.~string();
@@ -8650,7 +8646,7 @@ void CfgData::InitShouHuRefining()
             v16 = v3->pString;
             
             std::list<AddAttribute> __x;
-            CfgData::parseAddAttribues((CfgData *const)&__x, &v16, i, &v14);
+            CfgData::parseAddAttribues(&__x, &v16, i, &v14);
             stu.lAttrList = __x;
             __x.~list();
             v16.~string();
@@ -8712,7 +8708,7 @@ void CfgData::InitWingEquipPolish()
             v20 = v2->pString;
             
             std::list<AddAttribute> __x;
-            CfgData::parseAddAttribues((CfgData *const)&__x, &v20, i, &v18);
+            CfgData::parseAddAttribues(&__x, &v20, i, &v18);
             stu.lAttrList = __x;
             __x.~list();
             v20.~string();
@@ -8767,7 +8763,7 @@ void CfgData::InitWingEquipPolish()
                 v30 = v5->pString;
                 
                 std::list<AddAttribute> AddAttrs;
-                CfgData::parseAddAttribues((CfgData *const)&AddAttrs, &v30, i_0, &v28);
+                CfgData::parseAddAttribues(&AddAttrs, &v30, i_0, &v28);
                 v30.~string();
                             v28.~string();
                             ++nIndex;
@@ -9738,10 +9734,9 @@ void CfgData::paraseInt32List(std::list<int> *result,
     vstr.~vector();
 }
 
-Int32Vector *CfgData::paraseInt32Vector2(Int32Vector ,
-                                          const std::string *const str, const std::string *const path, int32_t size)
+CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const std::string *const path, int32_t size)
 {
-    std::vector<int>::vector(retstr);
+    CfgInt32Vector *retstr = new CfgInt32Vector();
     if (str->empty() || *str == "-1") return retstr;
     
     std::string delims;
@@ -9771,10 +9766,9 @@ Int32Vector *CfgData::paraseInt32Vector2(Int32Vector ,
     return retstr;
 }
 
-CfgInt32VtVector *CfgData::paraseInt32VtVector(CfgInt32VtVector ,
-                                             const std::string *const str, const std::string *const path)
+CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, const std::string *const path)
 {
-    std::vector<std::vector<int>>::vector(retstr);
+    CfgInt32VtVector *retstr = new CfgInt32VtVector();
     if (str->empty() || *str == "-1") return retstr;
     
     std::string delims;
@@ -9880,10 +9874,9 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector ,
     items_receive.~vector();
 }
 
-MemJobItemTable *CfgData::parseGambleEquip(MemJobItemTable ,
-                                            int32_t id, const std::string *const strItems)
+MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const strItems)
 {
-    std::map<int, MemJobItem>::map(retstr);
+    MemJobItemTable *retstr = new MemJobItemTable();
     if (strItems->empty()) return retstr;
     
     std::string delims;
@@ -10155,30 +10148,24 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
     return nullptr;
 }
 
-MemChrBagVector *CfgData::GetSignReward(MemChrBagVector int8_t SiginCount)
+CfgMemChrBagVector *CfgData::GetSignReward(int8_t SiginCount)
 {
-    std::vector<MemChrBag>::vector(retstr);
-    
     auto it = this->m_signReward.find(SiginCount);
     if (it != this->m_signReward.end())
     {
-        *retstr = it->second.ItemVector;
+        return &it->second.ItemVector;
     }
-    return retstr;
+    return nullptr;
 }
 
-QuestionsVector *CfgData::GetAllQuestions(QuestionsVector int8_t nType)
+QuestionsVector *CfgData::GetAllQuestions(int8_t nType)
 {
     auto it = this->m_mQuestions.find(nType);
     if (it != this->m_mQuestions.end())
     {
-        std::vector<CfgQuestions>::vector(retstr, &it->second);
+        return &it->second;
     }
-    else
-    {
-        std::vector<CfgQuestions>::vector(retstr);
-    }
-    return retstr;
+    return nullptr;
 }
 
 BossInfo *CfgData::GetBossInfo(int32_t BossId)
@@ -10203,18 +10190,14 @@ PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
     return nullptr;
 }
 
-GroupMonsterVector *CfgData::GetGroupMonsterVector(GroupMonsterVector int32_t MapId)
+GroupMonsterVector *CfgData::GetGroupMonsterVector(int32_t MapId)
 {
     auto it = this->m_GroupMonsterMap.find(MapId);
     if (it != this->m_GroupMonsterMap.end())
     {
-        std::vector<GroupMonster>::vector(retstr, &it->second);
+        return &it->second;
     }
-    else
-    {
-        std::vector<GroupMonster>::vector(retstr);
-    }
-    return retstr;
+    return nullptr;
 }
 
 CfgSysMail *CfgData::GetSysMail(int32_t Id)
@@ -10884,10 +10867,9 @@ BaoKuFuBen *CfgData::GetBaoKuFuBen(int32_t FuBenId)
     return nullptr;
 }
 
-BaoKuRandomMap *CfgData::GetBaoKuRandomMap(BaoKuRandomMap )
+BaoKuRandomMap *CfgData::GetBaoKuRandomMap()
 {
-    std::map<int, BaoKuRandom>::map(retstr, &this->m_BaoKuRandomMap);
-    return retstr;
+    return &this->m_BaoKuRandomMap;
 }
 
 const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(int32_t nId)

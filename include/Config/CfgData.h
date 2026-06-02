@@ -1543,6 +1543,11 @@ struct GroupMonster {
     // 成员变量
 };
 
+struct TalentAddon {
+    int nSkillId;
+    int nSkillLevel;
+};
+
 struct BuyFaBaoResCfg {
     // 成员变量
 };
@@ -2193,6 +2198,48 @@ public:
     void InitXingMaiSlotTable();
     void InitXingMaiTable();
     void InitSpeed360Reward();
+        // 补充 Getter 方法（缺失声明）
+    HoeCfg* GetHoeCfg(int32_t nId);
+    DuiHuanLimit* GetDuiHuanLimitCount(int32_t nId);
+    SuperTeHuiCfg* GetSuperTeHuiCfg(int32_t nIndex);
+    JewelPavilionCfg* GetJewelPavilionCfg(int32_t nDay, int32_t nIndex);
+    GoblinCfg* GetGoblinCfg(int32_t UpAttr, int32_t SuitId);
+    ShouHuRefinishingCfg* GetShouHuRefinishingCfg(int32_t nSuitId, int32_t nQuality);
+    WingEquipPolish* GetWingEquipPolishCfg(int32_t nSuitId, int32_t nQuality);
+    WinRefiningCfg* GetWingEquipRefiningCfg(int32_t nSuitId, int32_t nQuality);
+    GuiGuDaoRenCfg* GetGuiGuDaoRenCfg(int32_t nId);
+    QuestionsVector* GetAllQuestions(int8_t nType);
+    BossInfo* GetBossInfo(int32_t BossId);
+    PkDropRate* GetPkDropRate(int32_t PkValues);
+    GroupMonsterVector* GetGroupMonsterVector(int32_t MapId);
+    CfgSysMail* GetSysMail(int32_t Id);
+    CfgGameShop* GetGameShop(int32_t nShopId);
+    CfgGameShop* GetGameShopItem(int8_t nType, int32_t ShopID);
+    BuyFaBaoResCfg* GetBuyFaBaoResCfg(int32_t nId);
+    XingMaiCfg* GetXingMaiCfg(int32_t nId);
+    const CfgXingMaiSlot* GetXingMaiSlot(int8_t nLevel);
+    GongMingCfg* GetGongMingCfg(int32_t nId);
+    DamnationCfg* GetDamnationCfg(int32_t nId);
+    int32_t GetAttrBattle(int32_t nId);
+    ScoreShopCfg* GetScoreShopCfg(int32_t nId);
+    LevelRefinCfg* GetRefining(int32_t nLevel);
+    UltimateChallengeCfg* GetUltimateChallengeCfgMap(int32_t nMapId);
+    CfgCachet* GetCfgCachet(int32_t nLevel);
+    int32_t GetCachetLevel(int64_t nCachet);
+    BossKilledReward* GetBossKilledReward(int32_t nIndex);
+    SystemOpenGift* GetSystemOpenGift(int32_t nId);
+    bool IsSpecialMap(int32_t nMapId);
+    TestServerReward* GetTestServerReward(int32_t nId);
+    GuWuCfg* GetGuWuCfg(int32_t nId);
+    FunctionOpenMail* GetOpenFunctionMailnCfg(int32_t FunctionId);
+    int32_t RandXiangYaoTaskId(int32_t nLevel, bool bFlag);
+    int32_t getXiangYaoStart(int32_t nLevel);
+    ShenWeiTaskCfg* GetShenWeiTaskCfg(int32_t nId);
+    CfgWuHunShop* GetWuHunShopItem(int32_t nIndex);
+    WuHunItem* GetWuHunItem(int32_t nIndex);
+    CreateWuHun* GetCreateWuHun(int32_t nId);
+    SpecialBossMapCfg* GetSpecialBossMapCfg(int32_t nMapId);
+    
     CfgFestivalActivityTable* GetFestivalActivityTable();
     
     // 补充方法（适配 DailyActivity 等使用）
@@ -2294,12 +2341,13 @@ private:
     AttrAddonVector* paraseAttrAddon(const std::string* addonAttr, int32_t nIndex, const std::string* path);
     BuffAttrVector* paraseBuffAttr(const std::string* str);
     void parseAddAttribues(const std::string* addonAttr, int32_t nIndex, const std::string* path);
-    void paraseTalentAddon(const std::string* str, int32_t nIndex, const std::string* path);
-    void paraseParam2List(const std::string* str, int32_t nIndex, const std::string* path);
+    void parseAddAttribues(std::list<AddAttribute>* attrList, const std::string* addonAttr, int32_t nIndex, const std::string* path);
+    void paraseTalentAddon(std::list<TalentAddon>* result, const std::string* str, int32_t nIndex, const std::string* path);
+    void paraseParam2List(std::list<Param2>* paramList, const std::string* str, int32_t nIndex, const std::string* path);
     void paraseInt32List(std::list<int> *result, const std::string *str, int32_t size, const std::string *path);
     CfgInt32Vector* paraseInt32Vector2(const std::string* str, const std::string* path, int32_t size);
     CfgInt32VtVector* paraseInt32VtVector(const std::string* str, const std::string* path);
-    void parseTaskItemJobString(int32_t id, const std::string* strItems);
+    void parseTaskItemJobString(MemChrJobBagVector itemList, int32_t id, const std::string* strItems);
     MemJobItemTable* parseGambleEquip(int32_t id, const std::string* strItems);
     void parseEquipItemString(int32_t nIndex, const std::string* strItems);
     void parseGongGaoString(int32_t nIndex, const std::string* strItems);
