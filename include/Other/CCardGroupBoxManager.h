@@ -25,6 +25,7 @@ class CCardGroupBoxManager
 {
 public:
     int32_t GetCard(int32_t nId);
+    void Add(int32_t nGroupId, std::list<CCardGroupBox>* cardList);
 
     std::list<CCardGroupBox> m_lCardGroupBox;
 };

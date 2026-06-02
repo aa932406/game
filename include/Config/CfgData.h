@@ -1731,7 +1731,10 @@ struct GoblinCfg {
 };
 
 // ==================== 缺失类型的空定义 ====================
-struct MemJobItem {};
+struct MemJobItem {
+    int32_t job;
+    int32_t item;
+};
 struct CfgMountEquip {};
 struct CfgSkillTable {};
 struct CfgTalentTable {};
@@ -1744,10 +1747,13 @@ struct CfgEquipBoxTable {};
 #define CFG_ACTIVITY_TASK_TABLE_DEFINED
 struct CfgActivityTaskTable {};
 #endif
-struct CfgYYGameApp {};
-struct CfgYYVip {};
-struct CfgYYSuperBuff {};
-struct CfgSgGameApp {};
+#include "Config/CfgYYGameApp.h"
+#include "Config/CfgYYVip.h"
+// CfgYYSuperBuff has no standalone header - members defined inline
+struct CfgYYSuperBuff {
+    int32_t SuperVipLevel;
+};
+#include "Config/CfgSgGameApp.h"
 struct CfgEquipTable {
     static const void* GetEquip(const void* tbl, int32_t id) { (void)tbl; (void)id; return nullptr; }
     static const void* GetEquipUpStar(const void* tbl, int32_t type, int32_t star) { (void)tbl; (void)type; (void)star; return nullptr; }
@@ -1807,7 +1813,9 @@ struct CfgGuardPrivilegeTable {};
 struct CfgBeastShrineTable {};
 struct CfgOutLinkFestivalTable {};
 struct ChargeDungeonCfg {};
-struct PkDropRate {};
+struct PkDropRate {
+    int32_t PkValues;
+};
 struct BaoKuRandomMap {};
 typedef VipCardCfg VipCfg;
 
@@ -2516,6 +2524,7 @@ private:
     std::map<signed char, BossKilledReward> m_BossKilledRewardMap;
     std::map<int, SystemOpenGift> m_SystemOpenGiftMap;
     std::map<int, SpecialMap> m_SpecialMapMap;
+    int32_t m_cfgAttrBattle[50];
     std::map<int, TestServerReward> m_TestServerRewardMap;
     std::map<int, GuWuCfg> m_GuWuCfgMap;
     std::map<int, FunctionOpenMail> m_FunctionOpenMailMap;
