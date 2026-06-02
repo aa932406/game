@@ -8228,11 +8228,11 @@ void CfgData::fetchServerConfig(int32_t line)
 
     Answer::MySqlDBGuard db;
 
-    Answer::MySqlDBGuard _guard(&db, v2);
+    
 
     
 
-    Answer::MySqlQuery *v3 = _guard.query(szSQL);
+    Answer::MySqlQuery *v3 = db.query(szSQL);
 
     Answer::MySqlQuery result;
 
@@ -8244,11 +8244,11 @@ void CfgData::fetchServerConfig(int32_t line)
 
     {
 
-        this->m_heFuTime = Answer::MySqlQuery::getIntValue(&result, "he_fu_time", 0);
+        this->m_heFuTime = result.getIntValue("he_fu_time", 0);
 
-        this->m_kaiFuTime = Answer::MySqlQuery::getIntValue(&result, "kai_fu_time", 0);
+        this->m_kaiFuTime = result.getIntValue("kai_fu_time", 0);
 
-        this->m_serverType = Answer::MySqlQuery::getIntValue(&result, "type", 0);
+        this->m_serverType = result.getIntValue("type", 0);
 
     }
 
