@@ -1411,7 +1411,7 @@ void CfgData::InitMonsterAddAttrTable()
                 }
                 
                 auto *v1 = this->m_MonstAddAttrMap[Mid];
-                v1->push_back(AddAttrs);
+                v1.push_back(AddAttrs);
                         }
         }
     }
@@ -3033,7 +3033,7 @@ void CfgData::fetchActivity()
                 for (int32_t j = 0; j < nsize; ++j)
                 {
                     std::string* v8 = strParams[j];
-                    int val = atoi(v8->c_str());
+                    int val = atoi(v8.c_str());
                     v77[j] = val;
                 }
                 strParams.~vector();
@@ -3065,7 +3065,7 @@ void CfgData::fetchActivity()
                 for (int32_t j_0 = 0; j_0 < nsize_0; ++j_0)
                 {
                     std::string* v12 = strParams_0[j_0];
-                    int val = atoi(v12->c_str());
+                    int val = atoi(v12.c_str());
                     v78[j_0] = val;
                 }
                 strParams_0.~vector();
@@ -3092,7 +3092,7 @@ void CfgData::fetchActivity()
                 for (size_t j_1 = 0; j_1 < strMaps.size(); ++j_1)
                 {
                     std::string* v15 = strMaps[j_1];
-                    int val = atoi(v15->c_str());
+                    int val = atoi(v15.c_str());
                     cfg.maps.push_back(val);
                 }
                 strMaps.~vector();
@@ -3114,7 +3114,7 @@ void CfgData::fetchActivity()
                 if (strParams_1.size() == 2)
                 {
                     std::string* v19 = strParams_1[0];
-                    cfg.target_mapid = atoi(v19->c_str());
+                    cfg.target_mapid = atoi(v19.c_str());
                     
                     std::string v143;
                     std::string v145;
@@ -3123,7 +3123,7 @@ void CfgData::fetchActivity()
                     
                     char v146;
                                     std::string* v21 = strParams_1[1];
-                    v145 = v21->c_str();
+                    v145 = v21.c_str();
                     
                     StringVector stritemParams;
                     StringUtility::split(&stritemParams, &v145, &v143, 0);
@@ -3131,7 +3131,7 @@ void CfgData::fetchActivity()
                     for (size_t j_2 = 0; j_2 < stritemParams.size(); ++j_2)
                     {
                         std::string* v23 = stritemParams[j_2];
-                        int val = atoi(v23->c_str());
+                        int val = atoi(v23.c_str());
                         cfg.target_regiona.push_back(val);
                     }
                     stritemParams.~vector();
@@ -3139,7 +3139,7 @@ void CfgData::fetchActivity()
                 else if (strParams_1.size() == 3)
                 {
                     std::string* v25 = strParams_1[0];
-                    cfg.target_mapid = atoi(v25->c_str());
+                    cfg.target_mapid = atoi(v25.c_str());
                     
                     std::string v148;
                     std::string v150;
@@ -3148,7 +3148,7 @@ void CfgData::fetchActivity()
                     
                     char v151;
                                     std::string* v27 = strParams_1[1];
-                    v150 = v27->c_str();
+                    v150 = v27.c_str();
                     
                     StringVector stritemParams_0;
                     StringUtility::split(&stritemParams_0, &v150, &v148, 0);
@@ -3156,7 +3156,7 @@ void CfgData::fetchActivity()
                     for (size_t j_3 = 0; j_3 < stritemParams_0.size(); ++j_3)
                     {
                         std::string* v29 = stritemParams_0[j_3];
-                        int val = atoi(v29->c_str());
+                        int val = atoi(v29.c_str());
                         cfg.target_regiona.push_back(val);
                     }
                     
@@ -3167,7 +3167,7 @@ void CfgData::fetchActivity()
                     
                     char v157;
                                     std::string* v31 = strParams_1[2];
-                    v156 = v31->c_str();
+                    v156 = v31.c_str();
                     
                     StringVector v153;
                     StringUtility::split(&v153, &v156, &v154, 0);
@@ -3177,7 +3177,7 @@ void CfgData::fetchActivity()
                     for (size_t k = 0; k < stritemParams_0.size(); ++k)
                     {
                         std::string* v33 = stritemParams_0[k];
-                        int val = atoi(v33->c_str());
+                        int val = atoi(v33.c_str());
                         cfg.target_regionb.push_back(val);
                     }
                     stritemParams_0.~vector();
@@ -3197,7 +3197,7 @@ void CfgData::fetchActivity()
                 for (size_t j_4 = 0; j_4 < vStartHour.size(); ++j_4)
                 {
                     std::string* v35 = vStartHour[j_4];
-                    int tstart = atoi(v35->c_str());
+                    int tstart = atoi(v35.c_str());
                     if (tstart >= 0 && cfg.duration >= 0 && cfg.duration + tstart <= 1439)
                     {
                         cfg.start_hour.push_back(&tstart);
@@ -3270,7 +3270,7 @@ void CfgData::fetchActivity()
                                                                                     
                     for (auto& strParam : strParams_2)
                     {
-                        int val = atoi(strParam->c_str());
+                        int val = atoi(strParam.c_str());
                         event.trigger_param.push_back(val);
                     }
                     strParams_2.~vector();
@@ -3279,7 +3279,7 @@ void CfgData::fetchActivity()
                     // 存储事件
                     auto v44 = std::map<int, std::map<int, std::list<CfgMapEvent>>>::operator[](&this->m_activityEvents, &event.id);
                     auto v45 = std::map<int, std::list<CfgMapEvent>>::operator[](v44, &event.mapid);
-                    v45->push_back(event);
+                    v45.push_back(event);
                     
                     event.~CfgMapEvent();
                 }
@@ -3433,7 +3433,7 @@ void CfgData::fetchActivity()
                         for (size_t it_0 = 0; it_0 < strRegions.size(); ++it_0)
                         {
                             std::string* v67 = strRegions[it_0];
-                            int val = atoi(v67->c_str());
+                            int val = atoi(v67.c_str());
                             npc.region_id.push_back(val);
                         }
                         strRegions.~vector();
@@ -4040,7 +4040,7 @@ void CfgData::fetchItem(bool bSend)
                 }
                 
                 auto *v37 = &this->m_itemGifts[itemGift.id];
-                v37->push_back(itemGift);
+                v37.push_back(itemGift);
             }
         }
     }
@@ -4085,7 +4085,7 @@ void CfgData::fetchItem(bool bSend)
                 }
                 
                 auto *v39 = &this->m_itemGiftRandoms[itemGiftRandom.id];
-                v39->push_back(itemGiftRandom);
+                v39.push_back(itemGiftRandom);
             }
         }
     }
@@ -4252,7 +4252,7 @@ void CfgData::fetchDungeonEvent()
             if (!dungeonEvent.trigger_param.empty())
             {
                 auto v6 = this->m_dungeonEvents[dungeonEvent.id];
-                v6->push_back(dungeonEvent);
+                v6.push_back(dungeonEvent);
             }
             
             dungeonEvent.~CfgMapEvent();
@@ -4339,8 +4339,8 @@ void CfgData::fetchDungeonMonster()
                     if (vPos.size() == 2)
                     {
                         Position pos;
-                        pos.x = atoi(vPos[0]->c_str());
-                        pos.y = atoi(vPos[1]->c_str());
+                        pos.x = atoi(vPos[0].c_str());
+                        pos.y = atoi(vPos[1].c_str());
                         monster.road.push_back(pos);
                     }
                     vPos.~vector();
@@ -4488,7 +4488,7 @@ void CfgData::fetchMapMonster()
             mapmonster.Day = MapMonsterFile.Search_Posistion( i, 8)->iValue;
             
             auto v1 = this->m_mapMonsters[mapmonster.mapid];
-            v1->push_back(mapmonster);
+            v1.push_back(mapmonster);
             
             auto *v2 = &this->m_CfgMapMonsters[mapmonster.id];
             *v2 = mapmonster;
@@ -4521,7 +4521,7 @@ void CfgData::fetchMapPlant()
             mapPlant.y = MapPlantFile.Search_Posistion( i, 4)->iValue;
             
             auto v1 = this->m_mapPlants[mapPlant.mapid];
-            v1->push_back(mapPlant);
+            v1.push_back(mapPlant);
             
             auto *v2 = &this->m_mMapPlants[id];
             *v2 = mapPlant;
@@ -4560,7 +4560,7 @@ void CfgData::fetchMapRegion()
             *v1 = mapRegion;
             
             auto v2 = this->m_mapRegionsByMapId[mapRegion.mapid];
-            v2->push_back(mapRegion);
+            v2.push_back(mapRegion);
         }
     }
 }
@@ -5554,7 +5554,7 @@ void CfgData::fetchMonsterDropGroup()
             ++nIndex;
             
             auto v3 = this->m_monsterDropGroups[monsterDropGroup.group_id];
-            v3->push_back(monsterDropGroup);
+            v3.push_back(monsterDropGroup);
         }
     }
 }
@@ -5600,7 +5600,7 @@ void CfgData::fetchMonsterGroupDrop()
                 monsterGroupDrop.begin_time <= monsterGroupDrop.end_time && monsterGroupDrop.repeat > 0)
             {
                 auto v1 = this->m_monsterGroupDrops[monsterGroupDrop.mid];
-                v1->push_back(monsterGroupDrop);
+                v1.push_back(monsterGroupDrop);
             }
             else
             {
@@ -5636,7 +5636,7 @@ void CfgData::fetchMonsterTaskDrop()
             monsterTaskDrop.probability = MonsterTaskFile.Search_Posistion( i, 3)->iValue;
             
             auto v1 = this->m_monsterTaskDrops[monsterTaskDrop.mid];
-            v1->push_back(monsterTaskDrop);
+            v1.push_back(monsterTaskDrop);
         }
     }
 }
@@ -5740,7 +5740,7 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
         retstr.reserve(vstr.size());
         for (auto& valStr : vstr)
         {
-            int val = atoi(valStr->c_str());
+            int val = atoi(valStr.c_str());
             retstr.push_back(val);
         }
     }
@@ -7273,8 +7273,8 @@ void CfgData::InitMapRoadTable()
                 if (vPos.size() == 2)
                 {
                     Position __x;
-                    __x.x = atoi(vPos[0]->c_str());
-                    __x.y = atoi(vPos[1]->c_str());
+                    __x.x = atoi(vPos[0].c_str());
+                    __x.y = atoi(vPos[1].c_str());
                     stu.road.push_back(__x);
                 }
                 vPos.~vector();
@@ -8123,7 +8123,7 @@ void CfgData::InitWuHunShopTable()
             ++nIndex;
             
             auto v2 = this->m_CfgWuHunShopMap[ShopId];
-            v2->push_back(stu);
+            v2.push_back(stu);
             
             auto *v3 = &this->m_CfgWuHunShopItemMap[stu.Index];
             *v3 = stu;
@@ -9092,7 +9092,7 @@ void CfgData::InitActDropTable()
             ++nIndex;
             
             auto v3 = this->m_ActDropItemListMap[Type];
-            v3->push_back(stu);
+            v3.push_back(stu);
         }
     }
 }
@@ -9728,7 +9728,7 @@ void CfgData::paraseInt32List(std::list<int> *result,
     {
         for (auto& valStr : vstr)
         {
-            int val = atoi(valStr->c_str());
+            int val = atoi(valStr.c_str());
             result->push_back(val);
         }
     }
@@ -9759,7 +9759,7 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
         retstr->reserve(vstr.size());
         for (auto& valStr : vstr)
         {
-            int val = atoi(valStr->c_str());
+            int val = atoi(valStr.c_str());
             retstr.push_back(val);
         }
     }
@@ -9797,7 +9797,7 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
         
         for (auto& valStr : vstr)
         {
-            int val = atoi(valStr->c_str());
+            int val = atoi(valStr.c_str());
             probability.push_back(val);
         }
         retstr.push_back(probability);
@@ -9868,7 +9868,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
         {
             Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
                 "CfgData::parseTaskItemJobString wrong data with id = %d, string = %s\n",
-                id, strItems->c_str());
+                id, strItems.c_str());
         }
         item.~vector();
     }
@@ -9910,7 +9910,7 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
         {
             Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
                 "CfgData::parseGambleEquip wrong data with id = %d, string = %s\n",
-                id, strItems->c_str());
+                id, strItems.c_str());
         }
         item.~vector();
     }
