@@ -19,7 +19,7 @@ class CfgMonster;
 class CfgMap;
 class Answer_NetPacket;
 class Position;
-class CCardGroupBox;
+#include "Other/CCardGroupBox.h"
 
 class CCardGroupBoxManager
 {

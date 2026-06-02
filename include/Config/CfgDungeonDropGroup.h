@@ -20,6 +20,7 @@ class CfgMonster;
 class CfgMap;
 class Answer_NetPacket;
 class Position;
+struct CfgDungeonDrop;
 
 
 /**

@@ -28,6 +28,10 @@ typedef int32_t  MapId_t;        // 地图ID
 // ============================================================
 
 struct Position;
+struct Param2 {
+    int nParam1;
+    int nParam2;
+};
 struct ItemData;
 class Player;
 class Unit;

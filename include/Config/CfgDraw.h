@@ -2,6 +2,7 @@
 #define _CFGDRAW_H_
 
 #include "Common/CommonTypes.h"
+#include "Config/CfgDrawReward.h"
 #include <cstdint>
 #include <string>
 #include <vector>

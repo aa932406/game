@@ -20,8 +20,13 @@ class CfgMap;
 class Answer_NetPacket;
 class Position;
 
-class CardGroup;
-class CardGroupList;
+struct CardGroup {
+    int32_t id;
+    int32_t count;
+    int32_t min;
+    int32_t max;
+};
+typedef std::list<CardGroup> CardGroupList;
 
 class CCardGroupBox
 {

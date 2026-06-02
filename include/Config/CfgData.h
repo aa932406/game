@@ -1426,13 +1426,7 @@ struct NewServerFavorable {
     int nLimitTime;
 };
 
-struct CfgEverydayChongZhi {
-    signed char Index;
-    signed char Type;
-    int NeedGold;
-    std::vector<CfgEquipItem> ItemVector;
-    std::list<CfgGongGao> GongGaoInfo;
-};
+#include "Config/CfgEverydayChongZhi.h"
 
 struct CfgKaiFuHuoDongData {
     int Index;
@@ -1576,10 +1570,6 @@ struct BackEquipTask {
     // 成员变量
 };
 
-struct Param2 {
-    int nParam1;
-    int nParam2;
-};
 
 struct SpeciaEquipCfg {
     // 成员变量
