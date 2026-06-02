@@ -55,6 +55,9 @@ public:
     static void setType(NetPacket* p, PackType t) { if (p) p->setType(t); }
     static void setProc(NetPacket* p, uint16_t pr) { if (p) p->setProc(pr); }
     static void destroy(NetPacket* p) { if (p) p->destroy(); }
+    static uint32_t getSize(NetPacket* p) { (void)p; return 0; }
+    static char* getBuffer(NetPacket* p) { (void)p; return nullptr; }
+    static void write(NetPacket* p, const char* buf, uint32_t len) { (void)p; (void)buf; (void)len; }
 };
 
 } // namespace Answer

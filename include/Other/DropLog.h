@@ -23,9 +23,14 @@ class Position;
 class DropLog
 {
 public:
-    ~DropLog();
     DropLog();
+    ~DropLog();
 
+    int64_t     nCid;
+    int32_t     nEquipId;
+    int64_t     nSrcId;
+    int32_t     nMapId;
+    int64_t     nKiller;
     std::string sKillerName;
     std::string sName;
 };

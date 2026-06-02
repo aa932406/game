@@ -1,1 +1,4 @@
-#ifndef _TIMEAREA_H_\n#define _TIMEAREA_H_\nclass TimeArea {};\n#endif
+#ifndef _TIMEAREA_H_
+#define _TIMEAREA_H_
+class TimeArea {};
+#endif

@@ -25,7 +25,7 @@ struct MemChrBag;
 class ShopGoods
 {
 public:
-    ShopGoods(const ShopGoods\& a2);
+    ShopGoods(const ShopGoods& a2);
 
     std::vector<MemChrBag> vItem;
     int32_t nPrice;

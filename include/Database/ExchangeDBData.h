@@ -8,15 +8,25 @@
 #include <set>
 #include <cstring>
 
-class ExchangeDBData : public IDataStruct {
+#include "Answer/NetPacket.h"
+#include "Answer/MySqlDBGuard.h"
+#include "Answer/MySqlQuery.h"
+#include "Common/CommonTypes.h"
+
+struct ExchangeRecord {
+    int8_t nType;
+    int16_t nIndex;
+    int32_t nCount;
+};
+
+class ExchangeDBData {
 public:
     ExchangeDBData();
     ~ExchangeDBData();
-    void SaveToSqlString(ExchangeDBData *const this, SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
-    bool LoadFromDB(ExchangeDBData *const this, Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
-    void PackageData(ExchangeDBData *const this, Answer::NetPacket *packet);
+    void SaveToSqlString(SqlStringList* const sqls, char (*const szSQL)[4096], CharId_t nCid);
+    bool LoadFromDB(Answer::MySqlDBGuard* const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
+    void PackageData(Answer::NetPacket* packet);
 
 private:
-    // TODO: member variables
+    std::list<ExchangeRecord> lstExchange;
 };
-（内容由AI生成，仅供参考）

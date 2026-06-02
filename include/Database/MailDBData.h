@@ -8,16 +8,23 @@
 #include <set>
 #include <cstring>
 
-class MailDBData : public IDataStruct {
+#include "Answer/NetPacket.h"
+#include "Answer/MySqlDBGuard.h"
+#include "Answer/MySqlQuery.h"
+#include "Common/CommonTypes.h"
+#include "Mem/MemChrBag.h"
+#include "Other/MailInfo.h"
+
+class MailDBData {
 public:
     MailDBData();
     ~MailDBData();
-    void SaveToSqlString(MailDBData *const this, SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid);
-    bool LoadFromDB(MailDBData *const this, Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
-    void PackageData(MailDBData *const this, Answer::NetPacket *packet);
-    void UnPackageData(MailDBData *const this, Answer::NetPacket *inPacket, CharId_t nCid);
+    void SaveToSqlString(SqlStringList* const sqls, char (*const szSQL)[4096], CharId_t nCid);
+    bool LoadFromDB(Answer::MySqlDBGuard* const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
+    void PackageData(Answer::NetPacket* packet);
+    void UnPackageData(Answer::NetPacket* inPacket, CharId_t nCid);
+    static void ParesChrBagString(MemChrBag* out, MailDBData* _this, std::string* p_ItemString);
 
 private:
-    // TODO: member variables
+    std::map<int, MailInfo> m_MailInfo;
 };
-（内容由AI生成，仅供参考）

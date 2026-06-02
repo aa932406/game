@@ -573,9 +573,13 @@ struct RefreshMonster {
     int GongGaoId;
 };
 
+#ifndef RATEITEM_DEFINED
+#define RATEITEM_DEFINED
 struct RateItem {
     // 成员变量
 };
+
+#endif // RATEITEM_DEFINED
 
 #ifndef BUFF_ATTR_DEFINED
 #define BUFF_ATTR_DEFINED

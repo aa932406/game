@@ -26,6 +26,7 @@ public:
     Log360();
     ~Log360();
 
+    int64_t     Cid;
     int32_t     UseSid;
     std::string passport;
     std::string LogString;

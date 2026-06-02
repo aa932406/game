@@ -53,6 +53,7 @@ public:
     void getIconState(ShowIcon &retstr, Player *player);
     void UpdatePlayerInfo(int32_t id, Answer::NetPacket *inPacket);
     void UpdateRankInfo(int32_t id, int32_t nValue, int8_t connid, RankInfo *info, RechargeDailyRank *vRank);
+    void UpdateRankInfo(int8_t connid, int8_t nType, int16_t nDay, const std::vector<class FestivalRank>& vRank) { (void)connid; (void)nType; (void)nDay; (void)vRank; }
     int32_t GetRechargeTeamShopDailyReward(Player *player, int32_t nIndex);
 
 private:

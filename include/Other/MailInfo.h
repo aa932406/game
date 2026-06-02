@@ -19,6 +19,7 @@ class CfgMonster;
 class CfgMap;
 class Answer_NetPacket;
 class Position;
+struct MemChrBag;
 
 class MailInfo
 {
@@ -27,17 +28,20 @@ public:
     ~MailInfo();
     MailInfo(const MailInfo& other);
 
-private:
     int32_t MailId;
     int32_t SysMailId;
     int64_t SenderId;
     std::string SenderName;
     int64_t ReceiveId;
     std::string ReceiveName;
+    int32_t SendTime;
+    int8_t HasRead;
+    int8_t Extract;
     std::string MailTitle;
     std::string MailContent;
+    int32_t nReason;
     std::string Param;
-    int64_t SendTime;
+    MemChrBag Item[6];
 };
 
 #endif // _MAILINFO_H_

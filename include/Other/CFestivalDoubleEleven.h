@@ -1,6 +1,9 @@
 #ifndef _CFESTIVALDOUBLEELEVEN_H_
 #define _CFESTIVALDOUBLEELEVEN_H_
 
+#ifndef FESTIVAL_ACTIVITY_TYPE_DEFINED
+#define FESTIVAL_ACTIVITY_TYPE_DEFINED
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -66,6 +69,7 @@ enum FESTIVAL_ACTIVITY_TYPE : int8_t
     FAT_HUO_YUE_DU = 50,
     FAT_MAX = 47
 };
+#endif // FESTIVAL_ACTIVITY_TYPE_DEFINED
 
 class CFestivalDoubleEleven
 {

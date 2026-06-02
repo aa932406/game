@@ -6,6 +6,9 @@
 
 namespace Answer { class NetPacket; }
 
+#ifndef TENCENTINFO_DEFINED
+#define TENCENTINFO_DEFINED
+
 class TencentInfo
 {
 public:
@@ -36,4 +39,5 @@ private:
     int64_t m_nExpendVipEndTime;
 };
 
+#endif // TENCENTINFO_DEFINED
 #endif // _TENCENTINFO_H_

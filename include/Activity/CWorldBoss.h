@@ -13,6 +13,13 @@ class Unit;
 class Npc;
 class CActivity;
 
+enum BossType : int8_t
+{
+    BOSS_TYPE_NORMAL = 0,
+    BOSS_TYPE_WORLD = 1,
+    BOSS_TYPE_RUINS = 2,
+};
+
 class CWorldBoss
 {
 public:

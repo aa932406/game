@@ -30,6 +30,8 @@ public:
     {
         split(output, input, std::string(delimiter));
     }
+
+    static int utf8Strlen(const char* str) { if (!str) return 0; int len = 0; while (*str) { if ((*str & 0xC0) != 0x80) ++len; ++str; } return len; }
 };
 
 #endif // __STRING_UTILITY_H__

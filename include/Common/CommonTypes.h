@@ -415,12 +415,6 @@ struct MonsterWave
     int64_t startTime;
 };
 
-// Tencent信息
-struct TencentInfo
-{
-    int32_t age;
-    int8_t  fcmType;
-};
 
 // Boss击杀奖励玩家分数
 struct PlayerScore
