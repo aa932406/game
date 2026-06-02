@@ -1,5 +1,6 @@
 // CExtFlopDraw.cpp
 #include "CExtFlopDraw.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtFlopDraw::CExtFlopDraw()

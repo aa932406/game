@@ -1,8 +1,10 @@
 // CExtOperateLimit.cpp
 #include "CExtOperateLimit.h"
-#include "GameService.h"
-#include "Answer/NetPacket.h"
-#include "Player.h"
+#include "Game/GameService.h"
+#include "Network/NetPacket.h"
+#include "Game/Player.h"
+#include "Answer/Singleton.h"
+#include "Database/PlayerDBData.h"
 
 CExtOperateLimit::CExtOperateLimit()
     : CExtSystemBase()

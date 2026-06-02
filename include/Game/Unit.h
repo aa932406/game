@@ -66,6 +66,7 @@ public:
     // 静态包装方法
     static int64_t getTick(Unit* unit) { return unit ? unit->getTick() : 0; }
     static int32_t getNow(Unit* unit) { return unit ? unit->getNow() : 0; }
+    static void removeBuff(Unit* unit, int32_t buffId) { if (unit) unit->removeBuff(buffId); }
     
     // 获取本地时间
     void getLocalNow(struct tm* retstr) const;

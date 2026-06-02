@@ -14,6 +14,7 @@
 #include "Character/CExtCharMysteryShop.h"
 #include "Character/CExtCharPortal.h"
 #include "Character/CExtCharWish.h"
+#include "Character/CExtOperateLimit.h"
 #include "Other/RwLock.h"
 
 namespace Answer { class MySqlDBGuard; }
@@ -86,12 +87,22 @@ public:
         std::string strCharList;
     } m_WorshipData;
 
+    // 翻牌数据 (供 CExtFlopDraw 使用)
+    struct {
+        std::map<int32_t, std::map<int32_t, int32_t>> m_FlopDrawRecordMap;
+    } m_CFlopDraw;
+
     // 周期任务数据 (供 CExtChrTaskCycle 使用)
     struct {
         int32_t nFinishTimes;
         int32_t nTaskId;
         int8_t nState;
     } taskCycleData;
+
+    // 操作限制数据 (供 CExtOperateLimit 使用)
+    struct {
+        std::map<int32_t, OperateLimit> m_mOperateLimit;
+    } m_OperateLimit;
 
     // 货币数据 (供 CExtCurrency 使用)
     struct {

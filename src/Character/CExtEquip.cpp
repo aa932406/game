@@ -14,6 +14,8 @@
 #include "Database/PlayerDBData.h"
 #include <cstring>
 #include <algorithm>
+#include "Common/Random.h"
+
 
 CExtEquip::CExtEquip()
     : CExtSystemBase()
@@ -289,7 +291,7 @@ int32_t CExtEquip::onMoFuHuiShou(Answer::NetPacket* inPacket)
             CExtCharBag::CleanSlot(Bag, *itV, 131);
         }
         
-        Player::AddCurrency(m_pPlayer, 7, Values, 115, 0);  // AC_SOCRE
+        Player::AddCurrency(m_pPlayer, 7, Values, 115, 0);  // AC_SOCRE  // AC_SOCRE
         return 0;
     }
     
@@ -507,7 +509,7 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
     // 扣除物品
     // 随机升星结果
     Answer::Random* v29 = Answer::Singleton<Answer::Random>::instance();
-    int32_t nRand = Answer::Random::generate(v29, 1, 10000);
+    int32_t nRand = v29 ? v29->generate(1, 10000) : 0;
     
     int32_t nAddStar = 0;
     if (nRate >= nRand)
@@ -542,11 +544,9 @@ int32_t CExtEquip::onEquipUpStar(Answer::NetPacket* inPacket)
             if (packet)
             {
                 Answer::NetPacket::writeInt32(packet, 524);
-                std::string val;
                 std::string val; Player::getName(m_pPlayer, &val);
-                Answer::NetPacket::writeUTF8(packet, &val);
-                // ... 写入其他信息
-                GameService::worldBroadcast(v42, 0, packet);
+            Answer::NetPacket::writeUTF8(packet, &val);
+            GameService::worldBroadcast(v42, 0, packet);
             }
         }
         
@@ -709,10 +709,8 @@ int32_t CExtEquip::onEquipUpPhase(Answer::NetPacket* inPacket)
         Answer::NetPacket* packet = GameService::popNetpacket(v21, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6);
         if (packet)
         {
-            Answer::NetPacket::writeInt32(packet, nGongGaoId);
-            std::string val;
-            std::string val; Player::getName(m_pPlayer, &val);
-            Answer::NetPacket::writeUTF8(packet, &val);
+            Answer::NetPacket::writeInt32(packet, nGongGaoId);std::string val; Player::getName(m_pPlayer, &val);
+                    Answer::NetPacket::writeUTF8(packet, &val);
             // ... 写入其他信息
             GameService::worldBroadcast(v21, ConnId, packet);
         }
@@ -841,10 +839,8 @@ int32_t CExtEquip::onEquipStrenGthen(Answer::NetPacket* inPacket)
                 if (packet)
                 {
                     Answer::NetPacket::writeInt32(packet, nGongGaoId);
-                    std::string val;
                     std::string val; Player::getName(m_pPlayer, &val);
                     Answer::NetPacket::writeUTF8(packet, &val);
-                    // ... 写入其他信息
                     GameService::worldBroadcast(v17, 0, packet);
                 }
             }
@@ -924,7 +920,7 @@ int32_t CExtEquip::onEquipUpPos(Answer::NetPacket* inPacket)
         // 处理自动购买和扣除消耗
         // 随机成功/失败
         Answer::Random* v36 = Answer::Singleton<Answer::Random>::instance();
-        int32_t v37 = Answer::Random::generate(v36, 1, 10000);
+        int32_t v37 = v36 ? v36->generate(1, 10000) : 0;
         int32_t nRate = 0; // 获取成功率
         
         if (v37 <= nRate)
@@ -1258,7 +1254,10 @@ int32_t CExtEquip::onGemLevelUp(Answer::NetPacket* inPacket)
     
     // 处理自动购买和扣除消耗
     // 升级宝石
-    m_vMemGem[nEquipPos][nGemSlot] = pCfgGemLevelUp->nNextId;
+    // pCfgGemLevelUp is const void* in stub code
+    int32_t nNextId = 0;
+    if (pCfgGemLevelUp) std::memcpy(&nNextId, pCfgGemLevelUp, sizeof(nNextId));
+    m_vMemGem[nEquipPos][nGemSlot] = nNextId;
     Player::recalcAttr(m_pPlayer, 0, 0);
     updateEquipGem();
     SendGemInfo(nEquipPos, nGemSlot);
@@ -1269,14 +1268,14 @@ int32_t CExtEquip::onGemLevelUp(Answer::NetPacket* inPacket)
     {
         std::string strName;
         Player::getName(m_pPlayer, &strName);
-        broadcastGemLevelUp(nBroadId, &strName, Player::getCid(m_pPlayer), pCfgGemLevelUp->nNextId);
+        broadcastGemLevelUp(nBroadId, &strName, Player::getCid(m_pPlayer), nNextId);
     }
     
     uint16_t Proc = Answer::NetPacket::getProc(inPacket);
     int16_t GateIndex = Player::getGateIndex(m_pPlayer);
     int8_t ConnId = Player::getConnId(m_pPlayer);
     GameService* v27 = Answer::Singleton<GameService>::instance();
-    GameService::replySuccess(v27, ConnId, GateIndex, Proc, pCfgGemLevelUp->nNextId);
+    GameService::replySuccess(v27, ConnId, GateIndex, Proc, nNextId);
     return 0;
 }
 
@@ -1859,7 +1858,6 @@ void CExtEquip::broadcastItemCombi(int32_t ItemId, int8_t ItemClass)
     int64_t Cid = Player::getCid(m_pPlayer);
     Answer::NetPacket::writeInt64(packet, Cid);
     
-    std::string val;
     std::string val; Player::getName(m_pPlayer, &val);
     Answer::NetPacket::writeUTF8(packet, &val);
     
@@ -1888,7 +1886,6 @@ void CExtEquip::EquipUpStarGongGao(MemEquip* Equip)
     int64_t Cid = Player::getCid(m_pPlayer);
     Answer::NetPacket::writeInt64(packet, Cid);
     
-    std::string val;
     std::string val; Player::getName(m_pPlayer, &val);
     Answer::NetPacket::writeUTF8(packet, &val);
     

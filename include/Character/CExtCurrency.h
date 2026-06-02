@@ -38,6 +38,8 @@ public:
     int64_t GetMoneyBindAndNoBind();
     bool DecMoneyAndNoBind(int64_t nMoney, CURRENCY_CHANGE_REASON Reason, int32_t Id);
     void SendCurrencyInfo(bool bAll = false);
+    static int64_t GetMoneyBindAndNoBind(CExtCurrency* currency) { return currency ? currency->GetMoneyBindAndNoBind() : 0; }
+    static bool DecMoneyAndNoBind(CExtCurrency* currency, int64_t nMoney, int32_t Reason, int32_t Id) { return currency ? currency->DecMoneyAndNoBind(nMoney, static_cast<CURRENCY_CHANGE_REASON>(Reason), Id) : false; }
     void SynCurrency();
     
 private:

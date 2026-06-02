@@ -35,6 +35,7 @@ public:
     static bool CreateMemEquip(CEquipManager* mgr, MemEquip* equip, int8_t connId, int32_t param1, int32_t itemId, int64_t srcId, int8_t bind, int32_t endTime);
     static void DeleteMemEquip(CEquipManager* mgr, int8_t connId, int64_t srcId, int32_t reason);
     static void SendPlayerEquipInfo(CEquipManager* mgr, Player* p, const MemEquipVector* v) { if (mgr) mgr->SendPlayerEquipInfo(p, v); }
+    static void SendPlayerEquipInfo(CEquipManager* mgr, Player* p, MemEquip* equip) { (void)mgr; (void)p; (void)equip; }
     static void UpdateMemEquip(CEquipManager* mgr, int8_t connId, MemEquip* equip, int32_t reason) { (void)mgr; (void)connId; (void)equip; (void)reason; }
     static void GetMemEquip(MemEquip* out, CEquipManager* mgr, int64_t srcId) { if (out) memset(out, 0, sizeof(MemEquip)); (void)mgr; (void)srcId; }
     void BroadcastEquipInfo(const MemEquip* equip);

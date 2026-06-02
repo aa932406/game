@@ -2127,6 +2127,7 @@ public:
     static const CfgEquipTable* GetEquipTable(CfgData* cfg) { (void)cfg; return nullptr; }
     static CfgEquipExchange* GetEquipExchange(CfgData* cfg, int8_t level) { return cfg ? cfg->GetEquipExchange(level) : nullptr; }
     static CfgNpc* getNpc(CfgData* cfg, int32_t id) { return cfg ? cfg->getNpc(id) : nullptr; }
+    static const CfgEquip* getEquip(CfgData* cfg, int32_t id) { return cfg ? cfg->getEquip(id) : nullptr; }
     static MoFuDuiHuan* GetMoFuDuiHuanlCfg(CfgData* cfg, int32_t nId) { return cfg ? cfg->GetMoFuDuiHuanlCfg(nId) : nullptr; }
     static const cfgEquipUpPhaseTable* GetEquipUpPhaseTable(CfgData* cfg) { (void)cfg; return nullptr; }
     static const CfgItemGemTable* GetItemGemTable(CfgData* cfg) { (void)cfg; return nullptr; }

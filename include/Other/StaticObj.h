@@ -27,6 +27,8 @@ public:
     // 地图相关
     int32_t getMapId() const;
     static int32_t getMapId(StaticObj* obj) { return obj ? obj->getMapId() : 0; }
+    static int32_t GetPosX(StaticObj* obj) { return obj ? obj->GetPosX() : 0; }
+    static int32_t GetPosY(StaticObj* obj) { return obj ? obj->GetPosY() : 0; }
     int32_t getMapType() const;
     bool InDungeon() const;
     bool InActivity() const;

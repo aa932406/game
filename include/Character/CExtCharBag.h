@@ -245,6 +245,13 @@ public:
     // 静态包装器
     static int32_t GetFirstFreeSlot(CExtCharBag* bag) { return bag ? bag->GetFirstFreeSlot() : -1; }
     static const MemChrBag* GetSlotData(CExtCharBag* bag, int32_t slot) { return bag ? bag->GetSlotData(slot) : nullptr; }
+    static void SetSlotData(CExtCharBag* bag, int32_t slot, const MemChrBag* slotData, int32_t reason, int32_t count) { if (bag) bag->SetSlotData(slot, slotData, static_cast<ITEM_CHANGE_REASON>(reason), count); }
+    static void ForceSendDirty(CExtCharBag* bag) { if (bag) bag->ForceSendDirty(); }
+    static void CleanSlot(CExtCharBag* bag, int32_t slot, int32_t reason) { if (bag) bag->CleanSlot(slot, static_cast<ITEM_CHANGE_REASON>(reason)); }
+    static bool AddItem(CExtCharBag* bag, const MemChrBag* item, int32_t reason) { return bag ? bag->AddItem(item, static_cast<ITEM_CHANGE_REASON>(reason)) : false; }
+    static int32_t GetFreeSlotCount(CExtCharBag* bag) { return bag ? bag->GetFreeSlotCount() : 0; }
+    static bool RemoveItem(CExtCharBag* bag, Int32Vector* vSlot, ItemData* data, int32_t reason) { return bag ? bag->RemoveItem(vSlot, data, static_cast<ITEM_CHANGE_REASON>(reason)) : false; }
+    static bool IsSlotValid(CExtCharBag* bag, int32_t slot) { return bag ? bag->IsSlotValid(slot) : false; }
 
     // 排序比较器
     static bool GreaterItem(const MemChrBag& left, const MemChrBag& right);

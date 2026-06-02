@@ -1,9 +1,9 @@
 // CExtMagicBox.cpp
 #include "CExtMagicBox.h"
-#include "GameService.h"
-#include "Answer/NetPacket.h"
-#include "Player.h"
-#include "CfgData.h"
+#include "Game/GameService.h"
+#include "Network/NetPacket.h"
+#include "Game/Player.h"
+#include "Config/CfgData.h"
 #include <cstring>
 
 CExtMagicBox::CExtMagicBox()

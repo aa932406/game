@@ -4,6 +4,7 @@
 
 #include "CExtSystemBase.h"
 #include <list>
+#include <string>
 
 class CExtMagicBox : public CExtSystemBase
 {

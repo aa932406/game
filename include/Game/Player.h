@@ -293,10 +293,20 @@ public:
     static CExtOperateLimit* GetOperateLimit(Player* player) { return player ? player->m_extOperateLimit : nullptr; }
     static ChrTask* GetTask(Player* player) { return player ? player->m_task : nullptr; }
     static CXinMo* GetCXinMo(Player* player) { return nullptr; }
+    static void recalcAttr(Player* player, int bNow, int bInit) { if (player) player->recalcAttr(bNow != 0, bInit != 0); }
+    static bool queryBagInfo(Player* player, Answer::NetPacket* inPacket, Int32Vector* vSlot) { return player ? player->queryBagInfo(inPacket, vSlot) : false; }
+    static void sendUpdateSocialPlayerInfo(Player* player, int index, int64_t value) { if (player) player->sendUpdateSocialPlayerInfo(static_cast<PlayerInfoIndex>(index), value); }
+    static CExtCurrency* GetCurrency(Player* player) { return player ? player->GetCurrency() : nullptr; }
+    static void SetNeedSyncAround(Player* player) { if (player) player->SetNeedSyncAround(); }
+    static void setSyncToTeamFlag(Player* player) { (void)player; }
+    static void RecalcAttr(Player* player) { if (player) player->RecalcAttr(); }
+    static void* GetPlayerFunctionOpen(Player* player) { (void)player; return nullptr; }
     static void sendBuyItemInfo(Player* player, int32_t itemId, int8_t itemClass, int32_t count, int32_t costValue, int32_t index) {}
     static bool DecMoneyAndNoBind(Player* player, int32_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return true; }
     static bool AddCurrency(Player* player, CURRENCY_TYPE type, int64_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return player ? player->AddCurrency(type, amount, reason, param) : false; }
+    static bool AddCurrency(Player* player, int32_t type, int64_t amount, int32_t reason, int32_t param) { return AddCurrency(player, static_cast<CURRENCY_TYPE>(type), amount, static_cast<CURRENCY_CHANGE_REASON>(reason), param); }
     static bool DecCurrency(Player* player, CURRENCY_TYPE type, int64_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return player ? player->DecCurrency(type, amount, reason, param) : false; }
+    static bool DecCurrency(Player* player, int32_t type, int64_t amount, int32_t reason, int32_t param) { return DecCurrency(player, static_cast<CURRENCY_TYPE>(type), amount, static_cast<CURRENCY_CHANGE_REASON>(reason), param); }
     
     // 图标状态
     // 静态包装
@@ -307,6 +317,8 @@ public:
     static void updateRecord(Player* player, int32_t id, int32_t param) { if (player) player->updateRecord(id, param); }
     static int32_t getRecord(Player* player, int32_t id) { return player ? player->getRecord(id) : 0; }
     static int64_t GetCurrency(Player* player, CURRENCY_TYPE nType) { return player ? player->GetCurrency(nType) : 0; }
+    static int64_t GetCurrency(Player* player, int32_t nType) { return player ? player->GetCurrency(static_cast<CURRENCY_TYPE>(nType)) : 0; }
+    static int32_t getCreateTime(Player* player) { return player ? player->m_chr.create_time : 0; }
     static void SendIconState(Player* player, const ShowIcon* stu);
 
     // 网络包处理
