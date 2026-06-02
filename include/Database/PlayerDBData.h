@@ -46,6 +46,14 @@ public:
 
     int32_t m_nJueWei;
 
+    // 宠物数据 (供 CExtCharPet 使用)
+    struct {
+        struct {
+            int32_t nStar;
+            int32_t nHuanHua;
+        } petData;
+    } m_CharPets;
+
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
         std::list<MysteryShop> lstShop;

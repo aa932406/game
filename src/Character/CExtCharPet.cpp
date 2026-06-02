@@ -1,5 +1,6 @@
 // CExtCharPet.cpp
 #include "CExtCharPet.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharPet::CExtCharPet()
@@ -231,7 +232,7 @@ void CExtCharPet::AddTarget(void* launcher, bool bForce)
 {
 }
 
-void CExtCharPet::SetTargetTile(int32_t tx, int32_t ty, int8_t dir)
+void CExtCharPet::SetTargetTile(int32_t tx, int32_t ty, Direction dir)
 {
 }
 

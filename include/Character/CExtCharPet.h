@@ -3,6 +3,7 @@
 #define CEXTCHARPET_H
 
 #include "CExtSystemBase.h"
+#include "Common/CommonTypes.h"
 #include <list>
 
 class CObjPet;
