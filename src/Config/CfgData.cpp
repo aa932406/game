@@ -467,14 +467,13 @@ CfgChrShop *CfgData::getChrShop(int32_t Index)
     return nullptr;
 }
 
-CfgItemTable *CfgData::getAllItem(CfgItemTable *__return_ptr retstr, )
+CfgItemTable *CfgData::getAllItem(CfgItemTable )
 {
     Answer::RwLockRdGuard lock;
     
     std::map<int, CfgItem *>::map(retstr);
     Answer::RwLockRdGuard::RwLockRdGuard(&lock, &this->m_itemsLock);
-    std::map<int, CfgItem *>::operator=(retstr, &this->m_items);
-    Answer::RwLockRdGuard::~RwLockRdGuard(&lock);
+    retstr = this->m_items;
     return retstr;
 }
 
@@ -491,11 +490,9 @@ CfgItem *CfgData::getItem(int32_t id)
     if (it != this->m_items.end())
     {
         CfgItem *second = it->second;
-        Answer::RwLockRdGuard::~RwLockRdGuard(&lock);
-        return second;
+            return second;
     }
     
-    Answer::RwLockRdGuard::~RwLockRdGuard(&lock);
     return nullptr;
 }
 
@@ -509,11 +506,9 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
     if (it != this->m_itemGifts.end())
     {
         CfgItemGiftVector *second = it->second;
-        Answer::RwLockRdGuard::~RwLockRdGuard(&lock);
-        return second;
+            return second;
     }
     
-    Answer::RwLockRdGuard::~RwLockRdGuard(&lock);
     return nullptr;
 }
 
@@ -527,11 +522,9 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
     if (it != this->m_itemGiftRandoms.end())
     {
         CfgItemGiftRandomVector *second = it->second;
-        Answer::RwLockRdGuard::~RwLockRdGuard(&lock);
-        return second;
+            return second;
     }
     
-    Answer::RwLockRdGuard::~RwLockRdGuard(&lock);
     return nullptr;
 }
 
@@ -874,7 +867,7 @@ int32_t CfgData::GetAttrPoint(int32_t level)
     return 0;
 }
 
-CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, int32_t job, int32_t level)
+CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr int32_t job, int32_t level)
 {
     int key = (job << 16) | level;
     auto it = this->m_levelAttrs.find(key);
@@ -886,8 +879,7 @@ CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, int32_t j
     {
         CfgLevelAttr levelAttr{};
         CfgLevelAttr::CfgLevelAttr(retstr, &levelAttr);
-        CfgLevelAttr::~CfgLevelAttr(&levelAttr);
-    }
+        }
     return retstr;
 }
 
@@ -903,35 +895,32 @@ int32_t CfgData::getBaseJob(int32_t job)
 void CfgData::InitGroupIconTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/GroupIcon.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/GroupIcon.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_GROUP_ICON_TABLE fail, please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+        int32_t iBaseTableCount = readFile.GetRecordsNum();
+        int32_t iBaseColumnCount = readFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
                 CfgGroupIcon icon{};                
-                icon.nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-                icon.bShowInCross = CDBCFile::Search_Posistion(&readFile, i, 18)->iValue;
+                icon.nId = readFile.Search_Posistion( i, 0)->iValue;
+                icon.bShowInCross = readFile.Search_Posistion( i, 18)->iValue;
                 
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, 19);
-                std::string::operator=(&icon.platfrom, v1->pString);
+                const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, 19);
+                icon.platfrom = v1->pString;
                 
-                auto *v2 = std::map<int, CfgGroupIcon>::operator[](&this->m_cfgGroupIcons, &icon.nId);
-                CfgGroupIcon::operator=(v2, &icon);
-                CfgGroupIcon::~CfgGroupIcon(&icon);
-            }
+                auto *v2 = &this->m_cfgGroupIcons[icon.nId];
+                *v2 = icon;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
@@ -956,16 +945,15 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 void CfgData::InitFamilyRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/FamilyTaskRing.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/FamilyTaskRing.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_FAMILY_TASK_RING failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -974,29 +962,23 @@ void CfgData::InitFamilyRewardTable()
                 FamilyTaskReward stu{};
                 
                 int32_t nIndex = 0;
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                stu.NeedCount = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                stu.Index = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.NeedCount = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&stu.Rewards, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
-                auto *v2 = std::map<int, FamilyTaskReward>::operator[](&this->m_FamilyTaskReward, &stu.Index);
-                FamilyTaskReward::operator=(v2, &stu);
-                FamilyTaskReward::~FamilyTaskReward(&stu);
-            }
+                stu.Rewards = __x;
+                                                    
+                auto *v2 = &this->m_FamilyTaskReward[stu.Index];
+                *v2 = stu;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
@@ -1013,16 +995,15 @@ FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
 void CfgData::InitAppendAttrTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/AdditionalAttribute.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/AdditionalAttribute.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_APPEND_ATTR_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1031,15 +1012,15 @@ void CfgData::InitAppendAttrTable()
                 CfgAppendAttr stu{};
                 
                 int32_t nIndex = 0;
-                stu.Id = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                stu.Job = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                stu.Id = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.Job = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 for (int32_t j = 0; j <= 9; ++j)
                 {
                     AddAttribute Attr;
                     AddAttribute::AddAttribute(&Attr);
-                    Attr.m_nAddAttrType = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                    Attr.m_nAddAttrValue = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                    Attr.m_nAddAttrType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                    Attr.m_nAddAttrValue = TabFile.Search_Posistion( i, nIndex++)->iValue;
                     if (Attr.m_nAddAttrValue > 0)
                     {
                         std::list<AddAttribute>::push_back(&stu.AttrList, &Attr);
@@ -1047,18 +1028,15 @@ void CfgData::InitAppendAttrTable()
                 }
                 
                 std::list<CfgAppendAttr>::push_back(&this->m_AppendAttrTable, &stu);
-                CfgAppendAttr::~CfgAppendAttr(&stu);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitHuoYueDuTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
-    bool ret = CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/HuoYueDu.txt");
+    bool ret = TabFile.OpenFromTXT( "./ServerConfig/Tables/HuoYueDu.txt");
     
     if (!ret)
     {
@@ -1066,8 +1044,8 @@ void CfgData::InitHuoYueDuTable()
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1075,21 +1053,20 @@ void CfgData::InitHuoYueDuTable()
             {
                 CfgHuoYueDu stu;
                 memset(&stu, 0, sizeof(stu));
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.Type = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                stu.Effect = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
-                stu.Count = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
-                stu.Gold = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-                stu.AddHuoYueDu = CDBCFile::Search_Posistion(&TabFile, i, 5)->iValue;
-                stu.IsCanSec = CDBCFile::Search_Posistion(&TabFile, i, 6)->iValue > 0;
+                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.Type = TabFile.Search_Posistion( i, 1)->iValue;
+                stu.Effect = TabFile.Search_Posistion( i, 2)->iValue;
+                stu.Count = TabFile.Search_Posistion( i, 3)->iValue;
+                stu.Gold = TabFile.Search_Posistion( i, 4)->iValue;
+                stu.AddHuoYueDu = TabFile.Search_Posistion( i, 5)->iValue;
+                stu.IsCanSec = TabFile.Search_Posistion( i, 6)->iValue > 0;
                 
-                auto *v1 = std::map<int, CfgHuoYueDu>::operator[](&this->m_HuoYueDuTable, &stu.Index);
+                auto *v1 = &this->m_HuoYueDuTable[stu.Index];
                 *v1 = stu;
             }
             
             CDBCFile TabFileReward;
-            CDBCFile::CDBCFile(&TabFileReward, 0);
-            ret = CDBCFile::OpenFromTXT(&TabFileReward, "./ServerConfig/Tables/HuoYueDuReward.txt");
+                    ret = TabFileReward.OpenFromTXT( "./ServerConfig/Tables/HuoYueDuReward.txt");
             
             if (!ret)
             {
@@ -1097,8 +1074,8 @@ void CfgData::InitHuoYueDuTable()
             }
             else
             {
-                iBaseTableCount = CDBCFile::GetRecordsNum(&TabFileReward);
-                iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFileReward);
+                iBaseTableCount = TabFileReward.GetRecordsNum();
+                iBaseColumnCount = TabFileReward.GetFieldsNum();
                 
                 if (iBaseColumnCount > 0)
                 {
@@ -1106,33 +1083,26 @@ void CfgData::InitHuoYueDuTable()
                     {
                         CfgHuoYueDuReward stu_0{};
                         
-                        stu_0.Id = CDBCFile::Search_Posistion(&TabFileReward, i_0, 0)->iValue;
-                        stu_0.NeedHuoYueDu = CDBCFile::Search_Posistion(&TabFileReward, i_0, 1)->iValue;
+                        stu_0.Id = TabFileReward.Search_Posistion( i_0, 0)->iValue;
+                        stu_0.NeedHuoYueDu = TabFileReward.Search_Posistion( i_0, 1)->iValue;
                         
                         std::string strItems;
                         char v10;
-                        std::allocator<char>::allocator(&v10);
-                        const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFileReward, i_0, 2);
-                        std::string::string(&strItems, v2->pString, &v10);
+                                            const CDBCFile::FIELD *v2 = TabFileReward.Search_Posistion( i_0, 2);
+                        strItems = v2->pString;
                         
                         MemChrBagVector __x;
                         CItemHelper::parseItemVectorString(&__x, &strItems);
-                        std::vector<MemChrBag>::operator=(&stu_0.Items, &__x);
-                        std::vector<MemChrBag>::~vector(&__x);
-                        std::string::~string(&strItems);
-                        std::allocator<char>::~allocator(&v10);
-                        
+                        stu_0.Items = __x;
+                                                                                    
                         char __k = stu_0.Id;
-                        auto *v3 = std::map<signed char, CfgHuoYueDuReward>::operator[](&this->m_HuoYueDuRewardTable, &__k);
-                        CfgHuoYueDuReward::operator=(v3, &stu_0);
-                        CfgHuoYueDuReward::~CfgHuoYueDuReward(&stu_0);
-                    }
+                        auto *v3 = &this->m_HuoYueDuRewardTable[__k];
+                        *v3 = stu_0;
+                                        }
                 }
             }
-            CDBCFile::~CDBCFile(&TabFileReward);
-        }
+                }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgHuoYueDu *CfgData::GetHuoYueDuCfg(int32_t Index)
@@ -1160,16 +1130,15 @@ CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(int32_t Index)
 void CfgData::InitKaiFuHuoDongTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/NewServer.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/NewServer.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_KAI_FU_HUO_DONG failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1177,67 +1146,60 @@ void CfgData::InitKaiFuHuoDongTable()
             {
                 CfgKaiFuHuoDongData stu{};
                 int32_t Index = 0;
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.Type = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
-                stu.Level = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
-                stu.StartDay = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
-                stu.EndDay = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
-                stu.Conditions = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
+                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.Type = TabFile.Search_Posistion( i, ++Index)->iValue;
+                stu.Level = TabFile.Search_Posistion( i, ++Index)->iValue;
+                stu.StartDay = TabFile.Search_Posistion( i, ++Index)->iValue;
+                stu.EndDay = TabFile.Search_Posistion( i, ++Index)->iValue;
+                stu.Conditions = TabFile.Search_Posistion( i, ++Index)->iValue;
                 ++Index;
                 
                 if (stu.Type == 17)
                 {
-                    const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, Index);
-                    std::string::operator=(&stu.ItemString, v1->pString);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, Index);
+                    stu.ItemString = v1->pString;
                 }
                 else
                 {
                     std::string strItems;
                     char v9;
-                    std::allocator<char>::allocator(&v9);
-                    const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, Index);
-                    std::string::string(&strItems, v2->pString, &v9);
+                                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, Index);
+                    strItems = v2->pString;
                     
                     MemChrBagVector __x;
                     CItemHelper::parseItemVectorString(&__x, &strItems);
-                    std::vector<MemChrBag>::operator=(&stu.ItemVector, &__x);
-                    std::vector<MemChrBag>::~vector(&__x);
-                    std::string::~string(&strItems);
-                    std::allocator<char>::~allocator(&v9);
-                }
+                    stu.ItemVector = __x;
+                                                                }
                 
-                stu.PetAttr = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
-                stu.GongGaoId = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
-                stu.Limit = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
-                stu.PetEffect = CDBCFile::Search_Posistion(&TabFile, i, ++Index)->iValue;
+                stu.PetAttr = TabFile.Search_Posistion( i, ++Index)->iValue;
+                stu.GongGaoId = TabFile.Search_Posistion( i, ++Index)->iValue;
+                stu.Limit = TabFile.Search_Posistion( i, ++Index)->iValue;
+                stu.PetEffect = TabFile.Search_Posistion( i, ++Index)->iValue;
                 ++Index;
                 Index += 5;
-                stu.Conditions1 = CDBCFile::Search_Posistion(&TabFile, i, Index++)->iValue;
+                stu.Conditions1 = TabFile.Search_Posistion( i, Index++)->iValue;
                 
-                const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile, i, Index);
-                std::string::operator=(&stu.FlopString, v3->pString);
+                const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, Index);
+                stu.FlopString = v3->pString;
                 
-                auto *v4 = std::map<int, CfgKaiFuHuoDongData>::operator[](&this->m_KaiFuHuoDongTable, &stu.Index);
-                CfgKaiFuHuoDongData::operator=(v4, &stu);
-                CfgKaiFuHuoDongData::~CfgKaiFuHuoDongData(&stu);
-            }
+                auto *v4 = &this->m_KaiFuHuoDongTable[stu.Index];
+                *v4 = stu;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 void CfgData::InitDropRecordTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/DropRecord.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/DropRecord.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_DROP_RECORD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1246,18 +1208,17 @@ void CfgData::InitDropRecordTable()
                 int32_t nIndex = 0;
                 CfgDropRecord record;
                 memset(&record, 0, sizeof(record));
-                record.nIndex = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                record.nItemId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-                record.nItemClass = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-                record.nSpecial = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                record.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
+                record.nItemId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+                record.nItemClass = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+                record.nSpecial = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
-                auto *v1 = std::map<int, CfgDropRecord>::operator[](&this->m_cfgDropRecordTable, &record.nIndex);
+                auto *v1 = &this->m_cfgDropRecordTable[record.nIndex];
                 *v1 = record;
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
@@ -1274,16 +1235,15 @@ const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
 void CfgData::InitDungeonScoreTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/DungeonScore.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/DungeonScore.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_DUNGEON_SCORE_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1292,44 +1252,39 @@ void CfgData::InitDungeonScoreTable()
                 int32_t nIndex = 0;
                 CfgDungeonScore score;
                 memset(&score, 0, sizeof(score));
-                score.nDungeonId = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                score.nKillCount = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                score.nDungeonId = TabFile.Search_Posistion( i, 0)->iValue;
+                score.nKillCount = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
                 std::string strItem;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItem, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItem = v1->pString;
                 
                 MemChrBag v2;
                 CItemHelper::parseItemString(&v2, &strItem);
                 score.Item = v2;
                 
-                std::string::~string(&strItem);
-                std::allocator<char>::~allocator(&v7);
-                ++nIndex;
+                                        ++nIndex;
                 
                 CfgDungeonScoreTable::AddDungeonScore(&this->m_cfgDungeonScoreTable, &score);
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitDungeonSummon()
 {
     CDBCFile DungeonTrapFile;
-    CDBCFile::CDBCFile(&DungeonTrapFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&DungeonTrapFile, "./ServerConfig/Tables/cfg_dungeon_summon.txt"))
+    if (!DungeonTrapFile.OpenFromTXT( "./ServerConfig/Tables/cfg_dungeon_summon.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_DUNGEON_SUMMON_TABLE.txt failed,please check!!");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&DungeonTrapFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&DungeonTrapFile);
+        int32_t iBaseTableCount = DungeonTrapFile.GetRecordsNum();
+        int32_t iBaseColumnCount = DungeonTrapFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1339,29 +1294,24 @@ void CfgData::InitDungeonSummon()
                 CfgDungeonSummon::CfgDungeonSummon(&stu);
                 
                 int32_t nIndex = 0;
-                stu.nDungeon = CDBCFile::Search_Posistion(&DungeonTrapFile, i, nIndex++)->iValue;
-                stu.nIndex = CDBCFile::Search_Posistion(&DungeonTrapFile, i, nIndex++)->iValue;
-                stu.nGold = CDBCFile::Search_Posistion(&DungeonTrapFile, i, nIndex++)->iValue;
-                stu.nLimit = CDBCFile::Search_Posistion(&DungeonTrapFile, i, nIndex++)->iValue;
+                stu.nDungeon = DungeonTrapFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nIndex = DungeonTrapFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nGold = DungeonTrapFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nLimit = DungeonTrapFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string path;
                 char v9;
-                std::allocator<char>::allocator(&v9);
-                std::string::string(&path, v1->pString, &v9);
+                            path = v1->pString;
                 
                 std::list<int> __x;
                 paraseInt32List(&__x, &path, 0, nullptr);
-                std::list<int>::operator=(&stu.lMonsters, &__x);
-                std::list<int>::~list(&__x);
-                std::string::~string(&path);
-                std::allocator<char>::~allocator(&v9);
-                ++nIndex;
+                stu.lMonsters = __x;
+                                                    ++nIndex;
                 
                 std::string strItem;
                 char v13;
-                std::allocator<char>::allocator(&v13);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&DungeonTrapFile, i, nIndex);
-                std::string::string(&strItem, v2->pString, &v13);
+                            const CDBCFile::FIELD *v2 = DungeonTrapFile.Search_Posistion( i, nIndex);
+                strItem = v2->pString;
                 
                 ItemData v20;
                 v20 = CItemHelper::parseItemDataString(&strItem);
@@ -1369,19 +1319,15 @@ void CfgData::InitDungeonSummon()
                 stu.ConstItem.m_nClass = v20.m_nClass;
                 stu.ConstItem.m_nCount = v20.m_nCount;
                 
-                std::string::~string(&strItem);
-                std::allocator<char>::~allocator(&v13);
-                stu.FreeCount = CDBCFile::Search_Posistion(&DungeonTrapFile, i, ++nIndex)->iValue;
+                                        stu.FreeCount = DungeonTrapFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
                 auto __k = std::make_pair(stu.nDungeon, stu.nIndex);
                 auto *v3 = std::map<std::pair<int, int>, CfgDungeonSummon>::operator[](&this->m_cfgDungeonSummon, &__k);
-                CfgDungeonSummon::operator=(v3, &stu);
-                CfgDungeonSummon::~CfgDungeonSummon(&stu);
-            }
+                *v3 = stu;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&DungeonTrapFile);
 }
 
 const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nIndex)
@@ -1398,16 +1344,15 @@ const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nInd
 void CfgData::InitSpecialTreasureMapRandTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/SpecialTreasureMap.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/SpecialTreasureMap.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SPECIAL_TREASURE_MAP_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1415,89 +1360,77 @@ void CfgData::InitSpecialTreasureMapRandTable()
             {
                 SpecialTreasureMapRandCfg stu{};
                 
-                stu.nItemId = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.nType = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+                stu.nItemId = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
                 
                 std::string strItems;
                 char v9;
-                std::allocator<char>::allocator(&v9);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 2);
-                std::string::string(&strItems, v1->pString, &v9);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 2);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&stu.vGetItems, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v9);
-                
-                stu.nRate = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
+                stu.vGetItems = __x;
+                                                    
+                stu.nRate = TabFile.Search_Posistion( i, 3)->iValue;
                 
                 std::string strItem;
                 char v11;
-                std::allocator<char>::allocator(&v11);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, 4);
-                std::string::string(&strItem, v2->pString, &v11);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, 4);
+                strItem = v2->pString;
                 
                 MemChrBag v3;
                 CItemHelper::parseItemString(&v3, &strItem);
                 stu.vShowItem = v3;
                 
-                std::string::~string(&strItem);
-                std::allocator<char>::~allocator(&v11);
-                stu.nGongGaoId = CDBCFile::Search_Posistion(&TabFile, i, 5)->iValue;
+                                        stu.nGongGaoId = TabFile.Search_Posistion( i, 5)->iValue;
                 
                 std::list<SpecialTreasureMapRandCfg>::push_back(&this->m_SpecialTreasureMapRandCfgList, &stu);
-                SpecialTreasureMapRandCfg::~SpecialTreasureMapRandCfg(&stu);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitMonsterAddAttrTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/MonstAddAttr.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/MonstAddAttr.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MONSTER_ADD_ATTR failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
-                int32_t Mid = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+                int32_t Mid = TabFile.Search_Posistion( i, 0)->iValue;
                 
                 CfgMonsterAddAttr AddAttrs{};
-                AddAttrs.WorldBossLevelMin = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                AddAttrs.WorldBossLevelMax = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
+                AddAttrs.WorldBossLevelMin = TabFile.Search_Posistion( i, 1)->iValue;
+                AddAttrs.WorldBossLevelMax = TabFile.Search_Posistion( i, 2)->iValue;
                 
                 for (int32_t j = 0; j <= 6; ++j)
                 {
                     AttrAddon stu;
                     memset(&stu, 0, sizeof(stu));
-                    stu.index = CDBCFile::Search_Posistion(&TabFile, i, 2 * j + 3)->iValue;
-                    stu.addon = CDBCFile::Search_Posistion(&TabFile, i, 2 * (j + 2))->iValue;
+                    stu.index = TabFile.Search_Posistion( i, 2 * j + 3)->iValue;
+                    stu.addon = TabFile.Search_Posistion( i, 2 * (j + 2))->iValue;
                     std::vector<AttrAddon>::push_back(&AddAttrs.AttrVector, &stu);
                 }
                 
-                auto *v1 = std::map<int, std::list<CfgMonsterAddAttr>>::operator[](&this->m_MonstAddAttrMap, &Mid);
+                auto *v1 = this->m_MonstAddAttrMap[Mid];
                 std::list<CfgMonsterAddAttr>::push_back(v1, &AddAttrs);
-                CfgMonsterAddAttr::~CfgMonsterAddAttr(&AddAttrs);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
-AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retstr, int32_t Mid, int32_t WorldLevel)
+AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector int32_t Mid, int32_t WorldLevel)
 {
     int32_t Mida = Mid;
     auto it = this->m_MonstAddAttrMap.find(Mida);
@@ -1517,23 +1450,21 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retst
     AttrAddonVector AttrVector;
     std::vector<AttrAddon>::vector(&AttrVector);
     std::vector<AttrAddon>::vector(retstr, &AttrVector);
-    std::vector<AttrAddon>::~vector(&AttrVector);
     return retstr;
 }
 
 void CfgData::InitDaZheQuanTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/ItemDiscount.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/ItemDiscount.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_DA_ZHE_QUAN_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1541,30 +1472,24 @@ void CfgData::InitDaZheQuanTable()
             {
                 DaZheQuan stu{};
                 
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.CurrencyType = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                stu.CurrencyValues = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
+                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.CurrencyType = TabFile.Search_Posistion( i, 1)->iValue;
+                stu.CurrencyValues = TabFile.Search_Posistion( i, 2)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 3);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&stu.Items, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
-                auto *v2 = std::map<int, DaZheQuan>::operator[](&this->m_DaZheQuanMap, &stu.Index);
-                DaZheQuan::operator=(v2, &stu);
-                DaZheQuan::~DaZheQuan(&stu);
-            }
+                stu.Items = __x;
+                                                    
+                auto *v2 = &this->m_DaZheQuanMap[stu.Index];
+                *v2 = stu;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
@@ -1581,16 +1506,15 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 void CfgData::Init360RewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/GameLobby.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/GameLobby.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_360_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1598,43 +1522,36 @@ void CfgData::Init360RewardTable()
             {
                 Wan360Reward stu{};
                 
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 1);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 1);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&stu.Items, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
-                auto *v2 = std::map<int, Wan360Reward>::operator[](&this->m_Wan360RewardMap, &stu.Index);
-                Wan360Reward::operator=(v2, &stu);
-                Wan360Reward::~Wan360Reward(&stu);
-            }
+                stu.Items = __x;
+                                                    
+                auto *v2 = &this->m_Wan360RewardMap[stu.Index];
+                *v2 = stu;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::Init360RewardTypeTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/GameLobbyType.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/GameLobbyType.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_360_REWARD_TYPE_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1642,19 +1559,15 @@ void CfgData::Init360RewardTypeTable()
             {
                 std::string platform;
                 char v5;
-                std::allocator<char>::allocator(&v5);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 0);
-                std::string::string(&platform, v1->pString, &v5);
-                std::allocator<char>::~allocator(&v5);
-                
-                int32_t icon = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                auto *v2 = std::map<std::string, int>::operator[](&this->m_Wan360RewardTypeMap, &platform);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 0);
+                platform = v1->pString;
+                            
+                int32_t icon = TabFile.Search_Posistion( i, 1)->iValue;
+                auto *v2 = &this->m_Wan360RewardTypeMap[platform];
                 *v2 = icon;
-                std::string::~string(&platform);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
@@ -1676,16 +1589,15 @@ int32_t CfgData::Get360RewardIcon(const std::string *const platform)
 void CfgData::InitTotalChongZhiTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/ChongZhiHuiKui.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/ChongZhiHuiKui.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TOTAL_CHONG_ZHI_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1693,44 +1605,34 @@ void CfgData::InitTotalChongZhiTable()
             {
                 CfgTotalChongZhi stu{};
                 
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.NeedGold = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.NeedGold = TabFile.Search_Posistion( i, 1)->iValue;
                 
                 std::string strItems;
                 char v8;
-                std::allocator<char>::allocator(&v8);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 2);
-                std::string::string(&strItems, v1->pString, &v8);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 2);
+                strItems = v1->pString;
                 
                 MemChrEquipBagVector __x;
                 CfgData::parseEquipItemString(&__x, this, stu.Index, &strItems);
-                std::vector<CfgEquipItem>::operator=(&stu.ItemVector, &__x);
-                std::vector<CfgEquipItem>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v8);
-                
+                stu.ItemVector = __x;
+                                                    
                 std::string v10;
                 char v11;
-                std::allocator<char>::allocator(&v11);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-                std::string::string(&v10, v2->pString, &v11);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, 3);
+                v10 = v2->pString;
                 
                 std::list<CfgGongGao> v9;
                 CfgData::parseGongGaoString((CfgData *const)&v9, stu.Index, &v10);
-                std::list<CfgGongGao>::operator=(&stu.GongGaoInfo, &v9);
-                std::list<CfgGongGao>::~list(&v9);
-                std::string::~string(&v10);
-                std::allocator<char>::~allocator(&v11);
+                stu.GongGaoInfo = v9;
+                                                    
+                stu.NewServerday = TabFile.Search_Posistion( i, 4)->iValue;
                 
-                stu.NewServerday = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-                
-                auto *v3 = std::map<signed char, CfgTotalChongZhi>::operator[](&this->m_TotalChongZhiTable, &stu.Index);
-                CfgTotalChongZhi::operator=(v3, &stu);
-                CfgTotalChongZhi::~CfgTotalChongZhi(&stu);
-            }
+                auto *v3 = &this->m_TotalChongZhiTable[stu.Index];
+                *v3 = stu;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
@@ -1747,16 +1649,15 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 void CfgData::InitEveryDayChongZhi()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/MeiRiChongZhi.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/MeiRiChongZhi.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_EVERYDAY_CHONG_ZHI failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1764,42 +1665,32 @@ void CfgData::InitEveryDayChongZhi()
             {
                 CfgEverydayChongZhi stu{};
                 
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.Type = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                stu.NeedGold = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
+                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.Type = TabFile.Search_Posistion( i, 1)->iValue;
+                stu.NeedGold = TabFile.Search_Posistion( i, 2)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 3);
+                strItems = v1->pString;
                 
                 MemChrEquipBagVector __x;
                 CfgData::parseEquipItemString(&__x, this, stu.Index, &strItems);
-                std::vector<CfgEquipItem>::operator=(&stu.ItemVector, &__x);
-                std::vector<CfgEquipItem>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
+                stu.ItemVector = __x;
+                                                    
                 std::string v9;
                 char v10;
-                std::allocator<char>::allocator(&v10);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, 4);
-                std::string::string(&v9, v2->pString, &v10);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, 4);
+                v9 = v2->pString;
                 
                 std::list<CfgGongGao> v8;
                 CfgData::parseGongGaoString((CfgData *const)&v8, stu.Index, &v9);
-                std::list<CfgGongGao>::operator=(&stu.GongGaoInfo, &v8);
-                std::list<CfgGongGao>::~list(&v8);
-                std::string::~string(&v9);
-                std::allocator<char>::~allocator(&v10);
-                
+                stu.GongGaoInfo = v8;
+                                                    
                 std::list<CfgEverydayChongZhi>::push_back(&this->m_EveryDayChongZhiTable, &stu);
-                CfgEverydayChongZhi::~CfgEverydayChongZhi(&stu);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
@@ -1817,8 +1708,7 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 void CfgData::InitNewServerFavorable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
-    bool ret = CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TeHui.txt");
+    bool ret = TabFile.OpenFromTXT( "./ServerConfig/Tables/TeHui.txt");
     
     if (!ret)
     {
@@ -1826,8 +1716,8 @@ void CfgData::InitNewServerFavorable()
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1836,46 +1726,36 @@ void CfgData::InitNewServerFavorable()
                 NewServerFavorable stu;
                 NewServerFavorable::NewServerFavorable(&stu);
                 
-                stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
                 
                 std::string strItems;
                 char v11;
-                std::allocator<char>::allocator(&v11);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 1);
-                std::string::string(&strItems, v1->pString, &v11);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 1);
+                strItems = v1->pString;
                 
                 MemChrEquipBagVector __x;
                 CfgData::parseEquipItemString(&__x, this, stu.Index, &strItems);
-                std::vector<CfgEquipItem>::operator=(&stu.ItemVector, &__x);
-                std::vector<CfgEquipItem>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v11);
-                
-                stu.NeedGold = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
+                stu.ItemVector = __x;
+                                                    
+                stu.NeedGold = TabFile.Search_Posistion( i, 2)->iValue;
                 
                 std::string v13;
                 char v14;
-                std::allocator<char>::allocator(&v14);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-                std::string::string(&v13, v2->pString, &v14);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, 3);
+                v13 = v2->pString;
                 
                 std::list<CfgGongGao> v12;
                 CfgData::parseGongGaoString((CfgData *const)&v12, stu.Index, &v13);
-                std::list<CfgGongGao>::operator=(&stu.GongGaoInfo, &v12);
-                std::list<CfgGongGao>::~list(&v12);
-                std::string::~string(&v13);
-                std::allocator<char>::~allocator(&v14);
+                stu.GongGaoInfo = v12;
+                                                    
+                stu.nLimitTime = TabFile.Search_Posistion( i, 4)->iValue;
                 
-                stu.nLimitTime = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-                
-                auto *v3 = std::map<signed char, NewServerFavorable>::operator[](&this->m_NewServerFavorable, &stu.Index);
-                NewServerFavorable::operator=(v3, &stu);
-                NewServerFavorable::~NewServerFavorable(&stu);
-            }
+                auto *v3 = &this->m_NewServerFavorable[stu.Index];
+                *v3 = stu;
+                        }
             
             CDBCFile TabFile2;
-            CDBCFile::CDBCFile(&TabFile2, 0);
-            ret = CDBCFile::OpenFromTXT(&TabFile2, "./ServerConfig/Tables/SanChong.txt");
+                    ret = TabFile2.OpenFromTXT( "./ServerConfig/Tables/SanChong.txt");
             
             if (!ret)
             {
@@ -1883,8 +1763,8 @@ void CfgData::InitNewServerFavorable()
             }
             else
             {
-                iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile2);
-                iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile2);
+                iBaseTableCount = TabFile2.GetRecordsNum();
+                iBaseColumnCount = TabFile2.GetFieldsNum();
                 
                 if (iBaseColumnCount > 0)
                 {
@@ -1893,45 +1773,34 @@ void CfgData::InitNewServerFavorable()
                         NewServerFavorable stu;
                         NewServerFavorable::NewServerFavorable(&stu);
                         
-                        this->m_ThreePetGift.Index = CDBCFile::Search_Posistion(&TabFile2, i_0, 0)->iValue;
+                        this->m_ThreePetGift.Index = TabFile2.Search_Posistion( i_0, 0)->iValue;
                         
                         std::string v16;
                         char v17;
-                        std::allocator<char>::allocator(&v17);
-                        const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&TabFile2, i_0, 1);
-                        std::string::string(&v16, v4->pString, &v17);
+                                            const CDBCFile::FIELD *v4 = TabFile2.Search_Posistion( i_0, 1);
+                        v16 = v4->pString;
                         
                         MemChrEquipBagVector v15;
                         CfgData::parseEquipItemString(&v15, this, stu.Index, &v16);
-                        std::vector<CfgEquipItem>::operator=(&this->m_ThreePetGift.ItemVector, &v15);
-                        std::vector<CfgEquipItem>::~vector(&v15);
-                        std::string::~string(&v16);
-                        std::allocator<char>::~allocator(&v17);
-                        
-                        this->m_ThreePetGift.NeedGold = CDBCFile::Search_Posistion(&TabFile2, i_0, 2)->iValue;
+                        this->m_ThreePetGift.ItemVector = v15;
+                                                                                    
+                        this->m_ThreePetGift.NeedGold = TabFile2.Search_Posistion( i_0, 2)->iValue;
                         
                         std::string v19;
                         char v20;
-                        std::allocator<char>::allocator(&v20);
-                        const CDBCFile::FIELD *v5 = CDBCFile::Search_Posistion(&TabFile2, i_0, 3);
-                        std::string::string(&v19, v5->pString, &v20);
+                                            const CDBCFile::FIELD *v5 = TabFile2.Search_Posistion( i_0, 3);
+                        v19 = v5->pString;
                         
                         std::list<CfgGongGao> v18;
                         CfgData::parseGongGaoString((CfgData *const)&v18, stu.Index, &v19);
-                        std::list<CfgGongGao>::operator=(&this->m_ThreePetGift.GongGaoInfo, &v18);
-                        std::list<CfgGongGao>::~list(&v18);
-                        std::string::~string(&v19);
-                        std::allocator<char>::~allocator(&v20);
-                        
-                        this->m_ThreePetGift.nLimitTime = CDBCFile::Search_Posistion(&TabFile2, i_0, 4)->iValue;
-                        NewServerFavorable::~NewServerFavorable(&stu);
-                    }
+                        this->m_ThreePetGift.GongGaoInfo = v18;
+                                                                                    
+                        this->m_ThreePetGift.nLimitTime = TabFile2.Search_Posistion( i_0, 4)->iValue;
+                                        }
                 }
             }
-            CDBCFile::~CDBCFile(&TabFile2);
-        }
+                }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
@@ -1947,16 +1816,15 @@ NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 void CfgData::InitShouChongLiBao()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/ShouChong.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/ShouChong.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SHOU_CHONG_LI_BAO failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -1965,45 +1833,38 @@ void CfgData::InitShouChongLiBao()
                 CfgShouChong stu;
                 CfgShouChong::CfgShouChong(&stu);
                 
-                stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.nGold = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+                stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.nGold = TabFile.Search_Posistion( i, 1)->iValue;
                 
                 std::string strItems;
                 char v6;
-                std::allocator<char>::allocator(&v6);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 2);
-                std::string::string(&strItems, v1->pString, &v6);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 2);
+                strItems = v1->pString;
                 
                 MemChrEquipBagVector __x;
                 CfgData::parseEquipItemString(&__x, this, 1, &strItems);
-                std::vector<CfgEquipItem>::operator=(&stu.vReward, &__x);
-                std::vector<CfgEquipItem>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v6);
-                
-                stu.nBroadcast = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
+                stu.vReward = __x;
+                                                    
+                stu.nBroadcast = TabFile.Search_Posistion( i, 3)->iValue;
                 
                 CfgShouChongTable::Add(&this->m_cfgShouChongTable, &stu);
-                CfgShouChong::~CfgShouChong(&stu);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitMoHuaHuanYiTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/MoHuaZhuanYi.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/MoHuaZhuanYi.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MO_HUA_ZHUAN_YI_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2012,29 +1873,25 @@ void CfgData::InitMoHuaHuanYiTable()
                 CfgEquipExchange stu;
                 memset(&stu, 0, sizeof(stu));
                 
-                stu.Level = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.Money = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+                stu.Level = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.Money = TabFile.Search_Posistion( i, 1)->iValue;
                 
                 std::string strItem;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 2);
-                std::string::string(&strItem, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 2);
+                strItem = v1->pString;
                 
                 ItemData v12 = CItemHelper::parseItemDataString(&strItem);
                 stu.CostItem.m_nId = v12.m_nId;
                 stu.CostItem.m_nClass = v12.m_nClass;
                 stu.CostItem.m_nCount = v12.m_nCount;
                 
-                std::string::~string(&strItem);
-                std::allocator<char>::~allocator(&v7);
-                
-                auto *v2 = std::map<signed char, CfgEquipExchange>::operator[](&this->m_CfgEquipExchangeMap, &stu.Level);
+                                        
+                auto *v2 = &this->m_CfgEquipExchangeMap[stu.Level];
                 *v2 = stu;
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
@@ -2051,16 +1908,15 @@ CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 void CfgData::InitZiYuanZhaoHuiTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/ZiYuanZhaoHui.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/ZiYuanZhaoHui.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_ZYZH_TABLE failed,please check!!");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+        int32_t iBaseTableCount = readFile.GetRecordsNum();
+        int32_t iBaseColumnCount = readFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2069,64 +1925,53 @@ void CfgData::InitZiYuanZhaoHuiTable()
                 int32_t nIndex = 0;
                 CfgSearchBack stu{};
                 
-                stu.nId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                stu.nType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                stu.nTimes = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                stu.nSubType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                stu.nOpenType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                stu.nMinLevel = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                stu.nMaxLevel = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                stu.nGoldCost = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+                stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nType = readFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nTimes = readFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nSubType = readFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nOpenType = readFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nMinLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nMaxLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+                stu.nGoldCost = readFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&stu.vFreeReward, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                ++nIndex;
+                stu.vFreeReward = __x;
+                                                    ++nIndex;
                 
                 std::string v9;
                 char v10;
-                std::allocator<char>::allocator(&v10);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-                std::string::string(&v9, v2->pString, &v10);
+                            const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+                v9 = v2->pString;
                 
                 MemChrBagVector v8;
                 CItemHelper::parseItemVectorString(&v8, &v9);
-                std::vector<MemChrBag>::operator=(&stu.vItemReward, &v8);
-                std::vector<MemChrBag>::~vector(&v8);
-                std::string::~string(&v9);
-                std::allocator<char>::~allocator(&v10);
-                ++nIndex;
+                stu.vItemReward = v8;
+                                                    ++nIndex;
                 
                 CfgSearchBackTable::AddSearchBack(&this->m_cfgSearchBackTable, &stu);
-                CfgSearchBack::~CfgSearchBack(&stu);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitPlantEventTable()
 {
     CDBCFile ItemGiftFile;
-    CDBCFile::CDBCFile(&ItemGiftFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&ItemGiftFile, "./ServerConfig/Tables/PlantEvent.txt"))
+    if (!ItemGiftFile.OpenFromTXT( "./ServerConfig/Tables/PlantEvent.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_PLANT_EVENT_TABLE failed,please check!!");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&ItemGiftFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&ItemGiftFile);
+        int32_t iBaseTableCount = ItemGiftFile.GetRecordsNum();
+        int32_t iBaseColumnCount = ItemGiftFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2135,20 +1980,18 @@ void CfgData::InitPlantEventTable()
                 CfgPlantEventEffect Event;
                 CfgPlantEventEffect::CfgPlantEventEffect(&Event);
                 
-                Event.EventId = CDBCFile::Search_Posistion(&ItemGiftFile, i, 0)->iValue;
-                Event.EventType = CDBCFile::Search_Posistion(&ItemGiftFile, i, 1)->iValue;
+                Event.EventId = ItemGiftFile.Search_Posistion( i, 0)->iValue;
+                Event.EventType = ItemGiftFile.Search_Posistion( i, 1)->iValue;
                 
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&ItemGiftFile, i, 2);
-                std::string::operator=(&Event.EventEffect, v1->pString);
-                Event.GongGaoId = CDBCFile::Search_Posistion(&ItemGiftFile, i, 3)->iValue;
+                const CDBCFile::FIELD *v1 = ItemGiftFile.Search_Posistion( i, 2);
+                Event.EventEffect = v1->pString;
+                Event.GongGaoId = ItemGiftFile.Search_Posistion( i, 3)->iValue;
                 
-                auto *v2 = std::map<int, CfgPlantEventEffect>::operator[](&this->m_PlantEventMap, &Event.EventId);
-                CfgPlantEventEffect::operator=(v2, &Event);
-                CfgPlantEventEffect::~CfgPlantEventEffect(&Event);
-            }
+                auto *v2 = &this->m_PlantEventMap[Event.EventId];
+                *v2 = Event;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&ItemGiftFile);
 }
 
 CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
@@ -2165,16 +2008,15 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 void CfgData::InitFunctionOpenTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_unlock.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_unlock.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_FUNCTION_OPEN_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2183,16 +2025,15 @@ void CfgData::InitFunctionOpenTable()
                 FunctionOpenCfg stu;
                 memset(&stu, 0, sizeof(stu));
                 
-                stu.Type = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
-                stu.TaskId = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                stu.Level = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
+                stu.Type = TabFile.Search_Posistion( i, 2)->iValue;
+                stu.TaskId = TabFile.Search_Posistion( i, 1)->iValue;
+                stu.Level = TabFile.Search_Posistion( i, 3)->iValue;
                 
-                auto *v1 = std::map<int, FunctionOpenCfg>::operator[](&this->m_FunctionOpenCfg, &stu.Type);
+                auto *v1 = &this->m_FunctionOpenCfg[stu.Type];
                 *v1 = stu;
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
@@ -2209,16 +2050,15 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 void CfgData::InitVipCardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/Privilege.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/Privilege.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_VIP_CARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2227,39 +2067,33 @@ void CfgData::InitVipCardTable()
                 VipCardCfg VipCard{};
                 
                 int32_t nIndex = 0;
-                VipCard.VipCardId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                VipCard.AddVipTime = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                VipCard.NeedGold = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                VipCard.VipCardId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                VipCard.AddVipTime = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                VipCard.NeedGold = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string v8;
                 char v9;
-                std::allocator<char>::allocator(&v9);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&v8, v1->pString, &v9);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                v8 = v1->pString;
                 
                 std::list<AddAttribute> __x;
                 CfgData::parseAddAttribues((CfgData *const)&__x, &v8, i, nullptr);
-                std::list<AddAttribute>::operator=(&VipCard.AddAttr, &__x);
-                std::list<AddAttribute>::~list(&__x);
-                std::string::~string(&v8);
-                std::allocator<char>::~allocator(&v9);
-                
-                VipCard.VipLevel = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                VipCard.AddAttr = __x;
+                                                    
+                VipCard.VipLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 nIndex += 2;
-                VipCard.ReNeedGold = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                VipCard.Money = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                VipCard.TianShuJinHua = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                VipCard.WeiWang = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                VipCard.ReNeedGold = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                VipCard.Money = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                VipCard.TianShuJinHua = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                VipCard.WeiWang = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 int __k = VipCard.VipCardId;
-                auto *v2 = std::map<int, VipCardCfg>::operator[](&this->m_VipCardTable, &__k);
-                VipCardCfg::operator=(v2, &VipCard);
-                VipCardCfg::~VipCardCfg(&VipCard);
-            }
+                auto *v2 = &this->m_VipCardTable[__k];
+                *v2 = VipCard;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
@@ -2276,16 +2110,15 @@ VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 void CfgData::InitOffLineExpTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/OfflineExp.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/OfflineExp.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_OFF_LINE_EXP_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2294,18 +2127,17 @@ void CfgData::InitOffLineExpTable()
                 CfgOffLineExp reward;
                 memset(&reward, 0, sizeof(reward));
                 
-                reward.Level = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                reward.MinuteExp = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
-                reward.TwoTimes = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
-                reward.ThreeTimes = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-                reward.BaseExp = CDBCFile::Search_Posistion(&TabFile, i, 5)->iValue;
+                reward.Level = TabFile.Search_Posistion( i, 1)->iValue;
+                reward.MinuteExp = TabFile.Search_Posistion( i, 2)->iValue;
+                reward.TwoTimes = TabFile.Search_Posistion( i, 3)->iValue;
+                reward.ThreeTimes = TabFile.Search_Posistion( i, 4)->iValue;
+                reward.BaseExp = TabFile.Search_Posistion( i, 5)->iValue;
                 
-                auto *v1 = std::map<int, CfgOffLineExp>::operator[](&this->m_OffLineExpTable, &reward.Level);
+                auto *v1 = &this->m_OffLineExpTable[reward.Level];
                 *v1 = reward;
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
@@ -2322,16 +2154,15 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 void CfgData::InitWeekOnlineReward()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/WeekOnlineReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/WeekOnlineReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_WEEK_ONLINE_REWARD failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2340,16 +2171,15 @@ void CfgData::InitWeekOnlineReward()
                 CfgWeekOnlineReward reward;
                 memset(&reward, 0, sizeof(reward));
                 
-                reward.Week = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                reward.Cash = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-                reward.UpperLimit = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
+                reward.Week = TabFile.Search_Posistion( i, 0)->iValue;
+                reward.Cash = TabFile.Search_Posistion( i, 1)->iValue;
+                reward.UpperLimit = TabFile.Search_Posistion( i, 2)->iValue;
                 
-                auto *v1 = std::map<int, CfgWeekOnlineReward>::operator[](&this->m_WeekOnlineReward, &reward.Week);
+                auto *v1 = &this->m_WeekOnlineReward[reward.Week];
                 *v1 = reward;
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
@@ -2372,16 +2202,15 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 void CfgData::InitLevelGift()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_level_gift.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_level_gift.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_LEVEL_GIFT failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2389,30 +2218,24 @@ void CfgData::InitLevelGift()
             {
                 CfgLevelGift reward{};
                 
-                reward.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                reward.Level = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+                reward.Index = TabFile.Search_Posistion( i, 0)->iValue;
+                reward.Level = TabFile.Search_Posistion( i, 1)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 2);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 2);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&reward.ItemVector, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
+                reward.ItemVector = __x;
+                                                    
                 int __k = reward.Index;
-                auto *v2 = std::map<int, CfgLevelGift>::operator[](&this->m_LevelGift, &__k);
-                CfgLevelGift::operator=(v2, &reward);
-                CfgLevelGift::~CfgLevelGift(&reward);
-            }
+                auto *v2 = &this->m_LevelGift[__k];
+                *v2 = reward;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
@@ -2429,16 +2252,15 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 void CfgData::InitSevenLoginReward()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_seven_login_reward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_seven_login_reward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SEVEN_LOGIN_REWARD failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2446,28 +2268,22 @@ void CfgData::InitSevenLoginReward()
             {
                 CfgSevenLoginRewrad reward{};
                 
-                reward.Day = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+                reward.Day = TabFile.Search_Posistion( i, 0)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 1);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 1);
+                strItems = v1->pString;
                 
                 MemChrEquipBagVector __x;
                 CfgData::parseEquipItemString(&__x, this, reward.Day, &strItems);
-                std::vector<CfgEquipItem>::operator=(&reward.ItemVector, &__x);
-                std::vector<CfgEquipItem>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
-                auto *v2 = std::map<signed char, CfgSevenLoginRewrad>::operator[](&this->m_SevenLoginReward, &reward.Day);
-                CfgSevenLoginRewrad::operator=(v2, &reward);
-                CfgSevenLoginRewrad::~CfgSevenLoginRewrad(&reward);
-            }
+                reward.ItemVector = __x;
+                                                    
+                auto *v2 = &this->m_SevenLoginReward[reward.Day];
+                *v2 = reward;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
@@ -2484,16 +2300,15 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 void CfgData::InitOnLimeReward()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_online_reward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_online_reward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_ONLINE_REWARD failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2501,29 +2316,23 @@ void CfgData::InitOnLimeReward()
             {
                 CfgOnlineReward reward{};
                 
-                reward.Id = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                reward.NeedTime = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+                reward.Id = TabFile.Search_Posistion( i, 0)->iValue;
+                reward.NeedTime = TabFile.Search_Posistion( i, 1)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 2);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 2);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&reward.ItemVector, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
-                auto *v2 = std::map<signed char, CfgOnlineReward>::operator[](&this->m_OnLineReward, &reward.Id);
-                CfgOnlineReward::operator=(v2, &reward);
-                CfgOnlineReward::~CfgOnlineReward(&reward);
-            }
+                reward.ItemVector = __x;
+                                                    
+                auto *v2 = &this->m_OnLineReward[reward.Id];
+                *v2 = reward;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
@@ -2540,16 +2349,15 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 void CfgData::fetchSignReward()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_sign_reward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_sign_reward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SIGIN_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2557,32 +2365,26 @@ void CfgData::fetchSignReward()
             {
                 CfgSignReward reward{};
                 
-                reward.count = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+                reward.count = TabFile.Search_Posistion( i, 0)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 1);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 1);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&reward.ItemVector, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                
+                reward.ItemVector = __x;
+                                                    
                 char __k = reward.count;
-                auto *v2 = std::map<signed char, CfgSignReward>::operator[](&this->m_signReward, &__k);
-                CfgSignReward::operator=(v2, &reward);
-                CfgSignReward::~CfgSignReward(&reward);
-            }
+                auto *v2 = &this->m_signReward[__k];
+                *v2 = reward;
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
-MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, int8_t SiginCount)
+MemChrBagVector *CfgData::GetSignReward(MemChrBagVector int8_t SiginCount)
 {
     int8_t SiginCounta[4] = {SiginCount};
     std::vector<MemChrBag>::vector(retstr);
@@ -2590,23 +2392,22 @@ MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, in
     auto it = this->m_signReward.find(SiginCounta[0]);
     if (it != this->m_signReward.end())
     {
-        std::vector<MemChrBag>::operator=(retstr, &it->second.ItemVector);
+        retstr = it->second.ItemVector;
     }
     return retstr;
 }
 void CfgData::InitQQZoneRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/QQZone.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/QQZone.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_QQZONE_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2616,47 +2417,40 @@ void CfgData::InitQQZoneRewardTable()
                 CfgQQGift gift;
                 CfgQQGift::CfgQQGift(&gift);
                 
-                gift.nIndex = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                gift.nType = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                gift.nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 ++nIndex;
                 
                 std::string strItems;
                 char v6;
-                std::allocator<char>::allocator(&v6);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v6);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&gift.vReward, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v6);
-                
-                gift.nCondition = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                gift.vReward = __x;
+                                                    
+                gift.nCondition = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
                 CfgTencentTable::AddQQZoneGift(&this->m_cfgTencentTable, &gift);
-                CfgQQGift::~CfgQQGift(&gift);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitQQGameRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/QQGameDaTing.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/QQGameDaTing.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_QQGAME_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2666,89 +2460,76 @@ void CfgData::InitQQGameRewardTable()
                 CfgQQGift gift;
                 CfgQQGift::CfgQQGift(&gift);
                 
-                gift.nIndex = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                gift.nType = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                gift.nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 ++nIndex;
                 
                 std::string strItems;
                 char v6;
-                std::allocator<char>::allocator(&v6);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v6);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&gift.vReward, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v6);
-                
-                gift.nCondition = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                gift.vReward = __x;
+                                                    
+                gift.nCondition = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
                 CfgTencentTable::AddQQGameGift(&this->m_cfgTencentTable, &gift);
-                CfgQQGift::~CfgQQGift(&gift);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitYellowRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/YellowReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/YellowReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_YELLOW_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
                 int32_t nIndex = 0;
-                int32_t nId = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+                int32_t nId = TabFile.Search_Posistion( i, 0)->iValue;
                 ++nIndex;
                 
                 std::string strItems;
                 char v5;
-                std::allocator<char>::allocator(&v5);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v5);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector vReward;
                 CItemHelper::parseItemVectorString(&vReward, &strItems);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v5);
-                ++nIndex;
+                                        ++nIndex;
                 
                 CfgTencentTable::SetYellowNewerGift(&this->m_cfgTencentTable, &vReward);
-                std::vector<MemChrBag>::~vector(&vReward);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitTencentSevenDayLoginTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TencentSevenDayLogin.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/TencentSevenDayLogin.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TENCENT_SEVEN_DAY_LOGIN_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2758,43 +2539,36 @@ void CfgData::InitTencentSevenDayLoginTable()
                 CfgTencentSevenDayLogin stu;
                 CfgTencentSevenDayLogin::CfgTencentSevenDayLogin(&stu);
                 
-                stu.nDays = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                stu.nDays = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string strItems;
                 char v6;
-                std::allocator<char>::allocator(&v6);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v6);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&stu.vReward, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v6);
-                ++nIndex;
+                stu.vReward = __x;
+                                                    ++nIndex;
                 
                 CfgTencentTable::AddSevenDayLogin(&this->m_cfgTencentTable, &stu);
-                CfgTencentSevenDayLogin::~CfgTencentSevenDayLogin(&stu);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitYellowDailyRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/YellowEverydayReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/YellowEverydayReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_YELLOW_DAILY_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2806,36 +2580,28 @@ void CfgData::InitYellowDailyRewardTable()
                 CfgTencentGift::CfgTencentGift(&daily);
                 CfgTencentGift::CfgTencentGift(&year);
                 
-                int32_t nId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                int32_t nLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string strItems;
                 char v8;
-                std::allocator<char>::allocator(&v8);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v8);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&daily.vRewards, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v8);
-                ++nIndex;
+                daily.vRewards = __x;
+                                                    ++nIndex;
                 
                 std::string v10;
                 char v11;
-                std::allocator<char>::allocator(&v11);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&v10, v2->pString, &v11);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+                v10 = v2->pString;
                 
                 MemChrBagVector v9;
                 CItemHelper::parseItemVectorString(&v9, &v10);
-                std::vector<MemChrBag>::operator=(&year.vRewards, &v9);
-                std::vector<MemChrBag>::~vector(&v9);
-                std::string::~string(&v10);
-                std::allocator<char>::~allocator(&v11);
-                ++nIndex;
+                year.vRewards = v9;
+                                                    ++nIndex;
                 
                 daily.nLevel = nLevel;
                 year.nLevel = nLevel;
@@ -2843,27 +2609,23 @@ void CfgData::InitYellowDailyRewardTable()
                 CfgTencentTable::AddYellowDailyGift(&this->m_cfgTencentTable, &daily);
                 CfgTencentTable::AddYellowYearGift(&this->m_cfgTencentTable, &year);
                 
-                CfgTencentGift::~CfgTencentGift(&year);
-                CfgTencentGift::~CfgTencentGift(&daily);
-            }
+                                    }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitYellowLevelRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/YellowLevelReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/YellowLevelReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_YELLOW_LEVEL_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2873,100 +2635,83 @@ void CfgData::InitYellowLevelRewardTable()
                 CfgTencentGift gift;
                 CfgTencentGift::CfgTencentGift(&gift);
                 
-                int32_t nId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                gift.nLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                gift.nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v7);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&gift.vRewards, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                ++nIndex;
+                gift.vRewards = __x;
+                                                    ++nIndex;
                 
                 std::string v9;
                 char v10;
-                std::allocator<char>::allocator(&v10);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&v9, v2->pString, &v10);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+                v9 = v2->pString;
                 
                 MemChrBagVector v8;
                 CItemHelper::parseItemVectorString(&v8, &v9);
-                std::vector<MemChrBag>::operator=(&gift.vVipRewards, &v8);
-                std::vector<MemChrBag>::~vector(&v8);
-                std::string::~string(&v9);
-                std::allocator<char>::~allocator(&v10);
-                ++nIndex;
+                gift.vVipRewards = v8;
+                                                    ++nIndex;
                 
                 CfgTencentTable::AddYellowLevelGift(&this->m_cfgTencentTable, nId, &gift);
-                CfgTencentGift::~CfgTencentGift(&gift);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitBlueRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/BlueReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/BlueReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_BLUE_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
             for (int32_t i = 0; i < iBaseTableCount; ++i)
             {
                 int32_t nIndex = 0;
-                int32_t nId = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+                int32_t nId = TabFile.Search_Posistion( i, 0)->iValue;
                 ++nIndex;
                 
                 std::string strItems;
                 char v5;
-                std::allocator<char>::allocator(&v5);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v5);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector vReward;
                 CItemHelper::parseItemVectorString(&vReward, &strItems);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v5);
-                ++nIndex;
+                                        ++nIndex;
                 
                 CfgTencentTable::SetBlueNewerGift(&this->m_cfgTencentTable, &vReward);
-                std::vector<MemChrBag>::~vector(&vReward);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitBlueDailyRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/BlueEverydayReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/BlueEverydayReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_BLUE_DAILY_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -2980,50 +2725,38 @@ void CfgData::InitBlueDailyRewardTable()
                 CfgTencentGift::CfgTencentGift(&year);
                 CfgTencentGift::CfgTencentGift(&high);
                 
-                int32_t nId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                int32_t nLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string strItems;
                 char v10;
-                std::allocator<char>::allocator(&v10);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v10);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&daily.vRewards, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v10);
-                ++nIndex;
+                daily.vRewards = __x;
+                                                    ++nIndex;
                 
                 std::string v12;
                 char v13;
-                std::allocator<char>::allocator(&v13);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&v12, v2->pString, &v13);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+                v12 = v2->pString;
                 
                 MemChrBagVector v11;
                 CItemHelper::parseItemVectorString(&v11, &v12);
-                std::vector<MemChrBag>::operator=(&year.vRewards, &v11);
-                std::vector<MemChrBag>::~vector(&v11);
-                std::string::~string(&v12);
-                std::allocator<char>::~allocator(&v13);
-                ++nIndex;
+                year.vRewards = v11;
+                                                    ++nIndex;
                 
                 std::string v15;
                 char v16;
-                std::allocator<char>::allocator(&v16);
-                const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&v15, v3->pString, &v16);
+                            const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, nIndex);
+                v15 = v3->pString;
                 
                 MemChrBagVector v14;
                 CItemHelper::parseItemVectorString(&v14, &v15);
-                std::vector<MemChrBag>::operator=(&high.vRewards, &v14);
-                std::vector<MemChrBag>::~vector(&v14);
-                std::string::~string(&v15);
-                std::allocator<char>::~allocator(&v16);
-                ++nIndex;
+                high.vRewards = v14;
+                                                    ++nIndex;
                 
                 daily.nLevel = nLevel;
                 year.nLevel = nLevel;
@@ -3033,28 +2766,23 @@ void CfgData::InitBlueDailyRewardTable()
                 CfgTencentTable::AddBlueYearGift(&this->m_cfgTencentTable, &year);
                 CfgTencentTable::AddBlueHighGift(&this->m_cfgTencentTable, &high);
                 
-                CfgTencentGift::~CfgTencentGift(&high);
-                CfgTencentGift::~CfgTencentGift(&year);
-                CfgTencentGift::~CfgTencentGift(&daily);
-            }
+                                                }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitBlueLevelRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/BlueLevelReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/BlueLevelReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_BLUE_LEVEL_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -3064,44 +2792,37 @@ void CfgData::InitBlueLevelRewardTable()
                 CfgTencentGift gift;
                 CfgTencentGift::CfgTencentGift(&gift);
                 
-                int32_t nId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-                gift.nLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                int32_t nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+                gift.nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
                 std::string strItems;
                 char v6;
-                std::allocator<char>::allocator(&v6);
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v1->pString, &v6);
+                            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v1->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&gift.vRewards, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v6);
-                ++nIndex;
+                gift.vRewards = __x;
+                                                    ++nIndex;
                 
                 CfgTencentTable::AddBlueLevelGift(&this->m_cfgTencentTable, nId, &gift);
-                CfgTencentGift::~CfgTencentGift(&gift);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitTGPRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TGPReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/TGPReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TGP_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -3109,45 +2830,38 @@ void CfgData::InitTGPRewardTable()
             {
                 int32_t nIndex = 0;
                 
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::operator=(&gift, v1->pString);
+                const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                gift = v1->pString;
                 ++nIndex;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v2->pString, &v7);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v2->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&gift.vReward, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                ++nIndex;
+                gift.vReward = __x;
+                                                    ++nIndex;
                 
                 CfgTencentTable::AddTGPNewerGift(&this->m_cfgTencentTable, &gift);
-                CfgTGPGift::~CfgTGPGift(&gift);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitTGPDailyRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TGPEverydayReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/TGPEverydayReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TGP_DAILY_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -3155,45 +2869,38 @@ void CfgData::InitTGPDailyRewardTable()
             {
                 int32_t nIndex = 0;
                 
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::operator=(&gift, v1->pString);
+                const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                gift = v1->pString;
                 ++nIndex;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v2->pString, &v7);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v2->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&gift.vReward, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                ++nIndex;
+                gift.vReward = __x;
+                                                    ++nIndex;
                 
                 CfgTencentTable::AddTGPDailyGift(&this->m_cfgTencentTable, &gift);
-                CfgTGPGift::~CfgTGPGift(&gift);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitTGPLevelRewardTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TGPLevelReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/TGPLevelReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TGP_LEVEL_REWARD_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -3201,48 +2908,41 @@ void CfgData::InitTGPLevelRewardTable()
             {
                 int32_t nIndex = 0;
                 
-                gift.nIndex = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+                gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
                 
-                const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::operator=(&gift, v1->pString);
-                gift.nLevel = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+                gift = v1->pString;
+                gift.nLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
                 ++nIndex;
                 
                 std::string strItems;
                 char v7;
-                std::allocator<char>::allocator(&v7);
-                const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItems, v2->pString, &v7);
+                            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+                strItems = v2->pString;
                 
                 MemChrBagVector __x;
                 CItemHelper::parseItemVectorString(&__x, &strItems);
-                std::vector<MemChrBag>::operator=(&gift.vReward, &__x);
-                std::vector<MemChrBag>::~vector(&__x);
-                std::string::~string(&strItems);
-                std::allocator<char>::~allocator(&v7);
-                ++nIndex;
+                gift.vReward = __x;
+                                                    ++nIndex;
                 
                 CfgTencentTable::AddTGPLevelGift(&this->m_cfgTencentTable, &gift);
-                CfgTGPGift::~CfgTGPGift(&gift);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitFamilyDungeonTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/FamilyDungeon.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/FamilyDungeon.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_FAMILY_DUNGEON_TABLE failed,please check!!!\n");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+        int32_t iBaseTableCount = TabFile.GetRecordsNum();
+        int32_t iBaseColumnCount = TabFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -3250,38 +2950,35 @@ void CfgData::InitFamilyDungeonTable()
             {
                 CfgFamilyDungeon stu;
                 
-                stu.nHard = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-                stu.nDungeonId = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
-                stu.nFamilyLevel = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
-                stu.nCostMoney = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
+                stu.nHard = TabFile.Search_Posistion( i, 0)->iValue;
+                stu.nDungeonId = TabFile.Search_Posistion( i, ++i)->iValue;
+                stu.nFamilyLevel = TabFile.Search_Posistion( i, ++i)->iValue;
+                stu.nCostMoney = TabFile.Search_Posistion( i, ++i)->iValue;
                 ++i;
                 i += 7;
-                stu.nBaoKuFuBen = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
-                stu.nNpcId = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
-                stu.X = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
-                stu.Y = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
-                stu.nTime = CDBCFile::Search_Posistion(&TabFile, i, ++i)->iValue;
+                stu.nBaoKuFuBen = TabFile.Search_Posistion( i, ++i)->iValue;
+                stu.nNpcId = TabFile.Search_Posistion( i, ++i)->iValue;
+                stu.X = TabFile.Search_Posistion( i, ++i)->iValue;
+                stu.Y = TabFile.Search_Posistion( i, ++i)->iValue;
+                stu.nTime = TabFile.Search_Posistion( i, ++i)->iValue;
                 
                 CfgFamilyDungeonTable::AddDungeon(&this->m_cfgFamilyDungeonTable, &stu);
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 void CfgData::fetchActivity()
 {
     CDBCFile ActivityFile;
-    CDBCFile::CDBCFile(&ActivityFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&ActivityFile, "./ServerConfig/Tables/cfg_activity.txt"))
+    if (!ActivityFile.OpenFromTXT( "./ServerConfig/Tables/cfg_activity.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_activity.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&ActivityFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&ActivityFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&ActivityFile);
+    int32_t iBaseTableCount = ActivityFile.GetRecordsNum();
+    int32_t iBaseColumnCount = ActivityFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -3291,12 +2988,12 @@ void CfgData::fetchActivity()
             CfgActivity::CfgActivity(&cfg);
             
             int32_t nIndex = 0;
-            cfg.id = CDBCFile::Search_Posistion(&ActivityFile, i, 0)->iValue;
-            cfg.typeId = CDBCFile::Search_Posistion(&ActivityFile, i, 5)->iValue;
-            int32_t weekday = CDBCFile::Search_Posistion(&ActivityFile, i, 9)->iValue;
-            cfg.begin_date = CDBCFile::Search_Posistion(&ActivityFile, i, 10)->iValue;
-            cfg.end_date = CDBCFile::Search_Posistion(&ActivityFile, i, 11)->iValue;
-            cfg.line = CDBCFile::Search_Posistion(&ActivityFile, i, 12)->iValue;
+            cfg.id = ActivityFile.Search_Posistion( i, 0)->iValue;
+            cfg.typeId = ActivityFile.Search_Posistion( i, 5)->iValue;
+            int32_t weekday = ActivityFile.Search_Posistion( i, 9)->iValue;
+            cfg.begin_date = ActivityFile.Search_Posistion( i, 10)->iValue;
+            cfg.end_date = ActivityFile.Search_Posistion( i, 11)->iValue;
+            cfg.line = ActivityFile.Search_Posistion( i, 12)->iValue;
             
             std::string maps;
             std::string start_hour;
@@ -3305,44 +3002,34 @@ void CfgData::fetchActivity()
             std::string daily;
             
             char v120;
-            std::allocator<char>::allocator(&v120);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&ActivityFile, i, 13);
-            std::string::string(&maps, v1->pString, &v120);
-            std::allocator<char>::~allocator(&v120);
-            
+                    const CDBCFile::FIELD *v1 = ActivityFile.Search_Posistion( i, 13);
+            maps = v1->pString;
+                    
             char v121;
-            std::allocator<char>::allocator(&v121);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&ActivityFile, i, 14);
-            std::string::string(&start_hour, v2->pString, &v121);
-            std::allocator<char>::~allocator(&v121);
-            
-            cfg.duration = CDBCFile::Search_Posistion(&ActivityFile, i, 15)->iValue;
-            cfg.level = CDBCFile::Search_Posistion(&ActivityFile, i, 16)->iValue;
+                    const CDBCFile::FIELD *v2 = ActivityFile.Search_Posistion( i, 14);
+            start_hour = v2->pString;
+                    
+            cfg.duration = ActivityFile.Search_Posistion( i, 15)->iValue;
+            cfg.level = ActivityFile.Search_Posistion( i, 16)->iValue;
             
             char v122;
-            std::allocator<char>::allocator(&v122);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&ActivityFile, i, 17);
-            std::string::string(&position, v3->pString, &v122);
-            std::allocator<char>::~allocator(&v122);
-            
+                    const CDBCFile::FIELD *v3 = ActivityFile.Search_Posistion( i, 17);
+            position = v3->pString;
+                    
             char v123;
-            std::allocator<char>::allocator(&v123);
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&ActivityFile, i, 18);
-            std::string::string(&awards, v4->pString, &v123);
-            std::allocator<char>::~allocator(&v123);
-            
-            cfg.iconid = CDBCFile::Search_Posistion(&ActivityFile, i, 21)->iValue;
-            cfg.world_event_chapter = CDBCFile::Search_Posistion(&ActivityFile, i, 23)->iValue;
-            int32_t target_mapid = CDBCFile::Search_Posistion(&ActivityFile, i, 24)->iValue;
-            int32_t target_regiona = CDBCFile::Search_Posistion(&ActivityFile, i, 25)->iValue;
+                    const CDBCFile::FIELD *v4 = ActivityFile.Search_Posistion( i, 18);
+            awards = v4->pString;
+                    
+            cfg.iconid = ActivityFile.Search_Posistion( i, 21)->iValue;
+            cfg.world_event_chapter = ActivityFile.Search_Posistion( i, 23)->iValue;
+            int32_t target_mapid = ActivityFile.Search_Posistion( i, 24)->iValue;
+            int32_t target_regiona = ActivityFile.Search_Posistion( i, 25)->iValue;
             
             char v124;
-            std::allocator<char>::allocator(&v124);
-            const CDBCFile::FIELD *v5 = CDBCFile::Search_Posistion(&ActivityFile, i, 26);
-            std::string::string(&daily, v5->pString, &v124);
-            std::allocator<char>::~allocator(&v124);
-            
-            cfg.StartGongGao = CDBCFile::Search_Posistion(&ActivityFile, i, 30)->iValue;
+                    const CDBCFile::FIELD *v5 = ActivityFile.Search_Posistion( i, 26);
+            daily = v5->pString;
+                    
+            cfg.StartGongGao = ActivityFile.Search_Posistion( i, 30)->iValue;
             
             // 解析星期几
             while (weekday > 0)
@@ -3358,20 +3045,14 @@ void CfgData::fetchActivity()
                 std::string delims;
                 std::string str;
                 char v127;
-                std::allocator<char>::allocator(&v127);
-                std::string::string(&delims, ":", &v127);
+                            delims = ":";
                 
                 char v129;
-                std::allocator<char>::allocator(&v129);
-                std::string::string(&str, std::string::c_str(&awards), &v129);
+                            str = std::string::c_str(&awards);
                 
                 StringVector strParams;
-                Answer::StringUtility::split(&strParams, &str, &delims, 0);
-                std::string::~string(&str);
-                std::allocator<char>::~allocator(&v129);
-                std::string::~string(&delims);
-                std::allocator<char>::~allocator(&v127);
-                
+                StringUtility::split(&strParams, &str, &delims, 0);
+                                                                
                 int16_t nsize = (int16_t)strParams.size();
                 switch (cfg.typeId)
                 {
@@ -3406,20 +3087,14 @@ void CfgData::fetchActivity()
                 std::string v130;
                 std::string v132;
                 char v131;
-                std::allocator<char>::allocator(&v131);
-                std::string::string(&v130, ":", &v131);
+                            v130 = ":";
                 
                 char v133;
-                std::allocator<char>::allocator(&v133);
-                std::string::string(&v132, std::string::c_str(&daily), &v133);
+                            v132 = std::string::c_str(&daily);
                 
                 StringVector strParams_0;
-                Answer::StringUtility::split(&strParams_0, &v132, &v130, 0);
-                std::string::~string(&v132);
-                std::allocator<char>::~allocator(&v133);
-                std::string::~string(&v130);
-                std::allocator<char>::~allocator(&v131);
-                
+                StringUtility::split(&strParams_0, &v132, &v130, 0);
+                                                                
                 int16_t nsize_0 = (int16_t)strParams_0.size();
                 std::vector<int> v78;
                 v78.resize(nsize_0, 0);
@@ -3442,20 +3117,14 @@ void CfgData::fetchActivity()
                 std::string v134;
                 std::string v136;
                 char v135;
-                std::allocator<char>::allocator(&v135);
-                std::string::string(&v134, ":", &v135);
+                            v134 = ":";
                 
                 char v137;
-                std::allocator<char>::allocator(&v137);
-                std::string::string(&v136, std::string::c_str(&maps), &v137);
+                            v136 = std::string::c_str(&maps);
                 
                 StringVector strMaps;
-                Answer::StringUtility::split(&strMaps, &v136, &v134, 0);
-                std::string::~string(&v136);
-                std::allocator<char>::~allocator(&v137);
-                std::string::~string(&v134);
-                std::allocator<char>::~allocator(&v135);
-                
+                StringUtility::split(&strMaps, &v136, &v134, 0);
+                                                                
                 for (size_t j_1 = 0; j_1 < strMaps.size(); ++j_1)
                 {
                     std::string* v15 = strMaps[j_1];
@@ -3470,20 +3139,14 @@ void CfgData::fetchActivity()
                 std::string v139;
                 std::string v141;
                 char v140;
-                std::allocator<char>::allocator(&v140);
-                std::string::string(&v139, ":", &v140);
+                            v139 = ":";
                 
                 char v142;
-                std::allocator<char>::allocator(&v142);
-                std::string::string(&v141, std::string::c_str(&position), &v142);
+                            v141 = std::string::c_str(&position);
                 
                 StringVector strParams_1;
-                Answer::StringUtility::split(&strParams_1, &v141, &v139, 0);
-                std::string::~string(&v141);
-                std::allocator<char>::~allocator(&v142);
-                std::string::~string(&v139);
-                std::allocator<char>::~allocator(&v140);
-                
+                StringUtility::split(&strParams_1, &v141, &v139, 0);
+                                                                
                 if (strParams_1.size() == 2)
                 {
                     std::string* v19 = strParams_1[0];
@@ -3492,21 +3155,15 @@ void CfgData::fetchActivity()
                     std::string v143;
                     std::string v145;
                     char v144;
-                    std::allocator<char>::allocator(&v144);
-                    std::string::string(&v143, "|", &v144);
+                                    v143 = "|";
                     
                     char v146;
-                    std::allocator<char>::allocator(&v146);
-                    std::string* v21 = strParams_1[1];
-                    std::string::string(&v145, std::string::c_str(v21), &v146);
+                                    std::string* v21 = strParams_1[1];
+                    v145 = std::string::c_str(v21);
                     
                     StringVector stritemParams;
-                    Answer::StringUtility::split(&stritemParams, &v145, &v143, 0);
-                    std::string::~string(&v145);
-                    std::allocator<char>::~allocator(&v146);
-                    std::string::~string(&v143);
-                    std::allocator<char>::~allocator(&v144);
-                    
+                    StringUtility::split(&stritemParams, &v145, &v143, 0);
+                                                                                    
                     for (size_t j_2 = 0; j_2 < stritemParams.size(); ++j_2)
                     {
                         std::string* v23 = stritemParams[j_2];
@@ -3523,21 +3180,15 @@ void CfgData::fetchActivity()
                     std::string v148;
                     std::string v150;
                     char v149;
-                    std::allocator<char>::allocator(&v149);
-                    std::string::string(&v148, "|", &v149);
+                                    v148 = "|";
                     
                     char v151;
-                    std::allocator<char>::allocator(&v151);
-                    std::string* v27 = strParams_1[1];
-                    std::string::string(&v150, std::string::c_str(v27), &v151);
+                                    std::string* v27 = strParams_1[1];
+                    v150 = std::string::c_str(v27);
                     
                     StringVector stritemParams_0;
-                    Answer::StringUtility::split(&stritemParams_0, &v150, &v148, 0);
-                    std::string::~string(&v150);
-                    std::allocator<char>::~allocator(&v151);
-                    std::string::~string(&v148);
-                    std::allocator<char>::~allocator(&v149);
-                    
+                    StringUtility::split(&stritemParams_0, &v150, &v148, 0);
+                                                                                    
                     for (size_t j_3 = 0; j_3 < stritemParams_0.size(); ++j_3)
                     {
                         std::string* v29 = stritemParams_0[j_3];
@@ -3548,23 +3199,17 @@ void CfgData::fetchActivity()
                     std::string v154;
                     std::string v156;
                     char v155;
-                    std::allocator<char>::allocator(&v155);
-                    std::string::string(&v154, "|", &v155);
+                                    v154 = "|";
                     
                     char v157;
-                    std::allocator<char>::allocator(&v157);
-                    std::string* v31 = strParams_1[2];
-                    std::string::string(&v156, std::string::c_str(v31), &v157);
+                                    std::string* v31 = strParams_1[2];
+                    v156 = std::string::c_str(v31);
                     
                     StringVector v153;
-                    Answer::StringUtility::split(&v153, &v156, &v154, 0);
+                    StringUtility::split(&v153, &v156, &v154, 0);
                     stritemParams_0.operator=(v153);
                     v153.~vector();
-                    std::string::~string(&v156);
-                    std::allocator<char>::~allocator(&v157);
-                    std::string::~string(&v154);
-                    std::allocator<char>::~allocator(&v155);
-                    
+                                                                                    
                     for (size_t k = 0; k < stritemParams_0.size(); ++k)
                     {
                         std::string* v33 = stritemParams_0[k];
@@ -3580,14 +3225,11 @@ void CfgData::fetchActivity()
             {
                 std::string v159;
                 char v160;
-                std::allocator<char>::allocator(&v160);
-                std::string::string(&v159, ":", &v160);
+                            v159 = ":";
                 
                 StringVector vStartHour;
-                Answer::StringUtility::split(&vStartHour, &start_hour, &v159, 0);
-                std::string::~string(&v159);
-                std::allocator<char>::~allocator(&v160);
-                
+                StringUtility::split(&vStartHour, &start_hour, &v159, 0);
+                                        
                 for (size_t j_4 = 0; j_4 < vStartHour.size(); ++j_4)
                 {
                     std::string* v35 = vStartHour[j_4];
@@ -3605,7 +3247,7 @@ void CfgData::fetchActivity()
             }
             
             // 存储到 map
-            auto v38 = std::map<int, CfgActivity>::operator[](&this->m_activities, &cfg.id);
+            auto *v38 = &this->m_activities[cfg.id];
             *v38 = cfg;
             
             // 清理
@@ -3619,12 +3261,11 @@ void CfgData::fetchActivity()
         
         // 加载活动事件
         CDBCFile ActivityEventFile;
-        CDBCFile::CDBCFile(&ActivityEventFile, 0);
-        
-        if (CDBCFile::OpenFromTXT(&ActivityEventFile, "./ServerConfig/Tables/cfg_activity_event.txt"))
+            
+        if (ActivityEventFile.OpenFromTXT( "./ServerConfig/Tables/cfg_activity_event.txt"))
         {
-            int32_t iBaseTableCount_Event = CDBCFile::GetRecordsNum(&ActivityEventFile);
-            int32_t iBaseColumnCount_Event = CDBCFile::GetFieldsNum(&ActivityEventFile);
+            int32_t iBaseTableCount_Event = ActivityEventFile.GetRecordsNum();
+            int32_t iBaseColumnCount_Event = ActivityEventFile.GetFieldsNum();
             
             if (iBaseColumnCount_Event > 0)
             {
@@ -3634,44 +3275,36 @@ void CfgData::fetchActivity()
                     CfgMapEvent::CfgMapEvent(&event);
                     
                     int32_t nIndex = 0;
-                    event.id = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, 0)->iValue;
-                    event.activity_id = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, ++nIndex)->iValue;
-                    event.plant_id = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, ++nIndex)->iValue;
-                    event.bInitOpen = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, ++nIndex)->iValue == 0;
-                    event.count = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, ++nIndex)->iValue;
+                    event.id = ActivityEventFile.Search_Posistion( i_0, 0)->iValue;
+                    event.activity_id = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue;
+                    event.plant_id = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue;
+                    event.bInitOpen = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue == 0;
+                    event.count = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue;
                     ++nIndex;
                     
                     std::string triggerParam;
                     char v161;
-                    std::allocator<char>::allocator(&v161);
-                    const CDBCFile::FIELD *v39 = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, nIndex);
-                    std::string::string(&triggerParam, v39->pString, &v161);
-                    std::allocator<char>::~allocator(&v161);
+                                    const CDBCFile::FIELD *v39 = ActivityEventFile.Search_Posistion( i_0, nIndex);
+                    triggerParam = v39->pString;
+                                    
+                    event.mapid = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue;
                     
-                    event.mapid = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, ++nIndex)->iValue;
-                    
-                    const CDBCFile::FIELD *v40 = CDBCFile::Search_Posistion(&ActivityEventFile, i_0, ++nIndex);
-                    std::string::operator=(&event.effect, v40->pString);
+                    const CDBCFile::FIELD *v40 = ActivityEventFile.Search_Posistion( i_0, ++nIndex);
+                    event.effect = v40->pString;
                     ++nIndex;
                     
                     // 解析 trigger_param
                     std::string v162;
                     std::string v164;
                     char v163;
-                    std::allocator<char>::allocator(&v163);
-                    std::string::string(&v162, ":", &v163);
+                                    v162 = ":";
                     
                     char v165;
-                    std::allocator<char>::allocator(&v165);
-                    std::string::string(&v164, std::string::c_str(&triggerParam), &v165);
+                                    v164 = std::string::c_str(&triggerParam);
                     
                     StringVector strParams_2;
-                    Answer::StringUtility::split(&strParams_2, &v164, &v162, 0);
-                    std::string::~string(&v164);
-                    std::allocator<char>::~allocator(&v165);
-                    std::string::~string(&v162);
-                    std::allocator<char>::~allocator(&v163);
-                    
+                    StringUtility::split(&strParams_2, &v164, &v162, 0);
+                                                                                    
                     for (auto& strParam : strParams_2)
                     {
                         int val = atoi(std::string::c_str(strParam));
@@ -3688,16 +3321,14 @@ void CfgData::fetchActivity()
                     event.~CfgMapEvent();
                 }
             }
-            CDBCFile::~CDBCFile(&ActivityEventFile);
-            
+                    
             // 加载活动怪物
             CDBCFile ActivityMonsterFile;
-            CDBCFile::CDBCFile(&ActivityMonsterFile, 0);
-            
-            if (CDBCFile::OpenFromTXT(&ActivityMonsterFile, "./ServerConfig/Tables/cfg_activity_monster.txt"))
+                    
+            if (ActivityMonsterFile.OpenFromTXT( "./ServerConfig/Tables/cfg_activity_monster.txt"))
             {
-                int32_t iBaseTableCount_Monster = CDBCFile::GetRecordsNum(&ActivityMonsterFile);
-                int32_t iBaseColumnCount_Monster = CDBCFile::GetFieldsNum(&ActivityMonsterFile);
+                int32_t iBaseTableCount_Monster = ActivityMonsterFile.GetRecordsNum();
+                int32_t iBaseColumnCount_Monster = ActivityMonsterFile.GetFieldsNum();
                 
                 if (iBaseColumnCount_Monster > 0)
                 {
@@ -3706,59 +3337,49 @@ void CfgData::fetchActivity()
                         CfgActivityMonster monster;
                         CfgActivityMonster::CfgActivityMonster(&monster);
                         
-                        monster.id = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 0)->iValue;
-                        monster.wave = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 1)->iValue;
-                        monster.mid = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 2)->iValue;
-                        monster.count = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 3)->iValue;
-                        monster.side = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 4)->iValue;
+                        monster.id = ActivityMonsterFile.Search_Posistion( i_1, 0)->iValue;
+                        monster.wave = ActivityMonsterFile.Search_Posistion( i_1, 1)->iValue;
+                        monster.mid = ActivityMonsterFile.Search_Posistion( i_1, 2)->iValue;
+                        monster.count = ActivityMonsterFile.Search_Posistion( i_1, 3)->iValue;
+                        monster.side = ActivityMonsterFile.Search_Posistion( i_1, 4)->iValue;
                         
                         std::string road;
                         char v168;
-                        std::allocator<char>::allocator(&v168);
-                        const CDBCFile::FIELD *v46 = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 5);
-                        std::string::string(&road, v46->pString, &v168);
-                        std::allocator<char>::~allocator(&v168);
-                        
-                        monster.x = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 6)->iValue;
-                        monster.y = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 7)->iValue;
-                        monster.delay = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 8)->iValue;
-                        monster.times = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 9)->iValue;
-                        monster.buff = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 10)->iValue;
+                                            const CDBCFile::FIELD *v46 = ActivityMonsterFile.Search_Posistion( i_1, 5);
+                        road = v46->pString;
+                                            
+                        monster.x = ActivityMonsterFile.Search_Posistion( i_1, 6)->iValue;
+                        monster.y = ActivityMonsterFile.Search_Posistion( i_1, 7)->iValue;
+                        monster.delay = ActivityMonsterFile.Search_Posistion( i_1, 8)->iValue;
+                        monster.times = ActivityMonsterFile.Search_Posistion( i_1, 9)->iValue;
+                        monster.buff = ActivityMonsterFile.Search_Posistion( i_1, 10)->iValue;
                         
                         std::string randpos;
                         char v169;
-                        std::allocator<char>::allocator(&v169);
-                        const CDBCFile::FIELD *v47 = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 11);
-                        std::string::string(&randpos, v47->pString, &v169);
-                        std::allocator<char>::~allocator(&v169);
-                        
-                        monster.left = CDBCFile::Search_Posistion(&ActivityMonsterFile, i_1, 12)->iValue;
+                                            const CDBCFile::FIELD *v47 = ActivityMonsterFile.Search_Posistion( i_1, 11);
+                        randpos = v47->pString;
+                                            
+                        monster.left = ActivityMonsterFile.Search_Posistion( i_1, 12)->iValue;
                         
                         // 解析路线
                         if (road.size() > 3)
                         {
                             std::string v170;
                             char v171;
-                            std::allocator<char>::allocator(&v171);
-                            std::string::string(&v170, ":", &v171);
+                                                    v170 = ":";
                             
                             StringVector vRoad;
-                            Answer::StringUtility::split(&vRoad, &road, &v170, 0);
-                            std::string::~string(&v170);
-                            std::allocator<char>::~allocator(&v171);
-                            
+                            StringUtility::split(&vRoad, &road, &v170, 0);
+                                                                            
                             for (size_t j_5 = 0; j_5 < vRoad.size(); ++j_5)
                             {
                                 std::string v172;
                                 char v173;
-                                std::allocator<char>::allocator(&v173);
-                                std::string::string(&v172, ",", &v173);
+                                                            v172 = ",";
                                 
                                 StringVector vPos;
-                                Answer::StringUtility::split(&vPos, vRoad[j_5], &v172, 0);
-                                std::string::~string(&v172);
-                                std::allocator<char>::~allocator(&v173);
-                                
+                                StringUtility::split(vPos, vRoad[j_5], v172);
+                                                                                        
                                 if (vPos.size() == 2)
                                 {
                                     Position pos;
@@ -3776,26 +3397,20 @@ void CfgData::fetchActivity()
                         {
                             std::string v175;
                             char v176;
-                            std::allocator<char>::allocator(&v176);
-                            std::string::string(&v175, "|", &v176);
+                                                    v175 = "|";
                             
                             StringVector vRandPos;
-                            Answer::StringUtility::split(&vRandPos, &randpos, &v175, 0);
-                            std::string::~string(&v175);
-                            std::allocator<char>::~allocator(&v176);
-                            
+                            StringUtility::split(&vRandPos, &randpos, &v175, 0);
+                                                                            
                             for (size_t j_6 = 0; j_6 < vRandPos.size(); ++j_6)
                             {
                                 std::string v177;
                                 char v178;
-                                std::allocator<char>::allocator(&v178);
-                                std::string::string(&v177, ":", &v178);
+                                                            v177 = ":";
                                 
                                 StringVector vPos_0;
-                                Answer::StringUtility::split(&vPos_0, vRandPos[j_6], &v177, 0);
-                                std::string::~string(&v177);
-                                std::allocator<char>::~allocator(&v178);
-                                
+                                StringUtility::split(vPos_0, vRandPos[j_6], v177);
+                                                                                        
                                 if (vPos_0.size() == 2)
                                 {
                                     Position pos;
@@ -3808,7 +3423,7 @@ void CfgData::fetchActivity()
                             vRandPos.~vector();
                         }
                         
-                        auto v64 = std::map<int, CfgActivityMonster>::operator[](&this->m_activityMonsters, &monster.id);
+                        auto *v64 = &this->m_activityMonsters[monster.id];
                         *v64 = monster;
                         
                         randpos.~string();
@@ -3816,17 +3431,15 @@ void CfgData::fetchActivity()
                         monster.~CfgActivityMonster();
                     }
                 }
-                CDBCFile::~CDBCFile(&ActivityMonsterFile);
-            }
+                        }
             
             // 加载活动NPC
             CDBCFile ActivityNpcFile;
-            CDBCFile::CDBCFile(&ActivityNpcFile, 0);
-            
-            if (CDBCFile::OpenFromTXT(&ActivityNpcFile, "./ServerConfig/Tables/cfg_activity_npc.txt"))
+                    
+            if (ActivityNpcFile.OpenFromTXT( "./ServerConfig/Tables/cfg_activity_npc.txt"))
             {
-                int32_t iBaseTableCount_Npc = CDBCFile::GetRecordsNum(&ActivityNpcFile);
-                int32_t iBaseColumnCount_Npc = CDBCFile::GetFieldsNum(&ActivityNpcFile);
+                int32_t iBaseTableCount_Npc = ActivityNpcFile.GetRecordsNum();
+                int32_t iBaseColumnCount_Npc = ActivityNpcFile.GetFieldsNum();
                 
                 if (iBaseColumnCount_Npc > 0)
                 {
@@ -3835,35 +3448,27 @@ void CfgData::fetchActivity()
                         CfgActivityNpc npc;
                         CfgActivityNpc::CfgActivityNpc(&npc);
                         
-                        npc.id = CDBCFile::Search_Posistion(&ActivityNpcFile, i_2, 0)->iValue;
-                        npc.activity_id = CDBCFile::Search_Posistion(&ActivityNpcFile, i_2, 1)->iValue;
-                        npc.npc_id = CDBCFile::Search_Posistion(&ActivityNpcFile, i_2, 2)->iValue;
-                        npc.count = CDBCFile::Search_Posistion(&ActivityNpcFile, i_2, 3)->iValue;
+                        npc.id = ActivityNpcFile.Search_Posistion( i_2, 0)->iValue;
+                        npc.activity_id = ActivityNpcFile.Search_Posistion( i_2, 1)->iValue;
+                        npc.npc_id = ActivityNpcFile.Search_Posistion( i_2, 2)->iValue;
+                        npc.count = ActivityNpcFile.Search_Posistion( i_2, 3)->iValue;
                         
                         std::string regionId;
                         char v180;
-                        std::allocator<char>::allocator(&v180);
-                        const CDBCFile::FIELD *v65 = CDBCFile::Search_Posistion(&ActivityNpcFile, i_2, 4);
-                        std::string::string(&regionId, v65->pString, &v180);
-                        std::allocator<char>::~allocator(&v180);
-                        
+                                            const CDBCFile::FIELD *v65 = ActivityNpcFile.Search_Posistion( i_2, 4);
+                        regionId = v65->pString;
+                                            
                         std::string v181;
                         char v182;
-                        std::allocator<char>::allocator(&v182);
-                        std::string::string(&v181, ":", &v182);
+                                            v181 = ":";
                         
                         char v184;
-                        std::allocator<char>::allocator(&v184);
-                        std::string v183;
-                        std::string::string(&v183, std::string::c_str(&regionId), &v184);
+                                            std::string v183;
+                        v183 = std::string::c_str(&regionId);
                         
                         StringVector strRegions;
-                        Answer::StringUtility::split(&strRegions, &v183, &v181, 0);
-                        std::string::~string(&v183);
-                        std::allocator<char>::~allocator(&v184);
-                        std::string::~string(&v181);
-                        std::allocator<char>::~allocator(&v182);
-                        
+                        StringUtility::split(&strRegions, &v183, &v181, 0);
+                                                                                                        
                         for (size_t it_0 = 0; it_0 < strRegions.size(); ++it_0)
                         {
                             std::string* v67 = strRegions[it_0];
@@ -3873,22 +3478,20 @@ void CfgData::fetchActivity()
                         strRegions.~vector();
                         regionId.~string();
                         
-                        auto v69 = std::map<int, CfgActivityNpc>::operator[](&this->m_activityNpcs, &npc.id);
+                        auto *v69 = &this->m_activityNpcs[npc.id];
                         *v69 = npc;
                         npc.~CfgActivityNpc();
                     }
                 }
-                CDBCFile::~CDBCFile(&ActivityNpcFile);
-            }
+                        }
             
             // 加载活动植物
             CDBCFile ActivityPlantFile;
-            CDBCFile::CDBCFile(&ActivityPlantFile, 0);
-            
-            if (CDBCFile::OpenFromTXT(&ActivityPlantFile, "./ServerConfig/Tables/cfg_activity_plant.txt"))
+                    
+            if (ActivityPlantFile.OpenFromTXT( "./ServerConfig/Tables/cfg_activity_plant.txt"))
             {
-                int32_t iBaseTableCount_Plant = CDBCFile::GetRecordsNum(&ActivityPlantFile);
-                int32_t iBaseColumnCount_Plant = CDBCFile::GetFieldsNum(&ActivityPlantFile);
+                int32_t iBaseTableCount_Plant = ActivityPlantFile.GetRecordsNum();
+                int32_t iBaseColumnCount_Plant = ActivityPlantFile.GetFieldsNum();
                 
                 if (iBaseColumnCount_Plant > 0)
                 {
@@ -3897,108 +3500,98 @@ void CfgData::fetchActivity()
                         CfgActivityPlant plant;
                         CfgActivityPlant::CfgActivityPlant(&plant);
                         
-                        plant.id = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 0)->iValue;
-                        plant.activity_id = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 1)->iValue;
-                        plant.plant_id = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 2)->iValue;
-                        plant.count = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 3)->iValue;
-                        plant.wave = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 4)->iValue;
-                        plant.region_id = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 5)->iValue;
-                        plant.whoplant = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 6)->iValue;
+                        plant.id = ActivityPlantFile.Search_Posistion( i_3, 0)->iValue;
+                        plant.activity_id = ActivityPlantFile.Search_Posistion( i_3, 1)->iValue;
+                        plant.plant_id = ActivityPlantFile.Search_Posistion( i_3, 2)->iValue;
+                        plant.count = ActivityPlantFile.Search_Posistion( i_3, 3)->iValue;
+                        plant.wave = ActivityPlantFile.Search_Posistion( i_3, 4)->iValue;
+                        plant.region_id = ActivityPlantFile.Search_Posistion( i_3, 5)->iValue;
+                        plant.whoplant = ActivityPlantFile.Search_Posistion( i_3, 6)->iValue;
                         
                         std::string strPos;
                         char v189;
-                        std::allocator<char>::allocator(&v189);
-                        const CDBCFile::FIELD *v70 = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 7);
-                        std::string::string(&strPos, v70->pString, &v189);
+                                            const CDBCFile::FIELD *v70 = ActivityPlantFile.Search_Posistion( i_3, 7);
+                        strPos = v70->pString;
                         
                         std::vector<Position> v187;
                         CfgData::paresPosition(&v187, this, &strPos);
                         plant.EnterPosVector = v187;
                         v187.~vector();
                         strPos.~string();
-                        std::allocator<char>::~allocator(&v189);
+                                            
+                        plant.life_time = ActivityPlantFile.Search_Posistion( i_3, 8)->iValue;
                         
-                        plant.life_time = CDBCFile::Search_Posistion(&ActivityPlantFile, i_3, 8)->iValue;
-                        
-                        auto v71 = std::map<int, CfgActivityPlant>::operator[](&this->m_activityPlants, &plant.id);
+                        auto *v71 = &this->m_activityPlants[plant.id];
                         *v71 = plant;
                         plant.~CfgActivityPlant();
                     }
                 }
-                CDBCFile::~CDBCFile(&ActivityPlantFile);
-            }
+                        }
             
             // 加载活动掉落
             CDBCFile ActivityDropFile;
-            CDBCFile::CDBCFile(&ActivityDropFile, 0);
-            
-            if (CDBCFile::OpenFromTXT(&ActivityDropFile, "./ServerConfig/Tables/cfg_activity_drop.txt"))
+                    
+            if (ActivityDropFile.OpenFromTXT( "./ServerConfig/Tables/cfg_activity_drop.txt"))
             {
-                int32_t iBaseTableCount_Drop = CDBCFile::GetRecordsNum(&ActivityDropFile);
-                int32_t iBaseColumnCount_Drop = CDBCFile::GetFieldsNum(&ActivityDropFile);
+                int32_t iBaseTableCount_Drop = ActivityDropFile.GetRecordsNum();
+                int32_t iBaseColumnCount_Drop = ActivityDropFile.GetFieldsNum();
                 
                 if (iBaseColumnCount_Drop > 0)
                 {
                     for (int32_t i_4 = 0; i_4 < iBaseTableCount_Drop; ++i_4)
                     {
                         CfgActivityDrop drop;
-                        drop.id = CDBCFile::Search_Posistion(&ActivityDropFile, i_4, 0)->iValue;
-                        drop.activity_id = CDBCFile::Search_Posistion(&ActivityDropFile, i_4, 1)->iValue;
-                        drop.monster_min_level = CDBCFile::Search_Posistion(&ActivityDropFile, i_4, 2)->iValue;
-                        drop.drop_group_id = CDBCFile::Search_Posistion(&ActivityDropFile, i_4, 3)->iValue;
-                        drop.probability = CDBCFile::Search_Posistion(&ActivityDropFile, i_4, 4)->iValue;
-                        drop.bind_type = CDBCFile::Search_Posistion(&ActivityDropFile, i_4, 5)->iValue;
+                        drop.id = ActivityDropFile.Search_Posistion( i_4, 0)->iValue;
+                        drop.activity_id = ActivityDropFile.Search_Posistion( i_4, 1)->iValue;
+                        drop.monster_min_level = ActivityDropFile.Search_Posistion( i_4, 2)->iValue;
+                        drop.drop_group_id = ActivityDropFile.Search_Posistion( i_4, 3)->iValue;
+                        drop.probability = ActivityDropFile.Search_Posistion( i_4, 4)->iValue;
+                        drop.bind_type = ActivityDropFile.Search_Posistion( i_4, 5)->iValue;
                         
-                        auto v72 = std::map<int, CfgActivityDrop>::operator[](&this->m_activityDrops, &drop.id);
+                        auto *v72 = &this->m_activityDrops[drop.id];
                         *v72 = drop;
                     }
                 }
-                CDBCFile::~CDBCFile(&ActivityDropFile);
-            }
+                        }
             
             // 加载活动陷阱
             CDBCFile ActivityTrapFile;
-            CDBCFile::CDBCFile(&ActivityTrapFile, 0);
-            
-            if (CDBCFile::OpenFromTXT(&ActivityTrapFile, "./ServerConfig/Tables/cfg_activity_trap.txt"))
+                    
+            if (ActivityTrapFile.OpenFromTXT( "./ServerConfig/Tables/cfg_activity_trap.txt"))
             {
-                int32_t iBaseTableCount_Trap = CDBCFile::GetRecordsNum(&ActivityTrapFile);
-                int32_t iBaseColumnCount_Trap = CDBCFile::GetFieldsNum(&ActivityTrapFile);
+                int32_t iBaseTableCount_Trap = ActivityTrapFile.GetRecordsNum();
+                int32_t iBaseColumnCount_Trap = ActivityTrapFile.GetFieldsNum();
                 
                 if (iBaseColumnCount_Trap > 0)
                 {
                     for (int32_t i_5 = 0; i_5 < iBaseTableCount_Trap; ++i_5)
                     {
                         CfgActivityTrap trap;
-                        trap.id = CDBCFile::Search_Posistion(&ActivityTrapFile, i_5, 0)->iValue;
-                        trap.tid = CDBCFile::Search_Posistion(&ActivityTrapFile, i_5, 1)->iValue;
-                        trap.x = CDBCFile::Search_Posistion(&ActivityTrapFile, i_5, 2)->iValue;
-                        trap.y = CDBCFile::Search_Posistion(&ActivityTrapFile, i_5, 3)->iValue;
+                        trap.id = ActivityTrapFile.Search_Posistion( i_5, 0)->iValue;
+                        trap.tid = ActivityTrapFile.Search_Posistion( i_5, 1)->iValue;
+                        trap.x = ActivityTrapFile.Search_Posistion( i_5, 2)->iValue;
+                        trap.y = ActivityTrapFile.Search_Posistion( i_5, 3)->iValue;
                         
-                        auto v73 = std::map<int, CfgActivityTrap>::operator[](&this->m_activityTraps, &trap.id);
+                        auto *v73 = &this->m_activityTraps[trap.id];
                         *v73 = trap;
                     }
                 }
-                CDBCFile::~CDBCFile(&ActivityTrapFile);
-            }
+                        }
         }
     }
-    CDBCFile::~CDBCFile(&ActivityFile);
 }
 void CfgData::fetchBuff()
 {
     CDBCFile BuffFile;
-    CDBCFile::CDBCFile(&BuffFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&BuffFile, "./ServerConfig/Tables/cfg_buff.txt"))
+    if (!BuffFile.OpenFromTXT( "./ServerConfig/Tables/cfg_buff.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_buff.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&BuffFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&BuffFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&BuffFile);
+    int32_t iBaseTableCount = BuffFile.GetRecordsNum();
+    int32_t iBaseColumnCount = BuffFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -4008,44 +3601,42 @@ void CfgData::fetchBuff()
             CfgBuff::CfgBuff(&buff);
             
             int32_t nIndex = 0;
-            buff.id = CDBCFile::Search_Posistion(&BuffFile, i, nIndex++)->iValue;
-            buff.groupid = CDBCFile::Search_Posistion(&BuffFile, i, nIndex++)->iValue;
-            buff.attack_type = CDBCFile::Search_Posistion(&BuffFile, i, nIndex++)->iValue;
-            buff.level = CDBCFile::Search_Posistion(&BuffFile, i, nIndex++)->iValue;
+            buff.id = BuffFile.Search_Posistion( i, nIndex++)->iValue;
+            buff.groupid = BuffFile.Search_Posistion( i, nIndex++)->iValue;
+            buff.attack_type = BuffFile.Search_Posistion( i, nIndex++)->iValue;
+            buff.level = BuffFile.Search_Posistion( i, nIndex++)->iValue;
             ++nIndex;
-            buff.beneficial = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.special = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.duration = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.interval = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
+            buff.beneficial = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.special = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.duration = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.interval = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string str;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&BuffFile, i, nIndex);
-            std::string::string(&str, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = BuffFile.Search_Posistion( i, nIndex);
+            str = v1->pString;
             
             BuffAttrVector __x;
             CfgData::paraseBuffAttr(&__x, this, &str);
             buff.buffAttr = __x;
             __x.~vector();
             str.~string();
-            std::allocator<char>::~allocator(&v8);
-            ++nIndex;
+                    ++nIndex;
             
-            buff.isShow = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
+            buff.isShow = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
-            buff.modify = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.control = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.hpValue = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.hpPecent = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.shieldValue = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.shieldRatio = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.effectType = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.effectTimes = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.canRemove = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
-            buff.canRecover = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
+            buff.modify = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.control = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.hpValue = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.hpPecent = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.shieldValue = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.shieldRatio = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.effectType = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.effectTimes = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.canRemove = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+            buff.canRecover = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
             ++nIndex;
@@ -4053,25 +3644,22 @@ void CfgData::fetchBuff()
             
             std::string v9;
             char v10;
-            std::allocator<char>::allocator(&v10);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&BuffFile, i, nIndex);
-            std::string::string(&v9, v2->pString, &v10);
+                    const CDBCFile::FIELD *v2 = BuffFile.Search_Posistion( i, nIndex);
+            v9 = v2->pString;
             buff.angry = paraseParam2(&v9);
             v9.~string();
-            std::allocator<char>::~allocator(&v10);
-            
-            buff.battle = CDBCFile::Search_Posistion(&BuffFile, i, ++nIndex)->iValue;
+                    
+            buff.battle = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto *v3 = std::map<int, CfgBuff>::operator[](&this->m_buffs, &buff.id);
+            auto *v3 = &this->m_buffs[buff.id];
             *v3 = buff;
             buff.~CfgBuff();
         }
     }
-    CDBCFile::~CDBCFile(&BuffFile);
 }
 
-BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector *__return_ptr retstr, const std::string *const str)
+BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector const std::string *const str)
 {
     std::vector<BuffAttr>::vector(retstr);
     
@@ -4079,14 +3667,12 @@ BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector *__return_ptr retstr, con
     {
         std::string delims;
         char v16;
-        std::allocator<char>::allocator(&v16);
-        std::string::string(&delims, "|", &v16);
+            delims = "|";
         
         StringVector vstr;
-        Answer::StringUtility::split(&vstr, str, &delims, 0);
+        StringUtility::split(vstr, *str, delims);
         delims.~string();
-        std::allocator<char>::~allocator(&v16);
-        
+            
         if (!vstr.empty())
         {
             int32_t nSize = (int32_t)vstr.size();
@@ -4096,14 +3682,12 @@ BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector *__return_ptr retstr, con
             {
                 std::string v17;
                 char v18;
-                std::allocator<char>::allocator(&v18);
-                std::string::string(&v17, ":", &v18);
+                            v17 = ":";
                 
                 StringVector vBuff;
-                Answer::StringUtility::split(&vBuff, vstr[i], &v17, 0);
+                StringUtility::split(vBuff, vstr[i], v17);
                 v17.~string();
-                std::allocator<char>::~allocator(&v18);
-                
+                            
                 if (vBuff.size() == 3)
                 {
                     BuffAttr stu;
@@ -4123,17 +3707,15 @@ BuffAttrVector *CfgData::paraseBuffAttr(BuffAttrVector *__return_ptr retstr, con
 void CfgData::fetchDungeon()
 {
     CDBCFile DungeonFile;
-    CDBCFile::CDBCFile(&DungeonFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&DungeonFile, "./ServerConfig/Tables/cfg_dungeon.txt"))
+    if (!DungeonFile.OpenFromTXT( "./ServerConfig/Tables/cfg_dungeon.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_dungeon.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&DungeonFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&DungeonFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&DungeonFile);
+    int32_t iBaseTableCount = DungeonFile.GetRecordsNum();
+    int32_t iBaseColumnCount = DungeonFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -4141,171 +3723,155 @@ void CfgData::fetchDungeon()
         {
             
             int32_t nIndex = 0;
-            dungeon.id = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex++)->iValue;
+            dungeon.id = DungeonFile.Search_Posistion( i, nIndex++)->iValue;
             
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex);
-            std::string::operator=(&dungeon.name, v1->pString);
+            const CDBCFile::FIELD *v1 = DungeonFile.Search_Posistion( i, nIndex);
+            dungeon.name = v1->pString;
             ++nIndex;
-            ++nIndex;
-            
-            dungeon.mapid = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.x = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.y = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.type = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.sequence = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.group_id = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.duration = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.job = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.level = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.maxLevel = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.vip = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.player_num = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
             ++nIndex;
             
-            int32_t weekday = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.start_hour = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.end_hour = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.daily_count = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.mapid = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.x = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.y = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.type = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.sequence = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.group_id = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.duration = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.job = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.level = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.maxLevel = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.vip = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.player_num = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            dungeon.last_id = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.next_id = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.player_buff = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            
+            int32_t weekday = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.start_hour = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.end_hour = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.daily_count = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            ++nIndex;
+            dungeon.last_id = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.next_id = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.player_buff = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
-            dungeon.star = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.double_cost = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.reward_time = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.star = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.double_cost = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.reward_time = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
             
             std::string strItem;
             char v21;
-            std::allocator<char>::allocator(&v21);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex);
-            std::string::string(&strItem, v2->pString, &v21);
+                    const CDBCFile::FIELD *v2 = DungeonFile.Search_Posistion( i, nIndex);
+            strItem = v2->pString;
             
             ItemData v55 = CItemHelper::parseItemDataString(&strItem);
             dungeon.costItem.m_nId = v55.m_nId;
             dungeon.costItem.m_nClass = v55.m_nClass;
             dungeon.costItem.m_nCount = v55.m_nCount;
             strItem.~string();
-            std::allocator<char>::~allocator(&v21);
-            ++nIndex;
+                    ++nIndex;
             
             std::string strItems;
             char v24;
-            std::allocator<char>::allocator(&v24);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex);
-            std::string::string(&strItems, v3->pString, &v24);
+                    const CDBCFile::FIELD *v3 = DungeonFile.Search_Posistion( i, nIndex);
+            strItems = v3->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             dungeon.rewardItem = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v24);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v26;
             char v27;
-            std::allocator<char>::allocator(&v27);
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex);
-            std::string::string(&v26, v4->pString, &v27);
+                    const CDBCFile::FIELD *v4 = DungeonFile.Search_Posistion( i, nIndex);
+            v26 = v4->pString;
             
             MemChrBagVector v25;
             CItemHelper::parseItemVectorString(&v25, &v26);
             dungeon.rewardOnce = v25;
             v25.~vector();
             v26.~string();
-            std::allocator<char>::~allocator(&v27);
-            ++nIndex;
+                    ++nIndex;
             
-            dungeon.Battle = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.costMoney = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.costGold = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.Battle = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.costMoney = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.costGold = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
-            dungeon.buyTimes = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.buyCost = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.quickDoneCost = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.quickDoneDrop = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.needUpTowerStar = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.summon_cost = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.summon_boss = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.buyTimes = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.buyCost = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.quickDoneCost = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.quickDoneDrop = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.needUpTowerStar = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.summon_cost = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.summon_boss = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
-            dungeon.rand_time = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.rand_time = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
             ++nIndex;
-            dungeon.task_id = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.task_id = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
-            dungeon.stay_position = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.stay_position = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string path;
             std::string str;
             char v30;
-            std::allocator<char>::allocator(&v30);
-            std::string::string(&path, "./ServerConfig/Tables/cfg_dungeon.txt", &v30);
+                    path = "./ServerConfig/Tables/cfg_dungeon.txt";
             
             char v32;
-            std::allocator<char>::allocator(&v32);
-            const CDBCFile::FIELD *v5 = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex);
-            std::string::string(&str, v5->pString, &v32);
+                    const CDBCFile::FIELD *v5 = DungeonFile.Search_Posistion( i, nIndex);
+            str = v5->pString;
             
             Int32Vector v28;
             CfgData::paraseInt32Vector(&v28, this, &str, &path, 0);
             dungeon.win_star = v28;
             v28.~vector();
             str.~string();
-            std::allocator<char>::~allocator(&v32);
-            path.~string();
-            std::allocator<char>::~allocator(&v30);
-            ++nIndex;
+                    path.~string();
+                    ++nIndex;
             
             std::string v34;
             char v35;
-            std::allocator<char>::allocator(&v35);
-            const CDBCFile::FIELD *v6 = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex);
-            std::string::string(&v34, v6->pString, &v35);
+                    const CDBCFile::FIELD *v6 = DungeonFile.Search_Posistion( i, nIndex);
+            v34 = v6->pString;
             
             MemChrBagVector v33;
             CItemHelper::parseItemVectorString(&v33, &v34);
             dungeon.star_reward = v33;
             v33.~vector();
             v34.~string();
-            std::allocator<char>::~allocator(&v35);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v37;
             char v38;
-            std::allocator<char>::allocator(&v38);
-            std::string::string(&v37, "./ServerConfig/Tables/cfg_dungeon.txt", &v38);
+                    v37 = "./ServerConfig/Tables/cfg_dungeon.txt";
             
             char v40;
-            std::allocator<char>::allocator(&v40);
-            const CDBCFile::FIELD *v7 = CDBCFile::Search_Posistion(&DungeonFile, i, nIndex);
-            std::string::string(&v39, v7->pString, &v40);
+                    const CDBCFile::FIELD *v7 = DungeonFile.Search_Posistion( i, nIndex);
+            v39 = v7->pString;
             
             Int32Vector v36;
             CfgData::paraseInt32Vector(&v36, this, &v39, &v37, 0);
             dungeon.star_ratio = v36;
             v36.~vector();
             v39.~string();
-            std::allocator<char>::~allocator(&v40);
-            v37.~string();
-            std::allocator<char>::~allocator(&v38);
-            ++nIndex;
+                    v37.~string();
+                    ++nIndex;
             
-            dungeon.TeQuan = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.backMapId = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.backX = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.backY = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
-            dungeon.CanEnter = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.TeQuan = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.backMapId = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.backX = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.backY = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+            dungeon.CanEnter = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            dungeon.BuffId = CDBCFile::Search_Posistion(&DungeonFile, i, ++nIndex)->iValue;
+            dungeon.BuffId = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             while (weekday > 0)
@@ -4314,12 +3880,12 @@ void CfgData::fetchDungeon()
                 weekday /= 10;
             }
             
-            auto *v8 = std::map<int, CfgDungeon>::operator[](&this->m_dungeons, &dungeon.id);
+            auto *v8 = &this->m_dungeons[dungeon.id];
             *v8 = dungeon;
             
             if (dungeon.type == 16)
             {
-                auto *v9 = std::map<int, CfgDungeon>::operator[](&this->m_mUpTowerDungeon, &dungeon.star);
+                auto *v9 = &this->m_mUpTowerDungeon[dungeon.star];
                 *v9 = dungeon;
             }
             
@@ -4328,62 +3894,57 @@ void CfgData::fetchDungeon()
         
         // 加载副本奖励
         CDBCFile DungeonRewardFile;
-        CDBCFile::CDBCFile(&DungeonRewardFile, 0);
-        
-        if (CDBCFile::OpenFromTXT(&DungeonRewardFile, "./ServerConfig/Tables/cfg_dungeon_reward.txt"))
+            
+        if (DungeonRewardFile.OpenFromTXT( "./ServerConfig/Tables/cfg_dungeon_reward.txt"))
         {
-            int32_t iBaseTableCount_Reward = CDBCFile::GetRecordsNum(&DungeonRewardFile);
-            int32_t iBaseColumnCount_Reward = CDBCFile::GetFieldsNum(&DungeonRewardFile);
+            int32_t iBaseTableCount_Reward = DungeonRewardFile.GetRecordsNum();
+            int32_t iBaseColumnCount_Reward = DungeonRewardFile.GetFieldsNum();
             
             if (iBaseColumnCount_Reward > 0)
             {
                 for (int32_t i_0 = 0; i_0 < iBaseTableCount_Reward; ++i_0)
                 {
                     CfgDungeonReward reward;
-                    reward.dungeonID = CDBCFile::Search_Posistion(&DungeonRewardFile, i_0, 0)->iValue;
-                    reward.exp = CDBCFile::Search_Posistion(&DungeonRewardFile, i_0, 1)->iValue;
-                    reward.money = CDBCFile::Search_Posistion(&DungeonRewardFile, i_0, 2)->iValue;
-                    reward.cash = CDBCFile::Search_Posistion(&DungeonRewardFile, i_0, 3)->iValue;
-                    reward.groupID = CDBCFile::Search_Posistion(&DungeonRewardFile, i_0, 4)->iValue;
+                    reward.dungeonID = DungeonRewardFile.Search_Posistion( i_0, 0)->iValue;
+                    reward.exp = DungeonRewardFile.Search_Posistion( i_0, 1)->iValue;
+                    reward.money = DungeonRewardFile.Search_Posistion( i_0, 2)->iValue;
+                    reward.cash = DungeonRewardFile.Search_Posistion( i_0, 3)->iValue;
+                    reward.groupID = DungeonRewardFile.Search_Posistion( i_0, 4)->iValue;
                     
-                    auto *v10 = std::map<int, CfgDungeonReward>::operator[](&this->m_dungeonReward, &reward.dungeonID);
+                    auto *v10 = &this->m_dungeonReward[reward.dungeonID];
                     *v10 = reward;
                 }
             }
-            CDBCFile::~CDBCFile(&DungeonRewardFile);
-        }
+                }
         
         // 加载副本掉落组
         CDBCFile DungeonDropFile;
-        CDBCFile::CDBCFile(&DungeonDropFile, 0);
-        
-        if (CDBCFile::OpenFromTXT(&DungeonDropFile, "./ServerConfig/Tables/cfg_dungeon_drop_group.txt"))
+            
+        if (DungeonDropFile.OpenFromTXT( "./ServerConfig/Tables/cfg_dungeon_drop_group.txt"))
         {
-            int32_t iBaseTableCount_Drop = CDBCFile::GetRecordsNum(&DungeonDropFile);
-            int32_t iBaseColumnCount_Drop = CDBCFile::GetFieldsNum(&DungeonDropFile);
+            int32_t iBaseTableCount_Drop = DungeonDropFile.GetRecordsNum();
+            int32_t iBaseColumnCount_Drop = DungeonDropFile.GetFieldsNum();
             
             if (iBaseColumnCount_Drop > 0)
             {
                 for (int32_t i_1 = 0; i_1 < iBaseTableCount_Drop; ++i_1)
                 {
-                    int32_t id = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 0)->iValue;
+                    int32_t id = DungeonDropFile.Search_Posistion( i_1, 0)->iValue;
                     CfgDungeonDrop group;
-                    group.type = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 1)->iValue;
-                    group.item_id = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 3)->iValue;
-                    group.item_class = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 4)->iValue;
-                    group.bind_type = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 5)->iValue;
-                    group.count = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 6)->iValue;
-                    group.weight = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 7)->iValue;
-                    group.probability = CDBCFile::Search_Posistion(&DungeonDropFile, i_1, 8)->iValue;
+                    group.type = DungeonDropFile.Search_Posistion( i_1, 1)->iValue;
+                    group.item_id = DungeonDropFile.Search_Posistion( i_1, 3)->iValue;
+                    group.item_class = DungeonDropFile.Search_Posistion( i_1, 4)->iValue;
+                    group.bind_type = DungeonDropFile.Search_Posistion( i_1, 5)->iValue;
+                    group.count = DungeonDropFile.Search_Posistion( i_1, 6)->iValue;
+                    group.weight = DungeonDropFile.Search_Posistion( i_1, 7)->iValue;
+                    group.probability = DungeonDropFile.Search_Posistion( i_1, 8)->iValue;
                     
-                    auto *v11 = std::map<int, CfgDungeonDropGroup>::operator[](&this->m_dungeonDropGroup, &id);
+                    auto *v11 = &this->m_dungeonDropGroup[id];
                     CfgDungeonDropGroup::Add(v11, &group);
                 }
             }
-            CDBCFile::~CDBCFile(&DungeonDropFile);
-        }
+                }
     }
-    CDBCFile::~CDBCFile(&DungeonFile);
 }
 void CfgData::fetchItem(bool bSend)
 {
@@ -4393,16 +3954,15 @@ void CfgData::fetchItem(bool bSend)
     Answer::RwLock::wrlock(&this->m_itemsLock);
     
     CDBCFile ItemFile;
-    CDBCFile::CDBCFile(&ItemFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&ItemFile, "./ServerConfig/Tables/cfg_item.txt"))
+    if (!ItemFile.OpenFromTXT( "./ServerConfig/Tables/cfg_item.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_item.txt failed,please check!!");
     }
     else
     {
-        int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&ItemFile);
-        int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&ItemFile);
+        int32_t iBaseTableCount = ItemFile.GetRecordsNum();
+        int32_t iBaseColumnCount = ItemFile.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -4410,60 +3970,58 @@ void CfgData::fetchItem(bool bSend)
             {
                 CfgItem *pItem = new CfgItem();
                 
-                pItem->id = CDBCFile::Search_Posistion(&ItemFile, i_1, 0)->iValue;
+                pItem->id = ItemFile.Search_Posistion( i_1, 0)->iValue;
                 
-                const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&ItemFile, i_1, 1);
-                std::string::operator=(&pItem->name, v3->pString);
+                const CDBCFile::FIELD *v3 = ItemFile.Search_Posistion( i_1, 1);
+                pItem->name = v3->pString;
                 
-                const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&ItemFile, i_1, 3);
-                std::string::operator=(&pItem->desc, v4->pString);
+                const CDBCFile::FIELD *v4 = ItemFile.Search_Posistion( i_1, 3);
+                pItem->desc = v4->pString;
                 
-                pItem->type = CDBCFile::Search_Posistion(&ItemFile, i_1, 4)->iValue;
-                pItem->level = CDBCFile::Search_Posistion(&ItemFile, i_1, 5)->iValue;
-                pItem->grade = CDBCFile::Search_Posistion(&ItemFile, i_1, 6)->iValue;
-                pItem->job = CDBCFile::Search_Posistion(&ItemFile, i_1, 7)->iValue;
-                pItem->in_value = CDBCFile::Search_Posistion(&ItemFile, i_1, 8)->iValue;
-                pItem->out_value = CDBCFile::Search_Posistion(&ItemFile, i_1, 9)->iValue;
-                pItem->bind = CDBCFile::Search_Posistion(&ItemFile, i_1, 10)->iValue;
-                pItem->combine = CDBCFile::Search_Posistion(&ItemFile, i_1, 11)->iValue;
-                pItem->quality = CDBCFile::Search_Posistion(&ItemFile, i_1, 12)->iValue;
+                pItem->type = ItemFile.Search_Posistion( i_1, 4)->iValue;
+                pItem->level = ItemFile.Search_Posistion( i_1, 5)->iValue;
+                pItem->grade = ItemFile.Search_Posistion( i_1, 6)->iValue;
+                pItem->job = ItemFile.Search_Posistion( i_1, 7)->iValue;
+                pItem->in_value = ItemFile.Search_Posistion( i_1, 8)->iValue;
+                pItem->out_value = ItemFile.Search_Posistion( i_1, 9)->iValue;
+                pItem->bind = ItemFile.Search_Posistion( i_1, 10)->iValue;
+                pItem->combine = ItemFile.Search_Posistion( i_1, 11)->iValue;
+                pItem->quality = ItemFile.Search_Posistion( i_1, 12)->iValue;
                 
-                const CDBCFile::FIELD *v14 = CDBCFile::Search_Posistion(&ItemFile, i_1, 13);
-                std::string::operator=(&pItem->url, v14->pString);
+                const CDBCFile::FIELD *v14 = ItemFile.Search_Posistion( i_1, 13);
+                pItem->url = v14->pString;
                 
-                const CDBCFile::FIELD *v15 = CDBCFile::Search_Posistion(&ItemFile, i_1, 14);
-                std::string::operator=(&pItem->drop_url, v15->pString);
+                const CDBCFile::FIELD *v15 = ItemFile.Search_Posistion( i_1, 14);
+                pItem->drop_url = v15->pString;
                 
-                const CDBCFile::FIELD *v16 = CDBCFile::Search_Posistion(&ItemFile, i_1, 15);
-                std::string::operator=(&pItem->effect, v16->pString);
+                const CDBCFile::FIELD *v16 = ItemFile.Search_Posistion( i_1, 15);
+                pItem->effect = v16->pString;
                 
-                const CDBCFile::FIELD *v17 = CDBCFile::Search_Posistion(&ItemFile, i_1, 16);
-                std::string::operator=(&pItem->use_method, v17->pString);
+                const CDBCFile::FIELD *v17 = ItemFile.Search_Posistion( i_1, 16);
+                pItem->use_method = v17->pString;
                 
-                pItem->downgrade = CDBCFile::Search_Posistion(&ItemFile, i_1, 19)->iValue;
-                pItem->group_id = CDBCFile::Search_Posistion(&ItemFile, i_1, 20)->iValue;
-                pItem->cd_group = CDBCFile::Search_Posistion(&ItemFile, i_1, 21)->iValue;
-                pItem->overlay = CDBCFile::Search_Posistion(&ItemFile, i_1, 22)->iValue;
-                pItem->can_sell = CDBCFile::Search_Posistion(&ItemFile, i_1, 23)->iValue;
-                pItem->broadcast = CDBCFile::Search_Posistion(&ItemFile, i_1, 24)->iValue;
-                pItem->valid_time = CDBCFile::Search_Posistion(&ItemFile, i_1, 25)->iValue;
-                pItem->item_Grade = CDBCFile::Search_Posistion(&ItemFile, i_1, 26)->iValue;
-                pItem->CanDrop = CDBCFile::Search_Posistion(&ItemFile, i_1, 32)->iValue;
-                pItem->useBroadcast = CDBCFile::Search_Posistion(&ItemFile, i_1, 33)->iValue;
-                pItem->useInCarrier = CDBCFile::Search_Posistion(&ItemFile, i_1, 35)->iValue;
-                pItem->GongGaoId = CDBCFile::Search_Posistion(&ItemFile, i_1, 40)->iValue;
-                pItem->KunLingJingHua = CDBCFile::Search_Posistion(&ItemFile, i_1, 42)->iValue;
-                pItem->XinMoBag = CDBCFile::Search_Posistion(&ItemFile, i_1, 43)->iValue;
+                pItem->downgrade = ItemFile.Search_Posistion( i_1, 19)->iValue;
+                pItem->group_id = ItemFile.Search_Posistion( i_1, 20)->iValue;
+                pItem->cd_group = ItemFile.Search_Posistion( i_1, 21)->iValue;
+                pItem->overlay = ItemFile.Search_Posistion( i_1, 22)->iValue;
+                pItem->can_sell = ItemFile.Search_Posistion( i_1, 23)->iValue;
+                pItem->broadcast = ItemFile.Search_Posistion( i_1, 24)->iValue;
+                pItem->valid_time = ItemFile.Search_Posistion( i_1, 25)->iValue;
+                pItem->item_Grade = ItemFile.Search_Posistion( i_1, 26)->iValue;
+                pItem->CanDrop = ItemFile.Search_Posistion( i_1, 32)->iValue;
+                pItem->useBroadcast = ItemFile.Search_Posistion( i_1, 33)->iValue;
+                pItem->useInCarrier = ItemFile.Search_Posistion( i_1, 35)->iValue;
+                pItem->GongGaoId = ItemFile.Search_Posistion( i_1, 40)->iValue;
+                pItem->KunLingJingHua = ItemFile.Search_Posistion( i_1, 42)->iValue;
+                pItem->XinMoBag = ItemFile.Search_Posistion( i_1, 43)->iValue;
                 
                 std::string str;
                 char v51;
-                std::allocator<char>::allocator(&v51);
-                const CDBCFile::FIELD *v33 = CDBCFile::Search_Posistion(&ItemFile, i_1, 44);
-                std::string::string(&str, v33->pString, &v51);
+                            const CDBCFile::FIELD *v33 = ItemFile.Search_Posistion( i_1, 44);
+                str = v33->pString;
                 pItem->RongHeReceovery = paraseParam2(&str);
                 str.~string();
-                std::allocator<char>::~allocator(&v51);
-                
+                            
                 auto it_1 = this->m_items.find(pItem->id);
                 if (it_1 == this->m_items.end())
                 {
@@ -4476,7 +4034,6 @@ void CfgData::fetchItem(bool bSend)
             }
         }
     }
-    CDBCFile::~CDBCFile(&ItemFile);
     
     Answer::RwLock::unlock(&this->m_itemsLock);
     
@@ -4492,16 +4049,15 @@ void CfgData::fetchItem(bool bSend)
     this->m_itemGifts.clear();
     
     CDBCFile ItemGiftFile;
-    CDBCFile::CDBCFile(&ItemGiftFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&ItemGiftFile, "./ServerConfig/Tables/cfg_item_gift.txt"))
+    if (!ItemGiftFile.OpenFromTXT( "./ServerConfig/Tables/cfg_item_gift.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_item_gift.txt failed,please check!!");
     }
     else
     {
-        int32_t iBaseTableCount_Gift = CDBCFile::GetRecordsNum(&ItemGiftFile);
-        int32_t iBaseColumnCount_Gift = CDBCFile::GetFieldsNum(&ItemGiftFile);
+        int32_t iBaseTableCount_Gift = ItemGiftFile.GetRecordsNum();
+        int32_t iBaseColumnCount_Gift = ItemGiftFile.GetFieldsNum();
         
         if (iBaseColumnCount_Gift > 0)
         {
@@ -4509,27 +4065,26 @@ void CfgData::fetchItem(bool bSend)
             {
                 CfgItemGift itemGift;
                 memset(&itemGift, 0, sizeof(itemGift));
-                itemGift.id = CDBCFile::Search_Posistion(&ItemGiftFile, i_0, 0)->iValue;
-                itemGift.item = CDBCFile::Search_Posistion(&ItemGiftFile, i_0, 2)->iValue;
-                itemGift.type = CDBCFile::Search_Posistion(&ItemGiftFile, i_0, 3)->iValue;
-                itemGift.count = CDBCFile::Search_Posistion(&ItemGiftFile, i_0, 4)->iValue;
-                itemGift.bind = CDBCFile::Search_Posistion(&ItemGiftFile, i_0, 5)->iValue;
-                itemGift.job = CDBCFile::Search_Posistion(&ItemGiftFile, i_0, 6)->iValue;
-                itemGift.time = CDBCFile::Search_Posistion(&ItemGiftFile, i_0, 7)->iValue;
+                itemGift.id = ItemGiftFile.Search_Posistion( i_0, 0)->iValue;
+                itemGift.item = ItemGiftFile.Search_Posistion( i_0, 2)->iValue;
+                itemGift.type = ItemGiftFile.Search_Posistion( i_0, 3)->iValue;
+                itemGift.count = ItemGiftFile.Search_Posistion( i_0, 4)->iValue;
+                itemGift.bind = ItemGiftFile.Search_Posistion( i_0, 5)->iValue;
+                itemGift.job = ItemGiftFile.Search_Posistion( i_0, 6)->iValue;
+                itemGift.time = ItemGiftFile.Search_Posistion( i_0, 7)->iValue;
                 
                 auto it_0 = this->m_itemGifts.find(itemGift.id);
                 if (it_0 == this->m_itemGifts.end())
                 {
                     CfgItemGiftVector *v36 = new std::vector<CfgItemGift>();
-                    *std::map<int, CfgItemGiftVector *>::operator[](&this->m_itemGifts, &itemGift.id) = v36;
+                    *this->m_itemGifts[itemGift.id] = v36;
                 }
                 
-                auto v37 = std::map<int, CfgItemGiftVector *>::operator[](&this->m_itemGifts, &itemGift.id);
+                auto *v37 = &this->m_itemGifts[itemGift.id];
                 v37->push_back(itemGift);
             }
         }
     }
-    CDBCFile::~CDBCFile(&ItemGiftFile);
     Answer::RwLock::unlock(&this->m_itemGiftsLock);
     
     // 加载随机物品礼包
@@ -4537,46 +4092,44 @@ void CfgData::fetchItem(bool bSend)
     this->m_itemGiftRandoms.clear();
     
     CDBCFile ItemGiftRandFile;
-    CDBCFile::CDBCFile(&ItemGiftRandFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&ItemGiftRandFile, "./ServerConfig/Tables/cfg_item_gift_random.txt"))
+    if (!ItemGiftRandFile.OpenFromTXT( "./ServerConfig/Tables/cfg_item_gift_random.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_item_gift_random.txt failed,please check!!");
     }
     else
     {
-        int32_t iBaseTableCount_GiftRand = CDBCFile::GetRecordsNum(&ItemGiftRandFile);
-        int32_t iBaseColumnCount_GiftRand = CDBCFile::GetFieldsNum(&ItemGiftRandFile);
+        int32_t iBaseTableCount_GiftRand = ItemGiftRandFile.GetRecordsNum();
+        int32_t iBaseColumnCount_GiftRand = ItemGiftRandFile.GetFieldsNum();
         
         if (iBaseColumnCount_GiftRand > 0)
         {
             for (int32_t i = 0; i < iBaseTableCount_GiftRand; ++i)
             {
                 CfgItemGiftRandom itemGiftRandom;
-                itemGiftRandom.id = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 0)->iValue;
-                itemGiftRandom.item = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 1)->iValue;
-                itemGiftRandom.type = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 2)->iValue;
-                itemGiftRandom.count = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 3)->iValue;
-                itemGiftRandom.bind = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 4)->iValue;
-                itemGiftRandom.static_probability = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 5)->iValue;
-                itemGiftRandom.sum_probability = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 6)->iValue;
-                itemGiftRandom.job = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 7)->iValue;
-                itemGiftRandom.MinLevel = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 8)->iValue;
-                itemGiftRandom.MaxLevel = CDBCFile::Search_Posistion(&ItemGiftRandFile, i, 9)->iValue;
+                itemGiftRandom.id = ItemGiftRandFile.Search_Posistion( i, 0)->iValue;
+                itemGiftRandom.item = ItemGiftRandFile.Search_Posistion( i, 1)->iValue;
+                itemGiftRandom.type = ItemGiftRandFile.Search_Posistion( i, 2)->iValue;
+                itemGiftRandom.count = ItemGiftRandFile.Search_Posistion( i, 3)->iValue;
+                itemGiftRandom.bind = ItemGiftRandFile.Search_Posistion( i, 4)->iValue;
+                itemGiftRandom.static_probability = ItemGiftRandFile.Search_Posistion( i, 5)->iValue;
+                itemGiftRandom.sum_probability = ItemGiftRandFile.Search_Posistion( i, 6)->iValue;
+                itemGiftRandom.job = ItemGiftRandFile.Search_Posistion( i, 7)->iValue;
+                itemGiftRandom.MinLevel = ItemGiftRandFile.Search_Posistion( i, 8)->iValue;
+                itemGiftRandom.MaxLevel = ItemGiftRandFile.Search_Posistion( i, 9)->iValue;
                 
                 auto it = this->m_itemGiftRandoms.find(itemGiftRandom.id);
                 if (it == this->m_itemGiftRandoms.end())
                 {
                     CfgItemGiftRandomVector *v38 = new std::vector<CfgItemGiftRandom>();
-                    *std::map<int, CfgItemGiftRandomVector *>::operator[](&this->m_itemGiftRandoms, &itemGiftRandom.id) = v38;
+                    *this->m_itemGiftRandoms[itemGiftRandom.id] = v38;
                 }
                 
-                auto v39 = std::map<int, CfgItemGiftRandomVector *>::operator[](&this->m_itemGiftRandoms, &itemGiftRandom.id);
+                auto *v39 = &this->m_itemGiftRandoms[itemGiftRandom.id];
                 v39->push_back(itemGiftRandom);
             }
         }
     }
-    CDBCFile::~CDBCFile(&ItemGiftRandFile);
     Answer::RwLock::unlock(&this->m_itemGiftRandomsLock);
 }
 
@@ -4647,8 +4200,6 @@ void CfgData::fetchServerConfig(int32_t line)
         this->m_serverType = Answer::MySqlQuery::getIntValue(&result, "type", 0);
     }
     
-    Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 int32_t CfgData::getServerStartTime(SERVER_TYPE nType)
@@ -4686,17 +4237,15 @@ void CfgData::updateServerStartTime(int32_t kaiFuTime)
 void CfgData::fetchDungeonEvent()
 {
     CDBCFile DungeonEventFile;
-    CDBCFile::CDBCFile(&DungeonEventFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&DungeonEventFile, "./ServerConfig/Tables/cfg_dungeon_event.txt"))
+    if (!DungeonEventFile.OpenFromTXT( "./ServerConfig/Tables/cfg_dungeon_event.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_dungeon_event.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&DungeonEventFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&DungeonEventFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&DungeonEventFile);
+    int32_t iBaseTableCount = DungeonEventFile.GetRecordsNum();
+    int32_t iBaseColumnCount = DungeonEventFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -4705,41 +4254,35 @@ void CfgData::fetchDungeonEvent()
             CfgMapEvent dungeonEvent;
             CfgMapEvent::CfgMapEvent(&dungeonEvent);
             
-            dungeonEvent.id = CDBCFile::Search_Posistion(&DungeonEventFile, i, 0)->iValue;
-            dungeonEvent.trigger_id = CDBCFile::Search_Posistion(&DungeonEventFile, i, 1)->iValue;
-            dungeonEvent.bInitOpen = CDBCFile::Search_Posistion(&DungeonEventFile, i, 2)->iValue == 0;
-            dungeonEvent.trigger_type = CDBCFile::Search_Posistion(&DungeonEventFile, i, 3)->iValue;
+            dungeonEvent.id = DungeonEventFile.Search_Posistion( i, 0)->iValue;
+            dungeonEvent.trigger_id = DungeonEventFile.Search_Posistion( i, 1)->iValue;
+            dungeonEvent.bInitOpen = DungeonEventFile.Search_Posistion( i, 2)->iValue == 0;
+            dungeonEvent.trigger_type = DungeonEventFile.Search_Posistion( i, 3)->iValue;
             
             std::string triggerParam;
             char v12;
-            std::allocator<char>::allocator(&v12);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&DungeonEventFile, i, 4);
-            std::string::string(&triggerParam, v1->pString, &v12);
-            std::allocator<char>::~allocator(&v12);
+                    const CDBCFile::FIELD *v1 = DungeonEventFile.Search_Posistion( i, 4);
+            triggerParam = v1->pString;
+                    
+            dungeonEvent.event_type = DungeonEventFile.Search_Posistion( i, 5)->iValue;
             
-            dungeonEvent.event_type = CDBCFile::Search_Posistion(&DungeonEventFile, i, 5)->iValue;
-            
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&DungeonEventFile, i, 6);
-            std::string::operator=(&dungeonEvent.effect, v2->pString);
-            dungeonEvent.repeate = CDBCFile::Search_Posistion(&DungeonEventFile, i, 7)->iValue;
+            const CDBCFile::FIELD *v2 = DungeonEventFile.Search_Posistion( i, 6);
+            dungeonEvent.effect = v2->pString;
+            dungeonEvent.repeate = DungeonEventFile.Search_Posistion( i, 7)->iValue;
             
             std::string delims;
             std::string str;
             char v14;
-            std::allocator<char>::allocator(&v14);
-            std::string::string(&delims, ":", &v14);
+                    delims = ":";
             
             char v16;
-            std::allocator<char>::allocator(&v16);
-            std::string::string(&str, triggerParam.c_str(), &v16);
+                    str = triggerParam.c_str();
             
             StringVector strTriggerParam;
-            Answer::StringUtility::split(&strTriggerParam, &str, &delims, 0);
+            StringUtility::split(&strTriggerParam, &str, &delims, 0);
             str.~string();
-            std::allocator<char>::~allocator(&v16);
-            delims.~string();
-            std::allocator<char>::~allocator(&v14);
-            
+                    delims.~string();
+                    
             for (auto& param : strTriggerParam)
             {
                 int val = atoi(param.c_str());
@@ -4750,30 +4293,27 @@ void CfgData::fetchDungeonEvent()
             
             if (!dungeonEvent.trigger_param.empty())
             {
-                auto v6 = std::map<int, std::list<CfgMapEvent>>::operator[](&this->m_dungeonEvents, &dungeonEvent.id);
+                auto v6 = this->m_dungeonEvents[dungeonEvent.id];
                 v6->push_back(dungeonEvent);
             }
             
             dungeonEvent.~CfgMapEvent();
         }
     }
-    CDBCFile::~CDBCFile(&DungeonEventFile);
 }
 
 void CfgData::fetchDungeonMonster()
 {
     CDBCFile DungeonMonsterFile;
-    CDBCFile::CDBCFile(&DungeonMonsterFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&DungeonMonsterFile, "./ServerConfig/Tables/cfg_dungeon_monster.txt"))
+    if (!DungeonMonsterFile.OpenFromTXT( "./ServerConfig/Tables/cfg_dungeon_monster.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_dungeon_monster.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&DungeonMonsterFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&DungeonMonsterFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&DungeonMonsterFile);
+    int32_t iBaseTableCount = DungeonMonsterFile.GetRecordsNum();
+    int32_t iBaseColumnCount = DungeonMonsterFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -4782,73 +4322,63 @@ void CfgData::fetchDungeonMonster()
             CfgDungeonMonster monster;
             CfgDungeonMonster::CfgDungeonMonster(&monster);
             
-            monster.id = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 0)->iValue;
-            monster.wave = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 1)->iValue;
+            monster.id = DungeonMonsterFile.Search_Posistion( i, 0)->iValue;
+            monster.wave = DungeonMonsterFile.Search_Posistion( i, 1)->iValue;
             
             std::string nIndex;
             char v32;
-            std::allocator<char>::allocator(&v32);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 2);
-            std::string::string(&nIndex, v2->pString, &v32);
+                    const CDBCFile::FIELD *v2 = DungeonMonsterFile.Search_Posistion( i, 2);
+            nIndex = v2->pString;
             
             std::list<Param2> __x;
             CfgData::paraseParam2List((CfgData *const)&__x, this, atoi(nIndex.c_str()), nullptr);
             monster.mids = __x;
             __x.~list();
             nIndex.~string();
-            std::allocator<char>::~allocator(&v32);
-            
-            monster.x = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 3)->iValue;
-            monster.y = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 4)->iValue;
-            monster.count = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 5)->iValue;
-            monster.side = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 6)->iValue;
+                    
+            monster.x = DungeonMonsterFile.Search_Posistion( i, 3)->iValue;
+            monster.y = DungeonMonsterFile.Search_Posistion( i, 4)->iValue;
+            monster.count = DungeonMonsterFile.Search_Posistion( i, 5)->iValue;
+            monster.side = DungeonMonsterFile.Search_Posistion( i, 6)->iValue;
             
             std::string road;
             char v35;
-            std::allocator<char>::allocator(&v35);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 7);
-            std::string::string(&road, v3->pString, &v35);
-            std::allocator<char>::~allocator(&v35);
-            
-            monster.delay = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 8)->iValue;
-            monster.times = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 9)->iValue;
-            monster.money = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 10)->iValue;
-            monster.life = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 11)->iValue;
+                    const CDBCFile::FIELD *v3 = DungeonMonsterFile.Search_Posistion( i, 7);
+            road = v3->pString;
+                    
+            monster.delay = DungeonMonsterFile.Search_Posistion( i, 8)->iValue;
+            monster.times = DungeonMonsterFile.Search_Posistion( i, 9)->iValue;
+            monster.money = DungeonMonsterFile.Search_Posistion( i, 10)->iValue;
+            monster.life = DungeonMonsterFile.Search_Posistion( i, 11)->iValue;
             
             std::string randpos;
             char v36;
-            std::allocator<char>::allocator(&v36);
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 12);
-            std::string::string(&randpos, v4->pString, &v36);
-            std::allocator<char>::~allocator(&v36);
-            
-            monster.wait = CDBCFile::Search_Posistion(&DungeonMonsterFile, i, 13)->iValue;
+                    const CDBCFile::FIELD *v4 = DungeonMonsterFile.Search_Posistion( i, 12);
+            randpos = v4->pString;
+                    
+            monster.wait = DungeonMonsterFile.Search_Posistion( i, 13)->iValue;
             
             // 解析路线
             if (road.size() > 3)
             {
                 std::string delims;
                 char v38;
-                std::allocator<char>::allocator(&v38);
-                std::string::string(&delims, ":", &v38);
+                            delims = ":";
                 
                 StringVector vRoad;
-                Answer::StringUtility::split(&vRoad, &road, &delims, 0);
+                StringUtility::split(&vRoad, &road, &delims, 0);
                 delims.~string();
-                std::allocator<char>::~allocator(&v38);
-                
+                            
                 for (size_t j = 0; j < vRoad.size(); ++j)
                 {
                     std::string v39;
                     char v40;
-                    std::allocator<char>::allocator(&v40);
-                    std::string::string(&v39, ",", &v40);
+                                    v39 = ",";
                     
                     StringVector vPos;
-                    Answer::StringUtility::split(&vPos, vRoad[j], &v39, 0);
+                    StringUtility::split(vPos, vRoad[j], v39);
                     v39.~string();
-                    std::allocator<char>::~allocator(&v40);
-                    
+                                    
                     if (vPos.size() == 2)
                     {
                         Position pos;
@@ -4866,26 +4396,22 @@ void CfgData::fetchDungeonMonster()
             {
                 std::string v42;
                 char v43;
-                std::allocator<char>::allocator(&v43);
-                std::string::string(&v42, "|", &v43);
+                            v42 = "|";
                 
                 StringVector vRandPos;
-                Answer::StringUtility::split(&vRandPos, &randpos, &v42, 0);
+                StringUtility::split(&vRandPos, &randpos, &v42, 0);
                 v42.~string();
-                std::allocator<char>::~allocator(&v43);
-                
+                            
                 for (size_t j_0 = 0; j_0 < vRandPos.size(); ++j_0)
                 {
                     std::string v44;
                     char v45;
-                    std::allocator<char>::allocator(&v45);
-                    std::string::string(&v44, ":", &v45);
+                                    v44 = ":";
                     
                     StringVector vPos_0;
-                    Answer::StringUtility::split(&vPos_0, vRandPos[j_0], &v44, 0);
+                    StringUtility::split(vPos_0, vRandPos[j_0], v44);
                     v44.~string();
-                    std::allocator<char>::~allocator(&v45);
-                    
+                                    
                     if (vPos_0.size() == 2)
                     {
                         Position pos;
@@ -4898,7 +4424,7 @@ void CfgData::fetchDungeonMonster()
                 vRandPos.~vector();
             }
             
-            auto v21 = std::map<int, CfgDungeonMonster>::operator[](&this->m_dungeonMonsters, &monster.id);
+            auto *v21 = &this->m_dungeonMonsters[monster.id];
             *v21 = monster;
             
             randpos.~string();
@@ -4906,23 +4432,20 @@ void CfgData::fetchDungeonMonster()
             monster.~CfgDungeonMonster();
         }
     }
-    CDBCFile::~CDBCFile(&DungeonMonsterFile);
 }
 
 void CfgData::fetchMap()
 {
     CDBCFile MapFile;
-    CDBCFile::CDBCFile(&MapFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MapFile, "./ServerConfig/Tables/cfg_map.txt"))
+    if (!MapFile.OpenFromTXT( "./ServerConfig/Tables/cfg_map.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_map.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&MapFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MapFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MapFile);
+    int32_t iBaseTableCount = MapFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MapFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -4931,69 +4454,66 @@ void CfgData::fetchMap()
             CfgMap map;
             CfgMap::CfgMap(&map);
             
-            map.id = CDBCFile::Search_Posistion(&MapFile, i, 0)->iValue;
+            map.id = MapFile.Search_Posistion( i, 0)->iValue;
             
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&MapFile, i, 1);
-            std::string::operator=(&map.name, v1->pString);
+            const CDBCFile::FIELD *v1 = MapFile.Search_Posistion( i, 1);
+            map.name = v1->pString;
             
-            map.type = CDBCFile::Search_Posistion(&MapFile, i, 2)->iValue;
-            map.param = CDBCFile::Search_Posistion(&MapFile, i, 3)->iValue;
-            map.width = CDBCFile::Search_Posistion(&MapFile, i, 4)->iValue;
-            map.height = CDBCFile::Search_Posistion(&MapFile, i, 5)->iValue;
-            map.revive = CDBCFile::Search_Posistion(&MapFile, i, 6)->iValue;
-            map.pk_mode = CDBCFile::Search_Posistion(&MapFile, i, 7)->iValue;
-            map.anti_protect = CDBCFile::Search_Posistion(&MapFile, i, 8)->iValue;
-            map.isMount = CDBCFile::Search_Posistion(&MapFile, i, 9)->iValue;
-            map.isFly = CDBCFile::Search_Posistion(&MapFile, i, 10)->iValue;
-            map.isVicegeneral = CDBCFile::Search_Posistion(&MapFile, i, 11)->iValue;
-            map.player_level = CDBCFile::Search_Posistion(&MapFile, i, 12)->iValue;
-            map.player_level_max = CDBCFile::Search_Posistion(&MapFile, i, 13)->iValue;
-            map.team_member = CDBCFile::Search_Posistion(&MapFile, i, 14)->iValue;
-            map.hide_mini = CDBCFile::Search_Posistion(&MapFile, i, 15)->iValue;
-            map.runnerId = CDBCFile::Search_Posistion(&MapFile, i, 23)->iValue;
-            map.jump = CDBCFile::Search_Posistion(&MapFile, i, 30)->iValue;
-            map.GongGaoId = CDBCFile::Search_Posistion(&MapFile, i, 33)->iValue;
-            map.reviveTime = CDBCFile::Search_Posistion(&MapFile, i, 35)->iValue;
-            map.pvp = CDBCFile::Search_Posistion(&MapFile, i, 36)->iValue;
-            map.cross = CDBCFile::Search_Posistion(&MapFile, i, 38)->iValue;
-            map.x = CDBCFile::Search_Posistion(&MapFile, i, 44)->iValue;
-            map.y = CDBCFile::Search_Posistion(&MapFile, i, 45)->iValue;
-            map.drop_rate = CDBCFile::Search_Posistion(&MapFile, i, 47)->iValue;
-            map.XingMaiLevel = CDBCFile::Search_Posistion(&MapFile, i, 48)->iValue;
-            map.SuitId = CDBCFile::Search_Posistion(&MapFile, i, 49)->iValue;
-            map.JueWeiLevel = CDBCFile::Search_Posistion(&MapFile, i, 50)->iValue;
-            map.VipLevel = CDBCFile::Search_Posistion(&MapFile, i, 51)->iValue;
-            map.NeedBroadcast = CDBCFile::Search_Posistion(&MapFile, i, 54)->iValue;
-            map.MapCanUsePet = CDBCFile::Search_Posistion(&MapFile, i, 55)->iValue;
-            map.SignOut = CDBCFile::Search_Posistion(&MapFile, i, 56)->iValue;
-            map.Rdx = CDBCFile::Search_Posistion(&MapFile, i, 58)->iValue;
-            map.Refresh = CDBCFile::Search_Posistion(&MapFile, i, 60)->iValue;
-            map.CanRand = CDBCFile::Search_Posistion(&MapFile, i, 61)->iValue;
-            map.LimitDay = CDBCFile::Search_Posistion(&MapFile, i, 62)->iValue;
-            map.XinMoAct = CDBCFile::Search_Posistion(&MapFile, i, 63)->iValue;
+            map.type = MapFile.Search_Posistion( i, 2)->iValue;
+            map.param = MapFile.Search_Posistion( i, 3)->iValue;
+            map.width = MapFile.Search_Posistion( i, 4)->iValue;
+            map.height = MapFile.Search_Posistion( i, 5)->iValue;
+            map.revive = MapFile.Search_Posistion( i, 6)->iValue;
+            map.pk_mode = MapFile.Search_Posistion( i, 7)->iValue;
+            map.anti_protect = MapFile.Search_Posistion( i, 8)->iValue;
+            map.isMount = MapFile.Search_Posistion( i, 9)->iValue;
+            map.isFly = MapFile.Search_Posistion( i, 10)->iValue;
+            map.isVicegeneral = MapFile.Search_Posistion( i, 11)->iValue;
+            map.player_level = MapFile.Search_Posistion( i, 12)->iValue;
+            map.player_level_max = MapFile.Search_Posistion( i, 13)->iValue;
+            map.team_member = MapFile.Search_Posistion( i, 14)->iValue;
+            map.hide_mini = MapFile.Search_Posistion( i, 15)->iValue;
+            map.runnerId = MapFile.Search_Posistion( i, 23)->iValue;
+            map.jump = MapFile.Search_Posistion( i, 30)->iValue;
+            map.GongGaoId = MapFile.Search_Posistion( i, 33)->iValue;
+            map.reviveTime = MapFile.Search_Posistion( i, 35)->iValue;
+            map.pvp = MapFile.Search_Posistion( i, 36)->iValue;
+            map.cross = MapFile.Search_Posistion( i, 38)->iValue;
+            map.x = MapFile.Search_Posistion( i, 44)->iValue;
+            map.y = MapFile.Search_Posistion( i, 45)->iValue;
+            map.drop_rate = MapFile.Search_Posistion( i, 47)->iValue;
+            map.XingMaiLevel = MapFile.Search_Posistion( i, 48)->iValue;
+            map.SuitId = MapFile.Search_Posistion( i, 49)->iValue;
+            map.JueWeiLevel = MapFile.Search_Posistion( i, 50)->iValue;
+            map.VipLevel = MapFile.Search_Posistion( i, 51)->iValue;
+            map.NeedBroadcast = MapFile.Search_Posistion( i, 54)->iValue;
+            map.MapCanUsePet = MapFile.Search_Posistion( i, 55)->iValue;
+            map.SignOut = MapFile.Search_Posistion( i, 56)->iValue;
+            map.Rdx = MapFile.Search_Posistion( i, 58)->iValue;
+            map.Refresh = MapFile.Search_Posistion( i, 60)->iValue;
+            map.CanRand = MapFile.Search_Posistion( i, 61)->iValue;
+            map.LimitDay = MapFile.Search_Posistion( i, 62)->iValue;
+            map.XinMoAct = MapFile.Search_Posistion( i, 63)->iValue;
             
-            auto v2 = std::map<int, CfgMap>::operator[](&this->m_maps, &map.id);
+            auto *v2 = &this->m_maps[map.id];
             *v2 = map;
             map.~CfgMap();
         }
     }
-    CDBCFile::~CDBCFile(&MapFile);
 }
 
 void CfgData::fetchMapMonster()
 {
     CDBCFile MapMonsterFile;
-    CDBCFile::CDBCFile(&MapMonsterFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MapMonsterFile, "./ServerConfig/Tables/cfg_map_monster.txt"))
+    if (!MapMonsterFile.OpenFromTXT( "./ServerConfig/Tables/cfg_map_monster.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_map_monster.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&MapMonsterFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MapMonsterFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MapMonsterFile);
+    int32_t iBaseTableCount = MapMonsterFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MapMonsterFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -5001,115 +4521,106 @@ void CfgData::fetchMapMonster()
         {
             CfgMapMonster mapmonster;
             memset(&mapmonster, 0, sizeof(mapmonster));
-            mapmonster.id = CDBCFile::Search_Posistion(&MapMonsterFile, i, 0)->iValue;
-            mapmonster.mapid = CDBCFile::Search_Posistion(&MapMonsterFile, i, 1)->iValue;
-            mapmonster.monsterid = CDBCFile::Search_Posistion(&MapMonsterFile, i, 2)->iValue;
-            mapmonster.x = CDBCFile::Search_Posistion(&MapMonsterFile, i, 3)->iValue;
-            mapmonster.y = CDBCFile::Search_Posistion(&MapMonsterFile, i, 4)->iValue;
-            mapmonster.hide = CDBCFile::Search_Posistion(&MapMonsterFile, i, 5)->iValue;
-            mapmonster.side = CDBCFile::Search_Posistion(&MapMonsterFile, i, 6)->iValue;
-            mapmonster.boss = CDBCFile::Search_Posistion(&MapMonsterFile, i, 7)->iValue;
-            mapmonster.Day = CDBCFile::Search_Posistion(&MapMonsterFile, i, 8)->iValue;
+            mapmonster.id = MapMonsterFile.Search_Posistion( i, 0)->iValue;
+            mapmonster.mapid = MapMonsterFile.Search_Posistion( i, 1)->iValue;
+            mapmonster.monsterid = MapMonsterFile.Search_Posistion( i, 2)->iValue;
+            mapmonster.x = MapMonsterFile.Search_Posistion( i, 3)->iValue;
+            mapmonster.y = MapMonsterFile.Search_Posistion( i, 4)->iValue;
+            mapmonster.hide = MapMonsterFile.Search_Posistion( i, 5)->iValue;
+            mapmonster.side = MapMonsterFile.Search_Posistion( i, 6)->iValue;
+            mapmonster.boss = MapMonsterFile.Search_Posistion( i, 7)->iValue;
+            mapmonster.Day = MapMonsterFile.Search_Posistion( i, 8)->iValue;
             
-            auto v1 = std::map<int, std::vector<CfgMapMonster>>::operator[](&this->m_mapMonsters, &mapmonster.mapid);
+            auto v1 = this->m_mapMonsters[mapmonster.mapid];
             v1->push_back(mapmonster);
             
-            auto v2 = std::map<int, CfgMapMonster>::operator[](&this->m_CfgMapMonsters, &mapmonster.id);
+            auto *v2 = &this->m_CfgMapMonsters[mapmonster.id];
             *v2 = mapmonster;
         }
     }
-    CDBCFile::~CDBCFile(&MapMonsterFile);
 }
 
 void CfgData::fetchMapPlant()
 {
     CDBCFile MapPlantFile;
-    CDBCFile::CDBCFile(&MapPlantFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MapPlantFile, "./ServerConfig/Tables/cfg_map_plant.txt"))
+    if (!MapPlantFile.OpenFromTXT( "./ServerConfig/Tables/cfg_map_plant.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_map_plant.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&MapPlantFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MapPlantFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MapPlantFile);
+    int32_t iBaseTableCount = MapPlantFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MapPlantFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
-            int32_t id = CDBCFile::Search_Posistion(&MapPlantFile, i, 0)->iValue;
+            int32_t id = MapPlantFile.Search_Posistion( i, 0)->iValue;
             CfgMapPlant mapPlant;
-            mapPlant.mapid = CDBCFile::Search_Posistion(&MapPlantFile, i, 1)->iValue;
-            mapPlant.plantid = CDBCFile::Search_Posistion(&MapPlantFile, i, 2)->iValue;
-            mapPlant.x = CDBCFile::Search_Posistion(&MapPlantFile, i, 3)->iValue;
-            mapPlant.y = CDBCFile::Search_Posistion(&MapPlantFile, i, 4)->iValue;
+            mapPlant.mapid = MapPlantFile.Search_Posistion( i, 1)->iValue;
+            mapPlant.plantid = MapPlantFile.Search_Posistion( i, 2)->iValue;
+            mapPlant.x = MapPlantFile.Search_Posistion( i, 3)->iValue;
+            mapPlant.y = MapPlantFile.Search_Posistion( i, 4)->iValue;
             
-            auto v1 = std::map<int, std::vector<CfgMapPlant>>::operator[](&this->m_mapPlants, &mapPlant.mapid);
+            auto v1 = this->m_mapPlants[mapPlant.mapid];
             v1->push_back(mapPlant);
             
-            auto v2 = std::map<int, CfgMapPlant>::operator[](&this->m_mMapPlants, &id);
+            auto *v2 = &this->m_mMapPlants[id];
             *v2 = mapPlant;
         }
     }
-    CDBCFile::~CDBCFile(&MapPlantFile);
 }
 
 void CfgData::fetchMapRegion()
 {
     CDBCFile MapRegionFile;
-    CDBCFile::CDBCFile(&MapRegionFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MapRegionFile, "./ServerConfig/Tables/cfg_map_region.txt"))
+    if (!MapRegionFile.OpenFromTXT( "./ServerConfig/Tables/cfg_map_region.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_map_region.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&MapRegionFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MapRegionFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MapRegionFile);
+    int32_t iBaseTableCount = MapRegionFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MapRegionFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMapRegion mapRegion;
-            mapRegion.id = CDBCFile::Search_Posistion(&MapRegionFile, i, 0)->iValue;
-            mapRegion.mapid = CDBCFile::Search_Posistion(&MapRegionFile, i, 2)->iValue;
-            mapRegion.min_x = CDBCFile::Search_Posistion(&MapRegionFile, i, 3)->iValue;
-            mapRegion.min_y = CDBCFile::Search_Posistion(&MapRegionFile, i, 4)->iValue;
-            mapRegion.max_x = CDBCFile::Search_Posistion(&MapRegionFile, i, 5)->iValue;
-            mapRegion.max_y = CDBCFile::Search_Posistion(&MapRegionFile, i, 6)->iValue;
-            mapRegion.type = CDBCFile::Search_Posistion(&MapRegionFile, i, 7)->iValue;
-            mapRegion.mId = CDBCFile::Search_Posistion(&MapRegionFile, i, 9)->iValue;
+            mapRegion.id = MapRegionFile.Search_Posistion( i, 0)->iValue;
+            mapRegion.mapid = MapRegionFile.Search_Posistion( i, 2)->iValue;
+            mapRegion.min_x = MapRegionFile.Search_Posistion( i, 3)->iValue;
+            mapRegion.min_y = MapRegionFile.Search_Posistion( i, 4)->iValue;
+            mapRegion.max_x = MapRegionFile.Search_Posistion( i, 5)->iValue;
+            mapRegion.max_y = MapRegionFile.Search_Posistion( i, 6)->iValue;
+            mapRegion.type = MapRegionFile.Search_Posistion( i, 7)->iValue;
+            mapRegion.mId = MapRegionFile.Search_Posistion( i, 9)->iValue;
             
-            auto v1 = std::map<int, CfgMapRegion>::operator[](&this->m_mapRegions, &mapRegion.id);
+            auto *v1 = &this->m_mapRegions[mapRegion.id];
             *v1 = mapRegion;
             
-            auto v2 = std::map<int, std::vector<CfgMapRegion>>::operator[](&this->m_mapRegionsByMapId, &mapRegion.mapid);
+            auto v2 = this->m_mapRegionsByMapId[mapRegion.mapid];
             v2->push_back(mapRegion);
         }
     }
-    CDBCFile::~CDBCFile(&MapRegionFile);
 }
 
 void CfgData::fetchMonster()
 {
     CDBCFile MonsterFile;
-    CDBCFile::CDBCFile(&MonsterFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MonsterFile, "./ServerConfig/Tables/Monster.txt"))
+    if (!MonsterFile.OpenFromTXT( "./ServerConfig/Tables/Monster.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MONSTER_TABLE failed,please check!!");
-        CDBCFile::~CDBCFile(&MonsterFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MonsterFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MonsterFile);
+    int32_t iBaseTableCount = MonsterFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MonsterFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -5118,112 +4629,104 @@ void CfgData::fetchMonster()
             CfgMonster monster{};
             
             int32_t nIndex = 0;
-            monster.mid = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
-            monster.group_id = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.level = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.quality = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.mid = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+            monster.group_id = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.level = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.quality = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             
             for (int j = 1; j <= 28; ++j)
             {
-                monster.vAttr[j] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+                monster.vAttr[j] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             }
             
-            monster.rand_count = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.rand_count = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string randtypes;
             char v19;
-            std::allocator<char>::allocator(&v19);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex);
-            std::string::string(&randtypes, v1->pString, &v19);
-            std::allocator<char>::~allocator(&v19);
-            
-            monster.exp = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.type = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.revive_time = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.skill_id = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+                    const CDBCFile::FIELD *v1 = MonsterFile.Search_Posistion( i, nIndex);
+            randtypes = v1->pString;
+                    
+            monster.exp = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.type = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.revive_time = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.skill_id = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strSkill;
             char v21;
-            std::allocator<char>::allocator(&v21);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex);
-            std::string::string(&strSkill, v2->pString, &v21);
+                    const CDBCFile::FIELD *v2 = MonsterFile.Search_Posistion( i, nIndex);
+            strSkill = v2->pString;
             parseMonsterSkill(monster.mid, &monster.unique_skill, &strSkill);
             strSkill.~string();
-            std::allocator<char>::~allocator(&v21);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v22;
             char v23;
-            std::allocator<char>::allocator(&v23);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex);
-            std::string::string(&v22, v3->pString, &v23);
+                    const CDBCFile::FIELD *v3 = MonsterFile.Search_Posistion( i, nIndex);
+            v22 = v3->pString;
             parseMonsterSkill(monster.mid, &monster.random_skill, &v22);
             v22.~string();
-            std::allocator<char>::~allocator(&v23);
-            
-            monster.hpPercent = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.ai = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+                    
+            monster.hpPercent = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.ai = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             nIndex += 9;
-            monster.broadcast = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
-            monster.drop_free = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
+            monster.broadcast = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+            monster.drop_free = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
             nIndex += 2;
-            monster.boss_sign = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
+            monster.boss_sign = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
             nIndex += 5;
-            monster.BossSocre = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
-            monster.TaskShare = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
+            monster.BossSocre = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+            monster.TaskShare = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
             nIndex += 4;
-            monster.camp = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
+            monster.camp = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
             nIndex += 2;
-            monster.kill_point = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
-            monster.revive_skin = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
+            monster.kill_point = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+            monster.revive_skin = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
             ++nIndex;
-            monster.PortalRatio = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.PortalId = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.PortalDuration = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.PortalRatio = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.PortalId = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.PortalDuration = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            monster.prestige = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.dust = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.is_building = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.PureDamage = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.prestige = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.dust = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.is_building = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.PureDamage = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            monster.IfCurse = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.IfCurse = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            monster.Score = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.IsShowOwner = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.Score = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.IsShowOwner = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             nIndex += 2;
-            monster.DiligenceType = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
-            monster.DiligenceValue = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex++)->iValue;
+            monster.DiligenceType = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+            monster.DiligenceValue = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
             
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex);
+            const CDBCFile::FIELD *v4 = MonsterFile.Search_Posistion( i, nIndex);
             monster.MonsterHp = strtoll(v4->pString, nullptr, 10);
-            monster.CanTunshi = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.Mid2 = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.FamilyValue = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.CanTunshi = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.Mid2 = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.FamilyValue = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            monster.vAttr[41] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.vAttr[42] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.vAttr[43] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.vAttr[44] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.IsXinMoMonster = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.QieGe = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.vAttr[49] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.Energy = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.vAttr[41] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.vAttr[42] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.vAttr[43] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.vAttr[44] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.IsXinMoMonster = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.QieGe = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.vAttr[49] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.Energy = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strItem;
             char v25;
-            std::allocator<char>::allocator(&v25);
-            const CDBCFile::FIELD *v5 = CDBCFile::Search_Posistion(&MonsterFile, i, nIndex);
-            std::string::string(&strItem, v5->pString, &v25);
+                    const CDBCFile::FIELD *v5 = MonsterFile.Search_Posistion( i, nIndex);
+            strItem = v5->pString;
             CItemHelper::parseItemString(&monster.cItem, &strItem);
             strItem.~string();
-            std::allocator<char>::~allocator(&v25);
-            
-            monster.IsSunAndMoon = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+                    
+            monster.IsSunAndMoon = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             monster.corpse_time = 3000;
             
@@ -5232,14 +4735,12 @@ void CfgData::fetchMonster()
             {
                 std::string delims;
                 char v27;
-                std::allocator<char>::allocator(&v27);
-                std::string::string(&delims, ":", &v27);
+                            delims = ":";
                 
                 StringVector vRand;
-                Answer::StringUtility::split(&vRand, &randtypes, &delims, 0);
+                StringUtility::split(&vRand, &randtypes, &delims, 0);
                 delims.~string();
-                std::allocator<char>::~allocator(&v27);
-                
+                            
                 for (auto& randStr : vRand)
                 {
                     int val = atoi(randStr->c_str());
@@ -5248,7 +4749,7 @@ void CfgData::fetchMonster()
                 vRand.~vector();
             }
             
-            auto v9 = std::map<int, CfgMonster>::operator[](&this->m_monsters, &monster.mid);
+            auto *v9 = &this->m_monsters[monster.mid];
             *v9 = monster;
             
             randtypes.~string();
@@ -5257,41 +4758,36 @@ void CfgData::fetchMonster()
         
         // 加载怪物广播列表
         CDBCFile MonsterBroadcastFile;
-        CDBCFile::CDBCFile(&MonsterBroadcastFile, 0);
-        
-        if (CDBCFile::OpenFromTXT(&MonsterBroadcastFile, "./ServerConfig/Tables/cfg_monster_broadcast.txt"))
+            
+        if (MonsterBroadcastFile.OpenFromTXT( "./ServerConfig/Tables/cfg_monster_broadcast.txt"))
         {
-            int32_t iBaseTableCountBroadcast = CDBCFile::GetRecordsNum(&MonsterBroadcastFile);
-            int32_t iBaseColumnCountBroadcast = CDBCFile::GetFieldsNum(&MonsterBroadcastFile);
+            int32_t iBaseTableCountBroadcast = MonsterBroadcastFile.GetRecordsNum();
+            int32_t iBaseColumnCountBroadcast = MonsterBroadcastFile.GetFieldsNum();
             
             if (iBaseColumnCountBroadcast > 0)
             {
                 for (int32_t i_0 = 0; i_0 < iBaseTableCountBroadcast; ++i_0)
                 {
-                    const CDBCFile::FIELD *v10 = CDBCFile::Search_Posistion(&MonsterBroadcastFile, i_0, 1);
+                    const CDBCFile::FIELD *v10 = MonsterBroadcastFile.Search_Posistion( i_0, 1);
                     this->m_monsterBroadcasts.push_back(v10->iValue);
                 }
             }
-            CDBCFile::~CDBCFile(&MonsterBroadcastFile);
-        }
+                }
     }
-    CDBCFile::~CDBCFile(&MonsterFile);
 }
 void CfgData::fetchNpc()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
-    bool ret = CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_npc.txt");
+    bool ret = TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_npc.txt");
     
     if (!ret)
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_npc.txt failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -5300,28 +4796,24 @@ void CfgData::fetchNpc()
             CfgNpc npc;
             CfgNpc::CfgNpc(&npc);
             
-            npc.id = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            npc.npcid = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
+            npc.id = TabFile.Search_Posistion( i, 0)->iValue;
+            npc.npcid = TabFile.Search_Posistion( i, 4)->iValue;
             
             // 解析地图列表
             std::string delims;
             std::string str;
             char v43;
-            std::allocator<char>::allocator(&v43);
-            std::string::string(&delims, "|", &v43);
+                    delims = "|";
             
             char v45;
-            std::allocator<char>::allocator(&v45);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 6);
-            std::string::string(&str, v1->pString, &v45);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 6);
+            str = v1->pString;
             
             StringVector mapids;
-            Answer::StringUtility::split(&mapids, &str, &delims, 0);
+            StringUtility::split(&mapids, &str, &delims, 0);
             str.~string();
-            std::allocator<char>::~allocator(&v45);
-            delims.~string();
-            std::allocator<char>::~allocator(&v43);
-            
+                    delims.~string();
+                    
             for (auto& mapidStr : mapids)
             {
                 int val = atoi(mapidStr->c_str());
@@ -5329,28 +4821,24 @@ void CfgData::fetchNpc()
             }
             mapids.~vector();
             
-            npc.x = CDBCFile::Search_Posistion(&TabFile, i, 7)->iValue;
-            npc.y = CDBCFile::Search_Posistion(&TabFile, i, 8)->iValue;
-            npc.func = CDBCFile::Search_Posistion(&TabFile, i, 9)->iValue;
-            npc.func_extra = CDBCFile::Search_Posistion(&TabFile, i, 10)->iValue;
+            npc.x = TabFile.Search_Posistion( i, 7)->iValue;
+            npc.y = TabFile.Search_Posistion( i, 8)->iValue;
+            npc.func = TabFile.Search_Posistion( i, 9)->iValue;
+            npc.func_extra = TabFile.Search_Posistion( i, 10)->iValue;
             
             std::string param;
             char v48;
-            std::allocator<char>::allocator(&v48);
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&TabFile, i, 21);
-            std::string::string(&param, v4->pString, &v48);
-            std::allocator<char>::~allocator(&v48);
-            
+                    const CDBCFile::FIELD *v4 = TabFile.Search_Posistion( i, 21);
+            param = v4->pString;
+                    
             std::string v49;
             char v50;
-            std::allocator<char>::allocator(&v50);
-            std::string::string(&v49, ":", &v50);
+                    v49 = ":";
             
             StringVector vparam;
-            Answer::StringUtility::split(&vparam, &param, &v49, 0);
+            StringUtility::split(&vparam, &param, &v49, 0);
             v49.~string();
-            std::allocator<char>::~allocator(&v50);
-            
+                    
             for (size_t j = 0; j < vparam.size(); ++j)
             {
                 int val = atoi(vparam[j]->c_str());
@@ -5359,27 +4847,23 @@ void CfgData::fetchNpc()
             vparam.~vector();
             param.~string();
             
-            npc.unite_flag = CDBCFile::Search_Posistion(&TabFile, i, 23)->iValue;
+            npc.unite_flag = TabFile.Search_Posistion( i, 23)->iValue;
             
             std::string platform;
             char v52;
-            std::allocator<char>::allocator(&v52);
-            const CDBCFile::FIELD *v8 = CDBCFile::Search_Posistion(&TabFile, i, 25);
-            std::string::string(&platform, v8->pString, &v52);
-            std::allocator<char>::~allocator(&v52);
-            
+                    const CDBCFile::FIELD *v8 = TabFile.Search_Posistion( i, 25);
+            platform = v8->pString;
+                    
             if (platform != "0")
             {
                 std::string v53;
                 char v54;
-                std::allocator<char>::allocator(&v54);
-                std::string::string(&v53, "|", &v54);
+                            v53 = "|";
                 
                 StringVector vpf;
-                Answer::StringUtility::split(&vpf, &platform, &v53, 0);
+                StringUtility::split(&vpf, &platform, &v53, 0);
                 v53.~string();
-                std::allocator<char>::~allocator(&v54);
-                
+                            
                 for (auto& pf : vpf)
                 {
                     npc.platforms.push_back(pf);
@@ -5391,34 +4875,28 @@ void CfgData::fetchNpc()
             // 解析消耗物品
             std::string v55;
             char v56;
-            std::allocator<char>::allocator(&v56);
-            std::string::string(&v55, "|", &v56);
+                    v55 = "|";
             
             char v58;
-            std::allocator<char>::allocator(&v58);
-            const CDBCFile::FIELD *v11 = CDBCFile::Search_Posistion(&TabFile, i, 27);
+                    const CDBCFile::FIELD *v11 = TabFile.Search_Posistion( i, 27);
             std::string v57;
-            std::string::string(&v57, v11->pString, &v58);
+            v57 = v11->pString;
             
             StringVector CostVector;
-            Answer::StringUtility::split(&CostVector, &v57, &v55, 0);
+            StringUtility::split(&CostVector, &v57, &v55, 0);
             v57.~string();
-            std::allocator<char>::~allocator(&v58);
-            v55.~string();
-            std::allocator<char>::~allocator(&v56);
-            
+                    v55.~string();
+                    
             for (auto& costStr : CostVector)
             {
                 std::string v60;
                 char v61;
-                std::allocator<char>::allocator(&v61);
-                std::string::string(&v60, ":", &v61);
+                            v60 = ":";
                 
                 StringVector CostItem;
-                Answer::StringUtility::split(&CostItem, costStr, &v60, 0);
+                StringUtility::split(CostItem, *costStr, v60);
                 v60.~string();
-                std::allocator<char>::~allocator(&v61);
-                
+                            
                 if (CostItem.size() == 3)
                 {
                     CfgDungeonNpcCost NpcCost;
@@ -5431,59 +4909,54 @@ void CfgData::fetchNpc()
             }
             CostVector.~vector();
             
-            auto v19 = std::map<int, CfgNpc>::operator[](&this->m_npcs, &npc.id);
+            auto *v19 = &this->m_npcs[npc.id];
             *v19 = npc;
             npc.~CfgNpc();
         }
         
         // 加载NPC机场
         CDBCFile TabFileAir;
-        CDBCFile::CDBCFile(&TabFileAir, 0);
-        ret = CDBCFile::OpenFromTXT(&TabFileAir, "./ServerConfig/Tables/cfg_npc_airport.txt");
+            ret = TabFileAir.OpenFromTXT( "./ServerConfig/Tables/cfg_npc_airport.txt");
         
         if (ret)
         {
-            iBaseTableCount = CDBCFile::GetRecordsNum(&TabFileAir);
-            iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFileAir);
+            iBaseTableCount = TabFileAir.GetRecordsNum();
+            iBaseColumnCount = TabFileAir.GetFieldsNum();
             
             if (iBaseColumnCount > 0)
             {
                 for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
                 {
                     CfgNpcAirport airport;
-                    airport.id = CDBCFile::Search_Posistion(&TabFileAir, i_0, 0)->iValue;
-                    airport.npcid = CDBCFile::Search_Posistion(&TabFileAir, i_0, 1)->iValue;
-                    airport.player_kingdom = CDBCFile::Search_Posistion(&TabFileAir, i_0, 3)->iValue;
-                    airport.kingdom_id = CDBCFile::Search_Posistion(&TabFileAir, i_0, 4)->iValue;
-                    airport.map_id = CDBCFile::Search_Posistion(&TabFileAir, i_0, 5)->iValue;
-                    airport.map_x = CDBCFile::Search_Posistion(&TabFileAir, i_0, 6)->iValue;
-                    airport.map_y = CDBCFile::Search_Posistion(&TabFileAir, i_0, 7)->iValue;
-                    airport.cost = CDBCFile::Search_Posistion(&TabFileAir, i_0, 8)->iValue;
+                    airport.id = TabFileAir.Search_Posistion( i_0, 0)->iValue;
+                    airport.npcid = TabFileAir.Search_Posistion( i_0, 1)->iValue;
+                    airport.player_kingdom = TabFileAir.Search_Posistion( i_0, 3)->iValue;
+                    airport.kingdom_id = TabFileAir.Search_Posistion( i_0, 4)->iValue;
+                    airport.map_id = TabFileAir.Search_Posistion( i_0, 5)->iValue;
+                    airport.map_x = TabFileAir.Search_Posistion( i_0, 6)->iValue;
+                    airport.map_y = TabFileAir.Search_Posistion( i_0, 7)->iValue;
+                    airport.cost = TabFileAir.Search_Posistion( i_0, 8)->iValue;
                     
-                    auto v20 = std::map<int, CfgNpcAirport>::operator[](&this->m_npcAirports, &airport.id);
+                    auto *v20 = &this->m_npcAirports[airport.id];
                     *v20 = airport;
                 }
             }
-            CDBCFile::~CDBCFile(&TabFileAir);
-        }
+                }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::fetchPlant()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_plant.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_plant.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_plant.txt failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -5491,40 +4964,34 @@ void CfgData::fetchPlant()
         {
             CfgPlant plant{};
             
-            plant.id = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            plant.type = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
-            plant.level = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
+            plant.id = TabFile.Search_Posistion( i, 0)->iValue;
+            plant.type = TabFile.Search_Posistion( i, 3)->iValue;
+            plant.level = TabFile.Search_Posistion( i, 4)->iValue;
             
             std::string delims;
             std::string str;
             char v22;
-            std::allocator<char>::allocator(&v22);
-            std::string::string(&delims, "|", &v22);
+                    delims = "|";
             
             char v24;
-            std::allocator<char>::allocator(&v24);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 5);
-            std::string::string(&str, v1->pString, &v24);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 5);
+            str = v1->pString;
             
             StringVector strItems;
-            Answer::StringUtility::split(&strItems, &str, &delims, 0);
+            StringUtility::split(&strItems, &str, &delims, 0);
             str.~string();
-            std::allocator<char>::~allocator(&v24);
-            delims.~string();
-            std::allocator<char>::~allocator(&v22);
-            
+                    delims.~string();
+                    
             for (auto& eventStr : strItems)
             {
                 std::string v26;
                 char v27;
-                std::allocator<char>::allocator(&v27);
-                std::string::string(&v26, ":", &v27);
+                            v26 = ":";
                 
                 StringVector EventVt;
-                Answer::StringUtility::split(&EventVt, eventStr, &v26, 0);
+                StringUtility::split(EventVt, *eventStr, v26);
                 v26.~string();
-                std::allocator<char>::~allocator(&v27);
-                
+                            
                 if (EventVt.size() == 2)
                 {
                     CfgPlantEvent Event;
@@ -5537,48 +5004,42 @@ void CfgData::fetchPlant()
             }
             strItems.~vector();
             
-            plant.item_cost = CDBCFile::Search_Posistion(&TabFile, i, 6)->iValue;
-            plant.start_hour = CDBCFile::Search_Posistion(&TabFile, i, 7)->iValue;
-            plant.end_hour = CDBCFile::Search_Posistion(&TabFile, i, 8)->iValue;
-            plant.gather_time = CDBCFile::Search_Posistion(&TabFile, i, 9)->iValue;
-            plant.revive_time = CDBCFile::Search_Posistion(&TabFile, i, 10)->iValue;
-            plant.hide_time = CDBCFile::Search_Posistion(&TabFile, i, 16)->iValue;
-            plant.get_points = CDBCFile::Search_Posistion(&TabFile, i, 18)->iValue;
-            plant.boss_id = CDBCFile::Search_Posistion(&TabFile, i, 19)->iValue;
-            plant.BuffId = CDBCFile::Search_Posistion(&TabFile, i, 20)->iValue;
-            plant.revive_skin = CDBCFile::Search_Posistion(&TabFile, i, 21)->iValue;
-            plant.TaskId = CDBCFile::Search_Posistion(&TabFile, i, 22)->iValue;
+            plant.item_cost = TabFile.Search_Posistion( i, 6)->iValue;
+            plant.start_hour = TabFile.Search_Posistion( i, 7)->iValue;
+            plant.end_hour = TabFile.Search_Posistion( i, 8)->iValue;
+            plant.gather_time = TabFile.Search_Posistion( i, 9)->iValue;
+            plant.revive_time = TabFile.Search_Posistion( i, 10)->iValue;
+            plant.hide_time = TabFile.Search_Posistion( i, 16)->iValue;
+            plant.get_points = TabFile.Search_Posistion( i, 18)->iValue;
+            plant.boss_id = TabFile.Search_Posistion( i, 19)->iValue;
+            plant.BuffId = TabFile.Search_Posistion( i, 20)->iValue;
+            plant.revive_skin = TabFile.Search_Posistion( i, 21)->iValue;
+            plant.TaskId = TabFile.Search_Posistion( i, 22)->iValue;
             
             std::string v28;
             char v29;
-            std::allocator<char>::allocator(&v29);
-            std::string::string(&v28, "|", &v29);
+                    v28 = "|";
             
             char v31;
-            std::allocator<char>::allocator(&v31);
-            const CDBCFile::FIELD *v7 = CDBCFile::Search_Posistion(&TabFile, i, 23);
+                    const CDBCFile::FIELD *v7 = TabFile.Search_Posistion( i, 23);
             std::string v30;
-            std::string::string(&v30, v7->pString, &v31);
+            v30 = v7->pString;
             
             StringVector ItemString;
-            Answer::StringUtility::split(&ItemString, &v30, &v28, 0);
+            StringUtility::split(&ItemString, &v30, &v28, 0);
             v30.~string();
-            std::allocator<char>::~allocator(&v31);
-            v28.~string();
-            std::allocator<char>::~allocator(&v29);
-            
+                    v28.~string();
+                    
             for (auto& itemStr : ItemString)
             {
                 std::string v33;
                 char v34;
-                std::allocator<char>::allocator(&v34);
-                std::string::string(&v33, ":", &v34);
+                            v33 = ":";
                 
                 StringVector RateVt;
-                Answer::StringUtility::split(&RateVt, itemStr, &v33, 0);
+                StringUtility::split(RateVt, *itemStr, v33);
                 v33.~string();
-                std::allocator<char>::~allocator(&v34);
-                
+                            
                 if (RateVt.size() == 2)
                 {
                     int val = atoi(RateVt[0]->c_str());
@@ -5588,28 +5049,25 @@ void CfgData::fetchPlant()
             }
             ItemString.~vector();
             
-            auto v11 = std::map<int, CfgPlant>::operator[](&this->m_plants, &plant.id);
+            auto *v11 = &this->m_plants[plant.id];
             *v11 = plant;
             plant.~CfgPlant();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::fetchTask()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_task.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_task.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_task.txt failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -5618,118 +5076,106 @@ void CfgData::fetchTask()
             CfgTask task;
             CfgTask::CfgTask(&task);
             
-            task.id = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+            task.id = TabFile.Search_Posistion( i, 0)->iValue;
             
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 1);
+            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 1);
             snprintf(task.name, sizeof(task.name), "%s", v1->pString);
             
-            task.type = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
-            task.group = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
-            task.can_giveup = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-            task.pretask = CDBCFile::Search_Posistion(&TabFile, i, 5)->iValue;
-            task.posttask = CDBCFile::Search_Posistion(&TabFile, i, 6)->iValue;
-            task.main_order = CDBCFile::Search_Posistion(&TabFile, i, 7)->iValue;
-            task.job = CDBCFile::Search_Posistion(&TabFile, i, 8)->iValue;
-            task.level = CDBCFile::Search_Posistion(&TabFile, i, 9)->iValue;
-            task.max_level = CDBCFile::Search_Posistion(&TabFile, i, 10)->iValue;
-            task.kingdom = CDBCFile::Search_Posistion(&TabFile, i, 11)->iValue;
-            task.start_npc = CDBCFile::Search_Posistion(&TabFile, i, 12)->iValue;
-            task.end_npc = CDBCFile::Search_Posistion(&TabFile, i, 13)->iValue;
-            task.dungeon = CDBCFile::Search_Posistion(&TabFile, i, 14)->iValue;
+            task.type = TabFile.Search_Posistion( i, 2)->iValue;
+            task.group = TabFile.Search_Posistion( i, 3)->iValue;
+            task.can_giveup = TabFile.Search_Posistion( i, 4)->iValue;
+            task.pretask = TabFile.Search_Posistion( i, 5)->iValue;
+            task.posttask = TabFile.Search_Posistion( i, 6)->iValue;
+            task.main_order = TabFile.Search_Posistion( i, 7)->iValue;
+            task.job = TabFile.Search_Posistion( i, 8)->iValue;
+            task.level = TabFile.Search_Posistion( i, 9)->iValue;
+            task.max_level = TabFile.Search_Posistion( i, 10)->iValue;
+            task.kingdom = TabFile.Search_Posistion( i, 11)->iValue;
+            task.start_npc = TabFile.Search_Posistion( i, 12)->iValue;
+            task.end_npc = TabFile.Search_Posistion( i, 13)->iValue;
+            task.dungeon = TabFile.Search_Posistion( i, 14)->iValue;
             
             std::string strItems;
             char v12;
-            std::allocator<char>::allocator(&v12);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, 15);
-            std::string::string(&strItems, v2->pString, &v12);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, 15);
+            strItems = v2->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             task.items_receive = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v12);
-            
-            task.award_exp = CDBCFile::Search_Posistion(&TabFile, i, 16)->iValue;
-            task.award_money = CDBCFile::Search_Posistion(&TabFile, i, 17)->iValue;
-            task.gold = CDBCFile::Search_Posistion(&TabFile, i, 18)->iValue;
-            task.dilong = CDBCFile::Search_Posistion(&TabFile, i, 19)->iValue;
-            task.rongyu = CDBCFile::Search_Posistion(&TabFile, i, 20)->iValue;
-            task.fuwen = CDBCFile::Search_Posistion(&TabFile, i, 21)->iValue;
-            task.BossScore = CDBCFile::Search_Posistion(&TabFile, i, 22)->iValue;
+                    
+            task.award_exp = TabFile.Search_Posistion( i, 16)->iValue;
+            task.award_money = TabFile.Search_Posistion( i, 17)->iValue;
+            task.gold = TabFile.Search_Posistion( i, 18)->iValue;
+            task.dilong = TabFile.Search_Posistion( i, 19)->iValue;
+            task.rongyu = TabFile.Search_Posistion( i, 20)->iValue;
+            task.fuwen = TabFile.Search_Posistion( i, 21)->iValue;
+            task.BossScore = TabFile.Search_Posistion( i, 22)->iValue;
             
             std::string v14;
             char v15;
-            std::allocator<char>::allocator(&v15);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile, i, 23);
-            std::string::string(&v14, v3->pString, &v15);
+                    const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, 23);
+            v14 = v3->pString;
             
             MemChrBagVector v13;
             CItemHelper::parseItemVectorString(&v13, &v14);
             task.award_item = v13;
             v13.~vector();
             v14.~string();
-            std::allocator<char>::~allocator(&v15);
-            
+                    
             std::string v17;
             char v18;
-            std::allocator<char>::allocator(&v18);
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&TabFile, i, 24);
-            std::string::string(&v17, v4->pString, &v18);
+                    const CDBCFile::FIELD *v4 = TabFile.Search_Posistion( i, 24);
+            v17 = v4->pString;
             
             MemChrJobBagVector v16;
             CfgData::parseTaskItemJobString(&v16, this, task.id, &v17);
             task.award_optional = v16;
             v16.~vector();
             v17.~string();
-            std::allocator<char>::~allocator(&v18);
-            
-            task.condition = CDBCFile::Search_Posistion(&TabFile, i, 35)->iValue;
+                    
+            task.condition = TabFile.Search_Posistion( i, 35)->iValue;
             
             std::string strRequest;
             char v20;
-            std::allocator<char>::allocator(&v20);
-            const CDBCFile::FIELD *v5 = CDBCFile::Search_Posistion(&TabFile, i, 36);
-            std::string::string(&strRequest, v5->pString, &v20);
+                    const CDBCFile::FIELD *v5 = TabFile.Search_Posistion( i, 36);
+            strRequest = v5->pString;
             task.request = parseTaskCondition(task.id, task.condition, &strRequest);
             strRequest.~string();
-            std::allocator<char>::~allocator(&v20);
-            
-            task.GongXian = CDBCFile::Search_Posistion(&TabFile, i, 50)->iValue;
-            task.JunTuanZiJin = CDBCFile::Search_Posistion(&TabFile, i, 51)->iValue;
-            task.Double = CDBCFile::Search_Posistion(&TabFile, i, 52)->iValue;
-            task.acScore = CDBCFile::Search_Posistion(&TabFile, i, 53)->iValue;
-            task.quickDoneCost = CDBCFile::Search_Posistion(&TabFile, i, 55)->iValue;
-            task.quality = CDBCFile::Search_Posistion(&TabFile, i, 61)->iValue;
-            task.ratio = CDBCFile::Search_Posistion(&TabFile, i, 62)->iValue;
-            task.dust = CDBCFile::Search_Posistion(&TabFile, i, 63)->iValue;
-            task.activity_score = CDBCFile::Search_Posistion(&TabFile, i, 65)->iValue;
-            task.talent_point = CDBCFile::Search_Posistion(&TabFile, i, 67)->iValue;
+                    
+            task.GongXian = TabFile.Search_Posistion( i, 50)->iValue;
+            task.JunTuanZiJin = TabFile.Search_Posistion( i, 51)->iValue;
+            task.Double = TabFile.Search_Posistion( i, 52)->iValue;
+            task.acScore = TabFile.Search_Posistion( i, 53)->iValue;
+            task.quickDoneCost = TabFile.Search_Posistion( i, 55)->iValue;
+            task.quality = TabFile.Search_Posistion( i, 61)->iValue;
+            task.ratio = TabFile.Search_Posistion( i, 62)->iValue;
+            task.dust = TabFile.Search_Posistion( i, 63)->iValue;
+            task.activity_score = TabFile.Search_Posistion( i, 65)->iValue;
+            task.talent_point = TabFile.Search_Posistion( i, 67)->iValue;
             
             std::string path;
             char v23;
-            std::allocator<char>::allocator(&v23);
-            std::string::string(&path, "./ServerConfig/Tables/cfg_task.txt", &v23);
+                    path = "./ServerConfig/Tables/cfg_task.txt";
             
             char v25;
-            std::allocator<char>::allocator(&v25);
-            const CDBCFile::FIELD *v6 = CDBCFile::Search_Posistion(&TabFile, i, 68);
+                    const CDBCFile::FIELD *v6 = TabFile.Search_Posistion( i, 68);
             std::string v22;
-            std::string::string(&v22, v6->pString, &v25);
+            v22 = v6->pString;
             
             std::list<TaskDrop> v21;
             CfgData::parseTaskDrop((CfgData *const)&v21, task.id, &v22);
             task.drop_list = v21;
             v21.~list();
             v22.~string();
-            std::allocator<char>::~allocator(&v25);
-            path.~string();
-            std::allocator<char>::~allocator(&v23);
+                    path.~string();
+                    
+            task.DoubleGold = TabFile.Search_Posistion( i, 69)->iValue;
+            task.BuffId = TabFile.Search_Posistion( i, 70)->iValue;
             
-            task.DoubleGold = CDBCFile::Search_Posistion(&TabFile, i, 69)->iValue;
-            task.BuffId = CDBCFile::Search_Posistion(&TabFile, i, 70)->iValue;
-            
-            auto v7 = std::map<int, CfgTask>::operator[](&this->m_tasks, &task.id);
+            auto *v7 = &this->m_tasks[task.id];
             *v7 = task;
             
             if (task.type == 3)
@@ -5748,23 +5194,20 @@ void CfgData::fetchTask()
             task.~CfgTask();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::fetchTrap()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_trap.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_trap.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_trap.txt failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -5773,79 +5216,73 @@ void CfgData::fetchTrap()
             CfgTrap trap;
             CfgTrap::CfgTrap(&trap);
             
-            trap.id = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            trap.cd = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
-            trap.delay = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
-            trap.event_type = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
+            trap.id = TabFile.Search_Posistion( i, 0)->iValue;
+            trap.cd = TabFile.Search_Posistion( i, 2)->iValue;
+            trap.delay = TabFile.Search_Posistion( i, 3)->iValue;
+            trap.event_type = TabFile.Search_Posistion( i, 4)->iValue;
             
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 6);
-            std::string::operator=(&trap.effect, v1->pString);
-            trap.item_cost = CDBCFile::Search_Posistion(&TabFile, i, 7)->iValue;
-            trap.life = CDBCFile::Search_Posistion(&TabFile, i, 12)->iValue;
+            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 6);
+            trap.effect = v1->pString;
+            trap.item_cost = TabFile.Search_Posistion( i, 7)->iValue;
+            trap.life = TabFile.Search_Posistion( i, 12)->iValue;
             
-            auto v2 = std::map<int, CfgTrap>::operator[](&this->m_traps, &trap.id);
+            auto *v2 = &this->m_traps[trap.id];
             *v2 = trap;
             trap.~CfgTrap();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::fetchLevelExp()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_level_exp.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_level_exp.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_level_exp.txt failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgLevelExp levelExp;
-            levelExp.level = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+            levelExp.level = TabFile.Search_Posistion( i, 0)->iValue;
             
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 1);
+            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 1);
             levelExp.upgrade_exp = strtoll(v1->pString, nullptr, 10);
             
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, 2);
+            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, 2);
             levelExp.max_exp = strtoll(v2->pString, nullptr, 10);
             
-            levelExp.pet_exp = CDBCFile::Search_Posistion(&TabFile, i, 3)->iValue;
-            levelExp.mount_exp = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-            levelExp.vicegeneral_id = CDBCFile::Search_Posistion(&TabFile, i, 5)->iValue;
-            levelExp.attr_point = CDBCFile::Search_Posistion(&TabFile, i, 6)->iValue;
-            levelExp.talent_point = CDBCFile::Search_Posistion(&TabFile, i, 7)->iValue;
+            levelExp.pet_exp = TabFile.Search_Posistion( i, 3)->iValue;
+            levelExp.mount_exp = TabFile.Search_Posistion( i, 4)->iValue;
+            levelExp.vicegeneral_id = TabFile.Search_Posistion( i, 5)->iValue;
+            levelExp.attr_point = TabFile.Search_Posistion( i, 6)->iValue;
+            levelExp.talent_point = TabFile.Search_Posistion( i, 7)->iValue;
             
-            auto v3 = std::map<int, CfgLevelExp>::operator[](&this->m_levelExps, &levelExp.level);
+            auto *v3 = &this->m_levelExps[levelExp.level];
             *v3 = levelExp;
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::fetchLevelAttr()
 {
     CDBCFile LevelAttrFile;
-    CDBCFile::CDBCFile(&LevelAttrFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&LevelAttrFile, "./ServerConfig/Tables/cfg_level_attr.txt"))
+    if (!LevelAttrFile.OpenFromTXT( "./ServerConfig/Tables/cfg_level_attr.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_PLAYER_LEVEL_ATTR_TABLE failed,please check!!");
-        CDBCFile::~CDBCFile(&LevelAttrFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&LevelAttrFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&LevelAttrFile);
+    int32_t iBaseTableCount = LevelAttrFile.GetRecordsNum();
+    int32_t iBaseColumnCount = LevelAttrFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -5854,172 +5291,152 @@ void CfgData::fetchLevelAttr()
             CfgLevelAttr levelAttr;
             CfgLevelAttr::CfgLevelAttr(&levelAttr);
             
-            levelAttr.level = CDBCFile::Search_Posistion(&LevelAttrFile, i, 0)->iValue;
-            levelAttr.job = CDBCFile::Search_Posistion(&LevelAttrFile, i, 1)->iValue;
+            levelAttr.level = LevelAttrFile.Search_Posistion( i, 0)->iValue;
+            levelAttr.job = LevelAttrFile.Search_Posistion( i, 1)->iValue;
             
             std::string path;
             std::string addonAttr;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            std::string::string(&path, "./ServerConfig/Tables/cfg_level_attr.txt", &v8);
+                    path = "./ServerConfig/Tables/cfg_level_attr.txt";
             
             char v10;
-            std::allocator<char>::allocator(&v10);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&LevelAttrFile, i, 2);
-            std::string::string(&addonAttr, v1->pString, &v10);
+                    const CDBCFile::FIELD *v1 = LevelAttrFile.Search_Posistion( i, 2);
+            addonAttr = v1->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             levelAttr.addonattr = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v10);
-            path.~string();
-            std::allocator<char>::~allocator(&v8);
-            
+                    path.~string();
+                    
             std::string v12;
             char v13;
-            std::allocator<char>::allocator(&v13);
-            std::string::string(&v12, "./ServerConfig/Tables/cfg_level_attr.txt", &v13);
+                    v12 = "./ServerConfig/Tables/cfg_level_attr.txt";
             
             char v15;
-            std::allocator<char>::allocator(&v15);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&LevelAttrFile, i, 3);
+                    const CDBCFile::FIELD *v2 = LevelAttrFile.Search_Posistion( i, 3);
             std::string v14;
-            std::string::string(&v14, v2->pString, &v15);
+            v14 = v2->pString;
             
             AttrAddonVector v11;
             CfgData::paraseAttrAddon(&v11, this, &v14, i, &v12);
             levelAttr.addonPoint = v11;
             v11.~vector();
             v14.~string();
-            std::allocator<char>::~allocator(&v15);
-            v12.~string();
-            std::allocator<char>::~allocator(&v13);
-            
+                    v12.~string();
+                    
             int __k = (levelAttr.job << 16) | levelAttr.level;
-            auto v3 = std::map<int, CfgLevelAttr>::operator[](&this->m_levelAttrs, &__k);
+            auto *v3 = &this->m_levelAttrs[__k];
             *v3 = levelAttr;
             levelAttr.~CfgLevelAttr();
         }
     }
-    CDBCFile::~CDBCFile(&LevelAttrFile);
 }
 
 void CfgData::fetchJob()
 {
     CDBCFile JobFile;
-    CDBCFile::CDBCFile(&JobFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&JobFile, "./ServerConfig/Tables/cfg_job.txt"))
+    if (!JobFile.OpenFromTXT( "./ServerConfig/Tables/cfg_job.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_job.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&JobFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&JobFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&JobFile);
+    int32_t iBaseTableCount = JobFile.GetRecordsNum();
+    int32_t iBaseColumnCount = JobFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgJob job;
-            job.id = CDBCFile::Search_Posistion(&JobFile, i, 0)->iValue;
-            job.job_task = CDBCFile::Search_Posistion(&JobFile, i, 4)->iValue;
-            job.attack_attr = CDBCFile::Search_Posistion(&JobFile, i, 5)->iValue;
-            job.base_skill = CDBCFile::Search_Posistion(&JobFile, i, 6)->iValue;
+            job.id = JobFile.Search_Posistion( i, 0)->iValue;
+            job.job_task = JobFile.Search_Posistion( i, 4)->iValue;
+            job.attack_attr = JobFile.Search_Posistion( i, 5)->iValue;
+            job.base_skill = JobFile.Search_Posistion( i, 6)->iValue;
             
-            auto v1 = std::map<int, CfgJob>::operator[](&this->m_jobs, &job.id);
+            auto *v1 = &this->m_jobs[job.id];
             *v1 = job;
         }
     }
-    CDBCFile::~CDBCFile(&JobFile);
 }
 
 void CfgData::fetchChrShop()
 {
     CDBCFile ChrShopFile;
-    CDBCFile::CDBCFile(&ChrShopFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&ChrShopFile, "./ServerConfig/Tables/cfg_chr_shop.txt"))
+    if (!ChrShopFile.OpenFromTXT( "./ServerConfig/Tables/cfg_chr_shop.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_chr_shop.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&ChrShopFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&ChrShopFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&ChrShopFile);
+    int32_t iBaseTableCount = ChrShopFile.GetRecordsNum();
+    int32_t iBaseColumnCount = ChrShopFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgChrShop chrShop;
-            chrShop.Index = CDBCFile::Search_Posistion(&ChrShopFile, i, 0)->iValue;
-            chrShop.ItemId = CDBCFile::Search_Posistion(&ChrShopFile, i, 1)->iValue;
-            chrShop.ItemClass = CDBCFile::Search_Posistion(&ChrShopFile, i, 2)->iValue;
-            chrShop.IsBind = CDBCFile::Search_Posistion(&ChrShopFile, i, 3)->iValue;
-            chrShop.LimitCount = CDBCFile::Search_Posistion(&ChrShopFile, i, 4)->iValue;
-            chrShop.Price = CDBCFile::Search_Posistion(&ChrShopFile, i, 5)->iValue;
-            chrShop.ConstType = CDBCFile::Search_Posistion(&ChrShopFile, i, 9)->iValue;
-            chrShop.QiQinglevel = CDBCFile::Search_Posistion(&ChrShopFile, i, 10)->iValue;
+            chrShop.Index = ChrShopFile.Search_Posistion( i, 0)->iValue;
+            chrShop.ItemId = ChrShopFile.Search_Posistion( i, 1)->iValue;
+            chrShop.ItemClass = ChrShopFile.Search_Posistion( i, 2)->iValue;
+            chrShop.IsBind = ChrShopFile.Search_Posistion( i, 3)->iValue;
+            chrShop.LimitCount = ChrShopFile.Search_Posistion( i, 4)->iValue;
+            chrShop.Price = ChrShopFile.Search_Posistion( i, 5)->iValue;
+            chrShop.ConstType = ChrShopFile.Search_Posistion( i, 9)->iValue;
+            chrShop.QiQinglevel = ChrShopFile.Search_Posistion( i, 10)->iValue;
             
-            auto v1 = std::map<int, CfgChrShop>::operator[](&this->m_chrShops, &chrShop.Index);
+            auto *v1 = &this->m_chrShops[chrShop.Index];
             *v1 = chrShop;
         }
     }
-    CDBCFile::~CDBCFile(&ChrShopFile);
 }
 void CfgData::fetchMovie()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_movie.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_movie.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_movie.txt failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMovie movie;
-            movie.id = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            int32_t MoveId = CDBCFile::Search_Posistion(&TabFile, i, 2)->iValue;
+            movie.id = TabFile.Search_Posistion( i, 0)->iValue;
+            int32_t MoveId = TabFile.Search_Posistion( i, 2)->iValue;
             
             if (movie.id == MoveId)
             {
-                auto v1 = std::map<int, CfgMovie>::operator[](&this->m_movie, &movie.id);
+                auto *v1 = &this->m_movie[movie.id];
                 v1->id = movie.id;
             }
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::fetchMonsterAI()
 {
     CDBCFile MonsterFile;
-    CDBCFile::CDBCFile(&MonsterFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MonsterFile, "./ServerConfig/Tables/MonsterAi.txt"))
+    if (!MonsterFile.OpenFromTXT( "./ServerConfig/Tables/MonsterAi.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MONSTER_AI_TABLE failed,please check!!");
-        CDBCFile::~CDBCFile(&MonsterFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MonsterFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MonsterFile);
+    int32_t iBaseTableCount = MonsterFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MonsterFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6029,43 +5446,40 @@ void CfgData::fetchMonsterAI()
             memset(&ai, 0, sizeof(ai));
             
             int32_t nIndex = 0;
-            ai.id = CDBCFile::Search_Posistion(&MonsterFile, i, 0)->iValue;
-            ai.style = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.target = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.escape_hp = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.view_range = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.move_range = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.rest_range = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.rest_time_min = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.rest_time_max = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.rest_ratio = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.run_distance = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.run_range = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.run_cd = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            ai.pursuit_range = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            ai.id = MonsterFile.Search_Posistion( i, 0)->iValue;
+            ai.style = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.target = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.escape_hp = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.view_range = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.move_range = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.rest_range = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.rest_time_min = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.rest_time_max = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.rest_ratio = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.run_distance = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.run_range = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.run_cd = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            ai.pursuit_range = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v1 = std::map<int, CfgMonsterAI>::operator[](&this->m_mMonsterAI, &ai.id);
+            auto *v1 = &this->m_mMonsterAI[ai.id];
             *v1 = ai;
         }
     }
-    CDBCFile::~CDBCFile(&MonsterFile);
 }
 
 void CfgData::fetchMonsterAdjustTable()
 {
     CDBCFile MonsterFile;
-    CDBCFile::CDBCFile(&MonsterFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MonsterFile, "./ServerConfig/Tables/MonsterAdjust.txt"))
+    if (!MonsterFile.OpenFromTXT( "./ServerConfig/Tables/MonsterAdjust.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MONSTER_ADJUST_TABLE failed,please check!!");
-        CDBCFile::~CDBCFile(&MonsterFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MonsterFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MonsterFile);
+    int32_t iBaseTableCount = MonsterFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MonsterFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6075,35 +5489,33 @@ void CfgData::fetchMonsterAdjustTable()
             memset(&monster, 0, sizeof(monster));
             
             int32_t nIndex = 0;
-            monster.mid = CDBCFile::Search_Posistion(&MonsterFile, i, 0)->iValue;
-            monster.adj_level = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.level = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.mid = MonsterFile.Search_Posistion( i, 0)->iValue;
+            monster.adj_level = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.level = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             
             for (int j = 1; j <= 28; ++j)
             {
-                monster.vAttr[j] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+                monster.vAttr[j] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             }
             
-            monster.vAttr[41] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.vAttr[42] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.vAttr[43] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
-            monster.vAttr[44] = CDBCFile::Search_Posistion(&MonsterFile, i, ++nIndex)->iValue;
+            monster.vAttr[41] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.vAttr[42] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.vAttr[43] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+            monster.vAttr[44] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto key = std::make_pair(monster.mid, monster.adj_level);
             auto result = this->m_mMonsterAdjust.insert(std::make_pair(key, monster));
         }
     }
-    CDBCFile::~CDBCFile(&MonsterFile);
     
     // 加载 Boss 成长表
     CDBCFile MonsterFile2;
-    CDBCFile::CDBCFile(&MonsterFile2, 0);
     
-    if (CDBCFile::OpenFromTXT(&MonsterFile2, "./ServerConfig/Tables/BossGrow.txt"))
+    if (MonsterFile2.OpenFromTXT( "./ServerConfig/Tables/BossGrow.txt"))
     {
-        iBaseTableCount = CDBCFile::GetRecordsNum(&MonsterFile2);
-        iBaseColumnCount = CDBCFile::GetFieldsNum(&MonsterFile2);
+        iBaseTableCount = MonsterFile2.GetRecordsNum();
+        iBaseColumnCount = MonsterFile2.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -6113,44 +5525,41 @@ void CfgData::fetchMonsterAdjustTable()
                 memset(&monster, 0, sizeof(monster));
                 
                 int32_t nIndex_0 = 0;
-                monster.mid = CDBCFile::Search_Posistion(&MonsterFile2, i_0, 0)->iValue;
-                monster.adj_level = CDBCFile::Search_Posistion(&MonsterFile2, i_0, ++nIndex_0)->iValue;
-                monster.exp = CDBCFile::Search_Posistion(&MonsterFile2, i_0, ++nIndex_0)->iValue;
+                monster.mid = MonsterFile2.Search_Posistion( i_0, 0)->iValue;
+                monster.adj_level = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+                monster.exp = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
                 ++nIndex_0;
                 
                 for (int j = 1; j <= 28; ++j)
                 {
-                    monster.vAttr[j] = CDBCFile::Search_Posistion(&MonsterFile2, i_0, ++nIndex_0)->iValue;
+                    monster.vAttr[j] = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
                 }
                 
-                monster.vAttr[41] = CDBCFile::Search_Posistion(&MonsterFile2, i_0, ++nIndex_0)->iValue;
-                monster.vAttr[42] = CDBCFile::Search_Posistion(&MonsterFile2, i_0, ++nIndex_0)->iValue;
-                monster.vAttr[43] = CDBCFile::Search_Posistion(&MonsterFile2, i_0, ++nIndex_0)->iValue;
-                monster.vAttr[44] = CDBCFile::Search_Posistion(&MonsterFile2, i_0, ++nIndex_0)->iValue;
+                monster.vAttr[41] = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+                monster.vAttr[42] = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+                monster.vAttr[43] = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+                monster.vAttr[44] = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
                 ++nIndex_0;
                 
                 auto key = std::make_pair(monster.mid, monster.adj_level);
                 this->m_mMonsterAdjust.insert(std::make_pair(key, monster));
             }
         }
-        CDBCFile::~CDBCFile(&MonsterFile2);
-    }
+        }
 }
 
 void CfgData::fetchMonsterDropGroup()
 {
     CDBCFile MonsterDropFile;
-    CDBCFile::CDBCFile(&MonsterDropFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MonsterDropFile, "./ServerConfig/Tables/cfg_monster_drop_group.txt"))
+    if (!MonsterDropFile.OpenFromTXT( "./ServerConfig/Tables/cfg_monster_drop_group.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_monster_drop_group.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&MonsterDropFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MonsterDropFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MonsterDropFile);
+    int32_t iBaseTableCount = MonsterDropFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MonsterDropFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6160,63 +5569,56 @@ void CfgData::fetchMonsterDropGroup()
             memset(&monsterDropGroup, 0, sizeof(monsterDropGroup));
             
             int32_t nIndex = 0;
-            monsterDropGroup.group_id = CDBCFile::Search_Posistion(&MonsterDropFile, i, 0)->iValue;
-            monsterDropGroup.item_id = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.item_class = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.item_count = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.bind_type = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.weight = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.probability = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.cost_type = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.cost_value = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.limit_time = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.daily_limit = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
+            monsterDropGroup.group_id = MonsterDropFile.Search_Posistion( i, 0)->iValue;
+            monsterDropGroup.item_id = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.item_class = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.item_count = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.bind_type = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.weight = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.probability = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.cost_type = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.cost_value = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.limit_time = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.daily_limit = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string p_StringTime;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&MonsterDropFile, i, nIndex);
-            std::string::string(&p_StringTime, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = MonsterDropFile.Search_Posistion( i, nIndex);
+            p_StringTime = v1->pString;
             monsterDropGroup.start_date = Answer::DayTime::StringToIntTime(&p_StringTime);
             p_StringTime.~string();
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v8;
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&MonsterDropFile, i, nIndex);
-            std::string::string(&v8, v2->pString, &v9);
+                    const CDBCFile::FIELD *v2 = MonsterDropFile.Search_Posistion( i, nIndex);
+            v8 = v2->pString;
             monsterDropGroup.end_date = Answer::DayTime::StringToIntTime(&v8);
             v8.~string();
-            std::allocator<char>::~allocator(&v9);
-            
-            monsterDropGroup.record = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
-            monsterDropGroup.festival_group = CDBCFile::Search_Posistion(&MonsterDropFile, i, ++nIndex)->iValue;
+                    
+            monsterDropGroup.record = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterDropGroup.festival_group = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v3 = std::map<int, std::vector<CfgMonsterDropGroup>>::operator[](&this->m_monsterDropGroups, &monsterDropGroup.group_id);
+            auto v3 = this->m_monsterDropGroups[monsterDropGroup.group_id];
             v3->push_back(monsterDropGroup);
         }
     }
-    CDBCFile::~CDBCFile(&MonsterDropFile);
 }
 
 void CfgData::fetchMonsterGroupDrop()
 {
     CDBCFile MonsterGroupFile;
-    CDBCFile::CDBCFile(&MonsterGroupFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MonsterGroupFile, "./ServerConfig/Tables/cfg_monster_group_drop.txt"))
+    if (!MonsterGroupFile.OpenFromTXT( "./ServerConfig/Tables/cfg_monster_group_drop.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_monster_group_drop.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&MonsterGroupFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MonsterGroupFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MonsterGroupFile);
+    int32_t iBaseTableCount = MonsterGroupFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MonsterGroupFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6226,26 +5628,26 @@ void CfgData::fetchMonsterGroupDrop()
             memset(&monsterGroupDrop, 0, sizeof(monsterGroupDrop));
             
             int32_t nIndex = 0;
-            monsterGroupDrop.mid = CDBCFile::Search_Posistion(&MonsterGroupFile, i, 0)->iValue;
-            monsterGroupDrop.group_id = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.probability = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.begin_time = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.end_time = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.repeat = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.job = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.grow_level = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.dropType = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.bind_type = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.hard = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.quality = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.world_event = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
-            monsterGroupDrop.DropLimit = CDBCFile::Search_Posistion(&MonsterGroupFile, i, ++nIndex)->iValue;
+            monsterGroupDrop.mid = MonsterGroupFile.Search_Posistion( i, 0)->iValue;
+            monsterGroupDrop.group_id = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.probability = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.begin_time = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.end_time = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.repeat = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.job = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.grow_level = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.dropType = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.bind_type = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.hard = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.quality = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.world_event = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+            monsterGroupDrop.DropLimit = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             if (monsterGroupDrop.begin_time < 1440 && monsterGroupDrop.end_time < 1440 &&
                 monsterGroupDrop.begin_time <= monsterGroupDrop.end_time && monsterGroupDrop.repeat > 0)
             {
-                auto v1 = std::map<int, std::vector<CfgMonsterGroupDrop>>::operator[](&this->m_monsterGroupDrops, &monsterGroupDrop.mid);
+                auto v1 = this->m_monsterGroupDrops[monsterGroupDrop.mid];
                 v1->push_back(monsterGroupDrop);
             }
             else
@@ -6256,44 +5658,40 @@ void CfgData::fetchMonsterGroupDrop()
             }
         }
     }
-    CDBCFile::~CDBCFile(&MonsterGroupFile);
 }
 
 void CfgData::fetchMonsterTaskDrop()
 {
     CDBCFile MonsterTaskFile;
-    CDBCFile::CDBCFile(&MonsterTaskFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&MonsterTaskFile, "./ServerConfig/Tables/cfg_monster_task_drop.txt"))
+    if (!MonsterTaskFile.OpenFromTXT( "./ServerConfig/Tables/cfg_monster_task_drop.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open cfg_monster_task_drop.txt failed,please check!!");
-        CDBCFile::~CDBCFile(&MonsterTaskFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&MonsterTaskFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&MonsterTaskFile);
+    int32_t iBaseTableCount = MonsterTaskFile.GetRecordsNum();
+    int32_t iBaseColumnCount = MonsterTaskFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             CfgMonsterTaskDrop monsterTaskDrop;
-            monsterTaskDrop.mid = CDBCFile::Search_Posistion(&MonsterTaskFile, i, 0)->iValue;
-            monsterTaskDrop.tid = CDBCFile::Search_Posistion(&MonsterTaskFile, i, 1)->iValue;
-            monsterTaskDrop.item = CDBCFile::Search_Posistion(&MonsterTaskFile, i, 2)->iValue;
-            monsterTaskDrop.probability = CDBCFile::Search_Posistion(&MonsterTaskFile, i, 3)->iValue;
+            monsterTaskDrop.mid = MonsterTaskFile.Search_Posistion( i, 0)->iValue;
+            monsterTaskDrop.tid = MonsterTaskFile.Search_Posistion( i, 1)->iValue;
+            monsterTaskDrop.item = MonsterTaskFile.Search_Posistion( i, 2)->iValue;
+            monsterTaskDrop.probability = MonsterTaskFile.Search_Posistion( i, 3)->iValue;
             
-            auto v1 = std::map<int, std::vector<CfgMonsterTaskDrop>>::operator[](&this->m_monsterTaskDrops, &monsterTaskDrop.mid);
+            auto v1 = this->m_monsterTaskDrops[monsterTaskDrop.mid];
             v1->push_back(monsterTaskDrop);
         }
     }
-    CDBCFile::~CDBCFile(&MonsterTaskFile);
 }
 
 // ==================== 辅助方法 ====================
 
-std::vector<Position> *CfgData::paresPosition(std::vector<Position> *__return_ptr retstr, const std::string *const strPos)
+std::vector<Position> *CfgData::paresPosition(std::vector<Position> const std::string *const strPos)
 {
     std::vector<Position>::vector(retstr);
     
@@ -6301,26 +5699,22 @@ std::vector<Position> *CfgData::paresPosition(std::vector<Position> *__return_pt
     {
         std::string delims;
         char v15;
-        std::allocator<char>::allocator(&v15);
-        std::string::string(&delims, "|", &v15);
+            delims = "|";
         
         StringVector PosString;
-        Answer::StringUtility::split(&PosString, strPos, &delims, 0);
+        StringUtility::split(PosString, *strPos, delims);
         delims.~string();
-        std::allocator<char>::~allocator(&v15);
-        
+            
         for (auto& posStr : PosString)
         {
             std::string v17;
             char v18;
-            std::allocator<char>::allocator(&v18);
-            std::string::string(&v17, ":", &v18);
+                    v17 = ":";
             
             StringVector Pos;
-            Answer::StringUtility::split(&Pos, posStr, &v17, 0);
+            StringUtility::split(Pos, *posStr, v17);
             v17.~string();
-            std::allocator<char>::~allocator(&v18);
-            
+                    
             if (Pos.size() == 2)
             {
                 Position stu;
@@ -6347,13 +5741,11 @@ Param2 CfgData::paraseParam2(const std::string *const str)
     
     std::string delims;
     char v13;
-    std::allocator<char>::allocator(&v13);
-    std::string::string(&delims, ":", &v13);
+    delims = ":";
     
     StringVector vParam;
-    Answer::StringUtility::split(&vParam, str, &delims, 0);
+    StringUtility::split(vParam, *str, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v13);
     
     Param2 result;
     if (vParam.size() == 2)
@@ -6371,8 +5763,7 @@ Param2 CfgData::paraseParam2(const std::string *const str)
     return result;
 }
 
-Int32Vector *CfgData::paraseInt32Vector(Int32Vector *__return_ptr retstr, 
-                                         const std::string *const str, const std::string *const path, int32_t size)
+Int32Vector *CfgData::paraseInt32Vector(Int32Vector const std::string *const str, const std::string *const path, int32_t size)
 {
     std::vector<int>::vector(retstr);
     
@@ -6380,13 +5771,11 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector *__return_ptr retstr,
     
     std::string delims;
     char v19;
-    std::allocator<char>::allocator(&v19);
-    std::string::string(&delims, ":", &v19);
+    delims = ":";
     
     StringVector vstr;
-    Answer::StringUtility::split(&vstr, str, &delims, 0);
+    StringUtility::split(vstr, *str, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v19);
     
     if (size > 0 && (int32_t)vstr.size() != size)
     {
@@ -6408,7 +5797,7 @@ Int32Vector *CfgData::paraseInt32Vector(Int32Vector *__return_ptr retstr,
     return retstr;
 }
 
-AttrAddonVector *CfgData::paraseAttrAddon(AttrAddonVector *__return_ptr retstr, ,
+AttrAddonVector *CfgData::paraseAttrAddon(AttrAddonVector ,
                                            const std::string *const addonAttr, int32_t nIndex, const std::string *const path)
 {
     std::vector<AttrAddon>::vector(retstr);
@@ -6417,26 +5806,22 @@ AttrAddonVector *CfgData::paraseAttrAddon(AttrAddonVector *__return_ptr retstr, 
     
     std::string delims;
     char v22;
-    std::allocator<char>::allocator(&v22);
-    std::string::string(&delims, "|", &v22);
+    delims = "|";
     
     StringVector strAttrAddons;
-    Answer::StringUtility::split(&strAttrAddons, addonAttr, &delims, 0);
+    StringUtility::split(strAttrAddons, *addonAttr, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v22);
     
     for (auto& addonStr : strAttrAddons)
     {
         std::string v24;
         char v25;
-        std::allocator<char>::allocator(&v25);
-        std::string::string(&v24, ":", &v25);
+            v24 = ":";
         
         StringVector strAttrAddon;
-        Answer::StringUtility::split(&strAttrAddon, addonStr, &v24, 0);
+        StringUtility::split(strAttrAddon, *addonStr, v24);
         v24.~string();
-        std::allocator<char>::~allocator(&v25);
-        
+            
         if (strAttrAddon.size() == 2)
         {
             AttrAddon attrAddon;
@@ -6607,17 +5992,15 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 void CfgData::InitActiveSkillTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/cfg_skill_info.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_skill_info.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_ACTIVE_SKILL_TABLE fail, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6628,89 +6011,82 @@ void CfgData::InitActiveSkillTable()
             std::vector<AttrAddon>::vector(&skill.summon_attr);
             
             int32_t nIndex = 0;
-            skill.id = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+            skill.id = TabFile.Search_Posistion( i, 0)->iValue;
             ++nIndex;
-            skill.talent = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.groupid = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.job = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.kind = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.distance = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.range = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.area = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.self = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.target_num = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.beneficial = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.tar_type = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.addon_skill = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.addon_time = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.addon_cd = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.addon_delay = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.addon_trig_times = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.cd = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.cd_adjust = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.mp = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.power = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.special = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.attack_type = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.attack_modify = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.building_modify = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.buff_rate = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.buff = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            skill.talent = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.groupid = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.job = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.kind = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.distance = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.range = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.area = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.self = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.target_num = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.beneficial = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.tar_type = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.addon_skill = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.addon_time = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.addon_cd = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.addon_delay = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.addon_trig_times = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.cd = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.cd_adjust = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.mp = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.power = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.special = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.attack_type = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.attack_modify = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.building_modify = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.buff_rate = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.buff = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            skill.chantTime = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.summon_id = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            skill.summon_delay = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            skill.chantTime = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.summon_id = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            skill.summon_delay = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string path;
             std::string addonAttr;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            std::string::string(&path, "./ServerConfig/Tables/cfg_skill_info.txt", &v6);
+                    path = "./ServerConfig/Tables/cfg_skill_info.txt";
             
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&addonAttr, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            addonAttr = v1->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             skill.summon_attr = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v8);
-            path.~string();
-            std::allocator<char>::~allocator(&v6);
-            
-            skill.summon_limit = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    path.~string();
+                    
+            skill.summon_limit = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             nIndex += 17;
-            skill.boss_addon_damage = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            skill.append_value = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            skill.shu_lian_du = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            skill.boss_addon_damage = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            skill.append_value = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            skill.shu_lian_du = TabFile.Search_Posistion( i, nIndex++)->iValue;
             skill.cd += skill.cd_adjust;
             
             CfgSkillTable::AddActiveSkill(&this->m_cfgSkillTable, &skill);
             skill.~CfgActiveSkill();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitPassiveSkillTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/SkillPassiveAttr.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/SkillPassiveAttr.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_PASSIVE_SKILL_TABLE fail, please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6722,75 +6098,64 @@ void CfgData::InitPassiveSkillTable()
             std::list<TalentAddon>::list(&stu.lTalentAddon);
             
             int32_t nIndex = 0;
-            stu.id = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.type = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.type = readFile.Search_Posistion( i, nIndex++)->iValue;
             ++nIndex;
             
             std::string path;
             std::string addonAttr;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            std::string::string(&path, "./ServerConfig/Tables/SkillPassiveAttr.txt", &v7);
+                    path = "./ServerConfig/Tables/SkillPassiveAttr.txt";
             
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&addonAttr, v1->pString, &v9);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            addonAttr = v1->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             stu.vAttrs = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v9);
-            path.~string();
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    path.~string();
+                    ++nIndex;
             
             std::string v11;
             char v12;
-            std::allocator<char>::allocator(&v12);
-            std::string::string(&v11, "./ServerConfig/Tables/SkillPassiveAttr.txt", &v12);
+                    v11 = "./ServerConfig/Tables/SkillPassiveAttr.txt";
             
             char v14;
-            std::allocator<char>::allocator(&v14);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
             std::string v13;
-            std::string::string(&v13, v2->pString, &v14);
+            v13 = v2->pString;
             
             std::list<TalentAddon> v10;
             CfgData::paraseTalentAddon((CfgData *const)&v10, &v13, i, &v11);
             stu.lTalentAddon = v10;
             v10.~list();
             v13.~string();
-            std::allocator<char>::~allocator(&v14);
-            v11.~string();
-            std::allocator<char>::~allocator(&v12);
-            
-            stu.dropMoneyRate = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    v11.~string();
+                    
+            stu.dropMoneyRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgSkillTable::AddPassiveSkill(&this->m_cfgSkillTable, &stu);
             stu.~CfgPassiveSkill();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitTrigSkillTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/SkillTrig.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/SkillTrig.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_TRIG_SKILL_TABLE fail, please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6800,42 +6165,39 @@ void CfgData::InitTrigSkillTable()
             CfgTrigSkill::CfgTrigSkill(&stu);
             
             int32_t nIndex = 0;
-            stu.id = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.groupid = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.trigType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.groupid = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.trigType = readFile.Search_Posistion( i, nIndex++)->iValue;
             
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::operator=(&stu.trigParam, v1->pString);
-            stu.targetType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.trigRate = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.cdTime = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.trigBuff = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.special = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.specialParam = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.IsPvp = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            stu.trigParam = v1->pString;
+            stu.targetType = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.trigRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.cdTime = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.trigBuff = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.special = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.specialParam = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.IsPvp = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgSkillTable::AddTrigSkill(&this->m_cfgSkillTable, &stu);
             stu.~CfgTrigSkill();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitTalentTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/SkillTalent.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/SkillTalent.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_TALENT_TABLE fail, please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6845,78 +6207,69 @@ void CfgData::InitTalentTable()
             CfgTalent::CfgTalent(&stu);
             
             int32_t nIndex = 0;
-            stu.id = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.Level = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.skillid = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.maxLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.Playerlevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.Level = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.skillid = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.maxLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.Playerlevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
             ++nIndex;
             
             std::string bCombi;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&bCombi, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            bCombi = v1->pString;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.costItem = strItems;
             strItems.~list();
             bCombi.~string();
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    ++nIndex;
             
             std::string size;
             char v10;
-            std::allocator<char>::allocator(&v10);
-            std::string::string(&size, "./ServerConfig/Tables/SkillTalent.txt", &v10);
+                    size = "./ServerConfig/Tables/SkillTalent.txt";
             
             std::string path;
             char v12;
-            std::allocator<char>::allocator(&v12);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&path, v2->pString, &v12);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            path = v2->pString;
             
             std::list<int> __x;
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.powerSkills = __x;
             __x.~list();
             path.~string();
-            std::allocator<char>::~allocator(&v12);
-            size.~string();
-            std::allocator<char>::~allocator(&v10);
-            ++nIndex;
+                    size.~string();
+                    ++nIndex;
             ++nIndex;
             
-            stu.battle = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.battle = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            stu.Point = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.GongGaoId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.Point = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.GongGaoId = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgTalentTable::AddTalent(&this->m_cfgTalentTable, &stu);
             stu.~CfgTalent();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitTalentPageTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/SkillTree.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/SkillTree.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_TALENT_PAGE_TABLE fail, please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6926,50 +6279,43 @@ void CfgData::InitTalentPageTable()
             CfgTalentPage::CfgTalentPage(&stu);
             
             int32_t nIndex = 0;
-            stu.job = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.job = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string size;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            std::string::string(&size, "./ServerConfig/Tables/SkillTree.txt", &v6);
+                    size = "./ServerConfig/Tables/SkillTree.txt";
             
             std::string path;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&path, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            path = v1->pString;
             
             std::list<int> __x;
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.talents = __x;
             __x.~list();
             path.~string();
-            std::allocator<char>::~allocator(&v8);
-            size.~string();
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    size.~string();
+                    ++nIndex;
             
             CfgTalentTable::AddTalentPage(&this->m_cfgTalentTable, &stu);
             stu.~CfgTalentPage();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitFamilySkillTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/FamilySkill.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/FamilySkill.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_FAMILY_SKILL_TABLE fail, please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -6979,56 +6325,49 @@ void CfgData::InitFamilySkillTable()
             CfgFamilySkill::CfgFamilySkill(&stu);
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nLevel = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nFamilyLevel = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nCostValue = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nFamilyLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nCostValue = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string path;
             std::string addonAttr;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            std::string::string(&path, "./ServerConfig/Tables/FamilySkill.txt", &v6);
+                    path = "./ServerConfig/Tables/FamilySkill.txt";
             
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&addonAttr, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            addonAttr = v1->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             stu.vAttrAddon = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v8);
-            path.~string();
-            std::allocator<char>::~allocator(&v6);
-            
-            stu.nCostMoney = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.PlayerLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    path.~string();
+                    
+            stu.nCostMoney = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.PlayerLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgSkillTable::AddFamilySkill(&this->m_cfgSkillTable, &stu);
             stu.~CfgFamilySkill();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitTalentActiveTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/SkillActive.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/SkillActive.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "Open FILE_ACTIVE_TALENT_TABLE fail, please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7038,42 +6377,37 @@ void CfgData::InitTalentActiveTable()
             CfgTalentActive::CfgTalentActive(&stu);
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string bCombi;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&bCombi, v1->pString, &v6);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            bCombi = v1->pString;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.lItems = strItems;
             strItems.~list();
             bCombi.~string();
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    ++nIndex;
             
             CfgSkillTable::AddTalentActive(&this->m_cfgSkillTable, &stu);
             stu.~CfgTalentActive();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 void CfgData::InitEquipTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/Equip.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/Equip.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_ITEM_EQUIP_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7082,126 +6416,111 @@ void CfgData::InitEquipTable()
             CfgEquip equip{};
             
             int32_t nIndex = 0;
-            equip.m_nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
+            equip.m_nId = readFile.Search_Posistion( i, 0)->iValue;
             ++nIndex;
-            equip.m_nType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_nGrade = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_nLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_nJob = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_nQuality = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_nSuitId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_nSuitId2 = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_nPrice = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            equip.m_nType = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_nGrade = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_nLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_nJob = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_nQuality = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_nSuitId = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_nSuitId2 = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string path;
             std::string addonAttr;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            std::string::string(&path, "./ServerConfig/Tables/Equip.txt", &v8);
+                    path = "./ServerConfig/Tables/Equip.txt";
             
             char v10;
-            std::allocator<char>::allocator(&v10);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&addonAttr, v1->pString, &v10);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            addonAttr = v1->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             equip.m_vAttrAddon = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v10);
-            path.~string();
-            std::allocator<char>::~allocator(&v8);
-            ++nIndex;
+                    path.~string();
+                    ++nIndex;
             
             std::string v12;
             char v13;
-            std::allocator<char>::allocator(&v13);
-            std::string::string(&v12, "./ServerConfig/Tables/Equip.txt", &v13);
+                    v12 = "./ServerConfig/Tables/Equip.txt";
             
             char v15;
-            std::allocator<char>::allocator(&v15);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
             std::string v14;
-            std::string::string(&v14, v2->pString, &v15);
+            v14 = v2->pString;
             
             AttrAddonVector v11;
             CfgData::paraseAttrAddon(&v11, this, &v14, i, &v12);
             equip.m_vElement = v11;
             v11.~vector();
             v14.~string();
-            std::allocator<char>::~allocator(&v15);
-            v12.~string();
-            std::allocator<char>::~allocator(&v13);
-            ++nIndex;
+                    v12.~string();
+                    ++nIndex;
             nIndex += 10;
-            equip.m_DropLuck = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            equip.m_DropRate = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            equip.m_BackType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            equip.m_BackValue = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            equip.m_nBroadcast = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            equip.m_backIndex = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            equip.m_DropLuck = readFile.Search_Posistion( i, nIndex++)->iValue;
+            equip.m_DropRate = readFile.Search_Posistion( i, nIndex++)->iValue;
+            equip.m_BackType = readFile.Search_Posistion( i, nIndex++)->iValue;
+            equip.m_BackValue = readFile.Search_Posistion( i, nIndex++)->iValue;
+            equip.m_nBroadcast = readFile.Search_Posistion( i, nIndex++)->iValue;
+            equip.m_backIndex = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
             ++nIndex;
-            equip.m_nLimitStar = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_BackGold = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            equip.m_nLimitStar = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_BackGold = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string v17;
             char v18;
-            std::allocator<char>::allocator(&v18);
-            std::string::string(&v17, "./ServerConfig/Tables/Equip.txt", &v18);
+                    v17 = "./ServerConfig/Tables/Equip.txt";
             
             char v20;
-            std::allocator<char>::allocator(&v20);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
+                    const CDBCFile::FIELD *v3 = readFile.Search_Posistion( i, nIndex);
             std::string v19;
-            std::string::string(&v19, v3->pString, &v20);
+            v19 = v3->pString;
             
             AttrAddonVector v16;
             CfgData::paraseAttrAddon(&v16, this, &v19, i, &v17);
             equip.m_BaseAttr = v16;
             v16.~vector();
             v19.~string();
-            std::allocator<char>::~allocator(&v20);
-            v17.~string();
-            std::allocator<char>::~allocator(&v18);
-            
-            equip.m_PolishLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    v17.~string();
+                    
+            equip.m_PolishLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            equip.m_MoFuHuiShou = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_SellDay = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_GongMingLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_WingEquipRefiningLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_XinMoExp = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_XinMoBag = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_CanRongHe = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            equip.m_TeJieParam = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            equip.m_MoFuHuiShou = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_SellDay = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_GongMingLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_WingEquipRefiningLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_XinMoExp = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_XinMoBag = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_CanRongHe = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            equip.m_TeJieParam = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgEquipTable::AddEquip(&this->m_cfgEquip, &equip);
             equip.~CfgEquip();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitEquipUpStarTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/EquipUpStar.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/EquipUpStar.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_ITEM_EQUIP_UP_STAR_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7211,75 +6530,66 @@ void CfgData::InitEquipUpStarTable()
             CfgEquipUpStar::CfgEquipUpStar(&stu);
             
             int32_t nIndex = 0;
-            stu.m_nType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.m_nStar = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.m_nRate = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.m_nSuccessAddStar = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.m_nFailLostStar = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.m_nType = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.m_nStar = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.m_nRate = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.m_nSuccessAddStar = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.m_nFailLostStar = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string bCombi;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&bCombi, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            bCombi = v1->pString;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.m_lCosItem = strItems;
             strItems.~list();
             bCombi.~string();
-            std::allocator<char>::~allocator(&v7);
-            
-            stu.m_nCostMoney = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    
+            stu.m_nCostMoney = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string path;
             std::string addonAttr;
             char v10;
-            std::allocator<char>::allocator(&v10);
-            std::string::string(&path, "./ServerConfig/Tables/EquipUpStar.txt", &v10);
+                    path = "./ServerConfig/Tables/EquipUpStar.txt";
             
             char v12;
-            std::allocator<char>::allocator(&v12);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&addonAttr, v2->pString, &v12);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            addonAttr = v2->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             stu.m_vAttrAddon = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v12);
-            path.~string();
-            std::allocator<char>::~allocator(&v10);
-            ++nIndex;
+                    path.~string();
+                    ++nIndex;
             ++nIndex;
             
-            stu.m_nCostXingMai = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.m_RongLianAttr = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.m_nCostXingMai = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.m_RongLianAttr = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgEquipTable::AddEquipUpStar(&this->m_cfgEquip, &stu);
             stu.~CfgEquipUpStar();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitWingCfgTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/AttributeWing.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/AttributeWing.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_WING_CFG_TABEL failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7291,53 +6601,47 @@ void CfgData::InitWingCfgTable()
             std::vector<AttrAddon>::vector(&stu.AddonVector);
             
             int32_t nIndex = 0;
-            stu.Level = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
+            stu.Level = readFile.Search_Posistion( i, 0)->iValue;
             ++nIndex;
             
             std::string bCombi;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&bCombi, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            bCombi = v1->pString;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.ConstItems = strItems;
             strItems.~list();
             bCombi.~string();
-            std::allocator<char>::~allocator(&v7);
-            
-            stu.StartPoints = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.SuccessPoints = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.MaxPoints = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.Rate = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.FailAddPoints = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.SkillId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.SkillLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.IsClear = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.GongGaoId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    
+            stu.StartPoints = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.SuccessPoints = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.MaxPoints = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.Rate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.FailAddPoints = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.SkillId = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.SkillLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.IsClear = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.GongGaoId = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string path;
             std::string addonAttr;
             char v10;
-            std::allocator<char>::allocator(&v10);
-            std::string::string(&path, "./ServerConfig/Tables/AttributeWing.txt", &v10);
+                    path = "./ServerConfig/Tables/AttributeWing.txt";
             
             char v12;
-            std::allocator<char>::allocator(&v12);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&addonAttr, v2->pString, &v12);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            addonAttr = v2->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             stu.AddonVector = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v12);
-            path.~string();
-            std::allocator<char>::~allocator(&v10);
-            ++nIndex;
+                    path.~string();
+                    ++nIndex;
             
             WingCfg p_stu;
             WingCfg::WingCfg(&p_stu, &stu);
@@ -7346,23 +6650,20 @@ void CfgData::InitWingCfgTable()
             stu.~WingCfg();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitCarrierTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/Carrier.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/Carrier.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_CARRIER_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7373,51 +6674,44 @@ void CfgData::InitCarrierTable()
             std::list<int>::list(&stu.lSkills);
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
+            stu.nId = readFile.Search_Posistion( i, 0)->iValue;
             ++nIndex;
             
             std::string size;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            std::string::string(&size, "./ServerConfig/Tables/Carrier.txt", &v6);
+                    size = "./ServerConfig/Tables/Carrier.txt";
             
             std::string path;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&path, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            path = v1->pString;
             
             std::list<int> __x;
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
             stu.lSkills = __x;
             __x.~list();
             path.~string();
-            std::allocator<char>::~allocator(&v8);
-            size.~string();
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    size.~string();
+                    ++nIndex;
             
             CfgCarrierTable::AddCarrier(&this->m_cfgCarrierTable, &stu);
             stu.~CfgCarrier();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitPetTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/Pet.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/Pet.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_PET_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7427,38 +6721,35 @@ void CfgData::InitPetTable()
             CfgPetData::CfgPetData(&pet);
             
             int32_t nIndex = 0;
-            pet.m_nPetId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            pet.m_Quality = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            pet.m_nPetId = readFile.Search_Posistion( i, nIndex++)->iValue;
+            pet.m_Quality = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             for (int32_t j = 0; j <= 8; ++j)
             {
-                pet.m_vSkill[j] = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                pet.m_vSkillOpen[j] = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+                pet.m_vSkill[j] = readFile.Search_Posistion( i, nIndex++)->iValue;
+                pet.m_vSkillOpen[j] = readFile.Search_Posistion( i, nIndex++)->iValue;
             }
             
             CfgPetTable::Add(&this->m_cfgPetTable, &pet);
             pet.~CfgPetData();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitFamilyTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
-    bool ret = CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/Family.txt");
+    bool ret = readFile.OpenFromTXT( "./ServerConfig/Tables/Family.txt");
     
     if (!ret)
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_FAMILY_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7470,28 +6761,26 @@ void CfgData::InitFamilyTable()
             CfgFamily::CleanUp(&family);
             
             int32_t nIndex = 0;
-            family.nLevel = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            family.nExp = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            family.nMaxMembers = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            family.vPosition[1] = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            family.vPosition[2] = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            family.nMaxBossPoints = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            family.nLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+            family.nExp = readFile.Search_Posistion( i, nIndex++)->iValue;
+            family.nMaxMembers = readFile.Search_Posistion( i, nIndex++)->iValue;
+            family.vPosition[1] = readFile.Search_Posistion( i, nIndex++)->iValue;
+            family.vPosition[2] = readFile.Search_Posistion( i, nIndex++)->iValue;
+            family.nMaxBossPoints = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             CfgFamilyTable::Add(&this->m_cfgFamilyTable, &family);
         }
         family.~CfgFamily();
     }
-    CDBCFile::~CDBCFile(&readFile);
     
     // 加载家族Boss表
     CDBCFile readFile2;
-    CDBCFile::CDBCFile(&readFile2, 0);
-    ret = CDBCFile::OpenFromTXT(&readFile2, "./ServerConfig/Tables/FamilyBoss.txt");
+    ret = readFile2.OpenFromTXT( "./ServerConfig/Tables/FamilyBoss.txt");
     
     if (ret)
     {
-        iBaseTableCount = CDBCFile::GetRecordsNum(&readFile2);
-        iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile2);
+        iBaseTableCount = readFile2.GetRecordsNum();
+        iBaseColumnCount = readFile2.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -7499,33 +6788,30 @@ void CfgData::InitFamilyTable()
             {
                 CfgFamilyBoss stu;
                 int32_t nIndex_0 = 0;
-                stu.nFamilyLevel = CDBCFile::Search_Posistion(&readFile2, i_0, 0)->iValue;
-                stu.BossMid = CDBCFile::Search_Posistion(&readFile2, i_0, ++nIndex_0)->iValue;
-                stu.FamilyExp = CDBCFile::Search_Posistion(&readFile2, i_0, ++nIndex_0)->iValue;
-                stu.GongGaoId = CDBCFile::Search_Posistion(&readFile2, i_0, ++nIndex_0)->iValue;
+                stu.nFamilyLevel = readFile2.Search_Posistion( i_0, 0)->iValue;
+                stu.BossMid = readFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+                stu.FamilyExp = readFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+                stu.GongGaoId = readFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
                 ++nIndex_0;
                 
                 CfgFamilyTable::AddFamilyBoss(&this->m_cfgFamilyTable, &stu);
             }
         }
-        CDBCFile::~CDBCFile(&readFile2);
-    }
+        }
 }
 
 void CfgData::InitHoeTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/Hoe.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/Hoe.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_HOE_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7533,17 +6819,16 @@ void CfgData::InitHoeTable()
         {
             HoeCfg Stu;
             int32_t nIndex = 0;
-            Stu.nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-            Stu.nNextId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            Stu.nId = readFile.Search_Posistion( i, 0)->iValue;
+            Stu.nNextId = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            Stu.nDouble = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            Stu.nDouble = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v1 = std::map<int, HoeCfg>::operator[](&this->m_HoeCfgMap, &Stu.nId);
+            auto *v1 = &this->m_HoeCfgMap[Stu.nId];
             *v1 = Stu;
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 HoeCfg *CfgData::GetHoeCfg(int32_t nId)
@@ -7559,17 +6844,15 @@ HoeCfg *CfgData::GetHoeCfg(int32_t nId)
 void CfgData::InitTitleTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/Title.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/Title.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TITLE_TABLE failed,please check!!");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7579,52 +6862,44 @@ void CfgData::InitTitleTable()
             CfgTitle::CfgTitle(&title);
             
             int32_t nIndex = 0;
-            title.nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
+            title.nId = readFile.Search_Posistion( i, 0)->iValue;
             ++nIndex;
-            title.nType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            title.nType = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string params;
             char v14;
-            std::allocator<char>::allocator(&v14);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&params, v1->pString, &v14);
-            std::allocator<char>::~allocator(&v14);
-            
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, ++nIndex);
-            std::string::operator=(&title.sPlatform, v2->pString);
-            title.nJob = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            title.nSex = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            title.nSpecial = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            title.nPriority = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            params = v1->pString;
+                    
+            const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, ++nIndex);
+            title.sPlatform = v2->pString;
+            title.nJob = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            title.nSex = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            title.nSpecial = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            title.nPriority = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string getttr;
             char v15;
-            std::allocator<char>::allocator(&v15);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&getttr, v3->pString, &v15);
-            std::allocator<char>::~allocator(&v15);
-            ++nIndex;
+                    const CDBCFile::FIELD *v3 = readFile.Search_Posistion( i, nIndex);
+            getttr = v3->pString;
+                    ++nIndex;
             
             std::string dressattr;
             char v16;
-            std::allocator<char>::allocator(&v16);
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&dressattr, v4->pString, &v16);
-            std::allocator<char>::~allocator(&v16);
-            ++nIndex;
+                    const CDBCFile::FIELD *v4 = readFile.Search_Posistion( i, nIndex);
+            dressattr = v4->pString;
+                    ++nIndex;
             
             std::string delims;
             char v18;
-            std::allocator<char>::allocator(&v18);
-            std::string::string(&delims, ":", &v18);
+                    delims = ":";
             
             StringVector strParams;
-            Answer::StringUtility::split(&strParams, &params, &delims, 0);
+            StringUtility::split(&strParams, &params, &delims, 0);
             delims.~string();
-            std::allocator<char>::~allocator(&v18);
-            
+                    
             for (auto& param : strParams)
             {
                 int val = atoi(param->c_str());
@@ -7635,28 +6910,24 @@ void CfgData::InitTitleTable()
             
             std::string path;
             char v23;
-            std::allocator<char>::allocator(&v23);
-            std::string::string(&path, "./ServerConfig/Tables/Title.txt", &v23);
+                    path = "./ServerConfig/Tables/Title.txt";
             
             AttrAddonVector v21;
             CfgData::paraseAttrAddon(&v21, this, &getttr, i, &path);
             title.vGetAttr = v21;
             v21.~vector();
             path.~string();
-            std::allocator<char>::~allocator(&v23);
-            
+                    
             std::string v25;
             char v26;
-            std::allocator<char>::allocator(&v26);
-            std::string::string(&v25, "./ServerConfig/Tables/Title.txt", &v26);
+                    v25 = "./ServerConfig/Tables/Title.txt";
             
             AttrAddonVector v24;
             CfgData::paraseAttrAddon(&v24, this, &dressattr, i, &v25);
             title.vDressAttr = v24;
             v24.~vector();
             v25.~string();
-            std::allocator<char>::~allocator(&v26);
-            
+                    
             dressattr.~string();
             getttr.~string();
             
@@ -7664,22 +6935,19 @@ void CfgData::InitTitleTable()
             title.~CfgTitle();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 void CfgData::InitGoldEggTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/ItemGoldEggOpen.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/ItemGoldEggOpen.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_GOLD_EGG_OPEN_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7689,59 +6957,54 @@ void CfgData::InitGoldEggTable()
             CfgGoldEgg::CfgGoldEgg(&stu);
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nGroupId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nOpenTimes = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nCostMoney = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nCostGold = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nGroupId = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nOpenTimes = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nCostMoney = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nCostGold = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             CfgGoldEggTable::AddGoldEgg(&this->m_cfgGoldEggTable, &stu);
             stu.~CfgGoldEgg();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
     
     // 加载金蛋产出表
     CDBCFile readFile2;
-    CDBCFile::CDBCFile(&readFile2, 0);
-    if (CDBCFile::OpenFromTXT(&readFile2, "./ServerConfig/Tables/ItemGoldEgg.txt"))
+    if (readFile2.OpenFromTXT( "./ServerConfig/Tables/ItemGoldEgg.txt"))
     {
-        iBaseTableCount = CDBCFile::GetRecordsNum(&readFile2);
-        iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile2);
+        iBaseTableCount = readFile2.GetRecordsNum();
+        iBaseColumnCount = readFile2.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
             for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
             {
-                int32_t nId = CDBCFile::Search_Posistion(&readFile2, i_0, 0)->iValue;
+                int32_t nId = readFile2.Search_Posistion( i_0, 0)->iValue;
                 CfgGoldEggItem stu;
-                stu.nId = CDBCFile::Search_Posistion(&readFile2, i_0, 1)->iValue;
-                stu.nGroupId = CDBCFile::Search_Posistion(&readFile2, i_0, 2)->iValue;
-                stu.nOpenTimes = CDBCFile::Search_Posistion(&readFile2, i_0, 3)->iValue;
-                stu.nCostMoney = CDBCFile::Search_Posistion(&readFile2, i_0, 4)->iValue;
-                stu.nCostGold = CDBCFile::Search_Posistion(&readFile2, i_0, 5)->iValue;
+                stu.nId = readFile2.Search_Posistion( i_0, 1)->iValue;
+                stu.nGroupId = readFile2.Search_Posistion( i_0, 2)->iValue;
+                stu.nOpenTimes = readFile2.Search_Posistion( i_0, 3)->iValue;
+                stu.nCostMoney = readFile2.Search_Posistion( i_0, 4)->iValue;
+                stu.nCostGold = readFile2.Search_Posistion( i_0, 5)->iValue;
                 
                 CfgGoldEggTable::AddGoldEggProduce(&this->m_cfgGoldEggTable, nId, &stu);
             }
         }
-        CDBCFile::~CDBCFile(&readFile2);
-    }
+        }
 }
 
 void CfgData::InitLimitTimeTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/LimitTime.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/LimitTime.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_LIMIT_TIME_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7749,17 +7012,15 @@ void CfgData::InitLimitTimeTable()
         {
             CfgLimitTime stu;
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.nIndex = readFile.Search_Posistion( i, 0)->iValue;
+            stu.nType = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strTime;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strTime, v1->pString, &v6);
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            strTime = v1->pString;
+                    ++nIndex;
             
             if (stu.nType == 2)
             {
@@ -7774,23 +7035,20 @@ void CfgData::InitLimitTimeTable()
             strTime.~string();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitMysteryShopTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/MysteriousShop.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/MysteriousShop.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MYSTERY_SHOP_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7800,65 +7058,58 @@ void CfgData::InitMysteryShopTable()
             memset(&stu, 0, sizeof(stu));
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.nId = readFile.Search_Posistion( i, 0)->iValue;
+            stu.nType = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strItem;
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItem, v1->pString, &v9);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            strItem = v1->pString;
             
             MemChrBag v4;
             CItemHelper::parseItemString(&v4, &strItem);
             stu.item = v4;
             strItem.~string();
-            std::allocator<char>::~allocator(&v9);
-            
-            stu.nCostType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nPrice = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    
+            stu.nCostType = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            stu.nRate = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nMinLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nMaxLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nBroad = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.nRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nMinLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nMaxLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nBroad = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string v10;
             char v11;
-            std::allocator<char>::allocator(&v11);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&v10, v2->pString, &v11);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            v10 = v2->pString;
             
             ItemData v17 = CItemHelper::parseItemDataString(&v10);
             stu.exchange.m_nId = v17.m_nId;
             stu.exchange.m_nClass = v17.m_nClass;
             stu.exchange.m_nCount = v17.m_nCount;
             v10.~string();
-            std::allocator<char>::~allocator(&v11);
-            ++nIndex;
+                    ++nIndex;
             
             CfgMysteryShopTable::Add(&this->m_cfgMysteryShopTable, &stu);
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitBuyGiftTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/TimeLimit.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/TimeLimit.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_BUY_GIFT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7868,47 +7119,42 @@ void CfgData::InitBuyGiftTable()
             CfgBuyGift::CfgBuyGift(&stu);
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nGold = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nGold = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string items;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&items, v1->pString, &v6);
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            items = v1->pString;
+                    ++nIndex;
             nIndex += 3;
-            stu.nBroad = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nBroad = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &items);
             stu.vGift = __x;
             __x.~vector();
             
-            auto v2 = std::map<int, CfgBuyGift>::operator[](&this->m_cfgBuyGiftTable, &stu.nIndex);
+            auto *v2 = &this->m_cfgBuyGiftTable[stu.nIndex];
             *v2 = stu;
             items.~string();
             stu.~CfgBuyGift();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitExchangeTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/JiZiDuiJiang.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/JiZiDuiJiang.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_EXCHANGE_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7918,29 +7164,25 @@ void CfgData::InitExchangeTable()
             CfgExchange::CfgExchange(&stu);
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nType = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string items;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&items, v1->pString, &v7);
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            items = v1->pString;
+                    ++nIndex;
             
             std::string rewards;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&rewards, v2->pString, &v8);
-            std::allocator<char>::~allocator(&v8);
-            
-            stu.nLimit = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            rewards = v2->pString;
+                    
+            stu.nLimit = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)items.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.vCost = strItems;
             strItems.~list();
             
@@ -7955,23 +7197,20 @@ void CfgData::InitExchangeTable()
             stu.~CfgExchange();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitMysteryGiftTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/MysteriousGift.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/MysteriousGift.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MYSTERY_GIFT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -7981,47 +7220,42 @@ void CfgData::InitMysteryGiftTable()
             CfgMysteryGift::CfgMysteryGift(&stu);
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nCondition = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nType = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nCondition = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string strItems;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItems, v1->pString, &v6);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vItem = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    ++nIndex;
             nIndex += 3;
-            stu.nBroadId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nBroadId = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             CfgMysteryGiftTable::Add(&this->m_cfgMysteryGiftTable, &stu);
             stu.~CfgMysteryGift();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitDrawTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/Draw.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/Draw.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_DRAW_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8031,41 +7265,38 @@ void CfgData::InitDrawTable()
             CfgDrawReward::CfgDrawReward(&stu);
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nRate = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nType = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nRate = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             MemChrBag item;
             memset(&item, 0, sizeof(item));
-            item.itemClass = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            item.itemId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            item.itemCount = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            item.bind = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nBroad = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            item.itemClass = readFile.Search_Posistion( i, nIndex++)->iValue;
+            item.itemId = readFile.Search_Posistion( i, nIndex++)->iValue;
+            item.itemCount = readFile.Search_Posistion( i, nIndex++)->iValue;
+            item.bind = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nBroad = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
             stu.vItem.push_back(item);
             
             CfgDrawTable::Add(&this->m_cfgDrawTable, &stu);
             stu.~CfgDrawReward();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitMapRoadTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/MapRoad.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/MapRoad.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MAP_ROAD_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8075,40 +7306,34 @@ void CfgData::InitMapRoadTable()
             CfgMapRoad::CfgMapRoad(&stu);
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nNextIndex = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nMapId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nNextIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nMapId = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string strRoad;
             char v13;
-            std::allocator<char>::allocator(&v13);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strRoad, v1->pString, &v13);
-            std::allocator<char>::~allocator(&v13);
-            ++nIndex;
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            strRoad = v1->pString;
+                    ++nIndex;
             
             std::string delims;
             char v15;
-            std::allocator<char>::allocator(&v15);
-            std::string::string(&delims, "|", &v15);
+                    delims = "|";
             
             StringVector vRoad;
-            Answer::StringUtility::split(&vRoad, &strRoad, &delims, 0);
+            StringUtility::split(&vRoad, &strRoad, &delims, 0);
             delims.~string();
-            std::allocator<char>::~allocator(&v15);
-            
+                    
             for (auto& roadStr : vRoad)
             {
                 std::string v17;
                 char v18;
-                std::allocator<char>::allocator(&v18);
-                std::string::string(&v17, ":", &v18);
+                            v17 = ":";
                 
                 StringVector vPos;
-                Answer::StringUtility::split(&vPos, roadStr, &v17, 0);
+                StringUtility::split(vPos, *roadStr, v17);
                 v17.~string();
-                std::allocator<char>::~allocator(&v18);
-                
+                            
                 if (vPos.size() == 2)
                 {
                     Position __x;
@@ -8125,23 +7350,20 @@ void CfgData::InitMapRoadTable()
             stu.~CfgMapRoad();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitTrailerTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/Trailer.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/Trailer.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TRAILER_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8151,34 +7373,31 @@ void CfgData::InitTrailerTable()
             CfgTrailer::CfgTrailer(&stu);
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            stu.nAttrList = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.TrailerQuality = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nTaskId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.PureDamage = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            stu.nId = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.nAttrList = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.TrailerQuality = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nTaskId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.PureDamage = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgTrailerTable::Add(&this->m_cfgTrailerTable, &stu);
             stu.~CfgTrailer();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitMYSJRewardTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/MoYuShiJieReward.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/MoYuShiJieReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MYSJ_REWARD_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8192,18 +7411,18 @@ void CfgData::InitMYSJRewardTable()
             memset(&stu, 0, sizeof(stu));
             
             int32_t nIndex = 0;
-            int32_t nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nClass = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nCount = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nBind = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nWeight = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nShow = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nGroup = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nMin = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nMax = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nBroad = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nSpecial = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            int32_t nId = readFile.Search_Posistion( i, 0)->iValue;
+            stu.nId = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nClass = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nCount = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nBind = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nWeight = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nShow = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nGroup = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nMin = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nMax = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nBroad = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nSpecial = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             if (stu.nGroup > 0 && stu.nWeight > 0)
@@ -8240,23 +7459,20 @@ void CfgData::InitMYSJRewardTable()
         }
         cardList.~list();
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitMaintainCompensateTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/MaintainCompensate.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/MaintainCompensate.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MAINTAIN_COMPENSATE_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8266,53 +7482,46 @@ void CfgData::InitMaintainCompensateTable()
             CfgMaintainCompensate::CfgMaintainCompensate(&stu);
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string p_StringTime;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&p_StringTime, v1->pString, &v6);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            p_StringTime = v1->pString;
             stu.nTime = Answer::DayTime::StringToIntTime(&p_StringTime);
             p_StringTime.~string();
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    ++nIndex;
             
             std::string strItems;
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItems, v2->pString, &v9);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            strItems = v2->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vItems = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v9);
-            ++nIndex;
+                    ++nIndex;
             
             CfgMaintainCompensateTable::Add(&this->m_cfgMaintainCompensateTable, &stu);
             stu.~CfgMaintainCompensate();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitWishRewardTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/WishReward.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/WishReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_WISH_REWARD_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8322,132 +7531,116 @@ void CfgData::InitWishRewardTable()
             CfgWishReward::CfgWishReward(&stu);
             
             int32_t nIndex = 0;
-            int32_t nId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nTime = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            int32_t nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nTime = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string strItems;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItems, v1->pString, &v6);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v6);
-            ++nIndex;
+                    ++nIndex;
             
             CfgWishRewardTable::Add(&this->m_cfgWishRewardTable, nId, &stu);
             stu.~CfgWishReward();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitBFZLEnterCostTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/BingFengZouLang.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/BingFengZouLang.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_BFZL_ENTER_COST_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
-            int32_t nTimes = CDBCFile::Search_Posistion(&readFile, i, 1)->iValue;
+            int32_t nTimes = readFile.Search_Posistion( i, 1)->iValue;
             ++nIndex;
             
             std::string bCombi;
             char v5;
-            std::allocator<char>::allocator(&v5);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&bCombi, v1->pString, &v5);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            bCombi = v1->pString;
             
             std::list<ItemData> vItem;
-            CItemHelper::parseItemDataListString((const std::string *const)&vItem, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             bCombi.~string();
-            std::allocator<char>::~allocator(&v5);
-            ++nIndex;
+                    ++nIndex;
             
             CfgBFZLEnterCostTable::AddEnterCost(&this->m_cfgBFZLEnterCostTable, nTimes, &vItem);
             vItem.~list();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitBlacketMarketTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/BlackMarket.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/BlackMarket.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_BLACK_MARKET_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
-            int32_t nDays = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-            int8_t nOrder = CDBCFile::Search_Posistion(&readFile, i, 1)->iValue;
+            int32_t nDays = readFile.Search_Posistion( i, 0)->iValue;
+            int8_t nOrder = readFile.Search_Posistion( i, 1)->iValue;
             ++nIndex;
             
             std::string strItem;
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItem, v1->pString, &v9);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            strItem = v1->pString;
             
             MemChrBag item1;
             CItemHelper::parseItemString(&item1, &strItem);
             strItem.~string();
-            std::allocator<char>::~allocator(&v9);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v10;
             char v11;
-            std::allocator<char>::allocator(&v11);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&v10, v2->pString, &v11);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            v10 = v2->pString;
             
             MemChrBag item2;
             CItemHelper::parseItemString(&item2, &v10);
             v10.~string();
-            std::allocator<char>::~allocator(&v11);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v12;
             char v13;
-            std::allocator<char>::allocator(&v13);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&v12, v3->pString, &v13);
+                    const CDBCFile::FIELD *v3 = readFile.Search_Posistion( i, nIndex);
+            v12 = v3->pString;
             
             MemChrBag item3;
             CItemHelper::parseItemString(&item3, &v12);
             v12.~string();
-            std::allocator<char>::~allocator(&v13);
-            
-            int32_t nOldPrice = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            int32_t nPrice = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            int32_t nBroadcast = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    
+            int32_t nOldPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            int32_t nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            int32_t nBroadcast = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgBlacketMarketTable::Add(&this->m_cfgBlacketMarketTable, nDays, nOrder, 1, &item1, nPrice, nBroadcast);
@@ -8455,37 +7648,33 @@ void CfgData::InitBlacketMarketTable()
             CfgBlacketMarketTable::Add(&this->m_cfgBlacketMarketTable, nDays, nOrder, 3, &item3, nPrice, nBroadcast);
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitLevelChatTimesTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/PublicChatTimes.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/PublicChatTimes.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_LEVEL_CHAT_TIMES_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
-            int32_t nLevel = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-            int32_t nTimes = CDBCFile::Search_Posistion(&readFile, i, 1)->iValue;
+            int32_t nLevel = readFile.Search_Posistion( i, 0)->iValue;
+            int32_t nTimes = readFile.Search_Posistion( i, 1)->iValue;
             ++nIndex;
             
-            auto v1 = std::map<int, int>::operator[](&this->m_cfgLevelChatTable, &nLevel);
+            auto *v1 = &this->m_cfgLevelChatTable[nLevel];
             *v1 = nTimes;
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 int32_t CfgData::GetChatTimes(int32_t nLevel)
@@ -8501,17 +7690,15 @@ int32_t CfgData::GetChatTimes(int32_t nLevel)
 void CfgData::InitSuperMemberTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/SuperMember.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/SuperMember.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SUPER_MEMBER_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8519,24 +7706,21 @@ void CfgData::InitSuperMemberTable()
         {
             std::string platform;
             char v6;
-            std::allocator<char>::allocator(&v6);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, 0);
-            std::string::string(&platform, v1->pString, &v6);
-            std::allocator<char>::~allocator(&v6);
-            
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, 0);
+            platform = v1->pString;
+                    
             CfgSuperMember stu;
-            stu.nGold = CDBCFile::Search_Posistion(&readFile, i, 1)->iValue;
-            stu.nQQ = CDBCFile::Search_Posistion(&readFile, i, 2)->iValue;
+            stu.nGold = readFile.Search_Posistion( i, 1)->iValue;
+            stu.nQQ = readFile.Search_Posistion( i, 2)->iValue;
             ++nIndex;
-            stu.nIcon = CDBCFile::Search_Posistion(&readFile, i, 4)->iValue;
+            stu.nIcon = readFile.Search_Posistion( i, 4)->iValue;
             ++nIndex;
             
-            auto v2 = std::map<std::string, CfgSuperMember>::operator[](&this->m_cfgSuperMember, &platform);
+            auto *v2 = &this->m_cfgSuperMember[platform];
             *v2 = stu;
             platform.~string();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 const CfgSuperMember *CfgData::GetSuperMember(const std::string *const platform)
@@ -8552,17 +7736,15 @@ const CfgSuperMember *CfgData::GetSuperMember(const std::string *const platform)
 void CfgData::InitSouGouSkinTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/SogouSkin.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/SogouSkin.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SOU_GOU_SKIN_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8573,35 +7755,30 @@ void CfgData::InitSouGouSkinTable()
             int32_t nIndex = 0;
             std::string platform;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&platform, v1->pString, &v7);
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            platform = v1->pString;
+                    ++nIndex;
             
             std::string strItems;
             char v10;
-            std::allocator<char>::allocator(&v10);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItems, v2->pString, &v10);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            strItems = v2->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v10);
-            
-            stu.nIcon = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    
+            stu.nIcon = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v3 = std::map<std::string, CfgSouGouSkin>::operator[](&this->m_cfgSouGouSkin, &platform);
+            auto *v3 = &this->m_cfgSouGouSkin[platform];
             *v3 = stu;
             platform.~string();
             stu.~CfgSouGouSkin();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 const CfgSouGouSkin *CfgData::GetSouGouSkin(const std::string *const platform)
@@ -8617,17 +7794,15 @@ const CfgSouGouSkin *CfgData::GetSouGouSkin(const std::string *const platform)
 void CfgData::InitPetEquipTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/PetEquip.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/PetEquip.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_PET_EQUIP_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8636,82 +7811,71 @@ void CfgData::InitPetEquipTable()
             CfgPetEquip stu{};
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nPrice = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nQuality = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nSuitId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nType = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nQuality = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nSuitId = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string path;
             std::string addonAttr;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            std::string::string(&path, "./ServerConfig/Tables/PetEquip.txt", &v7);
+                    path = "./ServerConfig/Tables/PetEquip.txt";
             
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&addonAttr, v1->pString, &v9);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            addonAttr = v1->pString;
             
             AttrAddonVector __x;
             CfgData::paraseAttrAddon(&__x, this, &addonAttr, i, &path);
             stu.vAttr = __x;
             __x.~vector();
             addonAttr.~string();
-            std::allocator<char>::~allocator(&v9);
-            path.~string();
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    path.~string();
+                    ++nIndex;
             nIndex += 5;
-            stu.nBroadcast = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.bCanDrop = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-            stu.nGrade = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nBroadcast = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.bCanDrop = readFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nGrade = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string v11;
             char v12;
-            std::allocator<char>::allocator(&v12);
-            std::string::string(&v11, "./ServerConfig/Tables/PetEquip.txt", &v12);
+                    v11 = "./ServerConfig/Tables/PetEquip.txt";
             
             char v14;
-            std::allocator<char>::allocator(&v14);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
             std::string v13;
-            std::string::string(&v13, v2->pString, &v14);
+            v13 = v2->pString;
             
             AttrAddonVector v10;
             CfgData::paraseAttrAddon(&v10, this, &v13, i, &v11);
             stu.vOwnerAttr = v10;
             v10.~vector();
             v13.~string();
-            std::allocator<char>::~allocator(&v14);
-            v11.~string();
-            std::allocator<char>::~allocator(&v12);
-            
-            stu.nNeedStar = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    v11.~string();
+                    
+            stu.nNeedStar = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgPetEquipTable::AddEquip(&this->m_cfgPetEquipTable, &stu);
             stu.~CfgPetEquip();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitWeiXinTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/WeiXin.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/WeiXin.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_WEI_XIN_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8719,48 +7883,43 @@ void CfgData::InitWeiXinTable()
         {
             
             int32_t nIndex = 0;
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, 0);
-            std::string::operator=(&stu, v1->pString);
-            stu.nIconId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, 0);
+            stu = v1->pString;
+            stu.nIconId = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             ++nIndex;
             ++nIndex;
             
             std::string strItems;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItems, v2->pString, &v7);
+                    const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+            strItems = v2->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    ++nIndex;
             
             CfgWeiXinTable::Add(&this->m_cfgWeiXinTable, &stu);
             stu.~CfgWeiXingGift();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitAdultGiftTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/ShenFenYanZheng.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/ShenFenYanZheng.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_ADULT_GIFT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8771,27 +7930,24 @@ void CfgData::InitAdultGiftTable()
             
             std::string strItems;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&readFile, i, nIndex);
-            std::string::string(&strItems, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v7);
-            
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&readFile, i, ++nIndex);
-            std::string::operator=(&stu, v2->pString);
-            stu.nIconId = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+                    
+            const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, ++nIndex);
+            stu = v2->pString;
+            stu.nIconId = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             CfgAdultGiftTable::Add(&this->m_cfgAdultGiftTable, &stu);
             stu.~CfgAdultGift();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 // ==================== 解析辅助方法 ====================
@@ -8802,13 +7958,11 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
     
     std::string delims;
     char v22;
-    std::allocator<char>::allocator(&v22);
-    std::string::string(&delims, "|", &v22);
+    delims = "|";
     
     StringVector skills;
-    Answer::StringUtility::split(&skills, strSkill, &delims, 0);
+    StringUtility::split(skills, *strSkill, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v22);
     
     int32_t isize = (int32_t)skills.size();
     if (isize > 9) isize = 10;
@@ -8817,14 +7971,12 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
     {
         std::string v23;
         char v24;
-        std::allocator<char>::allocator(&v24);
-        std::string::string(&v23, ":", &v24);
+            v23 = ":";
         
         StringVector skill;
-        Answer::StringUtility::split(&skill, skills[i], &v23, 0);
+        StringUtility::split(skill, skills[i], v23);
         v23.~string();
-        std::allocator<char>::~allocator(&v24);
-        
+            
         if (skill.size() == 3)
         {
             (*vSkill)[i].maxHp = atoi(skill[0]->c_str());
@@ -8849,13 +8001,11 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
     
     std::string delims;
     char v21;
-    std::allocator<char>::allocator(&v21);
-    std::string::string(&delims, ":", &v21);
+    delims = ":";
     
     StringVector requests;
-    Answer::StringUtility::split(&requests, strRequest, &delims, 0);
+    StringUtility::split(requests, *strRequest, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v21);
     
     int32_t nSize = (int32_t)requests.size();
     
@@ -8916,17 +8066,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 void CfgData::InitMobilePhoneGiftTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/ShouJi.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/ShouJi.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MOBILE_PHONE_GIFT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8937,43 +8085,38 @@ void CfgData::InitMobilePhoneGiftTable()
             
             std::string strItems;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItems, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vItem = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v8);
-            
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex);
-            std::string::operator=(&stu, v2->pString);
-            stu.nIcon = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    
+            const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, ++nIndex);
+            stu = v2->pString;
+            stu.nIcon = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v3 = std::map<std::string, CfgMobilePhoneGift>::operator[](&this->m_CfgMobilePhoneGift, &stu.strPlatfrom);
+            auto *v3 = &this->m_CfgMobilePhoneGift[stu.strPlatfrom];
             *v3 = stu;
             stu.~CfgMobilePhoneGift();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 void CfgData::InitMiniClientTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/WeiDuan.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/WeiDuan.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MINI_CLIENT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -8981,48 +8124,43 @@ void CfgData::InitMiniClientTable()
         {
             
             int32_t nIndex = 0;
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::operator=(&stu, v1->pString);
-            stu.nIconDownload = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nIconLogin = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            stu = v1->pString;
+            stu.nIconDownload = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nIconLogin = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strItems;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItems, v2->pString, &v8);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            strItems = v2->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vReward = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v8);
-            ++nIndex;
+                    ++nIndex;
             
-            auto v3 = std::map<std::string, CfgMiniClient>::operator[](&this->m_CfgMiniClient, &stu.strPlatfrom);
+            auto *v3 = &this->m_CfgMiniClient[stu.strPlatfrom];
             *v3 = stu;
             stu.~CfgMiniClient();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitWuHunShopTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/MysterShop.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/MysterShop.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_WU_HUN_SHOP_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9032,51 +8170,46 @@ void CfgData::InitWuHunShopTable()
             memset(&stu, 0, sizeof(stu));
             
             int32_t nIndex = 0;
-            stu.Index = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            int32_t ShopId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+            int32_t ShopId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strItem;
             char v10;
-            std::allocator<char>::allocator(&v10);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItem, v1->pString, &v10);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            strItem = v1->pString;
             
             MemChrBag v4;
             CItemHelper::parseItemString(&v4, &strItem);
             stu.Item = v4;
             strItem.~string();
-            std::allocator<char>::~allocator(&v10);
-            
-            stu.Rate = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    
+            stu.Rate = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            stu.Const = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            stu.Const = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v2 = std::map<int, std::list<CfgWuHunShop>>::operator[](&this->m_CfgWuHunShopMap, &ShopId);
+            auto v2 = this->m_CfgWuHunShopMap[ShopId];
             v2->push_back(stu);
             
-            auto v3 = std::map<int, CfgWuHunShop>::operator[](&this->m_CfgWuHunShopItemMap, &stu.Index);
+            auto *v3 = &this->m_CfgWuHunShopItemMap[stu.Index];
             *v3 = stu;
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitWuHunItemTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/WuHun.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/WuHun.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_WU_HUN_ITEM_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9085,62 +8218,55 @@ void CfgData::InitWuHunItemTable()
             WuHunItem stu{};
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nQuality = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nNeedQuality = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nQuality = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nNeedQuality = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string v6;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            std::string::string(&v6, "./ServerConfig/Tables/WuHun.txt", &v7);
+                    v6 = "./ServerConfig/Tables/WuHun.txt";
             
             std::string v8;
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&v8, v1->pString, &v9);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            v8 = v1->pString;
             
             std::list<AddAttribute> __x;
             CfgData::parseAddAttribues((CfgData *const)&__x, &v8, i, &v6);
             stu.lAttrList = __x;
             __x.~list();
             v8.~string();
-            std::allocator<char>::~allocator(&v9);
-            v6.~string();
-            std::allocator<char>::~allocator(&v7);
-            
-            stu.nTalentId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nTalentLevel = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    v6.~string();
+                    
+            stu.nTalentId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nTalentLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             nIndex += 8;
-            stu.overlay = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.overlay = TabFile.Search_Posistion( i, nIndex++)->iValue;
             nIndex += 3;
-            stu.nDressLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.nDressLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
-            auto v2 = std::map<int, WuHunItem>::operator[](&this->m_WuHunItemMap, &stu.nId);
+            auto *v2 = &this->m_WuHunItemMap[stu.nId];
             *v2 = stu;
             stu.~WuHunItem();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitWuHunCreateTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/WuHunMake.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/WuHunMake.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_CREATE_WU_HUN_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9149,88 +8275,77 @@ void CfgData::InitWuHunCreateTable()
             CreateWuHun stu{};
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
             nIndex += 2;
             
             std::string bCombi;
             char v11;
-            std::allocator<char>::allocator(&v11);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&bCombi, v1->pString, &v11);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            bCombi = v1->pString;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.ConstItem = strItems;
             strItems.~list();
             bCombi.~string();
-            std::allocator<char>::~allocator(&v11);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v13;
             char v14;
-            std::allocator<char>::allocator(&v14);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&v13, v2->pString, &v14);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            v13 = v2->pString;
             
             std::list<RateItem> v12;
-            CItemHelper::parseRateItemDataListString((const std::string *const)&v12);
+            // TODO: fix CItemHelper::parseRateItemDataListString call
             stu.GetItemRate = v12;
             v12.~list();
             v13.~string();
-            std::allocator<char>::~allocator(&v14);
-            ++nIndex;
+                    ++nIndex;
             nIndex += 3;
             
             std::string strItem;
             char v16;
-            std::allocator<char>::allocator(&v16);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItem, v3->pString, &v16);
+                    const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, nIndex);
+            strItem = v3->pString;
             
             ItemData v25 = CItemHelper::parseItemDataString(&strItem);
             stu.SpecialCost.m_nId = v25.m_nId;
             stu.SpecialCost.m_nClass = v25.m_nClass;
             stu.SpecialCost.m_nCount = v25.m_nCount;
             strItem.~string();
-            std::allocator<char>::~allocator(&v16);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v18;
             char v19;
-            std::allocator<char>::allocator(&v19);
-            const CDBCFile::FIELD *v4 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&v18, v4->pString, &v19);
+                    const CDBCFile::FIELD *v4 = TabFile.Search_Posistion( i, nIndex);
+            v18 = v4->pString;
             
             std::list<RateItem> v17;
-            CItemHelper::parseRateItemDataListString((const std::string *const)&v17);
+            // TODO: fix CItemHelper::parseRateItemDataListString call
             stu.GetItemRate2 = v17;
             v17.~list();
             v18.~string();
-            std::allocator<char>::~allocator(&v19);
-            ++nIndex;
+                    ++nIndex;
             
-            auto v5 = std::map<int, CreateWuHun>::operator[](&this->m_CreateWuHunMap, &stu.nId);
+            auto *v5 = &this->m_CreateWuHunMap[stu.nId];
             *v5 = stu;
             stu.~CreateWuHun();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitBossDistribution()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/MonsterRefreshInMaps.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/MonsterRefreshInMaps.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_BOSS_LEVEL_IFNO_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9241,15 +8356,13 @@ void CfgData::InitBossDistribution()
             std::list<int>::list(&stu.BossMapList);
             
             int32_t nIndex = 0;
-            stu.BossLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.BossLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string BossMapListString;
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&BossMapListString, v2->pString, &v9);
-            std::allocator<char>::~allocator(&v9);
-            ++nIndex;
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            BossMapListString = v2->pString;
+                    ++nIndex;
             
             std::list<int> __x;
             paraseInt32List(&__x, &BossMapListString, 0, nullptr);
@@ -9264,15 +8377,13 @@ void CfgData::InitBossDistribution()
             stu.~BossLevelInfo();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
     
     // 加载地图Boss信息
     CDBCFile TabFile2;
-    CDBCFile::CDBCFile(&TabFile2, 0);
-    if (CDBCFile::OpenFromTXT(&TabFile2, "./ServerConfig/Tables/MapClassInfo.txt"))
+    if (TabFile2.OpenFromTXT( "./ServerConfig/Tables/MapClassInfo.txt"))
     {
-        iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile2);
-        iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile2);
+        iBaseTableCount = TabFile2.GetRecordsNum();
+        iBaseColumnCount = TabFile2.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -9283,15 +8394,13 @@ void CfgData::InitBossDistribution()
                 std::list<int>::list(&stu.BossMapList);
                 
                 int32_t nIndex_0 = 0;
-                stu.nId = CDBCFile::Search_Posistion(&TabFile2, i_0, nIndex_0++)->iValue;
+                stu.nId = TabFile2.Search_Posistion( i_0, nIndex_0++)->iValue;
                 
                 std::string BossMapListString_0;
                 char v12;
-                std::allocator<char>::allocator(&v12);
-                const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile2, i_0, nIndex_0);
-                std::string::string(&BossMapListString_0, v3->pString, &v12);
-                std::allocator<char>::~allocator(&v12);
-                ++nIndex_0;
+                            const CDBCFile::FIELD *v3 = TabFile2.Search_Posistion( i_0, nIndex_0);
+                BossMapListString_0 = v3->pString;
+                            ++nIndex_0;
                 
                 std::list<int> v13;
                 paraseInt32List(&v13, &BossMapListString_0, 0, nullptr);
@@ -9306,24 +8415,21 @@ void CfgData::InitBossDistribution()
                 stu.~MapBossInfo();
             }
         }
-        CDBCFile::~CDBCFile(&TabFile2);
-    }
+        }
 }
 
 void CfgData::InitSpecialBossMapCfgMap()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/MapConsume.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/MapConsume.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MAP_BOSS_INFO_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9333,47 +8439,42 @@ void CfgData::InitSpecialBossMapCfgMap()
             memset(&stu, 0, sizeof(stu));
             
             int32_t nIndex = 0;
-            stu.MapId = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
+            stu.MapId = TabFile.Search_Posistion( i, 0)->iValue;
             ++nIndex;
             
             std::string strItem;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItem, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            strItem = v1->pString;
             
             ItemData v13 = CItemHelper::parseItemDataString(&strItem);
             stu.ConstItem.m_nId = v13.m_nId;
             stu.ConstItem.m_nClass = v13.m_nClass;
             stu.ConstItem.m_nCount = v13.m_nCount;
             strItem.~string();
-            std::allocator<char>::~allocator(&v7);
-            
-            stu.StartCD = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.ContinuedTime = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    
+            stu.StartCD = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.ContinuedTime = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v2 = std::map<int, SpecialBossMapCfg>::operator[](&this->m_SpecialBossMapCfgMap, &stu.MapId);
+            auto *v2 = &this->m_SpecialBossMapCfgMap[stu.MapId];
             *v2 = stu;
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitDuiHuanLimitTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/ExchangeShengYaoBi.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/ExchangeShengYaoBi.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_MAP_BOSS_INFO_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9383,18 +8484,17 @@ void CfgData::InitDuiHuanLimitTable()
         {
             DuiHuanLimit stu;
             int32_t nIndex = 1;
-            int32_t MaxLevel = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
-            stu.ShengYaoBi = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.ConstGold = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.ConstCurrency = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.Limit = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            int32_t MaxLevel = TabFile.Search_Posistion( i, 1)->iValue;
+            stu.ShengYaoBi = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.ConstGold = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.ConstCurrency = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.Limit = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v1 = std::map<int, DuiHuanLimit>::operator[](&this->m_DuiHuanLimit, &MaxLevel);
+            auto *v1 = &this->m_DuiHuanLimit[MaxLevel];
             *v1 = stu;
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 DuiHuanLimit *CfgData::GetDuiHuanLimitCount(int32_t Level)
@@ -9410,17 +8510,15 @@ DuiHuanLimit *CfgData::GetDuiHuanLimitCount(int32_t Level)
 void CfgData::InitSuperTeHuiTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/SuperDiscount.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/SuperDiscount.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SUPER_DISCOUNT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9431,32 +8529,29 @@ void CfgData::InitSuperTeHuiTable()
             SuperTeHuiCfg stu{};
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nNeedVip = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nNeedVip = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string strItems;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItems, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.Items = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v7);
-            
-            stu.nPrice = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nGongGaoId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    
+            stu.nPrice = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nGongGaoId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v2 = std::map<int, SuperTeHuiCfg>::operator[](&this->m_SuperTeHuiCfgMap, &stu.nIndex);
+            auto *v2 = &this->m_SuperTeHuiCfgMap[stu.nIndex];
             *v2 = stu;
             stu.~SuperTeHuiCfg();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
@@ -9472,17 +8567,15 @@ SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
 void CfgData::InitJewelPavilionTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TreasureShop.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/TreasureShop.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TREASURE_SHOP_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9494,30 +8587,27 @@ void CfgData::InitJewelPavilionTable()
             memset(&stu, 0, sizeof(stu));
             
             int32_t nIndex = 0;
-            stu.nDay = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            stu.nDay = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.nIndex = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strItem;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItem, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            strItem = v1->pString;
             
             MemChrBag v3;
             CItemHelper::parseItemString(&v3, &strItem);
             stu.Item = v3;
             strItem.~string();
-            std::allocator<char>::~allocator(&v8);
-            
-            stu.nPrice = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    
+            stu.nPrice = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto key = std::make_pair(stu.nDay, stu.nIndex);
             auto result = this->m_JewelPavilionCfgMap.insert(std::make_pair(key, stu));
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
@@ -9534,17 +8624,15 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 void CfgData::InitGoblinTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/GoblinUp.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/GoblinUp.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_GOBLIN_SUIT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9554,19 +8642,18 @@ void CfgData::InitGoblinTable()
         {
             GoblinCfg stu;
             int32_t nIndex = 0;
-            int32_t nType = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            int32_t nLevel = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.UpAttr = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.SuitId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            int32_t nType = TabFile.Search_Posistion( i, 0)->iValue;
+            int32_t nLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.UpAttr = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.SuitId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
-            stu.ConstCurr = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            stu.ConstCurr = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto key = std::make_pair(nType, nLevel);
             this->m_GoblinCfgMap.insert(std::make_pair(key, stu));
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
@@ -9583,17 +8670,15 @@ GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 void CfgData::InitShouHuRefining()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/StarSpaceLevel.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/StarSpaceLevel.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_GOBLIN_SUIT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9604,44 +8689,38 @@ void CfgData::InitShouHuRefining()
             ShouHuRefinishingCfg stu{};
             
             int32_t nIndex = 0;
-            int32_t nType = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            int32_t nLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            int32_t nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string bCombi;
             char v12;
-            std::allocator<char>::allocator(&v12);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&bCombi, v2->pString, &v12);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            bCombi = v2->pString;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.lCostList = strItems;
             strItems.~list();
             bCombi.~string();
-            std::allocator<char>::~allocator(&v12);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v14;
             char v15;
-            std::allocator<char>::allocator(&v15);
-            std::string::string(&v14, "./ServerConfig/Tables/StarSpaceLevel.txt", &v15);
+                    v14 = "./ServerConfig/Tables/StarSpaceLevel.txt";
             
             std::string v16;
             char v17;
-            std::allocator<char>::allocator(&v17);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&v16, v3->pString, &v17);
+                    const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, nIndex);
+            v16 = v3->pString;
             
             std::list<AddAttribute> __x;
             CfgData::parseAddAttribues((CfgData *const)&__x, &v16, i, &v14);
             stu.lAttrList = __x;
             __x.~list();
             v16.~string();
-            std::allocator<char>::~allocator(&v17);
-            v14.~string();
-            std::allocator<char>::~allocator(&v15);
-            
-            stu.SuitId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    v14.~string();
+                    
+            stu.SuitId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto key = std::make_pair(nType, nLevel);
@@ -9649,7 +8728,6 @@ void CfgData::InitShouHuRefining()
             stu.~ShouHuRefinishingCfg();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nLevel)
@@ -9666,17 +8744,15 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nL
 void CfgData::InitWingEquipPolish()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/WingEquipPolish.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/WingEquipPolish.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_GOBLIN_SUIT_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9687,46 +8763,40 @@ void CfgData::InitWingEquipPolish()
             WingEquipPolish stu{};
             
             int32_t nIndex = 0;
-            int32_t nType = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            int32_t nLevel = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            int32_t nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string v18;
             char v19;
-            std::allocator<char>::allocator(&v19);
-            std::string::string(&v18, "./ServerConfig/Tables/StarSpaceLevel.txt", &v19);
+                    v18 = "./ServerConfig/Tables/StarSpaceLevel.txt";
             
             std::string v20;
             char v21;
-            std::allocator<char>::allocator(&v21);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&v20, v2->pString, &v21);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            v20 = v2->pString;
             
             std::list<AddAttribute> __x;
             CfgData::parseAddAttribues((CfgData *const)&__x, &v20, i, &v18);
             stu.lAttrList = __x;
             __x.~list();
             v20.~string();
-            std::allocator<char>::~allocator(&v21);
-            v18.~string();
-            std::allocator<char>::~allocator(&v19);
-            ++nIndex;
+                    v18.~string();
+                    ++nIndex;
             
             std::string bCombi;
             char v24;
-            std::allocator<char>::allocator(&v24);
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&bCombi, v3->pString, &v24);
+                    const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, nIndex);
+            bCombi = v3->pString;
             
             std::list<ItemData> strItems;
-            CItemHelper::parseItemDataListString((const std::string *const)&strItems, (bool)bCombi.c_str());
+            // TODO: fix CItemHelper::parseItemDataListString call
             stu.lCostList = strItems;
             strItems.~list();
             bCombi.~string();
-            std::allocator<char>::~allocator(&v24);
-            
-            stu.nConstMoney = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.SuitId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.GongGaoId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    
+            stu.nConstMoney = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.SuitId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.GongGaoId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             auto key = std::make_pair(nType, nLevel);
@@ -9734,15 +8804,13 @@ void CfgData::InitWingEquipPolish()
             stu.~WingEquipPolish();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
     
     // 加载套装属性
     CDBCFile TabFile2;
-    CDBCFile::CDBCFile(&TabFile2, 0);
-    if (CDBCFile::OpenFromTXT(&TabFile2, "./ServerConfig/Tables/WingEquipPolishSuit.txt"))
+    if (TabFile2.OpenFromTXT( "./ServerConfig/Tables/WingEquipPolishSuit.txt"))
     {
-        iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile2);
-        iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile2);
+        iBaseTableCount = TabFile2.GetRecordsNum();
+        iBaseColumnCount = TabFile2.GetFieldsNum();
         
         if (iBaseColumnCount > 0)
         {
@@ -9750,35 +8818,30 @@ void CfgData::InitWingEquipPolish()
             
             for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
             {
-                int32_t nId = CDBCFile::Search_Posistion(&TabFile2, i_0, 0)->iValue;
+                int32_t nId = TabFile2.Search_Posistion( i_0, 0)->iValue;
                 ++nIndex;
                 
                 std::string v28;
                 char v29;
-                std::allocator<char>::allocator(&v29);
-                std::string::string(&v28, "./ServerConfig/Tables/StarSpaceSuit.txt", &v29);
+                            v28 = "./ServerConfig/Tables/StarSpaceSuit.txt";
                 
                 std::string v30;
                 char v31;
-                std::allocator<char>::allocator(&v31);
-                const CDBCFile::FIELD *v5 = CDBCFile::Search_Posistion(&TabFile2, i_0, nIndex);
-                std::string::string(&v30, v5->pString, &v31);
+                            const CDBCFile::FIELD *v5 = TabFile2.Search_Posistion( i_0, nIndex);
+                v30 = v5->pString;
                 
                 std::list<AddAttribute> AddAttrs;
                 CfgData::parseAddAttribues((CfgData *const)&AddAttrs, &v30, i_0, &v28);
                 v30.~string();
-                std::allocator<char>::~allocator(&v31);
-                v28.~string();
-                std::allocator<char>::~allocator(&v29);
-                ++nIndex;
+                            v28.~string();
+                            ++nIndex;
                 
-                auto v6 = std::map<int, std::list<AddAttribute>>::operator[](&this->m_WingEquipPolishSuitMap, &nId);
+                auto v6 = this->m_WingEquipPolishSuitMap[nId];
                 *v6 = AddAttrs;
                 AddAttrs.~list();
             }
         }
-        CDBCFile::~CDBCFile(&TabFile2);
-    }
+        }
 }
 
 WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
@@ -9795,17 +8858,15 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 void CfgData::InitGuiGuDaoRenTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TaoistTask.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/TaoistTask.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_GUI_GU_DAO_REN_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9816,40 +8877,34 @@ void CfgData::InitGuiGuDaoRenTable()
             GuiGuDaoRenCfg stu{};
             
             int32_t nIndex = 0;
-            stu.nNpcId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nMaxCount = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            stu.nNpcId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nMaxCount = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string RefreshMonsterString;
             char v23;
-            std::allocator<char>::allocator(&v23);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&RefreshMonsterString, v1->pString, &v23);
-            std::allocator<char>::~allocator(&v23);
-            ++nIndex;
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            RefreshMonsterString = v1->pString;
+                    ++nIndex;
             
             std::string delims;
             char v25;
-            std::allocator<char>::allocator(&v25);
-            std::string::string(&delims, "|", &v25);
+                    delims = "|";
             
             StringVector SplitStr;
-            Answer::StringUtility::split(&SplitStr, &RefreshMonsterString, &delims, 0);
+            StringUtility::split(&SplitStr, &RefreshMonsterString, &delims, 0);
             delims.~string();
-            std::allocator<char>::~allocator(&v25);
-            
+                    
             for (auto& monsterStr : SplitStr)
             {
                 std::string v28;
                 char v29;
-                std::allocator<char>::allocator(&v29);
-                std::string::string(&v28, ":", &v29);
+                            v28 = ":";
                 
                 StringVector vstr;
-                Answer::StringUtility::split(&vstr, monsterStr, &v28, 0);
+                StringUtility::split(vstr, *monsterStr, v28);
                 v28.~string();
-                std::allocator<char>::~allocator(&v29);
-                
+                            
                 if (vstr.size() == 4)
                 {
                     RefreshMonster tmpStu;
@@ -9871,57 +8926,48 @@ void CfgData::InitGuiGuDaoRenTable()
             {
                 std::string strItem;
                 char v32;
-                std::allocator<char>::allocator(&v32);
-                const CDBCFile::FIELD *v11 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&strItem, v11->pString, &v32);
+                            const CDBCFile::FIELD *v11 = TabFile.Search_Posistion( i, nIndex);
+                strItem = v11->pString;
                 
                 ItemData __x = CItemHelper::parseItemDataString(&strItem);
                 stu.vItemData.push_back(__x);
                 strItem.~string();
-                std::allocator<char>::~allocator(&v32);
-                ++nIndex;
+                            ++nIndex;
                 
                 std::string v34;
                 char v35;
-                std::allocator<char>::allocator(&v35);
-                const CDBCFile::FIELD *v12 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-                std::string::string(&v34, v12->pString, &v35);
+                            const CDBCFile::FIELD *v12 = TabFile.Search_Posistion( i, nIndex);
+                v34 = v12->pString;
                 
                 MemChrBag v33;
                 CItemHelper::parseItemString(&v33, &v34);
                 stu.vItem.push_back(v33);
                 v34.~string();
-                std::allocator<char>::~allocator(&v35);
-                ++nIndex;
+                            ++nIndex;
             }
             
             std::string path;
             char v38;
-            std::allocator<char>::allocator(&v38);
-            std::string::string(&path, "./ServerConfig/Tables/TaoistTask.txt", &v38);
+                    path = "./ServerConfig/Tables/TaoistTask.txt";
             
             std::string str;
             char v40;
-            std::allocator<char>::allocator(&v40);
-            const CDBCFile::FIELD *v13 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&str, v13->pString, &v40);
+                    const CDBCFile::FIELD *v13 = TabFile.Search_Posistion( i, nIndex);
+            str = v13->pString;
             
             Int32Vector v36;
             CfgData::paraseInt32Vector(&v36, this, &str, &path, 0);
             stu.vMapId = v36;
             v36.~vector();
             str.~string();
-            std::allocator<char>::~allocator(&v40);
-            path.~string();
-            std::allocator<char>::~allocator(&v38);
-            ++nIndex;
+                    path.~string();
+                    ++nIndex;
             
-            auto v14 = std::map<int, GuiGuDaoRenCfg>::operator[](&this->m_GuiGuDaoRenCfgMap, &stu.nNpcId);
+            auto *v14 = &this->m_GuiGuDaoRenCfgMap[stu.nNpcId];
             *v14 = stu;
             stu.~GuiGuDaoRenCfg();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
@@ -9937,17 +8983,15 @@ GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
 void CfgData::InitShiZhuangTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/ShiZhuang.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/ShiZhuang.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SHIZHUANG_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -9957,46 +9001,43 @@ void CfgData::InitShiZhuangTable()
             CfgShiZhuang::CfgShiZhuang(&stu);
             
             int32_t nIndex = 0;
-            stu.nId = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
+            stu.nId = readFile.Search_Posistion( i, 0)->iValue;
             ++nIndex;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.nType = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             for (int32_t j = 0; j <= 6; ++j)
             {
                 AddAttribute AddAttr;
                 AddAttribute::AddAttribute(&AddAttr);
-                AddAttr.m_nAddAttrType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                AddAttr.m_nAddAttrValue = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+                AddAttr.m_nAddAttrType = readFile.Search_Posistion( i, nIndex++)->iValue;
+                AddAttr.m_nAddAttrValue = readFile.Search_Posistion( i, nIndex++)->iValue;
                 if (AddAttr.m_nAddAttrValue > 0)
                 {
                     stu.vAttr.push_back(AddAttr);
                 }
             }
             nIndex += 7;
-            stu.nSuitId = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+            stu.nSuitId = readFile.Search_Posistion( i, nIndex++)->iValue;
             
             CfgShiZhuangTable::AddShiZhuang(&this->m_cfgShiZhuangTable, &stu);
             stu.~CfgShiZhuang();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitShiZhuangLevelTable()
 {
     CDBCFile readFile;
-    CDBCFile::CDBCFile(&readFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&readFile, "./ServerConfig/Tables/ShiZhuangLevel.txt"))
+    if (!readFile.OpenFromTXT( "./ServerConfig/Tables/ShiZhuangLevel.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SHIZHUANG_LEVEL_TABLE failed,please check!!!\n");
-        CDBCFile::~CDBCFile(&readFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&readFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&readFile);
+    int32_t iBaseTableCount = readFile.GetRecordsNum();
+    int32_t iBaseColumnCount = readFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10006,23 +9047,23 @@ void CfgData::InitShiZhuangLevelTable()
             CfgShiZhuangLevel::CfgShiZhuangLevel(&stu);
             
             int32_t nIndex = 0;
-            stu.nType = CDBCFile::Search_Posistion(&readFile, i, 0)->iValue;
-            stu.nLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nLevelExp = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nNeedLevel = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nCostItem = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nGetExp = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nSmallCritRate = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nLargeCritRate = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
-            stu.nBroadcast = CDBCFile::Search_Posistion(&readFile, i, ++nIndex)->iValue;
+            stu.nType = readFile.Search_Posistion( i, 0)->iValue;
+            stu.nLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nLevelExp = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nNeedLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nCostItem = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nGetExp = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nSmallCritRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nLargeCritRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nBroadcast = readFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             for (int32_t j = 0; j <= 6; ++j)
             {
                 AddAttribute AddAttr;
                 AddAttribute::AddAttribute(&AddAttr);
-                AddAttr.m_nAddAttrType = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
-                AddAttr.m_nAddAttrValue = CDBCFile::Search_Posistion(&readFile, i, nIndex++)->iValue;
+                AddAttr.m_nAddAttrType = readFile.Search_Posistion( i, nIndex++)->iValue;
+                AddAttr.m_nAddAttrValue = readFile.Search_Posistion( i, nIndex++)->iValue;
                 if (AddAttr.m_nAddAttrValue > 0)
                 {
                     stu.vAttr.push_back(AddAttr);
@@ -10033,65 +9074,57 @@ void CfgData::InitShiZhuangLevelTable()
             stu.~CfgShiZhuangLevel();
         }
     }
-    CDBCFile::~CDBCFile(&readFile);
 }
 
 void CfgData::InitMonthlyChouJiangTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/TurntableReward.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/TurntableReward.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_TURNTABLE_REWARD_TABLE failed, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
         for (int32_t i = 0; i < iBaseTableCount; ++i)
         {
             int32_t nIndex = 0;
-            int32_t Month = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            int32_t nId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            int32_t Month = TabFile.Search_Posistion( i, 0)->iValue;
+            int32_t nId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string strItem;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&strItem, v2->pString, &v7);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            strItem = v2->pString;
             
             RateItem ItemRate;
             CItemHelper::parseRateItemDataString(&ItemRate, &strItem);
             strItem.~string();
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    ++nIndex;
             
             MonthlyChouJiangTable::AddMonthlyChouJiangItemMap(&this->m_MonthlyChouJiangTable, Month, nId, ItemRate);
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitActDropTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/shoujihuodong.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/shoujihuodong.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_ACTDROP_TABLE failed, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10101,59 +9134,52 @@ void CfgData::InitActDropTable()
             memset(&stu, 0, sizeof(stu));
             
             int32_t nIndex = 0;
-            int32_t Type = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            stu.nMinLevel = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nMaxLevel = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nMapType = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nId = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nClass = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nCount = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            stu.nBind = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+            int32_t Type = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.nMinLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nMaxLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nMapType = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nClass = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nCount = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+            stu.nBind = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
             std::string p_StringTime;
             char v8;
-            std::allocator<char>::allocator(&v8);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&p_StringTime, v1->pString, &v8);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            p_StringTime = v1->pString;
             stu.nStartTime = Answer::DayTime::StringToIntTime(&p_StringTime);
             p_StringTime.~string();
-            std::allocator<char>::~allocator(&v8);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v9;
             char v10;
-            std::allocator<char>::allocator(&v10);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&v9, v2->pString, &v10);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            v9 = v2->pString;
             stu.nEndTime = Answer::DayTime::StringToIntTime(&v9);
             v9.~string();
-            std::allocator<char>::~allocator(&v10);
-            
-            stu.nProbability = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
+                    
+            stu.nProbability = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             ++nIndex;
             
-            auto v3 = std::map<int, std::list<ActDropItem>>::operator[](&this->m_ActDropItemListMap, &Type);
+            auto v3 = this->m_ActDropItemListMap[Type];
             v3->push_back(stu);
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitOutLinkFestivalTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/OutLinkFestival.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/OutLinkFestival.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_OUT_LINK_FESTIVAL_TABLE failed, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10164,54 +9190,47 @@ void CfgData::InitOutLinkFestivalTable()
             std::string::string(&stu.strPlatfrom);
             
             int32_t nIndex = 0;
-            stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
             std::string p_StringTime;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&p_StringTime, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+            p_StringTime = v1->pString;
             stu.nStartTime = Answer::DayTime::StringToIntTime(&p_StringTime);
             p_StringTime.~string();
-            std::allocator<char>::~allocator(&v7);
-            ++nIndex;
+                    ++nIndex;
             
             std::string v8;
             char v9;
-            std::allocator<char>::allocator(&v9);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, nIndex);
-            std::string::string(&v8, v2->pString, &v9);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, nIndex);
+            v8 = v2->pString;
             stu.nEndTime = Answer::DayTime::StringToIntTime(&v8);
             v8.~string();
-            std::allocator<char>::~allocator(&v9);
+                    
+            stu.nIcon = TabFile.Search_Posistion( i, ++nIndex)->iValue;
             
-            stu.nIcon = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex)->iValue;
-            
-            const CDBCFile::FIELD *v3 = CDBCFile::Search_Posistion(&TabFile, i, ++nIndex);
-            std::string::operator=(&stu.strPlatfrom, v3->pString);
+            const CDBCFile::FIELD *v3 = TabFile.Search_Posistion( i, ++nIndex);
+            stu.strPlatfrom = v3->pString;
             ++nIndex;
             
             CfgOutLinkFestivalTable::Add(&this->m_cfgOutLinkFestivalTable, &stu);
             stu.~CfgOutLinkFestival();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 void CfgData::InitFestivalActivityTable()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/FestivalActivity.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/FestivalActivity.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_FESTIVAL_ACTIVITY_TABLE failed, please check!!!");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10220,56 +9239,47 @@ void CfgData::InitFestivalActivityTable()
             CfgFestivalActivity stu{};
             
             int32_t nIndex = 0;
-            stu.nIcon = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nStartDay = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nEndDay = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nPlantId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nPlantCount = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nNpcId = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nNpcCount = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nTimes = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
-            stu.nPlantTime = CDBCFile::Search_Posistion(&TabFile, i, nIndex++)->iValue;
+            stu.nIcon = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nStartDay = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nEndDay = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nPlantId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nPlantCount = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nNpcId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nNpcCount = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nTimes = TabFile.Search_Posistion( i, nIndex++)->iValue;
+            stu.nPlantTime = TabFile.Search_Posistion( i, nIndex++)->iValue;
             
             // 解析开始/结束天数列表
             {
                 std::string strStartDay;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strStartDay, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strStartDay = pField->pString;
                 
                 std::vector<int> vStart;
                 paraseInt32List(&vStart, &strStartDay, 0, nullptr);
                 for (size_t idx = 0; idx < vStart.size() && idx < 5; ++idx)
                     stu.vStartDayList.push_back(vStart[idx]);
-                std::vector<int>::~vector(&vStart);
-                std::string::~string(&strStartDay);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                                }
             
             {
                 std::string strEndDay;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strEndDay, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strEndDay = pField->pString;
                 
                 std::vector<int> vEnd;
                 paraseInt32List(&vEnd, &strEndDay, 0, nullptr);
                 for (size_t idx = 0; idx < vEnd.size() && idx < 5; ++idx)
                     stu.vEndDayList.push_back(vEnd[idx]);
-                std::vector<int>::~vector(&vEnd);
-                std::string::~string(&strEndDay);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                                }
             
             // 解析植物位置 (MapId:PosX:PosY|MapId:PosX:PosY)
             {
                 std::string strPlantPos;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strPlantPos, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strPlantPos = pField->pString;
                 
                 std::vector<std::string> vPlantPos;
                 CDBCFile::_ConvertStringToVector(strPlantPos.c_str(), &vPlantPos, "|", 1, 1);
@@ -10286,17 +9296,14 @@ void CfgData::InitFestivalActivityTable()
                         stu.vPlantPosList.push_back(pos);
                     }
                 }
-                std::string::~string(&strPlantPos);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                    }
             
             // 解析NPC位置
             {
                 std::string strNpcPos;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strNpcPos, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strNpcPos = pField->pString;
                 
                 std::vector<std::string> vNpcPos;
                 CDBCFile::_ConvertStringToVector(strNpcPos.c_str(), &vNpcPos, "|", 1, 1);
@@ -10313,45 +9320,36 @@ void CfgData::InitFestivalActivityTable()
                         stu.vNpcPosList.push_back(pos);
                     }
                 }
-                std::string::~string(&strNpcPos);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                    }
             
             
             // 解析每日/活动奖励物品
             {
                 std::string strDayGift;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strDayGift, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strDayGift = pField->pString;
                 
                 CItemHelper::parseItemString(stu.dayGift, &strDayGift);
                 
-                std::string::~string(&strDayGift);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                    }
             
             {
                 std::string strActGift;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strActGift, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strActGift = pField->pString;
                 
                 CItemHelper::parseItemString(stu.actGift, &strActGift);
                 
-                std::string::~string(&strActGift);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                    }
             
             // 解析兑换配置 (Times:CostGold|GetItems|CostItems#Times:CostGold|GetItems|CostItems)
             {
                 std::string strChangeCfg;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strChangeCfg, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strChangeCfg = pField->pString;
                 
                 std::vector<std::string> vCfgEntries;
                 CDBCFile::_ConvertStringToVector(strChangeCfg.c_str(), &vCfgEntries, "#", 1, 1);
@@ -10396,17 +9394,14 @@ void CfgData::InitFestivalActivityTable()
                     }
                 }
                 
-                std::string::~string(&strChangeCfg);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                    }
             
             // 解析答题列表 (answers separated by |, groups separated by #)
             {
                 std::string strAnswer;
                 char vAlloc;
-                std::allocator<char>::allocator(&vAlloc);
-                const CDBCFile::FIELD *pField = CDBCFile::Search_Posistion(&TabFile, i, nIndex++);
-                std::string::string(&strAnswer, pField->pString, &vAlloc);
+                            const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+                strAnswer = pField->pString;
                 
                 std::vector<std::string> vAnswerGroups;
                 CDBCFile::_ConvertStringToVector(strAnswer.c_str(), &vAnswerGroups, "#", 1, 1);
@@ -10418,13 +9413,10 @@ void CfgData::InitFestivalActivityTable()
                     stu.vAnswerList.push_back(vAnswers);
                 }
                 
-                std::string::~string(&strAnswer);
-                std::allocator<char>::~allocator(&vAlloc);
-            }
+                                    }
             this->m_festivalActivityTable.Add(stu);
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgFestivalActivityTable *CfgData::GetFestivalActivityTable()
@@ -10435,17 +9427,15 @@ CfgFestivalActivityTable *CfgData::GetFestivalActivityTable()
 void CfgData::InitYYDaTing()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/YYDaTing.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/YYDaTing.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_YY_DATING_TABLE failed, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10455,30 +9445,27 @@ void CfgData::InitYYDaTing()
             memset(&stu, 0, sizeof(stu));
             std::vector<MemChrBag>::vector(&stu.Rewards);
             
-            stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+            stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
             
             std::string strItems;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-            std::string::string(&strItems, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 3);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.Rewards = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v7);
+                    
+            stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
             
-            stu.nCondition = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-            
-            auto v2 = std::map<int, CfgYYGameApp>::operator[](&this->m_CfgYYGameAppMap, &stu.nIndex);
+            auto *v2 = &this->m_CfgYYGameAppMap[stu.nIndex];
             *v2 = stu;
             stu.~CfgYYGameApp();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
@@ -10494,17 +9481,15 @@ CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
 void CfgData::InitLaDaShiHuiYuan()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/LuDaShiHuiYuan.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/LuDaShiHuiYuan.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_LUDA_SHI_HUI_YUAN_TABLE failed, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10512,32 +9497,29 @@ void CfgData::InitLaDaShiHuiYuan()
         {
             LuDaShiVip stu{};
             
-            stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+            stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
             
             std::string strItems;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-            std::string::string(&strItems, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 3);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.Rewards = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v7);
+                    
+            stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
+            stu.nVipType = TabFile.Search_Posistion( i, 8)->iValue;
+            stu.nMaxCondition = TabFile.Search_Posistion( i, 11)->iValue;
             
-            stu.nCondition = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-            stu.nVipType = CDBCFile::Search_Posistion(&TabFile, i, 8)->iValue;
-            stu.nMaxCondition = CDBCFile::Search_Posistion(&TabFile, i, 11)->iValue;
-            
-            auto v2 = std::map<int, LuDaShiVip>::operator[](&this->m_LuDaShiVipMap, &stu.nIndex);
+            auto *v2 = &this->m_LuDaShiVipMap[stu.nIndex];
             *v2 = stu;
             stu.~LuDaShiVip();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
@@ -10553,17 +9535,15 @@ LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
 void CfgData::InitYYVip()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/YYHuiYuan.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/YYHuiYuan.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_YY_VIP_TABLE failed, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10573,32 +9553,29 @@ void CfgData::InitYYVip()
             memset(&stu, 0, sizeof(stu));
             std::vector<MemChrBag>::vector(&stu.Rewards);
             
-            stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+            stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
             
             std::string strItems;
             char v11;
-            std::allocator<char>::allocator(&v11);
-            const CDBCFile::FIELD *v2 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-            std::string::string(&strItems, v2->pString, &v11);
+                    const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, 3);
+            strItems = v2->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.Rewards = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v11);
+                    
+            stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
+            stu.nPric = TabFile.Search_Posistion( i, 5)->iValue;
+            stu.nLimit = TabFile.Search_Posistion( i, 6)->iValue;
             
-            stu.nCondition = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-            stu.nPric = CDBCFile::Search_Posistion(&TabFile, i, 5)->iValue;
-            stu.nLimit = CDBCFile::Search_Posistion(&TabFile, i, 6)->iValue;
-            
-            auto v3 = std::map<int, CfgYYVip>::operator[](&this->m_CfgYYVipMap, &stu.nIndex);
+            auto *v3 = &this->m_CfgYYVipMap[stu.nIndex];
             *v3 = stu;
             stu.~CfgYYVip();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
@@ -10614,17 +9591,15 @@ CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
 void CfgData::InitSouGouDaTing()
 {
     CDBCFile TabFile;
-    CDBCFile::CDBCFile(&TabFile, 0);
     
-    if (!CDBCFile::OpenFromTXT(&TabFile, "./ServerConfig/Tables/SouGouDaTing.txt"))
+    if (!TabFile.OpenFromTXT( "./ServerConfig/Tables/SouGouDaTing.txt"))
     {
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR, "open FILE_SOU_GOU_DATING_TABLE failed, please check!!!\n");
-        CDBCFile::~CDBCFile(&TabFile);
-        return;
+            return;
     }
     
-    int32_t iBaseTableCount = CDBCFile::GetRecordsNum(&TabFile);
-    int32_t iBaseColumnCount = CDBCFile::GetFieldsNum(&TabFile);
+    int32_t iBaseTableCount = TabFile.GetRecordsNum();
+    int32_t iBaseColumnCount = TabFile.GetFieldsNum();
     
     if (iBaseColumnCount > 0)
     {
@@ -10634,30 +9609,27 @@ void CfgData::InitSouGouDaTing()
             memset(&stu, 0, sizeof(stu));
             std::vector<MemChrBag>::vector(&stu.vRewards);
             
-            stu.nIndex = CDBCFile::Search_Posistion(&TabFile, i, 0)->iValue;
-            stu.nType = CDBCFile::Search_Posistion(&TabFile, i, 1)->iValue;
+            stu.nIndex = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
             
             std::string strItems;
             char v7;
-            std::allocator<char>::allocator(&v7);
-            const CDBCFile::FIELD *v1 = CDBCFile::Search_Posistion(&TabFile, i, 3);
-            std::string::string(&strItems, v1->pString, &v7);
+                    const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 3);
+            strItems = v1->pString;
             
             MemChrBagVector __x;
             CItemHelper::parseItemVectorString(&__x, &strItems);
             stu.vRewards = __x;
             __x.~vector();
             strItems.~string();
-            std::allocator<char>::~allocator(&v7);
+                    
+            stu.nCondition = TabFile.Search_Posistion( i, 4)->iValue;
             
-            stu.nCondition = CDBCFile::Search_Posistion(&TabFile, i, 4)->iValue;
-            
-            auto v2 = std::map<int, CfgSgGameApp>::operator[](&this->m_CfgSgGameAppMap, &stu.nIndex);
+            auto *v2 = &this->m_CfgSgGameAppMap[stu.nIndex];
             *v2 = stu;
             stu.~CfgSgGameApp();
         }
     }
-    CDBCFile::~CDBCFile(&TabFile);
 }
 
 CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
@@ -10697,26 +9669,22 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
     
     std::string delims;
     char v22;
-    std::allocator<char>::allocator(&v22);
-    std::string::string(&delims, "|", &v22);
+    delims = "|";
     
     StringVector strAttrAddons;
-    Answer::StringUtility::split(&strAttrAddons, addonAttr, &delims, 0);
+    StringUtility::split(strAttrAddons, *addonAttr, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v22);
     
     for (auto& addonStr : strAttrAddons)
     {
         std::string v24;
         char v25;
-        std::allocator<char>::allocator(&v25);
-        std::string::string(&v24, ":", &v25);
+            v24 = ":";
         
         StringVector strAttrAddon;
-        Answer::StringUtility::split(&strAttrAddon, addonStr, &v24, 0);
+        StringUtility::split(strAttrAddon, *addonStr, v24);
         v24.~string();
-        std::allocator<char>::~allocator(&v25);
-        
+            
         if (strAttrAddon.size() == 2)
         {
             AddAttribute attr;
@@ -10745,26 +9713,22 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
     
     std::string delims;
     char v10;
-    std::allocator<char>::allocator(&v10);
-    std::string::string(&delims, "|", &v10);
+    delims = "|";
     
     StringVector strTalentAddons;
-    Answer::StringUtility::split(&strTalentAddons, str, &delims, 0);
+    StringUtility::split(strTalentAddons, *str, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v10);
     
     for (auto& talentStr : strTalentAddons)
     {
         std::string v12;
         char v13;
-        std::allocator<char>::allocator(&v13);
-        std::string::string(&v12, ":", &v13);
+            v12 = ":";
         
         StringVector vParam;
-        Answer::StringUtility::split(&vParam, talentStr, &v12, 0);
+        StringUtility::split(vParam, *talentStr, v12);
         v12.~string();
-        std::allocator<char>::~allocator(&v13);
-        
+            
         if (vParam.size() == 2)
         {
             TalentAddon addon;
@@ -10784,26 +9748,22 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
     
     std::string delims;
     char v14;
-    std::allocator<char>::allocator(&v14);
-    std::string::string(&delims, "|", &v14);
+    delims = "|";
     
     StringVector strParams;
-    Answer::StringUtility::split(&strParams, str, &delims, 0);
+    StringUtility::split(strParams, *str, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v14);
     
     for (auto& paramStr : strParams)
     {
         std::string v16;
         char v17;
-        std::allocator<char>::allocator(&v17);
-        std::string::string(&v16, ":", &v17);
+            v16 = ":";
         
         StringVector vParam;
-        Answer::StringUtility::split(&vParam, paramStr, &v16, 0);
+        StringUtility::split(vParam, *paramStr, v16);
         v16.~string();
-        std::allocator<char>::~allocator(&v17);
-        
+            
         if (vParam.size() == 2)
         {
             Param2 param;
@@ -10823,13 +9783,11 @@ void CfgData::paraseInt32List(std::list<int> *result,
     
     std::string delims;
     char v19;
-    std::allocator<char>::allocator(&v19);
-    std::string::string(&delims, ":", &v19);
+    delims = ":";
     
     StringVector vstr;
-    Answer::StringUtility::split(&vstr, str, &delims, 0);
+    StringUtility::split(vstr, *str, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v19);
     
     if (size > 0 && (int32_t)vstr.size() != size)
     {
@@ -10848,7 +9806,7 @@ void CfgData::paraseInt32List(std::list<int> *result,
     vstr.~vector();
 }
 
-Int32Vector *CfgData::paraseInt32Vector2(Int32Vector *__return_ptr retstr, ,
+Int32Vector *CfgData::paraseInt32Vector2(Int32Vector ,
                                           const std::string *const str, const std::string *const path, int32_t size)
 {
     std::vector<int>::vector(retstr);
@@ -10856,13 +9814,11 @@ Int32Vector *CfgData::paraseInt32Vector2(Int32Vector *__return_ptr retstr, ,
     
     std::string delims;
     char v19;
-    std::allocator<char>::allocator(&v19);
-    std::string::string(&delims, "|", &v19);
+    delims = "|";
     
     StringVector vstr;
-    Answer::StringUtility::split(&vstr, str, &delims, 0);
+    StringUtility::split(vstr, *str, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v19);
     
     if (size > 0 && (int32_t)vstr.size() != size)
     {
@@ -10883,7 +9839,7 @@ Int32Vector *CfgData::paraseInt32Vector2(Int32Vector *__return_ptr retstr, ,
     return retstr;
 }
 
-Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector *__return_ptr retstr, ,
+Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector ,
                                              const std::string *const str, const std::string *const path)
 {
     std::vector<std::vector<int>>::vector(retstr);
@@ -10891,13 +9847,11 @@ Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector *__return_ptr retstr, 
     
     std::string delims;
     char v18;
-    std::allocator<char>::allocator(&v18);
-    std::string::string(&delims, "|", &v18);
+    delims = "|";
     
     StringVector SplitStr;
-    Answer::StringUtility::split(&SplitStr, str, &delims, 0);
+    StringUtility::split(SplitStr, *str, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v18);
     
     retstr->reserve(SplitStr.size());
     
@@ -10905,14 +9859,12 @@ Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector *__return_ptr retstr, 
     {
         std::string v21;
         char v22;
-        std::allocator<char>::allocator(&v22);
-        std::string::string(&v21, ":", &v22);
+            v21 = ":";
         
         StringVector vstr;
-        Answer::StringUtility::split(&vstr, splitItem, &v21, 0);
+        StringUtility::split(vstr, *splitItem, v21);
         v21.~string();
-        std::allocator<char>::~allocator(&v22);
-        
+            
         std::vector<int> probability;
         probability.reserve(vstr.size());
         
@@ -10928,7 +9880,7 @@ Int32VtVector *CfgData::paraseInt32VtVector(Int32VtVector *__return_ptr retstr, 
     return retstr;
 }
 
-void CfgData::parseTaskItemJobString(MemChrJobBagVector *__return_ptr retstr, ,
+void CfgData::parseTaskItemJobString(MemChrJobBagVector ,
                                       int32_t id, const std::string *const strItems)
 {
     std::vector<MemChrJobBag>::vector(retstr);
@@ -10936,26 +9888,22 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector *__return_ptr retstr, ,
     
     std::string delims;
     char v47;
-    std::allocator<char>::allocator(&v47);
-    std::string::string(&delims, "|", &v47);
+    delims = "|";
     
     StringVector items_receive;
-    Answer::StringUtility::split(&items_receive, strItems, &delims, 0);
+    StringUtility::split(items_receive, *strItems, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v47);
     
     for (auto& itemStr : items_receive)
     {
         std::string v49;
         char v50;
-        std::allocator<char>::allocator(&v50);
-        std::string::string(&v49, ":", &v50);
+            v49 = ":";
         
         StringVector item;
-        Answer::StringUtility::split(&item, itemStr, &v49, 0);
+        StringUtility::split(item, *itemStr, v49);
         v49.~string();
-        std::allocator<char>::~allocator(&v50);
-        
+            
         if (item.size() == 4)
         {
             MemChrJobBag itemData;
@@ -11000,7 +9948,7 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector *__return_ptr retstr, ,
     items_receive.~vector();
 }
 
-MemJobItemTable *CfgData::parseGambleEquip(MemJobItemTable *__return_ptr retstr, ,
+MemJobItemTable *CfgData::parseGambleEquip(MemJobItemTable ,
                                             int32_t id, const std::string *const strItems)
 {
     std::map<int, MemJobItem>::map(retstr);
@@ -11008,32 +9956,28 @@ MemJobItemTable *CfgData::parseGambleEquip(MemJobItemTable *__return_ptr retstr,
     
     std::string delims;
     char v19;
-    std::allocator<char>::allocator(&v19);
-    std::string::string(&delims, "|", &v19);
+    delims = "|";
     
     StringVector items_receive;
-    Answer::StringUtility::split(&items_receive, strItems, &delims, 0);
+    StringUtility::split(items_receive, *strItems, delims);
     delims.~string();
-    std::allocator<char>::~allocator(&v19);
     
     for (auto& itemStr : items_receive)
     {
         std::string v21;
         char v22;
-        std::allocator<char>::allocator(&v22);
-        std::string::string(&v21, ":", &v22);
+            v21 = ":";
         
         StringVector item;
-        Answer::StringUtility::split(&item, itemStr, &v21, 0);
+        StringUtility::split(item, *itemStr, v21);
         v21.~string();
-        std::allocator<char>::~allocator(&v22);
-        
+            
         if (item.size() == 2)
         {
             MemJobItem itemData;
             itemData.job = atoi(item[0]->c_str());
             itemData.item = atoi(item[1]->c_str());
-            auto v9 = std::map<int, MemJobItem>::operator[](retstr, &itemData.job);
+            auto *v9 = &retstr[itemData.job];
             *v9 = itemData;
         }
         else
@@ -11080,7 +10024,7 @@ int32_t CfgData::GetAttrPoint(int32_t level)
     return 0;
 }
 
-CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr *__return_ptr retstr, int32_t job, int32_t level)
+CfgLevelAttr *CfgData::getLevelAttr(CfgLevelAttr int32_t job, int32_t level)
 {
     int key = (job << 16) | level;
     auto it = this->m_levelAttrs.find(key);
@@ -11104,7 +10048,7 @@ int32_t CfgData::getBaseJob(int32_t job)
     return (job == 1) ? 1 : 0;
 }
 
-AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector *__return_ptr retstr, int32_t Mid, int32_t WorldLevel)
+AttrAddonVector *CfgData::GetAddMonsterAttrs(AttrAddonVector int32_t Mid, int32_t WorldLevel)
 {
     auto it = this->m_MonstAddAttrMap.find(Mid);
     if (it != this->m_MonstAddAttrMap.end())
@@ -11281,7 +10225,7 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
     return nullptr;
 }
 
-MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, int8_t SiginCount)
+MemChrBagVector *CfgData::GetSignReward(MemChrBagVector int8_t SiginCount)
 {
     std::vector<MemChrBag>::vector(retstr);
     
@@ -11293,7 +10237,7 @@ MemChrBagVector *CfgData::GetSignReward(MemChrBagVector *__return_ptr retstr, in
     return retstr;
 }
 
-QuestionsVector *CfgData::GetAllQuestions(QuestionsVector *__return_ptr retstr, int8_t nType)
+QuestionsVector *CfgData::GetAllQuestions(QuestionsVector int8_t nType)
 {
     auto it = this->m_mQuestions.find(nType);
     if (it != this->m_mQuestions.end())
@@ -11329,7 +10273,7 @@ PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
     return nullptr;
 }
 
-GroupMonsterVector *CfgData::GetGroupMonsterVector(GroupMonsterVector *__return_ptr retstr, int32_t MapId)
+GroupMonsterVector *CfgData::GetGroupMonsterVector(GroupMonsterVector int32_t MapId)
 {
     auto it = this->m_GroupMonsterMap.find(MapId);
     if (it != this->m_GroupMonsterMap.end())
@@ -12010,7 +10954,7 @@ BaoKuFuBen *CfgData::GetBaoKuFuBen(int32_t FuBenId)
     return nullptr;
 }
 
-BaoKuRandomMap *CfgData::GetBaoKuRandomMap(BaoKuRandomMap *__return_ptr retstr, )
+BaoKuRandomMap *CfgData::GetBaoKuRandomMap(BaoKuRandomMap )
 {
     std::map<int, BaoKuRandom>::map(retstr, &this->m_BaoKuRandomMap);
     return retstr;

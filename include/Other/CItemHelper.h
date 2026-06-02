@@ -49,6 +49,7 @@ public:
         default: return CURRENCY_TYPE::CURRENCY_MONEY;
         }
     }
+    static void parseItemVectorString(MemChrBagVector *ret, std::string *strItems);
     void parseItemString(MemChrBag &retstr, std::string * strItem);
     ItemDataList parseItemDataListString(std::string * strItems, bool bCombi);
     ItemData parseItemDataString(std::string * strItem);

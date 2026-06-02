@@ -532,4 +532,25 @@ void CDBCFile::CreateIndex(int nColum, const char *szFileName)
     }
 }
 
-（内容由AI生成，仅供参考）
+int32_t CDBCFile::GetRecordsNum()
+{
+    // TODO: implement
+    return 0;
+}
+
+int32_t CDBCFile::GetFieldsNum()
+{
+    // TODO: implement
+    return 0;
+}
+
+CDBCFile::FIELD* CDBCFile::Search_Posistion(int32_t row, int32_t col)
+{
+    // TODO: implement
+    static FIELD dummy;
+    dummy.iValue = 0;
+    dummy.pString = "";
+    return &dummy;
+}
+
+// （内容由AI生成，仅供参考）
