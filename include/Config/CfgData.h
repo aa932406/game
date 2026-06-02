@@ -1493,9 +1493,7 @@ struct SpecialTreasureMapRandCfg {
     int nGongGaoId;
 };
 
-struct CfgFamilyTask {
-    // 成员变量
-};
+#include "Config/CfgFamilyTask.h"
 
 struct FamilyTaskReward {
     int Index;
@@ -1781,8 +1779,7 @@ struct CfgFamilyLightExpTable {};
 struct CfgHorseRacingRewardTable {};
 #ifndef CFG_CAMP_WAR_TABLE_DEFINED
 #define CFG_CAMP_WAR_TABLE_DEFINED
-struct CfgCampWarTable {
-};
+#include "Config/CfgCampWarTable.h"
 #endif
 #ifndef CFG_CITY_WAR_TABLE_DEFINED
 #define CFG_CITY_WAR_TABLE_DEFINED
