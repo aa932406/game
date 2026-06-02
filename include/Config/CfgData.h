@@ -1823,9 +1823,8 @@ typedef VipCardCfg VipCfg;
 
 // ==================== CfgData 类定义 ====================
 
-class CfgData {
-public:
-    // 类型别名（供所有方法声明使用）
+
+// ==================== CfgData 类型别名 ====================
     typedef std::vector<CfgItemGift> CfgItemGiftVector;
     typedef std::vector<CfgItemGiftRandom> CfgItemGiftRandomVector;
     typedef std::vector<CfgMapMonster> CfgMapMonsterVector;
@@ -1843,7 +1842,12 @@ public:
     typedef std::vector<MemChrJobBag> MemChrJobBagVector;
     typedef std::vector<std::vector<int>> CfgInt32VtVector;
     typedef std::map<int, MemJobItem> MemJobItemTable;
+typedef std::vector<CfgQuestions> QuestionsVector;
+typedef std::vector<GroupMonster> GroupMonsterVector;
 
+class CfgData {
+public:
+    // 单例
     // 单例
     static CfgData* instance();
     static CfgData* GetInstance();
