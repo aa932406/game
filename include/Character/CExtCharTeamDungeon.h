@@ -3,6 +3,7 @@
 #define CEXTCHARTEAMDUNGEON_H
 
 #include "CExtSystemBase.h"
+#include "Common/CommonTypes.h"
 
 class CExtCharTeamDungeon : public CExtSystemBase
 {
