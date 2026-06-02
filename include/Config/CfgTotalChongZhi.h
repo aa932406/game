@@ -6,6 +6,13 @@
 #include <list>
 #include <vector>
 
+#ifndef CFG_GONG_GAO_DEFINED
+#define CFG_GONG_GAO_DEFINED
+struct CfgGongGao {
+    // 成员变量
+};
+#endif /* CFG_GONG_GAO_DEFINED */
+
 
 /**
  * @brief CfgTotalChongZhi - Config data class

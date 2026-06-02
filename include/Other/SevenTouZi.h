@@ -25,6 +25,7 @@ struct MemChrBag;
 class SevenTouZi
 {
 public:
+    SevenTouZi() = default;
     SevenTouZi(const SevenTouZi& a2);
 
     int32_t nId;

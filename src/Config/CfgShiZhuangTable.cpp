@@ -2,9 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-static std::map<int32_t, CfgShiZhuang> m_mShiZhuang;
-static std::map<int32_t, std::map<int32_t, CfgShiZhuangLevel>> m_mShiZhuangLevel;
-
 CfgShiZhuangTable::CfgShiZhuangTable()
 {
     m_mShiZhuang.clear();

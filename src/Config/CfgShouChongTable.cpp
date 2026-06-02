@@ -2,8 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-std::map<int32_t, CfgShouChong> CfgShouChongTable::m_mShouChong;
-
 CfgShouChongTable::CfgShouChongTable()
 {
     m_mShouChong.clear();

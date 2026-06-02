@@ -17,9 +17,13 @@ public:
     ~CfgWeiXinTable();
 
     void Add(const CfgWeiXingGift& stu);
+    const CfgWeiXingGift* GetGift(int32_t nIconId);
+    bool IsGiftExist(int32_t nIconId);
+    int32_t GetRewardCount(int32_t nIconId);
+    void Clear();
 
 public:
-    std::map<int, CfgWeiXingGift> m_mWeiXinGift;
+    std::map<int32_t, CfgWeiXingGift> m_mWeiXinGift;
 };
 
 #endif // _CFGCFGWEIXINTABLE_H_

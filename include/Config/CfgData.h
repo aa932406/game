@@ -107,6 +107,8 @@ struct MemChrBag {
 #define MEM_CHR_BAG_DEFINED_HERE
 #endif
 
+#ifndef CFG_MEM_CHR_JOB_BAG_DEFINED
+#define CFG_MEM_CHR_JOB_BAG_DEFINED
 struct MemChrJobBag {
     int id;
     int type;
@@ -115,6 +117,7 @@ struct MemChrJobBag {
     int job;
     int time;
 };
+#endif /* CFG_MEM_CHR_JOB_BAG_DEFINED */
 
 struct CfgItem {
     int id;
@@ -556,9 +559,12 @@ struct TaskRequest {
     int param3;
 };
 
+#ifndef CFG_TASK_DROP_DEFINED
+#define CFG_TASK_DROP_DEFINED
 struct TaskDrop {
     // 成员变量
 };
+#endif /* CFG_TASK_DROP_DEFINED */
 
 struct RefreshMonster {
     int nCount;

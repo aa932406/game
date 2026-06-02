@@ -2,12 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-std::map<int32_t, CfgActiveSkill> CfgSkillTable::m_mActiveSkills;
-std::map<int32_t, CfgPassiveSkill> CfgSkillTable::m_mPassiveSkills;
-std::map<int32_t, CfgTrigSkill> CfgSkillTable::m_mTrigSkills;
-std::map<int32_t, CfgFamilySkill> CfgSkillTable::m_mFamilySkills;
-std::map<int32_t, CfgTalentActive> CfgSkillTable::m_mTalentActive;
-
 CfgSkillTable::CfgSkillTable()
 {
     m_mActiveSkills.clear();

@@ -35,14 +35,17 @@ public:
 
     void AddSevenTouZi( SevenTouZi *p_stu);
     void AddMonthTouZi( MonthTouZi *p_stu);
-    void GetSevenTouZi( int32_t nId);
+    const SevenTouZi* GetSevenTouZi( int32_t nId);
     bool IsAllGetSevenDay( int32_t SevenDayRecord);
-    void GetMonthTouZi( int32_t nDay);
+    const MonthTouZi* GetMonthTouZi( int32_t nDay);
     bool IsAllGetMonthTouZi( int32_t MonthTouZiRecord);
+    int32_t GetSevenTouZiCount();
+    int32_t GetMonthTouZiCount();
+    void Clear();
 
-private:
-        // TODO: 确认类型 m_MonthTouZiMap
-        // TODO: 确认类型 m_SevenTouZiMap
+public:
+    std::map<int32_t, SevenTouZi> m_mSevenTouZi;
+    std::map<int32_t, MonthTouZi> m_mMonthTouZi;
 };
 
 #endif // _CFGTOUZITABLE_H_

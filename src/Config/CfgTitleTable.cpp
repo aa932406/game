@@ -3,9 +3,6 @@
 #include <map>
 #include <vector>
 
-std::map<int32_t, CfgTitle> CfgTitleTable::m_mTitle;
-std::map<int32_t, std::vector<int32_t>> CfgTitleTable::m_mTitleByType;
-
 CfgTitleTable::CfgTitleTable()
 {
     m_mTitle.clear();

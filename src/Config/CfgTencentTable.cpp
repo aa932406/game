@@ -3,22 +3,18 @@
 #include <map>
 #include <vector>
 
-static std::map<int32_t, CfgTencentGift> m_mTencentGift;           // [nLevel]
-static std::map<int32_t, CfgTencentGift> m_mTencentVipGift;        // [nLevel]
-static std::map<int32_t, CfgTencentSevenDayLogin> m_mSevenDayLogin; // [nDays]
-
 CfgTencentTable::CfgTencentTable()
 {
     m_mTencentGift.clear();
     m_mTencentVipGift.clear();
-    m_mSevenDayLogin.clear();
+    m_mTencentSevenDayLogin.clear();
 }
 
 CfgTencentTable::~CfgTencentTable()
 {
     m_mTencentGift.clear();
     m_mTencentVipGift.clear();
-    m_mSevenDayLogin.clear();
+    m_mTencentSevenDayLogin.clear();
 }
 
 void CfgTencentTable::Add(const CfgTencentGift& stu)
@@ -50,7 +46,7 @@ void CfgTencentTable::AddSevenDayLogin(const CfgTencentSevenDayLogin& stu)
         return;
     }
     
-    m_mSevenDayLogin[stu.nDays] = stu;
+    m_mTencentSevenDayLogin[stu.nDays] = stu;
 }
 
 const CfgTencentGift* CfgTencentTable::GetGift(int32_t nLevel)
@@ -75,8 +71,8 @@ const CfgTencentGift* CfgTencentTable::GetVipGift(int32_t nLevel)
 
 const CfgTencentSevenDayLogin* CfgTencentTable::GetSevenDayLogin(int32_t nDays)
 {
-    auto it = m_mSevenDayLogin.find(nDays);
-    if (it != m_mSevenDayLogin.end())
+    auto it = m_mTencentSevenDayLogin.find(nDays);
+    if (it != m_mTencentSevenDayLogin.end())
     {
         return &it->second;
     }
@@ -105,5 +101,5 @@ void CfgTencentTable::Clear()
 {
     m_mTencentGift.clear();
     m_mTencentVipGift.clear();
-    m_mSevenDayLogin.clear();
+    m_mTencentSevenDayLogin.clear();
 }

@@ -2,8 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-std::map<int32_t, int32_t> CfgWingTable::m_mWingData;
-
 CfgWingTable::CfgWingTable()
 {
     m_mWingData.clear();

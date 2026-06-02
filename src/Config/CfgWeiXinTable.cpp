@@ -2,8 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-static std::map<int32_t, CfgWeiXingGift> m_mWeiXinGift;
-
 CfgWeiXinTable::CfgWeiXinTable()
 {
     m_mWeiXinGift.clear();

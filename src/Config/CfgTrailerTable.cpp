@@ -2,8 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-std::map<int32_t, CfgTrailer> CfgTrailerTable::m_mTrailer;
-
 CfgTrailerTable::CfgTrailerTable()
 {
     m_mTrailer.clear();

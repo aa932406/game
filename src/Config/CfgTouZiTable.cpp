@@ -2,9 +2,6 @@
 #include "Answer/Logger.h"
 #include <map>
 
-static std::map<int32_t, SevenTouZi> m_mSevenTouZi;   // 七日投资 [nId]
-static std::map<int32_t, MonthTouZi> m_mMonthTouZi;   // 月投资 [nDay]
-
 CfgTouZiTable::CfgTouZiTable()
 {
     if (this)

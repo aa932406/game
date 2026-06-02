@@ -3,9 +3,6 @@
 #include <map>
 #include <vector>
 
-static std::map<int32_t, CfgSearchBack> m_mSearchBack;
-static std::map<int32_t, std::vector<CfgSearchBack>> m_mSearchBackByType;
-
 CfgSearchBackTable::CfgSearchBackTable()
 {
     m_mSearchBack.clear();

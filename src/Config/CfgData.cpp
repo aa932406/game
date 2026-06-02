@@ -52310,7 +52310,7 @@ void CfgData::InitFamilyTable()
 
 
 
-            CfgFamilyTable::Add(&this->m_cfgFamilyTable, &family);
+            CfgFamilyTable::Add(this->m_cfgFamilyTable, &family);
 
 
 
@@ -52511,7 +52511,7 @@ void CfgData::InitFamilyTable()
 
 
 
-                CfgFamilyTable::AddFamilyBoss(&this->m_cfgFamilyTable, &stu);
+                CfgFamilyTable::AddFamilyBoss(this->m_cfgFamilyTable, &stu);
 
 
 

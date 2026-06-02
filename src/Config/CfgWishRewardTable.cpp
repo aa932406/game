@@ -4,8 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-std::vector<CfgWishReward> CfgWishRewardTable::m_vWishReward;
-
 CfgWishRewardTable::CfgWishRewardTable()
 {
     m_vWishReward.clear();

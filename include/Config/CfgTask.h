@@ -6,6 +6,25 @@
 #include <list>
 #include <vector>
 
+#ifndef CFG_MEM_CHR_JOB_BAG_DEFINED
+#define CFG_MEM_CHR_JOB_BAG_DEFINED
+struct MemChrJobBag {
+    int id;
+    int type;
+    int count;
+    int bind;
+    int job;
+    int time;
+};
+#endif /* CFG_MEM_CHR_JOB_BAG_DEFINED */
+
+#ifndef CFG_TASK_DROP_DEFINED
+#define CFG_TASK_DROP_DEFINED
+struct TaskDrop {
+    // 成员变量
+};
+#endif /* CFG_TASK_DROP_DEFINED */
+
 
 /**
  * @brief CfgTask - Config data class
