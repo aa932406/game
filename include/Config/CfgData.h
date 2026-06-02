@@ -667,9 +667,7 @@ struct XunLeiCfg {
     // 成员变量
 };
 
-struct CfgGuardPrivilege {
-    // 成员变量
-};
+#include "Config/CfgGuardPrivilege.h"
 
 struct CycleTowerTable {
     // 成员变量
@@ -1021,9 +1019,7 @@ struct CfgItemGem {
     // 其他成员
 };
 
-struct CfgItemCombi {
-    // 成员变量
-};
+#include "Config/CfgItemCombi.h"
 
 struct CfgPetData {
     int m_nPetId;
@@ -1308,13 +1304,9 @@ struct CfgSearchBack {
     std::vector<MemChrBag> vItemReward;
 };
 
-struct CfgEquipBless {
-    // 成员变量
-};
+#include "Config/CfgEquipBless.h"
 
-struct CfgSysMail {
-    // 成员变量
-};
+#include "Config/CfgSysMail.h"
 
 struct BossInfo {
     // 成员变量
