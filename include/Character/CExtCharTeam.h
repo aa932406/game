@@ -3,6 +3,7 @@
 #define CEXTCHARTEAM_H
 
 #include "CExtSystemBase.h"
+#include "Common/CommonTypes.h"
 #include <list>
 #include <string>
 
