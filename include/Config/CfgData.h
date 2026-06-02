@@ -804,9 +804,12 @@ struct ZhanHunCfg {
     // 成员变量
 };
 
+#ifndef LITTLE_HELPER_CFG_DEFINED
+#define LITTLE_HELPER_CFG_DEFINED
 struct LittleHelperCfg {
     // 成员变量
 };
+#endif
 
 struct ShiQuCfg {
     // 成员变量
@@ -962,6 +965,8 @@ struct CfgGroupIcon {
     std::string platfrom;
 };
 
+#ifndef CFG_EQUIP_DEFINED
+#define CFG_EQUIP_DEFINED
 struct CfgEquip {
     int m_nId;
     int m_nType;
@@ -993,6 +998,7 @@ struct CfgEquip {
     int m_CanRongHe;
     int m_TeJieParam;
 };
+#endif
 
 struct CfgItemGem {
     int m_nId;

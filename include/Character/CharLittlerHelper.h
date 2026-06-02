@@ -3,6 +3,8 @@
 #define CHARLITTLERHELPER_H
 
 #include "CExtSystemBase.h"
+#include "Common/CommonTypes.h"
+#include "Game/CLittleHelper.h"
 #include <map>
 #include <set>
 #include <string>
@@ -48,7 +50,7 @@ public:
     bool IsPickSpecialEquip();
     bool IsPickShouHu();
     
-    void* GetActLittleHelperInfo(int32_t nId);
+    ActLittleHelperInfo* GetActLittleHelperInfo(int32_t nId);
     
 private:
     bool IsFilterEquipGrade(int32_t Grade);
@@ -57,7 +59,7 @@ private:
     std::map<int32_t, ActLittleHelperInfo> m_ActMap;
     std::set<int32_t> m_EquipFilter;
     std::map<std::pair<int8_t, int32_t>, int32_t> m_ItemFilterMap;
-    void* m_CLittleHelper;
+    CLittleHelper* m_CLittleHelper;
     int32_t m_LittleHelperId;
     int8_t m_PickSetUp[6];
     bool m_NeedPick;

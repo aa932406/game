@@ -63,7 +63,7 @@ public:
     int32_t GetAvgBattle();
     int64_t getTick();
     int32_t getNow();
-    void getLocalNow(tm *__return_ptr retstr);
+    void getLocalNow(tm *retstr);
     void getTile(int32_t tx, int32_t ty);
     bool isWalkablePosition(int32_t tx, int32_t ty);
     bool inStack(int32_t tx, int32_t ty);

@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <vector>
 
+#ifndef CFG_EQUIP_DEFINED
+#define CFG_EQUIP_DEFINED
 
 /**
  * @brief CfgEquip - Config data class
@@ -48,4 +50,5 @@ public:
     CfgEquip& operator=(const CfgEquip& a2);
 };
 
+#endif // CFG_EQUIP_DEFINED
 #endif // _CFGEQUIP_H_

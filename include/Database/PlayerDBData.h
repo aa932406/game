@@ -15,6 +15,7 @@
 #include "Character/CExtCharPortal.h"
 #include "Character/CExtCharWish.h"
 #include "Character/CExtOperateLimit.h"
+#include "Character/CharLittlerHelper.h"
 #include "Other/RwLock.h"
 
 namespace Answer { class MySqlDBGuard; }
@@ -91,6 +92,12 @@ public:
     struct {
         std::map<int32_t, std::map<int32_t, int32_t>> m_FlopDrawRecordMap;
     } m_CFlopDraw;
+
+    // 小助手数据 (供 CharLittlerHelper 使用)
+    struct {
+        std::map<int32_t, ActLittleHelperInfo> m_ActLittleHelperInfoMap;
+        int32_t m_LittleHelperId;
+    } m_CLittleHelper;
 
     // 周期任务数据 (供 CExtChrTaskCycle 使用)
     struct {

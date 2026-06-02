@@ -21,6 +21,9 @@ class CfgMap;
 class Answer_NetPacket;
 class Position;
 
+#ifndef LITTLE_HELPER_CFG_DEFINED
+#define LITTLE_HELPER_CFG_DEFINED
+
 class LittleHelperCfg
 {
 public:
@@ -36,4 +39,5 @@ public:
     int32_t nGongGaoId;
 };
 
+#endif // LITTLE_HELPER_CFG_DEFINED
 #endif // _LITTLEHELPERCFG_H_

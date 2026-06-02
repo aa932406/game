@@ -6,6 +6,8 @@
 #include "Game/CPoolManager.h"
 #include "Game/Map.h"
 #include "Character/CExtCharBag.h"
+#include "Answer/Singleton.h"
+#include "Database/PlayerDBData.h"
 #include "Config/CfgData.h"
 #include "Config/CfgEquip.h"
 #include "Other/LittleHelperCfg.h"
