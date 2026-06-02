@@ -8486,17 +8486,7 @@ void CfgData::InitHuoYueDuTable()
 
 
 
-            // CfgOutLinkFestival stu; (inserted in wrong location)
-
-                // memset(&stu, 0, sizeof(stu)); (wrong location)
-
-
-
-
-
-
-
-                stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+            stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
 
 
 
