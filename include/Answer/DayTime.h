@@ -9,6 +9,7 @@ namespace Answer {
     class DayTime : public ::DayTime {
     public:
         static int32_t StringToIntTime(const std::string* str);
+        static int32_t daydiff(int32_t t);
     };
 }
 

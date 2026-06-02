@@ -2,7 +2,15 @@
 
 
 
+
+
+
+
 #include "Answer/Singleton.h"
+
+
+
+
 
 
 
@@ -10,7 +18,15 @@
 
 
 
+
+
+
+
 #include "Answer/DayTime.h"
+
+
+
+
 
 
 
@@ -18,7 +34,15 @@
 
 
 
+
+
+
+
 #include "Answer/MySqlQuery.h"
+
+
+
+
 
 
 
@@ -26,7 +50,15 @@
 
 
 
+
+
+
+
 #include "DB/DBService.h"
+
+
+
+
 
 
 
@@ -34,7 +66,15 @@
 
 
 
+
+
+
+
 #include "ItemEffectManager.h"
+
+
+
+
 
 
 
@@ -42,7 +82,15 @@
 
 
 
+
+
+
+
 #include "CCardGroupBoxManager.h"
+
+
+
+
 
 
 
@@ -50,7 +98,15 @@
 
 
 
+
+
+
+
 #include "CDBCFile.h"
+
+
+
+
 
 
 
@@ -58,7 +114,15 @@
 
 
 
+
+
+
+
 #include "Utility/StringUtility.h"
+
+
+
+
 
 
 
@@ -66,11 +130,27 @@
 
 
 
+
+
+
+
 #include <cstring>
 
 
 
+
+
+
+
 #include <algorithm>
+
+
+
+
+
+
+
+
 
 
 
@@ -86,11 +166,31 @@
 
 
 
+
+
+
+
+
+
+
+
 CfgData::CfgData()
 
 
 
+
+
+
+
 {}
+
+
+
+
+
+
+
+
 
 
 
@@ -106,7 +206,19 @@ CfgData::CfgData()
 
 
 
+
+
+
+
+
+
+
+
 CfgData::~CfgData()
+
+
+
+
 
 
 
@@ -118,7 +230,23 @@ CfgData::~CfgData()
 
 
 
+
+
+
+
+
+
+
+
 // ==================== 单例与初始化 ====================
+
+
+
+
+
+
+
+
 
 
 
@@ -134,7 +262,19 @@ CfgData::~CfgData()
 
 
 
+
+
+
+
+
+
+
+
 void CfgData::parseEquipItemString(MemChrEquipBagVector* result, CfgData* cfg, int32_t nIndex, const std::string* strItems)
+
+
+
+
 
 
 
@@ -142,7 +282,15 @@ void CfgData::parseEquipItemString(MemChrEquipBagVector* result, CfgData* cfg, i
 
 
 
+
+
+
+
     // TODO: implement from gameserver.cc
+
+
+
+
 
 
 
@@ -150,7 +298,19 @@ void CfgData::parseEquipItemString(MemChrEquipBagVector* result, CfgData* cfg, i
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -162,7 +322,15 @@ void CfgData::parseGongGaoString(std::list<CfgGongGao>* result, int32_t nIndex, 
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -170,11 +338,27 @@ void CfgData::parseGongGaoString(std::list<CfgGongGao>* result, int32_t nIndex, 
 
 
 
+
+
+
+
     (void)result; (void)nIndex; (void)strItems;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -190,7 +374,19 @@ void CfgData::parseGongGaoString(std::list<CfgGongGao>* result, int32_t nIndex, 
 
 
 
+
+
+
+
+
+
+
+
 CfgData *CfgData::instance()
+
+
+
+
 
 
 
@@ -198,11 +394,27 @@ CfgData *CfgData::instance()
 
 
 
+
+
+
+
     return Answer::Singleton<CfgData>::instance();
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -214,7 +426,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -222,7 +442,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchActivity();
+
+
+
+
 
 
 
@@ -230,7 +458,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchDungeon();
+
+
+
+
 
 
 
@@ -238,7 +474,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchDungeonMonster();
+
+
+
+
 
 
 
@@ -246,7 +490,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchDungeonTrap();
+
+
+
+
 
 
 
@@ -254,7 +506,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchItem(0);
+
+
+
+
 
 
 
@@ -262,7 +522,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchLevelAttr();
+
+
+
+
 
 
 
@@ -270,7 +538,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchMapMonster();
+
+
+
+
 
 
 
@@ -278,7 +554,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchChrShop();
+
+
+
+
 
 
 
@@ -286,7 +570,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchMonster();
+
+
+
+
 
 
 
@@ -294,7 +586,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchMonsterAdjustTable();
+
+
+
+
 
 
 
@@ -302,7 +602,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchMonsterGroupDrop();
+
+
+
+
 
 
 
@@ -310,7 +618,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchNpc();
+
+
+
+
 
 
 
@@ -318,7 +634,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchPlant();
+
+
+
+
 
 
 
@@ -326,7 +650,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchTrap();
+
+
+
+
 
 
 
@@ -334,7 +666,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     fetchSignReward();
+
+
+
+
 
 
 
@@ -342,7 +682,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitActiveSkillTable();
+
+
+
+
 
 
 
@@ -350,7 +698,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTrigSkillTable();
+
+
+
+
 
 
 
@@ -358,7 +714,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTalentPageTable();
+
+
+
+
 
 
 
@@ -366,7 +730,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTalentActiveTable();
+
+
+
+
 
 
 
@@ -374,7 +746,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitEquipUpStarTable();
+
+
+
+
 
 
 
@@ -382,7 +762,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitEquipDecomposeTable();
+
+
+
+
 
 
 
@@ -390,7 +778,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitEquipPosSuitTable();
+
+
+
+
 
 
 
@@ -398,7 +794,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitItemGemTable();
+
+
+
+
 
 
 
@@ -406,7 +810,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitGemLevelUpTable();
+
+
+
+
 
 
 
@@ -414,7 +826,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitItemCombiTable();
+
+
+
+
 
 
 
@@ -422,7 +842,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitCarrierTable();
+
+
+
+
 
 
 
@@ -430,7 +858,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitJueWeiTable();
+
+
+
+
 
 
 
@@ -438,7 +874,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitPetAttrTable();
+
+
+
+
 
 
 
@@ -446,7 +890,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSkillLevelUpTable();
+
+
+
+
 
 
 
@@ -454,7 +906,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTaskCycleRewardTable();
+
+
+
+
 
 
 
@@ -462,7 +922,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFamilyWarJoinRewardTable();
+
+
+
+
 
 
 
@@ -470,7 +938,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFamilyLightExpTable();
+
+
+
+
 
 
 
@@ -478,7 +954,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitCampWarRewardTable();
+
+
+
+
 
 
 
@@ -486,7 +970,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitCityWarContRewardTable();
+
+
+
+
 
 
 
@@ -494,7 +986,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTitleTable();
+
+
+
+
 
 
 
@@ -502,7 +1002,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitLimitTimeTable();
+
+
+
+
 
 
 
@@ -510,7 +1018,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitBuyGiftTable();
+
+
+
+
 
 
 
@@ -518,7 +1034,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitMysteryGiftTable();
+
+
+
+
 
 
 
@@ -526,7 +1050,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitMapRoadTable();
+
+
+
+
 
 
 
@@ -534,7 +1066,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitMYSJRewardTable();
+
+
+
+
 
 
 
@@ -542,7 +1082,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitWishRewardTable();
+
+
+
+
 
 
 
@@ -550,7 +1098,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitBlacketMarketTable();
+
+
+
+
 
 
 
@@ -558,7 +1114,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSuperMemberTable();
+
+
+
+
 
 
 
@@ -566,7 +1130,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitPetEquipTable();
+
+
+
+
 
 
 
@@ -574,7 +1146,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitAdultGiftTable();
+
+
+
+
 
 
 
@@ -582,7 +1162,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitQQGameRewardTable();
+
+
+
+
 
 
 
@@ -590,7 +1178,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitYellowDailyRewardTable();
+
+
+
+
 
 
 
@@ -598,7 +1194,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitBlueRewardTable();
+
+
+
+
 
 
 
@@ -606,7 +1210,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitBlueLevelRewardTable();
+
+
+
+
 
 
 
@@ -614,7 +1226,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTGPDailyRewardTable();
+
+
+
+
 
 
 
@@ -622,7 +1242,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFamilyDungeonTable();
+
+
+
+
 
 
 
@@ -630,7 +1258,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitDungeonScoreTable();
+
+
+
+
 
 
 
@@ -638,7 +1274,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSysMail();
+
+
+
+
 
 
 
@@ -646,7 +1290,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFaBaoTable();
+
+
+
+
 
 
 
@@ -654,7 +1306,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitShangChengTable();
+
+
+
+
 
 
 
@@ -662,7 +1322,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSevenLoginReward();
+
+
+
+
 
 
 
@@ -670,7 +1338,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitWeekOnlineReward();
+
+
+
+
 
 
 
@@ -678,7 +1354,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitVipCardTable();
+
+
+
+
 
 
 
@@ -686,7 +1370,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitPlantEventTable();
+
+
+
+
 
 
 
@@ -694,7 +1386,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitMoHuaHuanYiTable();
+
+
+
+
 
 
 
@@ -702,7 +1402,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitNewServerFavorable();
+
+
+
+
 
 
 
@@ -710,7 +1418,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitEveryDayChongZhi();
+
+
+
+
 
 
 
@@ -718,7 +1434,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitHuoYueDuTable();
+
+
+
+
 
 
 
@@ -726,7 +1450,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFamilyRewardTable();
+
+
+
+
 
 
 
@@ -734,7 +1466,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSpecialTreasureMapRandTable();
+
+
+
+
 
 
 
@@ -742,7 +1482,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitDaZheQuanTable();
+
+
+
+
 
 
 
@@ -750,7 +1498,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     Init360RewardTypeTable();
+
+
+
+
 
 
 
@@ -758,7 +1514,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitShunWangTable();
+
+
+
+
 
 
 
@@ -766,7 +1530,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTencentSevenDayLoginTable();
+
+
+
+
 
 
 
@@ -774,7 +1546,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSpecialMonster();
+
+
+
+
 
 
 
@@ -782,7 +1562,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTouZiTable();
+
+
+
+
 
 
 
@@ -790,7 +1578,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitPkDropRateTable();
+
+
+
+
 
 
 
@@ -798,7 +1594,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitStrengthenTable();
+
+
+
+
 
 
 
@@ -806,7 +1610,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitXingMaiTable();
+
+
+
+
 
 
 
@@ -814,7 +1626,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTianLingTable();
+
+
+
+
 
 
 
@@ -822,7 +1642,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitBeastShrineEnterCostTable();
+
+
+
+
 
 
 
@@ -830,7 +1658,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitAttrBattleTable();
+
+
+
+
 
 
 
@@ -838,7 +1674,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitChouJiangTable();
+
+
+
+
 
 
 
@@ -846,7 +1690,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitLibraryTable();
+
+
+
+
 
 
 
@@ -854,7 +1706,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitEquipBackTask();
+
+
+
+
 
 
 
@@ -862,7 +1722,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSpeciaSkillDistanceTable();
+
+
+
+
 
 
 
@@ -870,7 +1738,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitLevelRefiningTable();
+
+
+
+
 
 
 
@@ -878,7 +1754,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitUltimateChallengeCfg();
+
+
+
+
 
 
 
@@ -886,7 +1770,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitBossKilledReward();
+
+
+
+
 
 
 
@@ -894,7 +1786,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSpecialMap();
+
+
+
+
 
 
 
@@ -902,7 +1802,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitEquipBlessTable();
+
+
+
+
 
 
 
@@ -910,7 +1818,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFunctionOpenMailMap();
+
+
+
+
 
 
 
@@ -918,7 +1834,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitShenWeiTaskTable();
+
+
+
+
 
 
 
@@ -926,7 +1850,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitWuHunShopTable();
+
+
+
+
 
 
 
@@ -934,7 +1866,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitWuHunCreateTable();
+
+
+
+
 
 
 
@@ -942,7 +1882,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSpecialBossMapCfgMap();
+
+
+
+
 
 
 
@@ -950,7 +1898,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSuperTeHuiTable();
+
+
+
+
 
 
 
@@ -958,7 +1914,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitGoblinTable();
+
+
+
+
 
 
 
@@ -966,7 +1930,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitWingEquipPolish();
+
+
+
+
 
 
 
@@ -974,7 +1946,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitShiZhuangTable();
+
+
+
+
 
 
 
@@ -982,7 +1962,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitMonthlyChouJiangTable();
+
+
+
+
 
 
 
@@ -990,7 +1978,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSevenTaskTable();
+
+
+
+
 
 
 
@@ -998,7 +1994,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     VipTable::InitVipTable(&this->m_VipTable);
+
+
+
+
 
 
 
@@ -1006,7 +2010,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFestivalActivityTable();
+
+
+
+
 
 
 
@@ -1014,7 +2026,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitYYVip();
+
+
+
+
 
 
 
@@ -1022,7 +2042,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitXunLeiTable();
+
+
+
+
 
 
 
@@ -1030,7 +2058,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitPlatformDaTingMap();
+
+
+
+
 
 
 
@@ -1038,7 +2074,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitPlatformVipMap();
+
+
+
+
 
 
 
@@ -1046,7 +2090,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitSelectItemCfgMap();
+
+
+
+
 
 
 
@@ -1054,7 +2106,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitPlatformReward();
+
+
+
+
 
 
 
@@ -1062,7 +2122,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitFamilyDonateTable();
+
+
+
+
 
 
 
@@ -1070,7 +2138,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitHoeTable();
+
+
+
+
 
 
 
@@ -1078,7 +2154,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitCrossTowerCfgMap();
+
+
+
+
 
 
 
@@ -1086,7 +2170,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitLaDaShiHuiYuan();
+
+
+
+
 
 
 
@@ -1094,7 +2186,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitMoFuTable();
+
+
+
+
 
 
 
@@ -1102,7 +2202,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitBaoKuFuBen();
+
+
+
+
 
 
 
@@ -1110,7 +2218,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitShenYaoPosTable();
+
+
+
+
 
 
 
@@ -1118,7 +2234,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitTongTianChiRanTable();
+
+
+
+
 
 
 
@@ -1126,7 +2250,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitGameTable();
+
+
+
+
 
 
 
@@ -1134,7 +2266,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitLittleHelperCfg();
+
+
+
+
 
 
 
@@ -1142,7 +2282,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     InitNationalDayTask();
+
+
+
+
 
 
 
@@ -1150,7 +2298,15 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     this->m_MapMonsterId = 100000;
+
+
+
+
 
 
 
@@ -1158,11 +2314,27 @@ bool CfgData::init(int32_t line, int32_t debug)
 
 
 
+
+
+
+
     return 1;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1174,7 +2346,15 @@ void CfgData::reload()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1186,7 +2366,19 @@ void CfgData::reload()
 
 
 
+
+
+
+
+
+
+
+
     fetchItem(1);
+
+
+
+
 
 
 
@@ -1194,11 +2386,27 @@ void CfgData::reload()
 
 
 
+
+
+
+
     v1->init();
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1214,7 +2422,19 @@ void CfgData::reload()
 
 
 
+
+
+
+
+
+
+
+
 int32_t CfgData::GetMapMonsterId()
+
+
+
+
 
 
 
@@ -1222,11 +2442,27 @@ int32_t CfgData::GetMapMonsterId()
 
 
 
+
+
+
+
     return ++this->m_MapMonsterId;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1238,7 +2474,15 @@ CfgActivity *CfgData::getActivity(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1246,7 +2490,15 @@ CfgActivity *CfgData::getActivity(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_activities.find(ida);
+
+
+
+
 
 
 
@@ -1254,7 +2506,15 @@ CfgActivity *CfgData::getActivity(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1262,7 +2522,15 @@ CfgActivity *CfgData::getActivity(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1270,7 +2538,15 @@ CfgActivity *CfgData::getActivity(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -1282,7 +2558,19 @@ CfgActivity *CfgData::getActivity(int32_t id)
 
 
 
+
+
+
+
+
+
+
+
 const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t nMapId)
+
+
+
+
 
 
 
@@ -1290,7 +2578,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
     MapId_t nMapIda = nMapId;
+
+
+
+
 
 
 
@@ -1298,7 +2594,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -1306,7 +2610,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
     if (it == this->m_activityEvents.end())
+
+
+
+
 
 
 
@@ -1314,7 +2626,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
         return &this->m_emptyEvents;
+
+
+
+
 
 
 
@@ -1322,7 +2642,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -1330,7 +2658,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
     if (itMap == it->second.end())
+
+
+
+
 
 
 
@@ -1338,7 +2674,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
         return &this->m_emptyEvents;
+
+
+
+
 
 
 
@@ -1346,7 +2690,15 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -1354,7 +2706,19 @@ const CfgMapEventListT *CfgData::getActivityEvents(int32_t activity_id, MapId_t 
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1366,7 +2730,15 @@ CfgActivityMonster *CfgData::getActivityMonster(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1374,7 +2746,15 @@ CfgActivityMonster *CfgData::getActivityMonster(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_activityMonsters.find(ida);
+
+
+
+
 
 
 
@@ -1382,7 +2762,15 @@ CfgActivityMonster *CfgData::getActivityMonster(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1390,7 +2778,15 @@ CfgActivityMonster *CfgData::getActivityMonster(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1398,7 +2794,19 @@ CfgActivityMonster *CfgData::getActivityMonster(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1410,7 +2818,15 @@ CfgActivityNpc *CfgData::getActivityNpc(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1418,7 +2834,15 @@ CfgActivityNpc *CfgData::getActivityNpc(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_activityNpcs.find(ida);
+
+
+
+
 
 
 
@@ -1426,7 +2850,15 @@ CfgActivityNpc *CfgData::getActivityNpc(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1434,7 +2866,15 @@ CfgActivityNpc *CfgData::getActivityNpc(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1442,7 +2882,19 @@ CfgActivityNpc *CfgData::getActivityNpc(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1454,7 +2906,15 @@ CfgActivityPlant *CfgData::getActivityPlant(int32_t Id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1462,7 +2922,15 @@ CfgActivityPlant *CfgData::getActivityPlant(int32_t Id)
 
 
 
+
+
+
+
     auto it = this->m_activityPlants.find(Ida);
+
+
+
+
 
 
 
@@ -1470,7 +2938,15 @@ CfgActivityPlant *CfgData::getActivityPlant(int32_t Id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1478,7 +2954,15 @@ CfgActivityPlant *CfgData::getActivityPlant(int32_t Id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1486,7 +2970,19 @@ CfgActivityPlant *CfgData::getActivityPlant(int32_t Id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1498,7 +2994,15 @@ CfgActivityTrap *CfgData::getActivityTrap(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1506,7 +3010,15 @@ CfgActivityTrap *CfgData::getActivityTrap(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_activityTraps.find(ida);
+
+
+
+
 
 
 
@@ -1514,7 +3026,15 @@ CfgActivityTrap *CfgData::getActivityTrap(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1522,7 +3042,15 @@ CfgActivityTrap *CfgData::getActivityTrap(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1530,7 +3058,19 @@ CfgActivityTrap *CfgData::getActivityTrap(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1542,7 +3082,15 @@ CfgBuff *CfgData::getBuff(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1550,7 +3098,15 @@ CfgBuff *CfgData::getBuff(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_buffs.find(ida);
+
+
+
+
 
 
 
@@ -1558,7 +3114,15 @@ CfgBuff *CfgData::getBuff(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1566,7 +3130,15 @@ CfgBuff *CfgData::getBuff(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1574,7 +3146,19 @@ CfgBuff *CfgData::getBuff(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1586,7 +3170,15 @@ CfgDungeon *CfgData::getDungeon(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1594,7 +3186,15 @@ CfgDungeon *CfgData::getDungeon(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_dungeons.find(ida);
+
+
+
+
 
 
 
@@ -1602,7 +3202,15 @@ CfgDungeon *CfgData::getDungeon(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1610,7 +3218,15 @@ CfgDungeon *CfgData::getDungeon(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1618,7 +3234,19 @@ CfgDungeon *CfgData::getDungeon(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1630,7 +3258,15 @@ const CfgDungeon *CfgData::GetUpTowerDungeon(int32_t nFloor)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1638,7 +3274,15 @@ const CfgDungeon *CfgData::GetUpTowerDungeon(int32_t nFloor)
 
 
 
+
+
+
+
     auto it = this->m_mUpTowerDungeon.find(nFloora);
+
+
+
+
 
 
 
@@ -1646,7 +3290,15 @@ const CfgDungeon *CfgData::GetUpTowerDungeon(int32_t nFloor)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1654,7 +3306,15 @@ const CfgDungeon *CfgData::GetUpTowerDungeon(int32_t nFloor)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1662,7 +3322,19 @@ const CfgDungeon *CfgData::GetUpTowerDungeon(int32_t nFloor)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1674,7 +3346,15 @@ const CfgMapEventListT *CfgData::getDungeonEvent(int32_t dungonid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1682,7 +3362,15 @@ const CfgMapEventListT *CfgData::getDungeonEvent(int32_t dungonid)
 
 
 
+
+
+
+
     auto it = this->m_dungeonEvents.find(dungonida);
+
+
+
+
 
 
 
@@ -1690,7 +3378,15 @@ const CfgMapEventListT *CfgData::getDungeonEvent(int32_t dungonid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1698,7 +3394,15 @@ const CfgMapEventListT *CfgData::getDungeonEvent(int32_t dungonid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1706,7 +3410,19 @@ const CfgMapEventListT *CfgData::getDungeonEvent(int32_t dungonid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1718,7 +3434,15 @@ CfgDungeonMonster *CfgData::getDungeonMonster(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1726,7 +3450,15 @@ CfgDungeonMonster *CfgData::getDungeonMonster(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_dungeonMonsters.find(ida);
+
+
+
+
 
 
 
@@ -1734,7 +3466,15 @@ CfgDungeonMonster *CfgData::getDungeonMonster(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1742,7 +3482,15 @@ CfgDungeonMonster *CfgData::getDungeonMonster(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1750,7 +3498,19 @@ CfgDungeonMonster *CfgData::getDungeonMonster(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1762,7 +3522,15 @@ CfgDungeonPlant *CfgData::getDungeonPlant(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1770,7 +3538,15 @@ CfgDungeonPlant *CfgData::getDungeonPlant(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_dungeonPlants.find(ida);
+
+
+
+
 
 
 
@@ -1778,7 +3554,15 @@ CfgDungeonPlant *CfgData::getDungeonPlant(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1786,7 +3570,15 @@ CfgDungeonPlant *CfgData::getDungeonPlant(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1794,7 +3586,19 @@ CfgDungeonPlant *CfgData::getDungeonPlant(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1806,7 +3610,15 @@ CfgDungeonTrap *CfgData::getDungeonTrap(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1814,7 +3626,15 @@ CfgDungeonTrap *CfgData::getDungeonTrap(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_dungeonTraps.find(ida);
+
+
+
+
 
 
 
@@ -1822,7 +3642,15 @@ CfgDungeonTrap *CfgData::getDungeonTrap(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1830,7 +3658,15 @@ CfgDungeonTrap *CfgData::getDungeonTrap(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1838,7 +3674,19 @@ CfgDungeonTrap *CfgData::getDungeonTrap(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1850,7 +3698,15 @@ CfgDungeonNpc *CfgData::getDungeonNpc(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1858,7 +3714,15 @@ CfgDungeonNpc *CfgData::getDungeonNpc(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_dungeonNpcs.find(ida);
+
+
+
+
 
 
 
@@ -1866,7 +3730,15 @@ CfgDungeonNpc *CfgData::getDungeonNpc(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1874,7 +3746,15 @@ CfgDungeonNpc *CfgData::getDungeonNpc(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1882,7 +3762,19 @@ CfgDungeonNpc *CfgData::getDungeonNpc(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1894,7 +3786,15 @@ const CfgEquip *CfgData::getEquip(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1902,7 +3802,19 @@ const CfgEquip *CfgData::getEquip(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1914,7 +3826,15 @@ CfgChrShop *CfgData::getChrShop(int32_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1922,7 +3842,15 @@ CfgChrShop *CfgData::getChrShop(int32_t Index)
 
 
 
+
+
+
+
     auto it = this->m_chrShops.find(Indexa);
+
+
+
+
 
 
 
@@ -1930,7 +3858,15 @@ CfgChrShop *CfgData::getChrShop(int32_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -1938,7 +3874,15 @@ CfgChrShop *CfgData::getChrShop(int32_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1946,7 +3890,19 @@ CfgChrShop *CfgData::getChrShop(int32_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1958,7 +3914,15 @@ CfgItemTable *CfgData::getAllItem()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1966,11 +3930,27 @@ CfgItemTable *CfgData::getAllItem()
 
 
 
+
+
+
+
     return &this->m_items;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1982,7 +3962,15 @@ CfgItem *CfgData::getItem(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -1990,11 +3978,23 @@ CfgItem *CfgData::getItem(int32_t id)
 
 
 
+
+
+
+
         return nullptr;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -2002,11 +4002,23 @@ CfgItem *CfgData::getItem(int32_t id)
 
 
 
+
+
+
+
     Answer::RwLockRdGuard lock(&this->m_itemsLock);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -2014,7 +4026,15 @@ CfgItem *CfgData::getItem(int32_t id)
 
 
 
+
+
+
+
     if (it != this->m_items.end())
+
+
+
+
 
 
 
@@ -2022,7 +4042,15 @@ CfgItem *CfgData::getItem(int32_t id)
 
 
 
+
+
+
+
         CfgItem *second = it->second;
+
+
+
+
 
 
 
@@ -2030,7 +4058,15 @@ CfgItem *CfgData::getItem(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2038,11 +4074,27 @@ CfgItem *CfgData::getItem(int32_t id)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2054,7 +4106,15 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2062,11 +4122,23 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 
 
 
+
+
+
+
     Answer::RwLockRdGuard lock(&this->m_itemGiftsLock);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -2074,7 +4146,15 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 
 
 
+
+
+
+
     if (it != this->m_itemGifts.end())
+
+
+
+
 
 
 
@@ -2082,7 +4162,15 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 
 
 
+
+
+
+
         CfgItemGiftVector *second = it->second;
+
+
+
+
 
 
 
@@ -2090,7 +4178,15 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2098,11 +4194,27 @@ CfgItemGiftVector *CfgData::getItemGift(int32_t id)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2114,7 +4226,15 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2122,11 +4242,23 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 
 
 
+
+
+
+
     Answer::RwLockRdGuard lock(&this->m_itemGiftRandomsLock);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -2134,7 +4266,15 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 
 
 
+
+
+
+
     if (it != this->m_itemGiftRandoms.end())
+
+
+
+
 
 
 
@@ -2142,7 +4282,15 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 
 
 
+
+
+
+
         CfgItemGiftRandomVector *second = it->second;
+
+
+
+
 
 
 
@@ -2150,7 +4298,15 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2158,11 +4314,27 @@ CfgItemGiftRandomVector *CfgData::getItemGiftRandom(int32_t id)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2174,7 +4346,15 @@ CfgJob *CfgData::getJob(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2182,7 +4362,15 @@ CfgJob *CfgData::getJob(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_jobs.find(ida);
+
+
+
+
 
 
 
@@ -2190,7 +4378,15 @@ CfgJob *CfgData::getJob(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2198,7 +4394,15 @@ CfgJob *CfgData::getJob(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2206,7 +4410,19 @@ CfgJob *CfgData::getJob(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2218,7 +4434,15 @@ bool CfgData::getMovie(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2226,7 +4450,15 @@ bool CfgData::getMovie(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_movie.find(ida);
+
+
+
+
 
 
 
@@ -2234,7 +4466,19 @@ bool CfgData::getMovie(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2246,7 +4490,15 @@ CfgMap *CfgData::getMap(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2254,7 +4506,15 @@ CfgMap *CfgData::getMap(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_maps.find(ida);
+
+
+
+
 
 
 
@@ -2262,7 +4522,15 @@ CfgMap *CfgData::getMap(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2270,7 +4538,15 @@ CfgMap *CfgData::getMap(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2278,7 +4554,19 @@ CfgMap *CfgData::getMap(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2290,7 +4578,15 @@ CfgMapMonsterVector *CfgData::getMonstersOnMap(int32_t mapid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2298,7 +4594,15 @@ CfgMapMonsterVector *CfgData::getMonstersOnMap(int32_t mapid)
 
 
 
+
+
+
+
     auto it = this->m_mapMonsters.find(mapida);
+
+
+
+
 
 
 
@@ -2306,7 +4610,15 @@ CfgMapMonsterVector *CfgData::getMonstersOnMap(int32_t mapid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2314,7 +4626,15 @@ CfgMapMonsterVector *CfgData::getMonstersOnMap(int32_t mapid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2322,7 +4642,19 @@ CfgMapMonsterVector *CfgData::getMonstersOnMap(int32_t mapid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2334,7 +4666,15 @@ CfgMapMonster *CfgData::GetMapMonsterInfo(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2342,7 +4682,15 @@ CfgMapMonster *CfgData::GetMapMonsterInfo(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_CfgMapMonsters.find(ida);
+
+
+
+
 
 
 
@@ -2350,7 +4698,15 @@ CfgMapMonster *CfgData::GetMapMonsterInfo(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2358,7 +4714,15 @@ CfgMapMonster *CfgData::GetMapMonsterInfo(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2366,7 +4730,19 @@ CfgMapMonster *CfgData::GetMapMonsterInfo(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2378,7 +4754,15 @@ CfgMapPlantVector *CfgData::getPlantOnMap(int32_t mapid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2386,7 +4770,15 @@ CfgMapPlantVector *CfgData::getPlantOnMap(int32_t mapid)
 
 
 
+
+
+
+
     auto it = this->m_mapPlants.find(mapida);
+
+
+
+
 
 
 
@@ -2394,7 +4786,15 @@ CfgMapPlantVector *CfgData::getPlantOnMap(int32_t mapid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2402,7 +4802,15 @@ CfgMapPlantVector *CfgData::getPlantOnMap(int32_t mapid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2410,7 +4818,19 @@ CfgMapPlantVector *CfgData::getPlantOnMap(int32_t mapid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2422,7 +4842,15 @@ CfgMapPlant *CfgData::GetMapPlantInfo(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2430,7 +4858,15 @@ CfgMapPlant *CfgData::GetMapPlantInfo(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_mMapPlants.find(ida);
+
+
+
+
 
 
 
@@ -2438,7 +4874,15 @@ CfgMapPlant *CfgData::GetMapPlantInfo(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2446,7 +4890,15 @@ CfgMapPlant *CfgData::GetMapPlantInfo(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2454,7 +4906,19 @@ CfgMapPlant *CfgData::GetMapPlantInfo(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2466,7 +4930,15 @@ CfgMapRegion *CfgData::getMapRegion(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2474,7 +4946,15 @@ CfgMapRegion *CfgData::getMapRegion(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_mapRegions.find(ida);
+
+
+
+
 
 
 
@@ -2482,7 +4962,15 @@ CfgMapRegion *CfgData::getMapRegion(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2490,7 +4978,15 @@ CfgMapRegion *CfgData::getMapRegion(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2498,7 +4994,19 @@ CfgMapRegion *CfgData::getMapRegion(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2510,7 +5018,15 @@ CfgMapRegionVector *CfgData::getRegionOnMap(int32_t mapid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2518,7 +5034,15 @@ CfgMapRegionVector *CfgData::getRegionOnMap(int32_t mapid)
 
 
 
+
+
+
+
     auto it = this->m_mapRegionsByMapId.find(mapida);
+
+
+
+
 
 
 
@@ -2526,7 +5050,15 @@ CfgMapRegionVector *CfgData::getRegionOnMap(int32_t mapid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2534,7 +5066,15 @@ CfgMapRegionVector *CfgData::getRegionOnMap(int32_t mapid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2542,7 +5082,19 @@ CfgMapRegionVector *CfgData::getRegionOnMap(int32_t mapid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2554,7 +5106,15 @@ CfgMonster *CfgData::getMonster(int32_t mid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2562,7 +5122,15 @@ CfgMonster *CfgData::getMonster(int32_t mid)
 
 
 
+
+
+
+
     auto it = this->m_monsters.find(mida);
+
+
+
+
 
 
 
@@ -2570,7 +5138,15 @@ CfgMonster *CfgData::getMonster(int32_t mid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2578,7 +5154,15 @@ CfgMonster *CfgData::getMonster(int32_t mid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2586,7 +5170,19 @@ CfgMonster *CfgData::getMonster(int32_t mid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2598,7 +5194,15 @@ CfgMonsterAI *CfgData::GetMonsterAI(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2606,7 +5210,15 @@ CfgMonsterAI *CfgData::GetMonsterAI(int32_t nId)
 
 
 
+
+
+
+
     auto it = this->m_mMonsterAI.find(nIda);
+
+
+
+
 
 
 
@@ -2614,7 +5226,15 @@ CfgMonsterAI *CfgData::GetMonsterAI(int32_t nId)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2622,7 +5242,15 @@ CfgMonsterAI *CfgData::GetMonsterAI(int32_t nId)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2630,7 +5258,19 @@ CfgMonsterAI *CfgData::GetMonsterAI(int32_t nId)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2642,7 +5282,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2650,7 +5298,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
     auto it = this->m_mMonsterAdjust.find(key);
+
+
+
+
 
 
 
@@ -2658,7 +5314,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2666,11 +5330,23 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -2678,7 +5354,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2686,7 +5370,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
         CfgMonsterAdjust *pAutoLow = nullptr;
+
+
+
+
 
 
 
@@ -2694,7 +5386,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
         for (auto& pair : this->m_mMonsterAdjust)
+
+
+
+
 
 
 
@@ -2702,7 +5402,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
             if (pair.first.first == mid && pair.first.second > nLevel && pair.first.second < adj_level)
+
+
+
+
 
 
 
@@ -2710,7 +5418,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
                 nLevel = pair.first.second;
+
+
+
+
 
 
 
@@ -2718,7 +5434,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -2726,7 +5450,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
         return pAutoLow;
+
+
+
+
 
 
 
@@ -2734,7 +5466,15 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -2742,7 +5482,19 @@ CfgMonsterAdjust *CfgData::GetMonsterAdjust(int32_t mid, int32_t adj_level, bool
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2754,7 +5506,15 @@ bool CfgData::isMonsterBroadcast(int32_t mid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2762,7 +5522,15 @@ bool CfgData::isMonsterBroadcast(int32_t mid)
 
 
 
+
+
+
+
     auto it = std::find(this->m_monsterBroadcasts.begin(), this->m_monsterBroadcasts.end(), mida);
+
+
+
+
 
 
 
@@ -2770,7 +5538,19 @@ bool CfgData::isMonsterBroadcast(int32_t mid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2782,7 +5562,15 @@ CfgDungeonReward *CfgData::getDungeonReward(int32_t dungeonID)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2790,7 +5578,15 @@ CfgDungeonReward *CfgData::getDungeonReward(int32_t dungeonID)
 
 
 
+
+
+
+
     auto it = this->m_dungeonReward.find(dungeonIDa);
+
+
+
+
 
 
 
@@ -2798,7 +5594,15 @@ CfgDungeonReward *CfgData::getDungeonReward(int32_t dungeonID)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2806,7 +5610,15 @@ CfgDungeonReward *CfgData::getDungeonReward(int32_t dungeonID)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2814,7 +5626,19 @@ CfgDungeonReward *CfgData::getDungeonReward(int32_t dungeonID)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2826,7 +5650,15 @@ const CfgDungeonDrop *CfgData::randDungeonDrop(int32_t dungeonID)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2834,7 +5666,15 @@ const CfgDungeonDrop *CfgData::randDungeonDrop(int32_t dungeonID)
 
 
 
+
+
+
+
     auto it = this->m_dungeonDropGroup.find(dungeonIDa);
+
+
+
+
 
 
 
@@ -2842,7 +5682,15 @@ const CfgDungeonDrop *CfgData::randDungeonDrop(int32_t dungeonID)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2850,7 +5698,15 @@ const CfgDungeonDrop *CfgData::randDungeonDrop(int32_t dungeonID)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2858,7 +5714,19 @@ const CfgDungeonDrop *CfgData::randDungeonDrop(int32_t dungeonID)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2870,7 +5738,15 @@ CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(int32_t group_id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2878,7 +5754,15 @@ CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(int32_t group_id)
 
 
 
+
+
+
+
     auto it = this->m_monsterDropGroups.find(group_ida);
+
+
+
+
 
 
 
@@ -2886,7 +5770,15 @@ CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(int32_t group_id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2894,7 +5786,15 @@ CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(int32_t group_id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2902,7 +5802,19 @@ CfgMonsterDropGroupVector *CfgData::getMonsterDropGroup(int32_t group_id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2914,7 +5826,15 @@ CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(int32_t mid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2922,7 +5842,15 @@ CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(int32_t mid)
 
 
 
+
+
+
+
     auto it = this->m_monsterGroupDrops.find(mida);
+
+
+
+
 
 
 
@@ -2930,7 +5858,15 @@ CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(int32_t mid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2938,7 +5874,15 @@ CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(int32_t mid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2946,7 +5890,19 @@ CfgMonsterGroupDropVector *CfgData::getMonsterGroupDrop(int32_t mid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2958,7 +5914,15 @@ CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(int32_t mid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -2966,7 +5930,15 @@ CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(int32_t mid)
 
 
 
+
+
+
+
     auto it = this->m_monsterTaskDrops.find(mida);
+
+
+
+
 
 
 
@@ -2974,7 +5946,15 @@ CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(int32_t mid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -2982,7 +5962,15 @@ CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(int32_t mid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -2990,7 +5978,19 @@ CfgMonsterTaskDropVector *CfgData::getMonsterTaskDrop(int32_t mid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3002,7 +6002,15 @@ CfgNpc *CfgData::getNpc(int32_t npcid)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3010,7 +6018,15 @@ CfgNpc *CfgData::getNpc(int32_t npcid)
 
 
 
+
+
+
+
     auto it = this->m_npcs.find(npcida);
+
+
+
+
 
 
 
@@ -3018,7 +6034,15 @@ CfgNpc *CfgData::getNpc(int32_t npcid)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3026,7 +6050,15 @@ CfgNpc *CfgData::getNpc(int32_t npcid)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3034,7 +6066,19 @@ CfgNpc *CfgData::getNpc(int32_t npcid)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3046,7 +6090,15 @@ CfgNpcAirport *CfgData::getNpcAirport(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3054,7 +6106,15 @@ CfgNpcAirport *CfgData::getNpcAirport(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_npcAirports.find(ida);
+
+
+
+
 
 
 
@@ -3062,7 +6122,15 @@ CfgNpcAirport *CfgData::getNpcAirport(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3070,7 +6138,15 @@ CfgNpcAirport *CfgData::getNpcAirport(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3078,7 +6154,19 @@ CfgNpcAirport *CfgData::getNpcAirport(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3090,7 +6178,15 @@ CfgPlant *CfgData::getPlant(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3098,7 +6194,15 @@ CfgPlant *CfgData::getPlant(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_plants.find(ida);
+
+
+
+
 
 
 
@@ -3106,7 +6210,15 @@ CfgPlant *CfgData::getPlant(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3114,7 +6226,15 @@ CfgPlant *CfgData::getPlant(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3122,7 +6242,19 @@ CfgPlant *CfgData::getPlant(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3134,7 +6266,15 @@ CfgTask *CfgData::getTask(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3142,7 +6282,15 @@ CfgTask *CfgData::getTask(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_tasks.find(ida);
+
+
+
+
 
 
 
@@ -3150,7 +6298,15 @@ CfgTask *CfgData::getTask(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3158,7 +6314,15 @@ CfgTask *CfgData::getTask(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3166,7 +6330,19 @@ CfgTask *CfgData::getTask(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3178,7 +6354,15 @@ int8_t CfgData::GetTaskType(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3186,7 +6370,15 @@ int8_t CfgData::GetTaskType(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_tasks.find(ida);
+
+
+
+
 
 
 
@@ -3194,7 +6386,15 @@ int8_t CfgData::GetTaskType(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3202,7 +6402,15 @@ int8_t CfgData::GetTaskType(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3210,7 +6418,19 @@ int8_t CfgData::GetTaskType(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3222,7 +6442,15 @@ CfgTrap *CfgData::getTrap(int32_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3230,7 +6458,15 @@ CfgTrap *CfgData::getTrap(int32_t id)
 
 
 
+
+
+
+
     auto it = this->m_traps.find(ida);
+
+
+
+
 
 
 
@@ -3238,7 +6474,15 @@ CfgTrap *CfgData::getTrap(int32_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3246,7 +6490,15 @@ CfgTrap *CfgData::getTrap(int32_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3254,7 +6506,19 @@ CfgTrap *CfgData::getTrap(int32_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3266,7 +6530,15 @@ CfgLevelExp *CfgData::getUpgradeExp(int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3274,7 +6546,15 @@ CfgLevelExp *CfgData::getUpgradeExp(int32_t level)
 
 
 
+
+
+
+
     auto it = this->m_levelExps.find(levela);
+
+
+
+
 
 
 
@@ -3282,7 +6562,15 @@ CfgLevelExp *CfgData::getUpgradeExp(int32_t level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3290,7 +6578,15 @@ CfgLevelExp *CfgData::getUpgradeExp(int32_t level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3298,7 +6594,19 @@ CfgLevelExp *CfgData::getUpgradeExp(int32_t level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3310,7 +6618,15 @@ int64_t CfgData::getNeedLevelExp(int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3318,7 +6634,15 @@ int64_t CfgData::getNeedLevelExp(int32_t level)
 
 
 
+
+
+
+
     auto it = this->m_levelExps.find(levela);
+
+
+
+
 
 
 
@@ -3326,7 +6650,15 @@ int64_t CfgData::getNeedLevelExp(int32_t level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3334,7 +6666,15 @@ int64_t CfgData::getNeedLevelExp(int32_t level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3342,7 +6682,19 @@ int64_t CfgData::getNeedLevelExp(int32_t level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3354,7 +6706,15 @@ int64_t CfgData::getMaxExp(int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3362,7 +6722,15 @@ int64_t CfgData::getMaxExp(int32_t level)
 
 
 
+
+
+
+
     auto it = this->m_levelExps.find(levela);
+
+
+
+
 
 
 
@@ -3370,7 +6738,15 @@ int64_t CfgData::getMaxExp(int32_t level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3378,7 +6754,15 @@ int64_t CfgData::getMaxExp(int32_t level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3386,7 +6770,19 @@ int64_t CfgData::getMaxExp(int32_t level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3398,7 +6794,15 @@ int32_t CfgData::GetPetExp(int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3406,7 +6810,15 @@ int32_t CfgData::GetPetExp(int32_t level)
 
 
 
+
+
+
+
     auto it = this->m_levelExps.find(levela);
+
+
+
+
 
 
 
@@ -3414,7 +6826,15 @@ int32_t CfgData::GetPetExp(int32_t level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3422,7 +6842,15 @@ int32_t CfgData::GetPetExp(int32_t level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3430,7 +6858,19 @@ int32_t CfgData::GetPetExp(int32_t level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3442,7 +6882,15 @@ int32_t CfgData::GetTalentPoint(int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3450,7 +6898,15 @@ int32_t CfgData::GetTalentPoint(int32_t level)
 
 
 
+
+
+
+
     auto it = this->m_levelExps.find(levela);
+
+
+
+
 
 
 
@@ -3458,7 +6914,15 @@ int32_t CfgData::GetTalentPoint(int32_t level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3466,7 +6930,15 @@ int32_t CfgData::GetTalentPoint(int32_t level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3474,7 +6946,19 @@ int32_t CfgData::GetTalentPoint(int32_t level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3486,7 +6970,15 @@ int32_t CfgData::GetAttrPoint(int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3494,7 +6986,15 @@ int32_t CfgData::GetAttrPoint(int32_t level)
 
 
 
+
+
+
+
     auto it = this->m_levelExps.find(levela);
+
+
+
+
 
 
 
@@ -3502,7 +7002,15 @@ int32_t CfgData::GetAttrPoint(int32_t level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3510,7 +7018,15 @@ int32_t CfgData::GetAttrPoint(int32_t level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3518,7 +7034,19 @@ int32_t CfgData::GetAttrPoint(int32_t level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3530,7 +7058,15 @@ CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3538,7 +7074,15 @@ CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
 
 
 
+
+
+
+
     auto it = this->m_levelAttrs.find(key);
+
+
+
+
 
 
 
@@ -3546,7 +7090,15 @@ CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3554,7 +7106,15 @@ CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3562,7 +7122,19 @@ CfgLevelAttr *CfgData::getLevelAttr(int32_t job, int32_t level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3574,7 +7146,15 @@ int32_t CfgData::getBaseJob(int32_t job)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3582,7 +7162,15 @@ int32_t CfgData::getBaseJob(int32_t job)
 
 
 
+
+
+
+
     if (job == 3) return 3;
+
+
+
+
 
 
 
@@ -3590,7 +7178,19 @@ int32_t CfgData::getBaseJob(int32_t job)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3606,7 +7206,19 @@ int32_t CfgData::getBaseJob(int32_t job)
 
 
 
+
+
+
+
+
+
+
+
 void CfgData::InitGroupIconTable()
+
+
+
+
 
 
 
@@ -3614,7 +7226,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
     CDBCFile readFile;
+
+
+
+
 
 
 
@@ -3622,11 +7242,23 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
     if (!readFile.OpenFromTXT( "./ServerConfig/Tables/GroupIcon.txt"))
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3634,7 +7266,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3642,7 +7282,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3650,7 +7298,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -3658,7 +7314,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -3666,7 +7330,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -3674,7 +7346,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
                 CfgGroupIcon icon{};                
+
+
+
+
 
 
 
@@ -3682,11 +7362,23 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
                 icon.bShowInCross = readFile.Search_Posistion( i, 18)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -3694,7 +7386,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
                 icon.platfrom = v1->pString;
+
+
+
+
 
 
 
@@ -3702,7 +7402,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_cfgGroupIcons[icon.nId];
+
+
+
+
 
 
 
@@ -3710,7 +7418,15 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -3718,11 +7434,27 @@ void CfgData::InitGroupIconTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3734,7 +7466,15 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3742,7 +7482,15 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
     auto __it = this->m_cfgGroupIcons.find(nIconIda);
+
+
+
+
 
 
 
@@ -3750,7 +7498,15 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3758,11 +7514,23 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -3770,7 +7538,15 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
     GameService *v4 = Answer::Singleton<GameService>::instance();
+
+
+
+
 
 
 
@@ -3778,7 +7554,15 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3786,7 +7570,15 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3794,11 +7586,27 @@ bool CfgData::IsShowIcon(int32_t nIconId, const std::string *const platform)
 
 
 
+
+
+
+
     return !(icon->platfrom != "-1" && *platform != icon->platfrom);
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3810,7 +7618,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3818,7 +7634,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -3826,7 +7650,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3834,7 +7666,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3842,7 +7682,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3850,7 +7698,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -3858,7 +7714,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -3866,7 +7730,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -3874,11 +7746,23 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 FamilyTaskReward stu{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -3886,7 +7770,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 stu.Index = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -3894,7 +7786,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -3902,7 +7802,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -3910,7 +7818,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
+
+
+
+
 
 
 
@@ -3918,7 +7834,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 MemChrBagVector __x;
+
+
+
+
 
 
 
@@ -3926,7 +7850,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 stu.Rewards = __x;
+
+
+
+
 
 
 
@@ -3934,7 +7866,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_FamilyTaskReward[stu.Index];
+
+
+
+
 
 
 
@@ -3942,7 +7882,15 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -3950,11 +7898,27 @@ void CfgData::InitFamilyRewardTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3966,7 +7930,15 @@ FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -3974,7 +7946,15 @@ FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
 
 
 
+
+
+
+
     auto it = this->m_FamilyTaskReward.find(Indexa);
+
+
+
+
 
 
 
@@ -3982,7 +7962,15 @@ FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -3990,7 +7978,15 @@ FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -3998,7 +7994,19 @@ FamilyTaskReward *CfgData::GetFamilyReward(int32_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4010,7 +8018,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4018,7 +8034,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -4026,7 +8050,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4034,7 +8066,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4042,7 +8082,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4050,7 +8098,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -4058,7 +8114,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -4066,7 +8130,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -4074,11 +8146,23 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                 CfgAppendAttr stu{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4086,7 +8170,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                 stu.Id = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -4094,7 +8186,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4102,7 +8202,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -4110,7 +8218,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                     Attr.m_nAddAttrType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -4118,7 +8234,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                     if (Attr.m_nAddAttrValue > 0)
+
+
+
+
 
 
 
@@ -4126,7 +8250,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                         stu.AttrList.push_back(Attr);
+
+
+
+
 
 
 
@@ -4134,7 +8266,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -4142,7 +8282,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
                 this->m_AppendAttrTable.push_back(stu);
+
+
+
+
 
 
 
@@ -4150,7 +8298,15 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -4158,7 +8314,19 @@ void CfgData::InitAppendAttrTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4170,7 +8338,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4178,7 +8354,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
     bool ret = TabFile.OpenFromTXT( "./ServerConfig/Tables/HuoYueDu.txt");
+
+
+
+
 
 
 
@@ -4186,11 +8370,23 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
     if (!ret)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4198,7 +8394,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4206,7 +8410,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4214,7 +8426,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -4222,7 +8442,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -4230,11 +8458,23 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -4242,7 +8482,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 memset(&stu, 0, sizeof(stu));
+
+
+
+
 
 
 
@@ -4250,7 +8498,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 stu.Type = TabFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -4258,7 +8514,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 stu.Count = TabFile.Search_Posistion( i, 3)->iValue;
+
+
+
+
 
 
 
@@ -4266,7 +8530,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 stu.AddHuoYueDu = TabFile.Search_Posistion( i, 5)->iValue;
+
+
+
+
 
 
 
@@ -4274,7 +8546,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4282,7 +8562,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 *v1 = stu;
+
+
+
+
 
 
 
@@ -4290,7 +8578,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -4298,7 +8594,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                     ret = TabFileReward.OpenFromTXT( "./ServerConfig/Tables/HuoYueDuReward.txt");
+
+
+
+
 
 
 
@@ -4306,11 +8610,23 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
             if (!ret)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -4318,7 +8634,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -4326,7 +8650,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -4334,7 +8666,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 iBaseColumnCount = TabFileReward.GetFieldsNum();
+
+
+
+
 
 
 
@@ -4342,7 +8682,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -4350,7 +8698,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                     for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
+
+
+
+
 
 
 
@@ -4358,11 +8714,23 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         CfgHuoYueDuReward stu_0{};
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -4370,11 +8738,23 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         stu_0.NeedHuoYueDu = TabFileReward.Search_Posistion( i_0, 1)->iValue;
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -4382,7 +8762,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         char v10;
+
+
+
+
 
 
 
@@ -4390,7 +8778,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         strItems = v2->pString;
+
+
+
+
 
 
 
@@ -4398,7 +8794,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         MemChrBagVector __x;
+
+
+
+
 
 
 
@@ -4406,7 +8810,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         stu_0.Items = __x;
+
+
+
+
 
 
 
@@ -4414,7 +8826,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         char __k = stu_0.Id;
+
+
+
+
 
 
 
@@ -4422,7 +8842,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                         *v3 = stu_0;
+
+
+
+
 
 
 
@@ -4430,7 +8858,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -4438,7 +8874,15 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -4446,7 +8890,19 @@ void CfgData::InitHuoYueDuTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4458,7 +8914,15 @@ CfgHuoYueDu *CfgData::GetHuoYueDuCfg(int32_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4466,7 +8930,15 @@ CfgHuoYueDu *CfgData::GetHuoYueDuCfg(int32_t Index)
 
 
 
+
+
+
+
     auto it = this->m_HuoYueDuTable.find(Indexa);
+
+
+
+
 
 
 
@@ -4474,7 +8946,15 @@ CfgHuoYueDu *CfgData::GetHuoYueDuCfg(int32_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4482,7 +8962,15 @@ CfgHuoYueDu *CfgData::GetHuoYueDuCfg(int32_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4490,7 +8978,19 @@ CfgHuoYueDu *CfgData::GetHuoYueDuCfg(int32_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4502,7 +9002,15 @@ CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(int32_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4510,7 +9018,15 @@ CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(int32_t Index)
 
 
 
+
+
+
+
     auto it = this->m_HuoYueDuRewardTable.find(__x);
+
+
+
+
 
 
 
@@ -4518,7 +9034,15 @@ CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(int32_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4526,7 +9050,15 @@ CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(int32_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4534,7 +9066,19 @@ CfgHuoYueDuReward *CfgData::GetHuoYueDuReward(int32_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4546,7 +9090,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4554,7 +9106,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -4562,7 +9122,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4570,7 +9138,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4578,7 +9154,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4586,7 +9170,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -4594,7 +9186,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -4602,11 +9202,23 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -4614,7 +9226,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 int32_t Index = 0;
+
+
+
+
 
 
 
@@ -4622,7 +9242,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 stu.Type = TabFile.Search_Posistion( i, ++Index)->iValue;
+
+
+
+
 
 
 
@@ -4630,7 +9258,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 stu.StartDay = TabFile.Search_Posistion( i, ++Index)->iValue;
+
+
+
+
 
 
 
@@ -4638,7 +9274,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 stu.Conditions = TabFile.Search_Posistion( i, ++Index)->iValue;
+
+
+
+
 
 
 
@@ -4646,7 +9290,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4654,7 +9306,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -4662,7 +9322,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                     stu.ItemString = v1->pString;
+
+
+
+
 
 
 
@@ -4670,7 +9338,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 else
+
+
+
+
 
 
 
@@ -4678,7 +9354,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                     std::string strItems;
+
+
+
+
 
 
 
@@ -4686,7 +9370,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                                     const CDBCFile::FIELD *v2 = TabFile.Search_Posistion( i, Index);
+
+
+
+
 
 
 
@@ -4694,7 +9386,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -4702,7 +9402,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                     CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -4710,11 +9418,23 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                                                                 }
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4722,7 +9442,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 stu.GongGaoId = TabFile.Search_Posistion( i, ++Index)->iValue;
+
+
+
+
 
 
 
@@ -4730,7 +9458,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 stu.PetEffect = TabFile.Search_Posistion( i, ++Index)->iValue;
+
+
+
+
 
 
 
@@ -4738,7 +9474,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 Index += 5;
+
+
+
+
 
 
 
@@ -4746,7 +9490,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4754,11 +9506,23 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 stu.FlopString = v3->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4766,7 +9530,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
                 *v4 = stu;
+
+
+
+
 
 
 
@@ -4774,7 +9546,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -4782,7 +9562,15 @@ void CfgData::InitKaiFuHuoDongTable()
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -4790,7 +9578,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4798,7 +9594,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -4806,7 +9610,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4814,7 +9626,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4822,7 +9642,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4830,7 +9658,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -4838,7 +9674,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -4846,7 +9690,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -4854,7 +9706,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -4862,7 +9722,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
                 memset(&record, 0, sizeof(record));
+
+
+
+
 
 
 
@@ -4870,7 +9738,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
                 record.nItemId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -4878,7 +9754,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
                 record.nSpecial = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -4886,7 +9770,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4894,7 +9786,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
                 *v1 = record;
+
+
+
+
 
 
 
@@ -4902,7 +9802,15 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -4910,7 +9818,19 @@ void CfgData::InitDropRecordTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4922,7 +9842,15 @@ const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4930,7 +9858,15 @@ const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
 
 
 
+
+
+
+
     auto iter = this->m_cfgDropRecordTable.find(nIndexa);
+
+
+
+
 
 
 
@@ -4938,7 +9874,15 @@ const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4946,7 +9890,15 @@ const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4954,7 +9906,19 @@ const CfgDropRecord *CfgData::GetDropRecord(int32_t nIndex)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4966,7 +9930,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -4974,7 +9946,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -4982,7 +9962,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -4990,7 +9978,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -4998,7 +9994,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5006,7 +10010,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -5014,7 +10026,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -5022,7 +10042,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -5030,7 +10058,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -5038,7 +10074,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 memset(&score, 0, sizeof(score));
+
+
+
+
 
 
 
@@ -5046,7 +10090,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 score.nKillCount = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -5054,7 +10106,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5062,7 +10122,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -5070,11 +10138,23 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 strItem = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5082,7 +10162,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemString(v2, &strItem);
+
+
+
+
 
 
 
@@ -5090,7 +10178,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5098,7 +10194,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5106,7 +10210,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
                     // this->m_cfgDungeonScoreTable.AddDungeonScore(score);
+
+
+
+
 
 
 
@@ -5114,7 +10226,15 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -5122,7 +10242,19 @@ void CfgData::InitDungeonScoreTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5134,7 +10266,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -5142,7 +10282,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -5150,7 +10298,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5158,7 +10314,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -5166,7 +10330,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5174,7 +10346,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = DungeonTrapFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -5182,7 +10362,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -5190,7 +10378,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -5198,11 +10394,23 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 CfgDungeonSummon stu;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5210,7 +10418,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 stu.nDungeon = DungeonTrapFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -5218,7 +10434,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 stu.nGold = DungeonTrapFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -5226,7 +10450,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5234,7 +10466,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 char v9;
+
+
+
+
 
 
 
@@ -5242,11 +10482,23 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 path = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5254,7 +10506,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 paraseInt32List(&__x, &path, 0, nullptr);
+
+
+
+
 
 
 
@@ -5262,11 +10522,23 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5274,7 +10546,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 char v13;
+
+
+
+
 
 
 
@@ -5282,11 +10562,23 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 strItem = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5294,7 +10586,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 v20 = CItemHelper().parseItemDataString(&strItem);
+
+
+
+
 
 
 
@@ -5302,7 +10602,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 stu.ConstItem.m_nClass = v20.m_nClass;
+
+
+
+
 
 
 
@@ -5310,7 +10618,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5318,7 +10634,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 ++nIndex;
+
+
+
+
 
 
 
@@ -5326,7 +10650,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                 auto __k = std::make_pair(stu.nDungeon, stu.nIndex);
+
+
+
+
 
 
 
@@ -5334,7 +10666,15 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -5342,11 +10682,27 @@ void CfgData::InitDungeonSummon()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5358,7 +10714,15 @@ const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nInd
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -5366,7 +10730,15 @@ const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nInd
 
 
 
+
+
+
+
     auto iter = this->m_cfgDungeonSummon.find(__x);
+
+
+
+
 
 
 
@@ -5374,7 +10746,15 @@ const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nInd
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5382,7 +10762,15 @@ const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nInd
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -5390,7 +10778,19 @@ const CfgDungeonSummon *CfgData::GetDungeonSummon(int32_t nDungeon, int32_t nInd
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5402,7 +10802,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -5410,7 +10818,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -5418,7 +10834,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5426,7 +10850,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -5434,7 +10866,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5442,7 +10882,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -5450,7 +10898,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -5458,7 +10914,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -5466,11 +10930,23 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 SpecialTreasureMapRandCfg stu{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5478,11 +10954,23 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5490,7 +10978,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 char v9;
+
+
+
+
 
 
 
@@ -5498,11 +10994,23 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5510,7 +11018,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -5518,7 +11034,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -5526,7 +11050,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5534,7 +11066,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 char v11;
+
+
+
+
 
 
 
@@ -5542,11 +11082,23 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 strItem = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5554,7 +11106,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemString(v3, &strItem);
+
+
+
+
 
 
 
@@ -5562,7 +11122,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5570,7 +11138,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5578,7 +11154,15 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -5586,11 +11170,27 @@ void CfgData::InitSpecialTreasureMapRandTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5602,7 +11202,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -5610,7 +11218,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -5618,7 +11234,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5626,7 +11250,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -5634,7 +11266,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5642,7 +11282,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -5650,7 +11298,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -5658,7 +11314,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -5666,11 +11330,23 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                 int32_t Mid = TabFile.Search_Posistion( i, 0)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5678,7 +11354,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                 AddAttrs.WorldBossLevelMin = TabFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -5686,7 +11370,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5694,7 +11386,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -5702,7 +11402,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                     memset(&stu, 0, sizeof(stu));
+
+
+
+
 
 
 
@@ -5710,7 +11418,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                     stu.addon = TabFile.Search_Posistion( i, 2 * (j + 2))->iValue;
+
+
+
+
 
 
 
@@ -5718,7 +11434,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -5726,7 +11450,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                 auto &v1 = this->m_MonstAddAttrMap[Mid];
+
+
+
+
 
 
 
@@ -5734,7 +11466,15 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -5742,11 +11482,27 @@ void CfgData::InitMonsterAddAttrTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5758,7 +11514,15 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -5766,7 +11530,15 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
     auto it = this->m_MonstAddAttrMap.find(Mida);
+
+
+
+
 
 
 
@@ -5774,7 +11546,15 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
     if (it != this->m_MonstAddAttrMap.end())
+
+
+
+
 
 
 
@@ -5782,7 +11562,15 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
         for (auto iter = it->second.begin(); iter != it->second.end(); ++iter)
+
+
+
+
 
 
 
@@ -5790,7 +11578,15 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
             if (iter->WorldBossLevelMin <= WorldLevel && iter->WorldBossLevelMax >= WorldLevel)
+
+
+
+
 
 
 
@@ -5798,7 +11594,15 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
                 return &iter->AttrVector;
+
+
+
+
 
 
 
@@ -5806,7 +11610,15 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -5814,11 +11626,27 @@ AttrAddonVector *CfgData::GetAddMonsterAttrs(int32_t Mid, int32_t WorldLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5830,7 +11658,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -5838,7 +11674,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -5846,7 +11690,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5854,7 +11706,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -5862,7 +11722,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -5870,7 +11738,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -5878,7 +11754,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -5886,7 +11770,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -5894,11 +11786,23 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 DaZheQuan stu{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5906,7 +11810,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 stu.CurrencyType = TabFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -5914,7 +11826,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -5922,7 +11842,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -5930,7 +11858,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
+
+
+
+
 
 
 
@@ -5938,7 +11874,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 MemChrBagVector __x;
+
+
+
+
 
 
 
@@ -5946,7 +11890,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 stu.Items = __x;
+
+
+
+
 
 
 
@@ -5954,7 +11906,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_DaZheQuanMap[stu.Index];
+
+
+
+
 
 
 
@@ -5962,7 +11922,15 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -5970,11 +11938,27 @@ void CfgData::InitDaZheQuanTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5986,7 +11970,15 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -5994,7 +11986,15 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 
 
 
+
+
+
+
     auto it = this->m_DaZheQuanMap.find(Indexa);
+
+
+
+
 
 
 
@@ -6002,7 +12002,15 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6010,7 +12018,15 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6018,7 +12034,19 @@ DaZheQuan *CfgData::GetDaZheQuanCfg(int32_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6030,7 +12058,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6038,7 +12074,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -6046,7 +12090,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6054,7 +12106,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6062,7 +12122,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6070,7 +12138,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -6078,7 +12154,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -6086,7 +12170,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -6094,11 +12186,23 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                 Wan360Reward stu{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6106,7 +12210,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6114,7 +12226,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -6122,7 +12242,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
+
+
+
+
 
 
 
@@ -6130,7 +12258,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                 MemChrBagVector __x;
+
+
+
+
 
 
 
@@ -6138,7 +12274,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                 stu.Items = __x;
+
+
+
+
 
 
 
@@ -6146,7 +12290,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_Wan360RewardMap[stu.Index];
+
+
+
+
 
 
 
@@ -6154,7 +12306,15 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -6162,11 +12322,27 @@ void CfgData::Init360RewardTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6178,7 +12354,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6186,7 +12370,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -6194,7 +12386,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6202,7 +12402,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6210,7 +12418,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6218,7 +12434,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -6226,7 +12450,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -6234,7 +12466,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -6242,7 +12482,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
                 std::string platform;
+
+
+
+
 
 
 
@@ -6250,7 +12498,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 0);
+
+
+
+
 
 
 
@@ -6258,7 +12514,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -6266,7 +12530,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_Wan360RewardTypeMap[platform];
+
+
+
+
 
 
 
@@ -6274,7 +12546,15 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -6282,11 +12562,27 @@ void CfgData::Init360RewardTypeTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6298,7 +12594,15 @@ Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6306,7 +12610,15 @@ Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 
 
 
+
+
+
+
     auto it = this->m_Wan360RewardMap.find(Indexa);
+
+
+
+
 
 
 
@@ -6314,7 +12626,15 @@ Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6322,7 +12642,15 @@ Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6330,7 +12658,19 @@ Wan360Reward *CfgData::Get360RewardCfg(int32_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6342,7 +12682,15 @@ int32_t CfgData::Get360RewardIcon(const std::string *const platform)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6350,7 +12698,19 @@ int32_t CfgData::Get360RewardIcon(const std::string *const platform)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6362,7 +12722,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6370,7 +12738,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -6378,7 +12754,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6386,7 +12770,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6394,7 +12786,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6402,7 +12802,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -6410,7 +12818,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -6418,7 +12834,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount - 1; ++i)
+
+
+
+
 
 
 
@@ -6426,11 +12850,23 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 CfgTotalChongZhi stu{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6438,11 +12874,23 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 stu.NeedGold = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6450,7 +12898,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 char v8;
+
+
+
+
 
 
 
@@ -6458,11 +12914,23 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6470,7 +12938,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 CfgData::parseEquipItemString(&__x, this, stu.Index, &strItems);
+
+
+
+
 
 
 
@@ -6478,7 +12954,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -6486,7 +12970,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 char v11;
+
+
+
+
 
 
 
@@ -6494,11 +12986,23 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 v10 = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6506,7 +13010,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 CfgData::parseGongGaoString(&v9, stu.Index, &v10);
+
+
+
+
 
 
 
@@ -6514,7 +13026,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -6522,7 +13042,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6530,7 +13058,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
                 *v3 = stu;
+
+
+
+
 
 
 
@@ -6538,7 +13074,15 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -6546,7 +13090,19 @@ void CfgData::InitTotalChongZhiTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6558,7 +13114,15 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6566,7 +13130,15 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 
 
 
+
+
+
+
     auto it = this->m_TotalChongZhiTable.find(Indexa[0]);
+
+
+
+
 
 
 
@@ -6574,7 +13146,15 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6582,7 +13162,15 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6590,7 +13178,19 @@ CfgTotalChongZhi *CfgData::GetTotalChongZhiCfg(int8_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6602,7 +13202,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6610,7 +13218,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -6618,7 +13234,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6626,7 +13250,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6634,7 +13266,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6642,7 +13282,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -6650,7 +13298,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -6658,7 +13314,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -6666,11 +13330,23 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 CfgEverydayChongZhi stu{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6678,7 +13354,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 stu.Type = TabFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -6686,7 +13370,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6694,7 +13386,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -6702,11 +13402,23 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6714,7 +13426,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 CfgData::parseEquipItemString(&__x, this, stu.Index, &strItems);
+
+
+
+
 
 
 
@@ -6722,7 +13442,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -6730,7 +13458,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 char v10;
+
+
+
+
 
 
 
@@ -6738,7 +13474,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 v9 = v2->pString;
+
+
+
+
 
 
 
@@ -6746,7 +13490,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 std::list<CfgGongGao> v8;
+
+
+
+
 
 
 
@@ -6754,7 +13506,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 stu.GongGaoInfo = v8;
+
+
+
+
 
 
 
@@ -6762,7 +13522,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
                 this->m_EveryDayChongZhiTable.push_back(stu);
+
+
+
+
 
 
 
@@ -6770,7 +13538,15 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -6778,7 +13554,19 @@ void CfgData::InitEveryDayChongZhi()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6790,7 +13578,15 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6798,7 +13594,15 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6806,7 +13610,15 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -6814,7 +13626,15 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -6822,11 +13642,27 @@ CfgEverydayChongZhi *CfgData::GetEveryDayChongZhiCfg(int8_t nType, int8_t Index)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6838,7 +13674,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -6846,7 +13690,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
     bool ret = TabFile.OpenFromTXT( "./ServerConfig/Tables/TeHui.txt");
+
+
+
+
 
 
 
@@ -6854,11 +13706,23 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
     if (!ret)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6866,7 +13730,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -6874,7 +13746,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -6882,7 +13762,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -6890,7 +13778,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -6898,11 +13794,23 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -6910,7 +13818,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6918,7 +13834,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6926,7 +13850,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 char v11;
+
+
+
+
 
 
 
@@ -6934,11 +13866,23 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6946,7 +13890,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 CfgData::parseEquipItemString(&__x, this, stu.Index, &strItems);
+
+
+
+
 
 
 
@@ -6954,7 +13906,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -6962,7 +13922,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6970,7 +13938,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 char v14;
+
+
+
+
 
 
 
@@ -6978,11 +13954,23 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 v13 = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -6990,7 +13978,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 CfgData::parseGongGaoString(&v12, stu.Index, &v13);
+
+
+
+
 
 
 
@@ -6998,7 +13994,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -7006,7 +14010,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7014,7 +14026,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 *v3 = stu;
+
+
+
+
 
 
 
@@ -7022,7 +14042,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -7030,7 +14058,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                     ret = TabFile2.OpenFromTXT( "./ServerConfig/Tables/SanChong.txt");
+
+
+
+
 
 
 
@@ -7038,11 +14074,23 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
             if (!ret)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -7050,7 +14098,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -7058,7 +14114,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -7066,7 +14130,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 iBaseColumnCount = TabFile2.GetFieldsNum();
+
+
+
+
 
 
 
@@ -7074,7 +14146,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -7082,7 +14162,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                     for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
+
+
+
+
 
 
 
@@ -7090,11 +14178,23 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         NewServerFavorable stu;
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -7102,7 +14202,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -7110,7 +14218,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         char v17;
+
+
+
+
 
 
 
@@ -7118,11 +14234,23 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         v16 = v4->pString;
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -7130,7 +14258,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         CfgData::parseEquipItemString(&v15, this, stu.Index, &v16);
+
+
+
+
 
 
 
@@ -7138,7 +14274,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                                                                                     
+
+
+
+
 
 
 
@@ -7146,7 +14290,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -7154,7 +14306,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         char v20;
+
+
+
+
 
 
 
@@ -7162,7 +14322,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         v19 = v5->pString;
+
+
+
+
 
 
 
@@ -7170,7 +14338,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         std::list<CfgGongGao> v18;
+
+
+
+
 
 
 
@@ -7178,7 +14354,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         this->m_ThreePetGift.GongGaoInfo = v18;
+
+
+
+
 
 
 
@@ -7186,7 +14370,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                         this->m_ThreePetGift.nLimitTime = TabFile2.Search_Posistion( i_0, 4)->iValue;
+
+
+
+
 
 
 
@@ -7194,7 +14386,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -7202,7 +14402,15 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -7210,7 +14418,19 @@ void CfgData::InitNewServerFavorable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -7222,7 +14442,15 @@ NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -7230,7 +14458,15 @@ NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 
 
 
+
+
+
+
     auto it = this->m_NewServerFavorable.find(Indexa[0]);
+
+
+
+
 
 
 
@@ -7238,7 +14474,15 @@ NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7246,7 +14490,15 @@ NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -7254,7 +14506,15 @@ NewServerFavorable *CfgData::GetNewServerFavorable(int8_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -7262,7 +14522,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -7270,7 +14538,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -7278,7 +14554,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7286,7 +14570,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -7294,7 +14586,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7302,7 +14602,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -7310,7 +14618,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -7318,7 +14634,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -7326,11 +14650,23 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                 CfgShouChong stu;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7338,11 +14674,23 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                 stu.nGold = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7350,7 +14698,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                 char v6;
+
+
+
+
 
 
 
@@ -7358,11 +14714,23 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7370,7 +14738,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                 CfgData::parseEquipItemString(&__x, this, 1, &strItems);
+
+
+
+
 
 
 
@@ -7378,7 +14754,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -7386,7 +14770,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7394,7 +14786,15 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -7402,11 +14802,27 @@ void CfgData::InitShouChongLiBao()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -7418,7 +14834,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -7426,7 +14850,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -7434,7 +14866,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7442,7 +14882,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -7450,7 +14898,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7458,7 +14914,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -7466,7 +14930,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -7474,7 +14946,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -7482,7 +14962,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 CfgEquipExchange stu;
+
+
+
+
 
 
 
@@ -7490,7 +14978,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7498,11 +14994,23 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 stu.Money = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7510,7 +15018,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -7518,11 +15034,23 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 strItem = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7530,7 +15058,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 stu.CostItem.m_nId = v12.m_nId;
+
+
+
+
 
 
 
@@ -7538,7 +15074,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 stu.CostItem.m_nCount = v12.m_nCount;
+
+
+
+
 
 
 
@@ -7546,7 +15090,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                                         
+
+
+
+
 
 
 
@@ -7554,7 +15106,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
                 *v2 = stu;
+
+
+
+
 
 
 
@@ -7562,7 +15122,15 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -7570,7 +15138,19 @@ void CfgData::InitMoHuaHuanYiTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -7582,7 +15162,15 @@ CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -7590,7 +15178,15 @@ CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 
 
 
+
+
+
+
     auto it = this->m_CfgEquipExchangeMap.find(Levela[0]);
+
+
+
+
 
 
 
@@ -7598,7 +15194,15 @@ CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7606,7 +15210,15 @@ CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -7614,7 +15226,19 @@ CfgEquipExchange *CfgData::GetEquipExchange(int8_t Level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -7626,7 +15250,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -7634,7 +15266,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -7642,7 +15282,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7650,7 +15298,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -7658,7 +15314,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7666,7 +15330,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -7674,7 +15346,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -7682,7 +15362,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -7690,7 +15378,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -7698,7 +15394,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7706,7 +15410,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 stu.nType = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -7714,7 +15426,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 stu.nSubType = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -7722,7 +15442,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 stu.nMinLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -7730,11 +15458,23 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 stu.nGoldCost = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7742,7 +15482,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -7750,11 +15498,23 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7762,7 +15522,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -7770,11 +15538,23 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7782,7 +15562,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 char v10;
+
+
+
+
 
 
 
@@ -7790,11 +15578,23 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 v9 = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7802,7 +15602,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&v8, &v9);
+
+
+
+
 
 
 
@@ -7810,7 +15618,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
+
+
+
+
 
 
 
@@ -7818,7 +15634,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgSearchBackTable.AddSearchBack(stu);
+
+
+
+
 
 
 
@@ -7826,7 +15650,15 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -7834,7 +15666,19 @@ void CfgData::InitZiYuanZhaoHuiTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -7846,7 +15690,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -7854,7 +15706,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -7862,7 +15722,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7870,7 +15738,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -7878,7 +15754,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -7886,7 +15770,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = ItemGiftFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -7894,7 +15786,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -7902,7 +15802,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -7910,11 +15818,23 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
                 CfgPlantEventEffect Event;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7922,11 +15842,23 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
                 Event.EventType = ItemGiftFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7934,7 +15866,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
                 Event.EventEffect = v1->pString;
+
+
+
+
 
 
 
@@ -7942,7 +15882,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7950,7 +15898,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
                 *v2 = Event;
+
+
+
+
 
 
 
@@ -7958,7 +15914,15 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -7966,7 +15930,19 @@ void CfgData::InitPlantEventTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -7978,7 +15954,15 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -7986,7 +15970,15 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 
 
 
+
+
+
+
     auto it = this->m_PlantEventMap.find(EventIda);
+
+
+
+
 
 
 
@@ -7994,7 +15986,15 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8002,7 +16002,15 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8010,7 +16018,19 @@ CfgPlantEventEffect *CfgData::GetPlantEvent(int32_t EventId)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8022,7 +16042,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8030,7 +16058,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -8038,7 +16074,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8046,7 +16090,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8054,7 +16106,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8062,7 +16122,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -8070,7 +16138,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -8078,7 +16154,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -8086,7 +16170,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
                 FunctionOpenCfg stu;
+
+
+
+
 
 
 
@@ -8094,7 +16186,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8102,7 +16202,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
                 stu.TaskId = TabFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -8110,7 +16218,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8118,7 +16234,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
                 *v1 = stu;
+
+
+
+
 
 
 
@@ -8126,7 +16250,15 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -8134,7 +16266,19 @@ void CfgData::InitFunctionOpenTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8146,7 +16290,15 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8154,7 +16306,15 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 
 
 
+
+
+
+
     auto it = this->m_FunctionOpenCfg.find(FunctionIda);
+
+
+
+
 
 
 
@@ -8162,7 +16322,15 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8170,7 +16338,15 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8178,7 +16354,19 @@ FunctionOpenCfg *CfgData::GetOpenFunctionCfg(int32_t FunctionId)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8190,7 +16378,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8198,7 +16394,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -8206,7 +16410,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8214,7 +16426,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8222,7 +16442,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8230,7 +16458,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -8238,7 +16474,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -8246,7 +16490,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -8254,11 +16506,23 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 VipCardCfg VipCard{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8266,7 +16530,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 VipCard.VipCardId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -8274,11 +16546,23 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 VipCard.NeedGold = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8286,7 +16570,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 char v9;
+
+
+
+
 
 
 
@@ -8294,11 +16586,23 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 v8 = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8306,7 +16610,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 CfgData::parseAddAttribues(&__x, &v8, i, nullptr);
+
+
+
+
 
 
 
@@ -8314,7 +16626,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -8322,7 +16642,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 ++nIndex;
+
+
+
+
 
 
 
@@ -8330,7 +16658,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 VipCard.ReNeedGold = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -8338,7 +16674,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 VipCard.TianShuJinHua = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -8346,7 +16690,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8354,7 +16706,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_VipCardTable[__k];
+
+
+
+
 
 
 
@@ -8362,7 +16722,15 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -8370,11 +16738,27 @@ void CfgData::InitVipCardTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8386,7 +16770,15 @@ VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8394,7 +16786,15 @@ VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 
 
 
+
+
+
+
     auto it = this->m_VipCardTable.find(__x);
+
+
+
+
 
 
 
@@ -8402,7 +16802,15 @@ VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8410,7 +16818,15 @@ VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8418,7 +16834,19 @@ VipCardCfg *CfgData::GetVipCardCfg(int8_t VipType)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8430,7 +16858,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8438,7 +16874,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -8446,7 +16890,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8454,7 +16906,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8462,7 +16922,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8470,7 +16938,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -8478,7 +16954,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -8486,7 +16970,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -8494,7 +16986,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
                 CfgOffLineExp reward;
+
+
+
+
 
 
 
@@ -8502,7 +17002,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8510,7 +17018,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
                 reward.MinuteExp = TabFile.Search_Posistion( i, 2)->iValue;
+
+
+
+
 
 
 
@@ -8518,7 +17034,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
                 reward.ThreeTimes = TabFile.Search_Posistion( i, 4)->iValue;
+
+
+
+
 
 
 
@@ -8526,7 +17050,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8534,7 +17066,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
                 *v1 = reward;
+
+
+
+
 
 
 
@@ -8542,7 +17082,15 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -8550,7 +17098,19 @@ void CfgData::InitOffLineExpTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8562,7 +17122,15 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8570,7 +17138,15 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 
 
 
+
+
+
+
     auto it = this->m_OffLineExpTable.lower_bound(Levela);
+
+
+
+
 
 
 
@@ -8578,7 +17154,15 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8586,7 +17170,15 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8594,7 +17186,19 @@ CfgOffLineExp *CfgData::GetOfflineExpCfg(int32_t Level)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8606,7 +17210,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8614,7 +17226,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -8622,7 +17242,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8630,7 +17258,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8638,7 +17274,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8646,7 +17290,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -8654,7 +17306,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -8662,7 +17322,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -8670,7 +17338,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
                 CfgWeekOnlineReward reward;
+
+
+
+
 
 
 
@@ -8678,7 +17354,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8686,7 +17370,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
                 reward.Cash = TabFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -8694,7 +17386,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8702,7 +17402,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
                 *v1 = reward;
+
+
+
+
 
 
 
@@ -8710,7 +17418,15 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -8718,7 +17434,19 @@ void CfgData::InitWeekOnlineReward()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8730,7 +17458,15 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8738,7 +17474,15 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -8746,11 +17490,23 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 
 
 
+
+
+
+
     if (it != this->m_WeekOnlineReward.end())
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8758,7 +17514,15 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8766,7 +17530,15 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 
 
 
+
+
+
+
     if (!this->m_WeekOnlineReward.empty())
+
+
+
+
 
 
 
@@ -8774,7 +17546,15 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 
 
 
+
+
+
+
         return &this->m_WeekOnlineReward.rbegin()->second;
+
+
+
+
 
 
 
@@ -8782,11 +17562,27 @@ CfgWeekOnlineReward *CfgData::GetWeekOnlineReward(int32_t Week)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8798,7 +17594,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8806,7 +17610,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -8814,7 +17626,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8822,7 +17642,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8830,7 +17658,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8838,7 +17674,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -8846,7 +17690,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -8854,7 +17706,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -8862,11 +17722,23 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 CfgLevelGift reward{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8874,11 +17746,23 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 reward.Level = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -8886,7 +17770,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -8894,7 +17786,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 strItems = v1->pString;
+
+
+
+
 
 
 
@@ -8902,7 +17802,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 MemChrBagVector __x;
+
+
+
+
 
 
 
@@ -8910,7 +17818,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 reward.ItemVector = __x;
+
+
+
+
 
 
 
@@ -8918,7 +17834,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 int __k = reward.Index;
+
+
+
+
 
 
 
@@ -8926,7 +17850,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
                 *v2 = reward;
+
+
+
+
 
 
 
@@ -8934,7 +17866,15 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -8942,7 +17882,19 @@ void CfgData::InitLevelGift()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8954,7 +17906,15 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -8962,7 +17922,15 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 
 
 
+
+
+
+
     auto it = this->m_LevelGift.find(__x);
+
+
+
+
 
 
 
@@ -8970,7 +17938,15 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -8978,7 +17954,15 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -8986,7 +17970,19 @@ CfgLevelGift *CfgData::GetLevelGiftCfg(int8_t Index)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -8998,7 +17994,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9006,7 +18010,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -9014,7 +18026,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9022,7 +18042,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9030,7 +18058,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9038,7 +18074,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -9046,7 +18090,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -9054,7 +18106,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -9062,11 +18122,23 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                 CfgSevenLoginRewrad reward{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9074,7 +18146,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9082,7 +18162,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -9090,7 +18178,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                 strItems = v1->pString;
+
+
+
+
 
 
 
@@ -9098,7 +18194,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                 MemChrEquipBagVector __x;
+
+
+
+
 
 
 
@@ -9106,7 +18210,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                 reward.ItemVector = __x;
+
+
+
+
 
 
 
@@ -9114,7 +18226,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_SevenLoginReward[reward.Day];
+
+
+
+
 
 
 
@@ -9122,7 +18242,15 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -9130,11 +18258,27 @@ void CfgData::InitSevenLoginReward()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -9146,7 +18290,15 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9154,7 +18306,15 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 
 
 
+
+
+
+
     auto it = this->m_SevenLoginReward.find(Daya[0]);
+
+
+
+
 
 
 
@@ -9162,7 +18322,15 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9170,7 +18338,15 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9178,7 +18354,19 @@ CfgSevenLoginRewrad *CfgData::GetSevenLoginRewardCfg(int8_t Day)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -9190,7 +18378,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9198,7 +18394,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -9206,7 +18410,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9214,7 +18426,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9222,7 +18442,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9230,7 +18458,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -9238,7 +18474,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -9246,7 +18490,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -9254,11 +18506,23 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                 CfgOnlineReward reward{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9266,11 +18530,23 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                 reward.NeedTime = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9278,7 +18554,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -9286,7 +18570,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                 strItems = v1->pString;
+
+
+
+
 
 
 
@@ -9294,7 +18586,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                 MemChrBagVector __x;
+
+
+
+
 
 
 
@@ -9302,7 +18602,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                 reward.ItemVector = __x;
+
+
+
+
 
 
 
@@ -9310,7 +18618,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                 auto *v2 = &this->m_OnLineReward[reward.Id];
+
+
+
+
 
 
 
@@ -9318,7 +18634,15 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -9326,11 +18650,27 @@ void CfgData::InitOnLimeReward()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -9342,7 +18682,15 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9350,7 +18698,15 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 
 
 
+
+
+
+
     auto it = this->m_OnLineReward.find(ida[0]);
+
+
+
+
 
 
 
@@ -9358,7 +18714,15 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9366,7 +18730,15 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9374,7 +18746,19 @@ CfgOnlineReward *CfgData::GetOnlineRewardCfg(int8_t id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -9386,7 +18770,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9394,7 +18786,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -9402,7 +18802,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9410,7 +18818,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9418,7 +18834,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9426,7 +18850,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -9434,7 +18866,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -9442,7 +18882,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -9450,11 +18898,23 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 CfgSignReward reward{};
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9462,7 +18922,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9470,7 +18938,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -9478,7 +18954,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 strItems = v1->pString;
+
+
+
+
 
 
 
@@ -9486,7 +18970,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 MemChrBagVector __x;
+
+
+
+
 
 
 
@@ -9494,7 +18986,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 reward.ItemVector = __x;
+
+
+
+
 
 
 
@@ -9502,7 +19002,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 char __k = reward.count;
+
+
+
+
 
 
 
@@ -9510,7 +19018,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
                 *v2 = reward;
+
+
+
+
 
 
 
@@ -9518,7 +19034,15 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -9526,7 +19050,19 @@ void CfgData::fetchSignReward()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -9538,7 +19074,15 @@ CfgMemChrBagVector *CfgData::GetSignReward(int8_t SiginCount)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9546,11 +19090,23 @@ CfgMemChrBagVector *CfgData::GetSignReward(int8_t SiginCount)
 
 
 
+
+
+
+
     if (it != this->m_signReward.end())
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9558,7 +19114,15 @@ CfgMemChrBagVector *CfgData::GetSignReward(int8_t SiginCount)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9566,7 +19130,15 @@ CfgMemChrBagVector *CfgData::GetSignReward(int8_t SiginCount)
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -9574,7 +19146,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9582,7 +19162,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -9590,7 +19178,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9598,7 +19194,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9606,7 +19210,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9614,7 +19226,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -9622,7 +19242,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -9630,7 +19258,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -9638,7 +19274,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -9646,13 +19290,27 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
                 CfgTGPGift gift;
 
+
+
                 gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -9660,11 +19318,23 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9672,7 +19342,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 char v6;
+
+
+
+
 
 
 
@@ -9680,11 +19358,23 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9692,7 +19382,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -9700,7 +19398,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -9708,7 +19414,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 ++nIndex;
+
+
+
+
 
 
 
@@ -9716,7 +19430,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddQQZoneGift(gift);
+
+
+
+
 
 
 
@@ -9724,7 +19446,15 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -9732,7 +19462,19 @@ void CfgData::InitQQZoneRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -9744,7 +19486,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9752,7 +19502,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -9760,7 +19518,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9768,7 +19534,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9776,7 +19550,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9784,7 +19566,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -9792,7 +19582,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -9800,7 +19598,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -9808,7 +19614,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -9816,7 +19630,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9824,7 +19646,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 gift.nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -9832,7 +19662,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9840,7 +19678,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 char v6;
+
+
+
+
 
 
 
@@ -9848,11 +19694,23 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9860,7 +19718,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -9868,7 +19734,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                                                     
+
+
+
+
 
 
 
@@ -9876,7 +19750,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 ++nIndex;
+
+
+
+
 
 
 
@@ -9884,7 +19766,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddQQGameGift(gift);
+
+
+
+
 
 
 
@@ -9892,7 +19782,15 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -9900,7 +19798,19 @@ void CfgData::InitQQGameRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -9912,7 +19822,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -9920,7 +19838,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -9928,7 +19854,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9936,7 +19870,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -9944,7 +19886,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -9952,7 +19902,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -9960,7 +19918,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -9968,7 +19934,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -9976,7 +19950,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -9984,11 +19966,23 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
                 ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -9996,7 +19990,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
                 char v5;
+
+
+
+
 
 
 
@@ -10004,11 +20006,23 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10016,7 +20030,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&vReward, &strItems);
+
+
+
+
 
 
 
@@ -10024,7 +20046,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10032,7 +20062,15 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -10040,11 +20078,27 @@ void CfgData::InitYellowRewardTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -10056,7 +20110,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -10064,7 +20126,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -10072,7 +20142,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10080,7 +20158,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -10088,7 +20174,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10096,7 +20190,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -10104,7 +20206,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -10112,7 +20222,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -10120,7 +20238,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -10128,7 +20254,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10136,7 +20270,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10144,7 +20286,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                 char v6;
+
+
+
+
 
 
 
@@ -10152,11 +20302,23 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10164,7 +20326,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -10172,7 +20342,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
+
+
+
+
 
 
 
@@ -10180,7 +20358,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddSevenDayLogin(stu);
+
+
+
+
 
 
 
@@ -10188,7 +20374,15 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -10196,7 +20390,19 @@ void CfgData::InitTencentSevenDayLoginTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -10208,7 +20414,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -10216,7 +20430,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -10224,7 +20446,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10232,7 +20462,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -10240,7 +20478,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10248,7 +20494,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -10256,7 +20510,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -10264,7 +20526,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -10272,7 +20542,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -10280,11 +20558,23 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 CfgTencentGift year;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10292,11 +20582,23 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10304,7 +20606,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 char v8;
+
+
+
+
 
 
 
@@ -10312,11 +20622,23 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10324,7 +20646,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -10332,11 +20662,23 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10344,7 +20686,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 char v11;
+
+
+
+
 
 
 
@@ -10352,11 +20702,23 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 v10 = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10364,7 +20726,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&v9, &v10);
+
+
+
+
 
 
 
@@ -10372,11 +20742,23 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10384,11 +20766,23 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 year.nLevel = nLevel;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10396,7 +20790,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddYellowYearGift(year);
+
+
+
+
 
 
 
@@ -10404,7 +20806,15 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
                                     }
+
+
+
+
 
 
 
@@ -10412,11 +20822,27 @@ void CfgData::InitYellowDailyRewardTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -10428,7 +20854,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -10436,7 +20870,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -10444,7 +20886,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10452,7 +20902,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -10460,7 +20918,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10468,7 +20934,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -10476,7 +20950,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -10484,7 +20966,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -10492,7 +20982,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -10500,7 +20998,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10508,11 +21014,23 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 gift.nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10520,7 +21038,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -10528,11 +21054,23 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10540,7 +21078,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -10548,11 +21094,23 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10560,7 +21118,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 char v10;
+
+
+
+
 
 
 
@@ -10568,11 +21134,23 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 v9 = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10580,7 +21158,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&v8, &v9);
+
+
+
+
 
 
 
@@ -10588,7 +21174,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
+
+
+
+
 
 
 
@@ -10596,7 +21190,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddYellowLevelGift(nId, gift);
+
+
+
+
 
 
 
@@ -10604,7 +21206,15 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -10612,7 +21222,19 @@ void CfgData::InitYellowLevelRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -10624,7 +21246,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -10632,7 +21262,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -10640,7 +21278,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10648,7 +21294,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -10656,7 +21310,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10664,7 +21326,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -10672,7 +21342,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -10680,7 +21358,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -10688,7 +21374,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -10696,11 +21390,23 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
                 ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10708,7 +21414,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
                 char v5;
+
+
+
+
 
 
 
@@ -10716,11 +21430,23 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10728,7 +21454,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&vReward, &strItems);
+
+
+
+
 
 
 
@@ -10736,7 +21470,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10744,7 +21486,15 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -10752,11 +21502,27 @@ void CfgData::InitBlueRewardTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -10768,7 +21534,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -10776,7 +21550,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -10784,7 +21566,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10792,7 +21582,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -10800,7 +21598,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -10808,7 +21614,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -10816,7 +21630,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -10824,7 +21646,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -10832,7 +21662,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -10840,7 +21678,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 CfgTencentGift year;
+
+
+
+
 
 
 
@@ -10848,7 +21694,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10856,11 +21710,23 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 int32_t nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10868,7 +21734,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 char v10;
+
+
+
+
 
 
 
@@ -10876,11 +21750,23 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10888,7 +21774,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -10896,11 +21790,23 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10908,7 +21814,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 char v13;
+
+
+
+
 
 
 
@@ -10916,11 +21830,23 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 v12 = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10928,7 +21854,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&v11, &v12);
+
+
+
+
 
 
 
@@ -10936,11 +21870,23 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10948,7 +21894,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 char v16;
+
+
+
+
 
 
 
@@ -10956,11 +21910,23 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 v15 = v3->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10968,7 +21934,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&v14, &v15);
+
+
+
+
 
 
 
@@ -10976,11 +21950,23 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -10988,7 +21974,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 year.nLevel = nLevel;
+
+
+
+
 
 
 
@@ -10996,7 +21990,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11004,7 +22006,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddBlueYearGift(year);
+
+
+
+
 
 
 
@@ -11012,7 +22022,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11020,7 +22038,15 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -11028,7 +22054,19 @@ void CfgData::InitBlueDailyRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -11040,7 +22078,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -11048,7 +22094,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -11056,7 +22110,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11064,7 +22126,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -11072,7 +22142,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11080,7 +22158,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -11088,7 +22174,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -11096,7 +22190,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -11104,7 +22206,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -11112,7 +22222,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11120,11 +22238,23 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                 gift.nLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11132,7 +22262,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                 char v6;
+
+
+
+
 
 
 
@@ -11140,11 +22278,23 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                 strItems = v1->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11152,7 +22302,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -11160,7 +22318,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
+
+
+
+
 
 
 
@@ -11168,7 +22334,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddBlueLevelGift(nId, gift);
+
+
+
+
 
 
 
@@ -11176,7 +22350,15 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -11184,7 +22366,19 @@ void CfgData::InitBlueLevelRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -11196,7 +22390,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -11204,7 +22406,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -11212,7 +22422,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11220,7 +22438,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -11228,7 +22454,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11236,7 +22470,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -11244,7 +22486,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -11252,7 +22502,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -11260,11 +22518,23 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11272,11 +22542,23 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                 CfgTGPGift gift;
 
 
 
+
+
+
+
                 gift.strPF = v1->pString;
+
+
+
+
 
 
 
@@ -11284,7 +22566,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11292,7 +22582,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -11300,11 +22598,23 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                 strItems = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11312,7 +22622,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -11320,11 +22638,25 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
+
+
 
 
 
@@ -11334,7 +22666,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddTGPNewerGift(gift);
+
+
+
+
 
 
 
@@ -11342,7 +22682,15 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -11350,7 +22698,19 @@ void CfgData::InitTGPRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -11362,7 +22722,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -11370,7 +22738,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -11378,7 +22754,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11386,7 +22770,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -11394,7 +22786,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11402,7 +22802,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -11410,7 +22818,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -11418,7 +22834,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -11426,11 +22850,23 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11438,7 +22874,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                 CfgTGPGift gift;
+
+
+
+
 
 
 
@@ -11446,11 +22890,23 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                 ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11458,7 +22914,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -11466,11 +22930,23 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                 strItems = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11478,7 +22954,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -11486,7 +22970,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
+
+
+
+
 
 
 
@@ -11494,7 +22986,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddTGPDailyGift(gift);
+
+
+
+
 
 
 
@@ -11502,7 +23002,15 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -11510,7 +23018,19 @@ void CfgData::InitTGPDailyRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -11522,7 +23042,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -11530,7 +23058,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -11538,7 +23074,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11546,7 +23090,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -11554,7 +23106,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11562,7 +23122,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -11570,7 +23138,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -11578,7 +23154,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -11586,15 +23170,31 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                 int32_t nIndex = 0;                CfgTGPGift gift;
+
+
 
                 gift.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
-                
+
 
                 
+
+
+
+                
+
+
 
                 const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -11602,7 +23202,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                 gift.nLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -11610,7 +23218,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11618,7 +23234,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                 char v7;
+
+
+
+
 
 
 
@@ -11626,11 +23250,23 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                 strItems = v2->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11638,7 +23274,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                 CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -11646,7 +23290,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                                                     ++nIndex;
+
+
+
+
 
 
 
@@ -11654,7 +23306,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
                 // TODO: this->m_cfgTencentTable.AddTGPLevelGift(gift);
+
+
+
+
 
 
 
@@ -11662,7 +23322,15 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -11670,7 +23338,19 @@ void CfgData::InitTGPLevelRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -11682,7 +23362,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -11690,7 +23378,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -11698,7 +23394,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11706,7 +23410,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -11714,7 +23426,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11722,11 +23442,23 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = TabFile.GetFieldsNum();
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -11734,7 +23466,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -11742,7 +23482,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -11750,7 +23498,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11758,7 +23514,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
                 stu.nDungeonId = TabFile.Search_Posistion( i, ++i)->iValue;
+
+
+
+
 
 
 
@@ -11766,7 +23530,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
                 stu.nCostMoney = TabFile.Search_Posistion( i, ++i)->iValue;
+
+
+
+
 
 
 
@@ -11774,7 +23546,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
                 i += 7;
+
+
+
+
 
 
 
@@ -11782,7 +23562,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
                 stu.nNpcId = TabFile.Search_Posistion( i, ++i)->iValue;
+
+
+
+
 
 
 
@@ -11790,7 +23578,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
                 stu.Y = TabFile.Search_Posistion( i, ++i)->iValue;
+
+
+
+
 
 
 
@@ -11798,7 +23594,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -11806,7 +23610,15 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -11814,11 +23626,23 @@ void CfgData::InitFamilyDungeonTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -11826,7 +23650,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -11834,7 +23666,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -11842,7 +23682,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -11850,7 +23698,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -11858,7 +23714,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -11866,7 +23730,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = ActivityFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -11874,7 +23746,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -11882,11 +23762,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -11894,11 +23786,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
 
 
 
+
+
+
+
             int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -11906,7 +23810,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             cfg.typeId = ActivityFile.Search_Posistion( i, 5)->iValue;
+
+
+
+
 
 
 
@@ -11914,7 +23826,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             cfg.begin_date = ActivityFile.Search_Posistion( i, 10)->iValue;
+
+
+
+
 
 
 
@@ -11922,11 +23842,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             cfg.line = ActivityFile.Search_Posistion( i, 12)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -11934,7 +23866,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             std::string start_hour;
+
+
+
+
 
 
 
@@ -11942,7 +23882,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             std::string awards;
+
+
+
+
 
 
 
@@ -11950,7 +23898,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -11958,7 +23914,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = ActivityFile.Search_Posistion( i, 13);
+
+
+
+
 
 
 
@@ -11966,7 +23930,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -11974,7 +23946,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = ActivityFile.Search_Posistion( i, 14);
+
+
+
+
 
 
 
@@ -11982,7 +23962,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -11990,11 +23978,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             cfg.level = ActivityFile.Search_Posistion( i, 16)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12002,7 +24002,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v3 = ActivityFile.Search_Posistion( i, 17);
+
+
+
+
 
 
 
@@ -12010,7 +24018,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12018,7 +24034,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v4 = ActivityFile.Search_Posistion( i, 18);
+
+
+
+
 
 
 
@@ -12026,7 +24050,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12034,7 +24066,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             cfg.world_event_chapter = ActivityFile.Search_Posistion( i, 23)->iValue;
+
+
+
+
 
 
 
@@ -12042,11 +24082,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             int32_t target_regiona = ActivityFile.Search_Posistion( i, 25)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12054,7 +24106,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v5 = ActivityFile.Search_Posistion( i, 26);
+
+
+
+
 
 
 
@@ -12062,7 +24122,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12070,7 +24138,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12078,11 +24154,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             while (weekday > 0)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -12090,7 +24178,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 cfg.weekday.push_back(__x);
+
+
+
+
 
 
 
@@ -12098,11 +24194,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12110,11 +24218,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             if (awards.size() > 0 && awards.c_str()[0] != '\0')
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -12122,7 +24242,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 std::string str;
+
+
+
+
 
 
 
@@ -12130,11 +24258,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             delims = ":";
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12142,11 +24282,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             str = awards.c_str();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12154,11 +24306,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 StringUtility::split(strParams, str, delims);
 
 
 
+
+
+
+
                                                                 
+
+
+
+
 
 
 
@@ -12166,11 +24330,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 switch (cfg.typeId)
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12178,7 +24354,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     case 6: nsize = 1; break;
+
+
+
+
 
 
 
@@ -12186,7 +24370,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     case 11: nsize = 6; break;
+
+
+
+
 
 
 
@@ -12194,7 +24386,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     default: break;
+
+
+
+
 
 
 
@@ -12202,7 +24402,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12210,7 +24418,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 v77.resize(nsize, 0);
+
+
+
+
 
 
 
@@ -12218,7 +24434,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12226,7 +24450,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     int val = atoi(v8.c_str());
+
+
+
+
 
 
 
@@ -12234,11 +24466,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12246,11 +24490,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 for (int32_t j = 0; j < nsize; ++j)
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12258,7 +24514,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -12266,7 +24530,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12274,11 +24546,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             if (daily.size() > 0 && daily.c_str()[0] != '\0')
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -12286,7 +24570,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 std::string v132;
+
+
+
+
 
 
 
@@ -12294,11 +24586,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             v130 = ":";
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12306,11 +24610,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             v132 = daily.c_str();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12318,11 +24634,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 StringUtility::split(strParams_0, v132, v130);
 
 
 
+
+
+
+
                                                                 
+
+
+
+
 
 
 
@@ -12330,7 +24658,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 std::vector<int> v78;
+
+
+
+
 
 
 
@@ -12338,11 +24674,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 for (int32_t j_0 = 0; j_0 < nsize_0; ++j_0)
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12350,7 +24698,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     int val = atoi(v12.c_str());
+
+
+
+
 
 
 
@@ -12358,11 +24714,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12370,7 +24738,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12378,7 +24754,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -12386,7 +24770,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12394,7 +24786,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -12402,7 +24802,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 std::string v136;
+
+
+
+
 
 
 
@@ -12410,11 +24818,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             v134 = ":";
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12422,11 +24842,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             v136 = maps.c_str();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12434,11 +24866,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 StringUtility::split(strMaps, v136, v134);
 
 
 
+
+
+
+
                                                                 
+
+
+
+
 
 
 
@@ -12446,7 +24890,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12454,7 +24906,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     int val = atoi(v15.c_str());
+
+
+
+
 
 
 
@@ -12462,7 +24922,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -12470,7 +24938,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12478,7 +24954,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -12486,7 +24970,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 std::string v141;
+
+
+
+
 
 
 
@@ -12494,11 +24986,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             v139 = ":";
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12506,11 +25010,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             v141 = position.c_str();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12518,7 +25034,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 StringUtility::split(strParams_1, v141, v139);
+
+
+
+
 
 
 
@@ -12526,11 +25050,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 if (strParams_1.size() == 2)
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12538,11 +25074,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     cfg.target_mapid = atoi(v19.c_str());
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12550,7 +25098,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     std::string v145;
+
+
+
+
 
 
 
@@ -12558,11 +25114,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     v143 = "|";
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12570,7 +25138,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     std::string v21 = strParams_1[1];
+
+
+
+
 
 
 
@@ -12578,7 +25154,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12586,11 +25170,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     StringUtility::split(stritemParams, v145, v143);
 
 
 
+
+
+
+
                                                                                     
+
+
+
+
 
 
 
@@ -12598,7 +25194,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -12606,7 +25210,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         int val = atoi(v23.c_str());
+
+
+
+
 
 
 
@@ -12614,11 +25226,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     }
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -12626,7 +25250,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12634,11 +25266,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     cfg.target_mapid = atoi(v25.c_str());
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12646,7 +25290,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     std::string v150;
+
+
+
+
 
 
 
@@ -12654,11 +25306,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     v148 = "|";
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12666,7 +25330,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     std::string v27 = strParams_1[1];
+
+
+
+
 
 
 
@@ -12674,7 +25346,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12682,11 +25362,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     StringUtility::split(stritemParams_0, v150, v148);
 
 
 
+
+
+
+
                                                                                     
+
+
+
+
 
 
 
@@ -12694,7 +25386,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -12702,7 +25402,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         int val = atoi(v29.c_str());
+
+
+
+
 
 
 
@@ -12710,11 +25418,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     }
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12722,7 +25442,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     std::string v156;
+
+
+
+
 
 
 
@@ -12730,11 +25458,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     v154 = "|";
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12742,7 +25482,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     std::string v31 = strParams_1[2];
+
+
+
+
 
 
 
@@ -12750,7 +25498,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12758,7 +25514,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     StringUtility::split(v153, v156, v154);
+
+
+
+
 
 
 
@@ -12766,7 +25530,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                                                                     
+
+
+
+
 
 
 
@@ -12774,7 +25546,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -12782,7 +25562,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         int val = atoi(v33.c_str());
+
+
+
+
 
 
 
@@ -12790,7 +25578,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -12798,11 +25594,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12810,7 +25618,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -12818,7 +25634,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 char v160;
+
+
+
+
 
 
 
@@ -12826,7 +25650,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -12834,7 +25666,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 StringUtility::split(vStartHour, start_hour, v159);
+
+
+
+
 
 
 
@@ -12842,11 +25682,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 for (size_t j_4 = 0; j_4 < vStartHour.size(); ++j_4)
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12854,7 +25706,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     int tstart = atoi(v35.c_str());
+
+
+
+
 
 
 
@@ -12862,7 +25722,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -12870,7 +25738,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -12878,7 +25754,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -12886,7 +25770,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -12894,11 +25786,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12906,7 +25810,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             auto *v38 = &this->m_activities[cfg.id];
+
+
+
+
 
 
 
@@ -12914,7 +25826,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12922,7 +25842,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -12930,7 +25858,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
         // 加载活动事件
+
+
+
+
 
 
 
@@ -12938,7 +25874,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12946,7 +25890,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -12954,11 +25906,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             int32_t iBaseColumnCount_Event = ActivityEventFile.GetFieldsNum();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -12966,7 +25930,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -12974,7 +25946,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -12982,7 +25962,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -12990,7 +25978,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     event.id = ActivityEventFile.Search_Posistion( i_0, 0)->iValue;
+
+
+
+
 
 
 
@@ -12998,7 +25994,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     event.plant_id = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -13006,7 +26010,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     event.count = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -13014,7 +26026,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13022,7 +26042,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     char v161;
+
+
+
+
 
 
 
@@ -13030,7 +26058,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     triggerParam = v39->pString;
+
+
+
+
 
 
 
@@ -13038,11 +26074,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     event.mapid = ActivityEventFile.Search_Posistion( i_0, ++nIndex)->iValue;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13050,7 +26098,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     event.effect = v40->pString;
+
+
+
+
 
 
 
@@ -13058,7 +26114,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13066,7 +26130,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     std::string v162;
+
+
+
+
 
 
 
@@ -13074,7 +26146,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     char v163;
+
+
+
+
 
 
 
@@ -13082,7 +26162,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13090,11 +26178,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     v164 = triggerParam.c_str();
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13102,7 +26202,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     StringUtility::split(strParams_2, v164, v162);
+
+
+
+
 
 
 
@@ -13110,11 +26218,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     for (auto& strParam : strParams_2)
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -13122,7 +26242,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         event.trigger_param.push_back(val);
+
+
+
+
 
 
 
@@ -13130,7 +26258,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13138,7 +26274,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     auto& v44 = this->m_activityEvents[event.id];
+
+
+
+
 
 
 
@@ -13146,7 +26290,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     v45.push_back(event);
+
+
+
+
 
 
 
@@ -13154,7 +26306,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -13162,7 +26322,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13170,11 +26338,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             CDBCFile ActivityMonsterFile;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13182,7 +26362,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -13190,11 +26378,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 int32_t iBaseColumnCount_Monster = ActivityMonsterFile.GetFieldsNum();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -13202,7 +26402,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -13210,7 +26418,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -13218,7 +26434,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13226,7 +26450,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         monster.wave = ActivityMonsterFile.Search_Posistion( i_1, 1)->iValue;
+
+
+
+
 
 
 
@@ -13234,7 +26466,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         monster.count = ActivityMonsterFile.Search_Posistion( i_1, 3)->iValue;
+
+
+
+
 
 
 
@@ -13242,7 +26482,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13250,7 +26498,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         char v168;
+
+
+
+
 
 
 
@@ -13258,11 +26514,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         road = v46->pString;
 
 
 
+
+
+
+
                                             
+
+
+
+
 
 
 
@@ -13270,7 +26538,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         monster.y = ActivityMonsterFile.Search_Posistion( i_1, 7)->iValue;
+
+
+
+
 
 
 
@@ -13278,7 +26554,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         monster.times = ActivityMonsterFile.Search_Posistion( i_1, 9)->iValue;
+
+
+
+
 
 
 
@@ -13286,7 +26570,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13294,7 +26586,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         char v169;
+
+
+
+
 
 
 
@@ -13302,11 +26602,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         randpos = v47->pString;
 
 
 
+
+
+
+
                                             
+
+
+
+
 
 
 
@@ -13314,7 +26626,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13322,11 +26642,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         if (road.size() > 3)
 
 
 
+
+
+
+
                         {
+
+
+
+
 
 
 
@@ -13334,7 +26666,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             char v171;
+
+
+
+
 
 
 
@@ -13342,7 +26682,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -13350,11 +26698,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             StringUtility::split(vRoad, road, v170);
 
 
 
+
+
+
+
                                                                             
+
+
+
+
 
 
 
@@ -13362,7 +26722,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             {
+
+
+
+
 
 
 
@@ -13370,7 +26738,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 char v173;
+
+
+
+
 
 
 
@@ -13378,7 +26754,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 
+
+
+
+
 
 
 
@@ -13386,11 +26770,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 StringUtility::split(vPos, vRoad[j_5], v172);
 
 
 
+
+
+
+
                                                                                         
+
+
+
+
 
 
 
@@ -13398,11 +26794,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 {
 
 
 
+
+
+
+
                                     Position pos;
+
+
+
+
 
 
 
@@ -13410,7 +26818,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     pos.y = atoi(vPos[1].c_str());
+
+
+
+
 
 
 
@@ -13418,7 +26834,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 }
+
+
+
+
 
 
 
@@ -13426,11 +26850,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         }
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13438,11 +26874,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         if (randpos.size() > 3)
 
 
 
+
+
+
+
                         {
+
+
+
+
 
 
 
@@ -13450,7 +26898,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             char v176;
+
+
+
+
 
 
 
@@ -13458,7 +26914,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -13466,7 +26930,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             StringUtility::split(vRandPos, randpos, v175);
+
+
+
+
 
 
 
@@ -13474,7 +26946,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             for (size_t j_6 = 0; j_6 < vRandPos.size(); ++j_6)
+
+
+
+
 
 
 
@@ -13482,7 +26962,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 std::string v177;
+
+
+
+
 
 
 
@@ -13490,7 +26978,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                                             v177 = ":";
+
+
+
+
 
 
 
@@ -13498,7 +26994,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 StringVector vPos_0;
+
+
+
+
 
 
 
@@ -13506,7 +27010,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                                                                         
+
+
+
+
 
 
 
@@ -13514,7 +27026,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                 {
+
+
+
+
 
 
 
@@ -13522,7 +27042,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     pos.x = atoi(vPos_0[0].c_str());
+
+
+
+
 
 
 
@@ -13530,7 +27058,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                     monster.randpos.push_back(pos);
+
+
+
+
 
 
 
@@ -13538,7 +27074,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             }
+
+
+
+
 
 
 
@@ -13546,7 +27090,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13554,7 +27106,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         *v64 = monster;
+
+
+
+
 
 
 
@@ -13562,7 +27122,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -13570,11 +27138,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -13582,11 +27162,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             CDBCFile ActivityNpcFile;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13594,7 +27186,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -13602,11 +27202,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 int32_t iBaseColumnCount_Npc = ActivityNpcFile.GetFieldsNum();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -13614,7 +27226,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -13622,7 +27242,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -13630,7 +27258,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13638,7 +27274,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         npc.activity_id = ActivityNpcFile.Search_Posistion( i_2, 1)->iValue;
+
+
+
+
 
 
 
@@ -13646,11 +27290,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         npc.count = ActivityNpcFile.Search_Posistion( i_2, 3)->iValue;
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13658,7 +27314,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         char v180;
+
+
+
+
 
 
 
@@ -13666,11 +27330,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         regionId = v65->pString;
 
 
 
+
+
+
+
                                             
+
+
+
+
 
 
 
@@ -13678,7 +27354,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         char v182;
+
+
+
+
 
 
 
@@ -13686,7 +27370,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13694,7 +27386,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                             std::string v183;
+
+
+
+
 
 
 
@@ -13702,7 +27402,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13710,7 +27418,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         StringUtility::split(strRegions, v183, v181);
+
+
+
+
 
 
 
@@ -13718,7 +27434,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         for (size_t it_0 = 0; it_0 < strRegions.size(); ++it_0)
+
+
+
+
 
 
 
@@ -13726,7 +27450,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             std::string v67 = strRegions[it_0];
+
+
+
+
 
 
 
@@ -13734,7 +27466,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                             npc.region_id.push_back(val);
+
+
+
+
 
 
 
@@ -13742,7 +27482,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13750,7 +27498,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         *v69 = npc;
+
+
+
+
 
 
 
@@ -13758,7 +27514,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -13766,7 +27530,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -13774,11 +27546,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             CDBCFile ActivityPlantFile;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13786,7 +27570,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -13794,11 +27586,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 int32_t iBaseColumnCount_Plant = ActivityPlantFile.GetFieldsNum();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -13806,7 +27610,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -13814,7 +27626,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -13822,7 +27642,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13830,7 +27658,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         plant.activity_id = ActivityPlantFile.Search_Posistion( i_3, 1)->iValue;
+
+
+
+
 
 
 
@@ -13838,7 +27674,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         plant.count = ActivityPlantFile.Search_Posistion( i_3, 3)->iValue;
+
+
+
+
 
 
 
@@ -13846,7 +27690,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         plant.region_id = ActivityPlantFile.Search_Posistion( i_3, 5)->iValue;
+
+
+
+
 
 
 
@@ -13854,7 +27706,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13862,7 +27722,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         char v189;
+
+
+
+
 
 
 
@@ -13870,11 +27738,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         strPos = v70->pString;
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13882,7 +27762,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         CfgData::paresPosition(v187, &strPos);
+
+
+
+
 
 
 
@@ -13890,7 +27778,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                                             
+
+
+
+
 
 
 
@@ -13898,7 +27794,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -13906,7 +27810,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         *v71 = plant;
+
+
+
+
 
 
 
@@ -13914,7 +27826,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -13922,7 +27842,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -13930,11 +27858,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             CDBCFile ActivityDropFile;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -13942,7 +27882,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -13950,11 +27898,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 int32_t iBaseColumnCount_Drop = ActivityDropFile.GetFieldsNum();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -13962,7 +27922,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -13970,7 +27938,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -13978,7 +27954,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         drop.id = ActivityDropFile.Search_Posistion( i_4, 0)->iValue;
+
+
+
+
 
 
 
@@ -13986,7 +27970,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         drop.monster_min_level = ActivityDropFile.Search_Posistion( i_4, 2)->iValue;
+
+
+
+
 
 
 
@@ -13994,7 +27986,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         drop.probability = ActivityDropFile.Search_Posistion( i_4, 4)->iValue;
+
+
+
+
 
 
 
@@ -14002,7 +28002,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -14010,7 +28018,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         *v72 = drop;
+
+
+
+
 
 
 
@@ -14018,7 +28034,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -14026,7 +28050,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14034,11 +28066,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             CDBCFile ActivityTrapFile;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -14046,7 +28090,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -14054,7 +28106,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 int32_t iBaseColumnCount_Trap = ActivityTrapFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -14062,7 +28122,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                 if (iBaseColumnCount_Trap > 0)
+
+
+
+
 
 
 
@@ -14070,7 +28138,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     for (int32_t i_5 = 0; i_5 < iBaseTableCount_Trap; ++i_5)
+
+
+
+
 
 
 
@@ -14078,7 +28154,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         CfgActivityTrap trap;
+
+
+
+
 
 
 
@@ -14086,7 +28170,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         trap.tid = ActivityTrapFile.Search_Posistion( i_5, 1)->iValue;
+
+
+
+
 
 
 
@@ -14094,7 +28186,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         trap.y = ActivityTrapFile.Search_Posistion( i_5, 3)->iValue;
+
+
+
+
 
 
 
@@ -14102,7 +28202,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         auto *v73 = &this->m_activityTraps[trap.id];
+
+
+
+
 
 
 
@@ -14110,7 +28218,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -14118,7 +28234,15 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -14126,11 +28250,23 @@ void CfgData::fetchActivity()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -14138,7 +28274,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -14146,7 +28290,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -14154,7 +28306,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -14162,7 +28322,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -14170,7 +28338,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -14178,7 +28354,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = BuffFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -14186,7 +28370,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -14194,7 +28386,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -14202,11 +28402,23 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             CfgBuff buff;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14214,7 +28426,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.id = BuffFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -14222,7 +28442,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.attack_type = BuffFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -14230,7 +28458,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -14238,7 +28474,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.special = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14246,7 +28490,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.interval = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14254,7 +28506,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14262,7 +28522,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -14270,11 +28538,23 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             str = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14282,7 +28562,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             CfgData::paraseBuffAttr(__x, &str);
+
+
+
+
 
 
 
@@ -14290,11 +28578,23 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14302,11 +28602,23 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -14314,7 +28626,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.control = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14322,7 +28642,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.hpPecent = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14330,7 +28658,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.shieldRatio = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14338,7 +28674,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.effectTimes = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14346,15 +28690,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             buff.canRecover = BuffFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
-            ++nIndex;
 
-
-
-            ++nIndex;
 
 
 
@@ -14362,11 +28706,39 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
 
 
 
             
+
+
+
+
 
 
 
@@ -14374,7 +28746,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             char v10;
+
+
+
+
 
 
 
@@ -14382,7 +28762,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             v9 = v2->pString;
+
+
+
+
 
 
 
@@ -14390,7 +28778,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -14398,7 +28794,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -14406,7 +28810,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
             auto *v3 = &this->m_buffs[buff.id];
+
+
+
+
 
 
 
@@ -14414,7 +28826,15 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -14422,7 +28842,19 @@ void CfgData::fetchBuff()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -14434,7 +28866,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -14442,7 +28882,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -14450,7 +28898,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -14458,7 +28914,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
         char v16;
+
+
+
+
 
 
 
@@ -14466,7 +28930,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -14474,11 +28946,23 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
         StringUtility::split(vstr, *str, delims);
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14486,7 +28970,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -14494,7 +28986,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
             retstr.reserve(nSize);
+
+
+
+
 
 
 
@@ -14502,7 +29002,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
             for (int32_t i = 0; i < nSize; ++i)
+
+
+
+
 
 
 
@@ -14510,7 +29018,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                 std::string v17;
+
+
+
+
 
 
 
@@ -14518,7 +29034,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                             v17 = ":";
+
+
+
+
 
 
 
@@ -14526,7 +29050,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                 StringVector vBuff;
+
+
+
+
 
 
 
@@ -14534,7 +29066,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -14542,7 +29082,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -14550,7 +29098,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                     stu.attr = atoi(vBuff[0].c_str());
+
+
+
+
 
 
 
@@ -14558,7 +29114,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                     stu.addon = atoi(vBuff[2].c_str());
+
+
+
+
 
 
 
@@ -14566,7 +29130,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -14574,7 +29146,15 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -14582,11 +29162,27 @@ void CfgData::paraseBuffAttr(BuffAttrVector& retstr, const std::string *const st
 
 
 
+
+
+
+
     return;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -14598,7 +29194,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -14606,7 +29210,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -14614,7 +29226,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -14622,7 +29242,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -14630,7 +29258,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -14638,11 +29274,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = DungeonFile.GetFieldsNum();
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -14650,7 +29298,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -14658,11 +29314,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
         {
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14670,13 +29338,27 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             CfgDungeon dungeon;
+
+
 
             dungeon.id = DungeonFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14684,19 +29366,39 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.name = v1->pString;
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
             
+
+
+
+
 
 
 
@@ -14704,7 +29406,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.x = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14712,7 +29422,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.type = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14720,7 +29438,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.group_id = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14728,7 +29454,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.job = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14736,7 +29470,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.maxLevel = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14744,7 +29486,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.player_num = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14752,7 +29502,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14760,7 +29518,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.start_hour = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14768,11 +29534,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.daily_count = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -14780,7 +29558,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.next_id = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14788,11 +29574,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -14800,7 +29598,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.double_cost = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14808,15 +29614,31 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
             
+
+
+
+
 
 
 
@@ -14824,7 +29646,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             char v21;
+
+
+
+
 
 
 
@@ -14832,11 +29662,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             strItem = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14844,7 +29686,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.costItem.m_nId = v55.m_nId;
+
+
+
+
 
 
 
@@ -14852,7 +29702,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.costItem.m_nCount = v55.m_nCount;
+
+
+
+
 
 
 
@@ -14860,7 +29718,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14868,7 +29734,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             char v24;
+
+
+
+
 
 
 
@@ -14876,11 +29750,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             strItems = v3->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14888,7 +29774,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -14896,11 +29790,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14908,7 +29814,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             char v27;
+
+
+
+
 
 
 
@@ -14916,11 +29830,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             v26 = v4->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14928,7 +29854,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&v25, &v26);
+
+
+
+
 
 
 
@@ -14936,11 +29870,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -14948,7 +29894,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.costMoney = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14956,11 +29910,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -14968,7 +29934,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.buyCost = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14976,7 +29950,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.quickDoneDrop = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14984,7 +29966,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.summon_cost = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -14992,11 +29982,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -15004,15 +30006,31 @@ void CfgData::fetchDungeon()
 
 
 
-            ++nIndex;
 
-
-
-            ++nIndex;
 
 
 
             ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
 
 
 
@@ -15020,11 +30038,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -15032,11 +30062,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15044,7 +30086,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             std::string str;
+
+
+
+
 
 
 
@@ -15052,11 +30102,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/cfg_dungeon.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15064,7 +30126,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v5 = DungeonFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -15072,7 +30142,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15080,7 +30158,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             CfgData::paraseInt32Vector(v28, &str, &path, 0);
+
+
+
+
 
 
 
@@ -15088,11 +30174,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15100,7 +30198,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             char v35;
+
+
+
+
 
 
 
@@ -15108,11 +30214,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             v34 = v6->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15120,7 +30238,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&v33, &v34);
+
+
+
+
 
 
 
@@ -15128,11 +30254,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15140,7 +30278,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             char v38;
+
+
+
+
 
 
 
@@ -15148,7 +30294,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15156,17 +30310,35 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v7 = DungeonFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
             std::string v39;
 
+
+
             v39 = v7->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15174,7 +30346,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             CfgData::paraseInt32Vector(v36, &v39, &v37, 0);
+
+
+
+
 
 
 
@@ -15182,11 +30362,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15194,7 +30386,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.backMapId = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -15202,7 +30402,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             dungeon.backY = DungeonFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -15210,7 +30418,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -15218,11 +30434,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15230,7 +30458,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -15238,7 +30474,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                 weekday /= 10;
+
+
+
+
 
 
 
@@ -15246,7 +30490,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15254,11 +30506,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             *v8 = dungeon;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15266,7 +30530,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -15274,7 +30546,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                 *v9 = dungeon;
+
+
+
+
 
 
 
@@ -15282,7 +30562,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15290,7 +30578,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -15298,11 +30594,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
         CDBCFile DungeonRewardFile;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15310,7 +30618,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -15318,11 +30634,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             int32_t iBaseColumnCount_Reward = DungeonRewardFile.GetFieldsNum();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15330,7 +30658,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -15338,7 +30674,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -15346,7 +30690,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     reward.dungeonID = DungeonRewardFile.Search_Posistion( i_0, 0)->iValue;
+
+
+
+
 
 
 
@@ -15354,7 +30706,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     reward.money = DungeonRewardFile.Search_Posistion( i_0, 2)->iValue;
+
+
+
+
 
 
 
@@ -15362,11 +30722,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     reward.groupID = DungeonRewardFile.Search_Posistion( i_0, 4)->iValue;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -15374,11 +30746,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     *v10 = reward;
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -15386,11 +30770,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                 }
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -15398,11 +30794,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
         CDBCFile DungeonDropFile;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -15410,7 +30818,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -15418,7 +30834,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             int32_t iBaseColumnCount_Drop = DungeonDropFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -15426,11 +30850,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
             if (iBaseColumnCount_Drop > 0)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -15438,7 +30874,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -15446,7 +30890,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     CfgDungeonDrop group;
+
+
+
+
 
 
 
@@ -15454,7 +30906,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     group.item_id = DungeonDropFile.Search_Posistion( i_1, 3)->iValue;
+
+
+
+
 
 
 
@@ -15462,7 +30922,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     group.bind_type = DungeonDropFile.Search_Posistion( i_1, 5)->iValue;
+
+
+
+
 
 
 
@@ -15470,7 +30938,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     group.weight = DungeonDropFile.Search_Posistion( i_1, 7)->iValue;
+
+
+
+
 
 
 
@@ -15478,7 +30954,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -15486,11 +30970,23 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                     v11->Add(&group);
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -15498,7 +30994,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -15506,7 +31010,15 @@ void CfgData::fetchDungeon()
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -15514,7 +31026,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -15522,11 +31042,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     // Already default-constructed
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -15534,7 +31066,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -15542,7 +31082,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -15550,7 +31098,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -15558,7 +31114,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -15566,7 +31130,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -15574,11 +31146,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         int32_t iBaseColumnCount = ItemFile.GetFieldsNum();
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -15586,7 +31170,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -15594,7 +31186,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -15602,7 +31202,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15610,7 +31218,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15618,11 +31234,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->name = v3->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15630,11 +31258,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->desc = v4->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15642,7 +31282,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->level = ItemFile.Search_Posistion( i_1, 5)->iValue;
+
+
+
+
 
 
 
@@ -15650,7 +31298,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->job = ItemFile.Search_Posistion( i_1, 7)->iValue;
+
+
+
+
 
 
 
@@ -15658,7 +31314,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->out_value = ItemFile.Search_Posistion( i_1, 9)->iValue;
+
+
+
+
 
 
 
@@ -15666,7 +31330,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->combine = ItemFile.Search_Posistion( i_1, 11)->iValue;
+
+
+
+
 
 
 
@@ -15674,7 +31346,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15682,11 +31362,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->url = v14->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15694,11 +31386,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->drop_url = v15->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15706,11 +31410,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->effect = v16->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15718,11 +31434,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->use_method = v17->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15730,7 +31458,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->group_id = ItemFile.Search_Posistion( i_1, 20)->iValue;
+
+
+
+
 
 
 
@@ -15738,7 +31474,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->overlay = ItemFile.Search_Posistion( i_1, 22)->iValue;
+
+
+
+
 
 
 
@@ -15746,7 +31490,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->broadcast = ItemFile.Search_Posistion( i_1, 24)->iValue;
+
+
+
+
 
 
 
@@ -15754,7 +31506,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->item_Grade = ItemFile.Search_Posistion( i_1, 26)->iValue;
+
+
+
+
 
 
 
@@ -15762,7 +31522,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->useBroadcast = ItemFile.Search_Posistion( i_1, 33)->iValue;
+
+
+
+
 
 
 
@@ -15770,7 +31538,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->GongGaoId = ItemFile.Search_Posistion( i_1, 40)->iValue;
+
+
+
+
 
 
 
@@ -15778,11 +31554,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 pItem->XinMoBag = ItemFile.Search_Posistion( i_1, 43)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15790,7 +31578,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 char v51;
+
+
+
+
 
 
 
@@ -15798,7 +31594,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 str = v33->pString;
+
+
+
+
 
 
 
@@ -15806,7 +31610,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -15814,11 +31626,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 if (it_1 == this->m_items.end())
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -15826,7 +31650,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                     newItems.insert(v54);
+
+
+
+
 
 
 
@@ -15834,7 +31666,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -15842,7 +31682,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 *v34 = *pItem;
+
+
+
+
 
 
 
@@ -15850,7 +31698,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -15858,11 +31714,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -15870,7 +31738,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -15878,15 +31754,31 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -15894,7 +31786,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     Answer::RwLock::WriteLock _m_itemGiftsLock_wrlock(reinterpret_cast<Answer::RwLock*>(&this->m_itemGiftsLock));
+
+
+
+
 
 
 
@@ -15902,7 +31802,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -15910,7 +31818,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -15918,7 +31834,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -15926,7 +31850,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -15934,7 +31866,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -15942,11 +31882,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         int32_t iBaseColumnCount_Gift = ItemGiftFile.GetFieldsNum();
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -15954,7 +31906,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -15962,7 +31922,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -15970,7 +31938,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 memset(&itemGift, 0, sizeof(itemGift));
+
+
+
+
 
 
 
@@ -15978,7 +31954,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGift.item = ItemGiftFile.Search_Posistion( i_0, 2)->iValue;
+
+
+
+
 
 
 
@@ -15986,7 +31970,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGift.count = ItemGiftFile.Search_Posistion( i_0, 4)->iValue;
+
+
+
+
 
 
 
@@ -15994,7 +31986,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGift.job = ItemGiftFile.Search_Posistion( i_0, 6)->iValue;
+
+
+
+
 
 
 
@@ -16002,7 +32002,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -16010,11 +32018,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 if (it_0 == this->m_itemGifts.end())
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -16022,7 +32042,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                     this->m_itemGifts[itemGift.id] = v36;
+
+
+
+
 
 
 
@@ -16030,7 +32058,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -16038,7 +32074,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 v37->push_back(itemGift);
+
+
+
+
 
 
 
@@ -16046,7 +32090,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -16054,7 +32106,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16062,7 +32122,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     Answer::RwLock::WriteLock _m_itemGiftRandomsLock_wrlock(reinterpret_cast<Answer::RwLock*>(&this->m_itemGiftRandomsLock));
+
+
+
+
 
 
 
@@ -16070,7 +32138,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16078,7 +32154,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16086,7 +32170,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -16094,7 +32186,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -16102,7 +32202,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -16110,7 +32218,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         int32_t iBaseColumnCount_GiftRand = ItemGiftRandFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -16118,7 +32234,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
         if (iBaseColumnCount_GiftRand > 0)
+
+
+
+
 
 
 
@@ -16126,7 +32250,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
             for (int32_t i = 0; i < iBaseTableCount_GiftRand; ++i)
+
+
+
+
 
 
 
@@ -16134,7 +32266,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 CfgItemGiftRandom itemGiftRandom;
+
+
+
+
 
 
 
@@ -16142,7 +32282,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGiftRandom.item = ItemGiftRandFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -16150,7 +32298,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGiftRandom.count = ItemGiftRandFile.Search_Posistion( i, 3)->iValue;
+
+
+
+
 
 
 
@@ -16158,7 +32314,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGiftRandom.static_probability = ItemGiftRandFile.Search_Posistion( i, 5)->iValue;
+
+
+
+
 
 
 
@@ -16166,7 +32330,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGiftRandom.job = ItemGiftRandFile.Search_Posistion( i, 7)->iValue;
+
+
+
+
 
 
 
@@ -16174,11 +32346,23 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 itemGiftRandom.MaxLevel = ItemGiftRandFile.Search_Posistion( i, 9)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -16186,7 +32370,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 if (it == this->m_itemGiftRandoms.end())
+
+
+
+
 
 
 
@@ -16194,7 +32386,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                     CfgItemGiftRandomVector *v38 = new std::vector<CfgItemGiftRandom>();
+
+
+
+
 
 
 
@@ -16202,7 +32402,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -16210,7 +32418,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
                 auto v39 = this->m_itemGiftRandoms[itemGiftRandom.id];
+
+
+
+
 
 
 
@@ -16218,7 +32434,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -16226,7 +32450,15 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -16234,7 +32466,19 @@ void CfgData::fetchItem(bool bSend)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -16246,7 +32490,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16254,11 +32506,23 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
     Answer::NetPacket *packet = GameService::popNetpacket(v2, 0, Answer::PackType::PACK_DISPATCH, 0x2752u);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16266,7 +32530,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16274,11 +32546,23 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
     packet->writeInt32(v3);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16286,7 +32570,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -16294,7 +32586,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         if (!pCfgItem) continue;
+
+
+
+
 
 
 
@@ -16302,7 +32602,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeInt32(pCfgItem->id);
+
+
+
+
 
 
 
@@ -16310,7 +32618,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeUTF8(pCfgItem->desc);
+
+
+
+
 
 
 
@@ -16318,7 +32634,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeInt32(pCfgItem->level);
+
+
+
+
 
 
 
@@ -16326,7 +32650,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeInt32(pCfgItem->in_value);
+
+
+
+
 
 
 
@@ -16334,7 +32666,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeInt32(pCfgItem->bind);
+
+
+
+
 
 
 
@@ -16342,7 +32682,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeInt32(pCfgItem->quality);
+
+
+
+
 
 
 
@@ -16350,7 +32698,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeUTF8(pCfgItem->drop_url);
+
+
+
+
 
 
 
@@ -16358,7 +32714,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeUTF8(pCfgItem->use_method);
+
+
+
+
 
 
 
@@ -16366,7 +32730,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeInt32(pCfgItem->cd_group);
+
+
+
+
 
 
 
@@ -16374,7 +32746,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
         packet->writeInt32(pCfgItem->can_sell);
+
+
+
+
 
 
 
@@ -16382,11 +32762,23 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16394,7 +32786,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
     packet->setSize(WOffset);
+
+
+
+
 
 
 
@@ -16402,7 +32802,15 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
     GameService *v5 = Answer::Singleton<GameService>::instance();
+
+
+
+
 
 
 
@@ -16410,7 +32818,19 @@ void CfgData::sendNewItems(const CfgItemTable *const items)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -16422,7 +32842,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16430,7 +32858,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16438,7 +32874,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     memset(szSQL, 0, sizeof(szSQL));
+
+
+
+
 
 
 
@@ -16446,7 +32890,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16454,15 +32906,31 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     Answer::MySqlDBGuard db;
 
 
 
+
+
+
+
     
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16470,7 +32938,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     Answer::MySqlQuery result;
+
+
+
+
 
 
 
@@ -16478,7 +32954,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16486,7 +32970,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -16494,7 +32986,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
         this->m_kaiFuTime = result.getIntValue("kai_fu_time", 0);
+
+
+
+
 
 
 
@@ -16502,7 +33002,15 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -16510,7 +33018,19 @@ void CfgData::fetchServerConfig(int32_t line)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -16522,7 +33042,15 @@ int32_t CfgData::getServerStartTime(SERVER_TYPE nType)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16530,7 +33058,15 @@ int32_t CfgData::getServerStartTime(SERVER_TYPE nType)
 
 
 
+
+
+
+
         return this->m_heFuTime;
+
+
+
+
 
 
 
@@ -16538,11 +33074,27 @@ int32_t CfgData::getServerStartTime(SERVER_TYPE nType)
 
 
 
+
+
+
+
         return this->m_kaiFuTime;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -16554,7 +33106,15 @@ int32_t CfgData::getServerStartDayZeroTime(SERVER_TYPE nType)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16562,7 +33122,15 @@ int32_t CfgData::getServerStartDayZeroTime(SERVER_TYPE nType)
 
 
 
+
+
+
+
         return Answer::DayTime::dayzero(this->m_heFuTime);
+
+
+
+
 
 
 
@@ -16570,11 +33138,27 @@ int32_t CfgData::getServerStartDayZeroTime(SERVER_TYPE nType)
 
 
 
+
+
+
+
         return Answer::DayTime::dayzero(this->m_kaiFuTime);
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -16586,7 +33170,15 @@ int32_t CfgData::getServerDiffDay(SERVER_TYPE nType)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16594,7 +33186,15 @@ int32_t CfgData::getServerDiffDay(SERVER_TYPE nType)
 
 
 
+
+
+
+
         return Answer::DayTime::daydiff(this->m_heFuTime);
+
+
+
+
 
 
 
@@ -16602,11 +33202,27 @@ int32_t CfgData::getServerDiffDay(SERVER_TYPE nType)
 
 
 
+
+
+
+
         return Answer::DayTime::daydiff(this->m_kaiFuTime);
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -16618,7 +33234,15 @@ void CfgData::updateServerStartTime(int32_t kaiFuTime)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16626,7 +33250,15 @@ void CfgData::updateServerStartTime(int32_t kaiFuTime)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16634,7 +33266,15 @@ void CfgData::updateServerStartTime(int32_t kaiFuTime)
 
 
 
+
+
+
+
     COpenBeta *v2 = Answer::Singleton<COpenBeta>::instance();
+
+
+
+
 
 
 
@@ -16642,7 +33282,15 @@ void CfgData::updateServerStartTime(int32_t kaiFuTime)
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -16650,7 +33298,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16658,7 +33314,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16666,7 +33330,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -16674,7 +33346,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -16682,7 +33362,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16690,7 +33378,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = DungeonEventFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -16698,7 +33394,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -16706,7 +33410,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -16714,11 +33426,23 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             CfgMapEvent dungeonEvent;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16726,7 +33450,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             dungeonEvent.trigger_id = DungeonEventFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -16734,11 +33466,23 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             dungeonEvent.trigger_type = DungeonEventFile.Search_Posistion( i, 3)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16746,7 +33490,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             char v12;
+
+
+
+
 
 
 
@@ -16754,11 +33506,23 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             triggerParam = v1->pString;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -16766,7 +33530,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16774,7 +33546,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             dungeonEvent.effect = v2->pString;
+
+
+
+
 
 
 
@@ -16782,7 +33562,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16790,7 +33578,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             std::string str;
+
+
+
+
 
 
 
@@ -16798,11 +33594,23 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
                     delims = ":";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16810,11 +33618,23 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
                     str = triggerParam.c_str();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16822,7 +33642,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             StringUtility::split(strTriggerParam, str, delims);
+
+
+
+
 
 
 
@@ -16830,11 +33658,23 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             for (auto& param : strTriggerParam)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -16842,7 +33682,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
                 dungeonEvent.trigger_param.push_back(val);
+
+
+
+
 
 
 
@@ -16850,7 +33698,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16858,7 +33714,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -16866,7 +33730,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
                 v6.push_back(dungeonEvent);
+
+
+
+
 
 
 
@@ -16874,7 +33746,15 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16882,11 +33762,27 @@ void CfgData::fetchDungeonEvent()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -16898,7 +33794,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -16906,7 +33810,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16914,7 +33826,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -16922,7 +33842,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -16930,7 +33858,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -16938,7 +33874,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = DungeonMonsterFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -16946,7 +33890,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -16954,7 +33906,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -16962,11 +33922,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             CfgDungeonMonster monster;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -16974,7 +33946,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             monster.wave = DungeonMonsterFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -16982,7 +33962,14 @@ void CfgData::fetchDungeonMonster()
 
 
 
-            std::string nIndex;
+
+
+
+
+
+
+
+
 
 
 
@@ -16990,11 +33977,27 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = DungeonMonsterFile.Search_Posistion( i, 2);
 
 
 
+
+
+
+
             int32_t nIndex = 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -17006,7 +34009,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17014,7 +34025,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             CfgData::paraseParam2List(&__x, nullptr, atoi(nIndex.c_str()), nullptr);
+
+
+
+
 
 
 
@@ -17022,7 +34041,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -17030,7 +34057,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             monster.y = DungeonMonsterFile.Search_Posistion( i, 4)->iValue;
+
+
+
+
 
 
 
@@ -17038,11 +34073,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             monster.side = DungeonMonsterFile.Search_Posistion( i, 6)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17050,7 +34097,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             char v35;
+
+
+
+
 
 
 
@@ -17058,11 +34113,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             road = v3->pString;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -17070,7 +34137,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             monster.times = DungeonMonsterFile.Search_Posistion( i, 9)->iValue;
+
+
+
+
 
 
 
@@ -17078,11 +34153,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             monster.life = DungeonMonsterFile.Search_Posistion( i, 11)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17090,7 +34177,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             char v36;
+
+
+
+
 
 
 
@@ -17098,11 +34193,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             randpos = v4->pString;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -17110,7 +34217,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17118,11 +34233,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             if (road.size() > 3)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -17130,7 +34257,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                 char v38;
+
+
+
+
 
 
 
@@ -17138,7 +34273,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -17146,11 +34289,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                 StringUtility::split(vRoad, road, delims);
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -17158,7 +34313,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -17166,7 +34329,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     char v40;
+
+
+
+
 
 
 
@@ -17174,7 +34345,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -17182,11 +34361,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     StringUtility::split(vPos, vRoad[j], v39);
 
 
 
+
+
+
+
                                     
+
+
+
+
 
 
 
@@ -17194,11 +34385,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     {
 
 
 
+
+
+
+
                         Position pos;
+
+
+
+
 
 
 
@@ -17206,7 +34409,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                         pos.y = atoi(vPos[1].c_str());
+
+
+
+
 
 
 
@@ -17214,7 +34425,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -17222,11 +34441,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17234,7 +34465,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             if (randpos.size() > 3)
+
+
+
+
 
 
 
@@ -17242,7 +34481,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                 std::string v42;
+
+
+
+
 
 
 
@@ -17250,7 +34497,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                             v42 = "|";
+
+
+
+
 
 
 
@@ -17258,7 +34513,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                 StringVector vRandPos;
+
+
+
+
 
 
 
@@ -17266,7 +34529,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -17274,7 +34545,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -17282,7 +34561,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     char v45;
+
+
+
+
 
 
 
@@ -17290,7 +34577,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -17298,7 +34593,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     StringUtility::split(vPos_0, vRandPos[j_0], v44);
+
+
+
+
 
 
 
@@ -17306,7 +34609,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     if (vPos_0.size() == 2)
+
+
+
+
 
 
 
@@ -17314,7 +34625,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                         Position pos;
+
+
+
+
 
 
 
@@ -17322,7 +34641,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                         pos.y = atoi(vPos_0[1].c_str());
+
+
+
+
 
 
 
@@ -17330,7 +34657,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -17338,11 +34673,23 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17350,7 +34697,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
             *v21 = monster;
+
+
+
+
 
 
 
@@ -17358,7 +34713,15 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -17366,7 +34729,19 @@ void CfgData::fetchDungeonMonster()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -17378,7 +34753,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -17386,7 +34769,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17394,7 +34785,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -17402,7 +34801,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -17410,7 +34817,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17418,7 +34833,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MapFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -17426,7 +34849,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -17434,7 +34865,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -17442,11 +34881,23 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             CfgMap map;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17454,7 +34905,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17462,11 +34921,23 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.name = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17474,7 +34945,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.param = MapFile.Search_Posistion( i, 3)->iValue;
+
+
+
+
 
 
 
@@ -17482,7 +34961,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.height = MapFile.Search_Posistion( i, 5)->iValue;
+
+
+
+
 
 
 
@@ -17490,7 +34977,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.pk_mode = MapFile.Search_Posistion( i, 7)->iValue;
+
+
+
+
 
 
 
@@ -17498,7 +34993,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.isMount = MapFile.Search_Posistion( i, 9)->iValue;
+
+
+
+
 
 
 
@@ -17506,7 +35009,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.isVicegeneral = MapFile.Search_Posistion( i, 11)->iValue;
+
+
+
+
 
 
 
@@ -17514,7 +35025,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.player_level_max = MapFile.Search_Posistion( i, 13)->iValue;
+
+
+
+
 
 
 
@@ -17522,7 +35041,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.hide_mini = MapFile.Search_Posistion( i, 15)->iValue;
+
+
+
+
 
 
 
@@ -17530,7 +35057,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.jump = MapFile.Search_Posistion( i, 30)->iValue;
+
+
+
+
 
 
 
@@ -17538,7 +35073,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.reviveTime = MapFile.Search_Posistion( i, 35)->iValue;
+
+
+
+
 
 
 
@@ -17546,7 +35089,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.cross = MapFile.Search_Posistion( i, 38)->iValue;
+
+
+
+
 
 
 
@@ -17554,7 +35105,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.y = MapFile.Search_Posistion( i, 45)->iValue;
+
+
+
+
 
 
 
@@ -17562,7 +35121,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.XingMaiLevel = MapFile.Search_Posistion( i, 48)->iValue;
+
+
+
+
 
 
 
@@ -17570,7 +35137,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.JueWeiLevel = MapFile.Search_Posistion( i, 50)->iValue;
+
+
+
+
 
 
 
@@ -17578,7 +35153,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.NeedBroadcast = MapFile.Search_Posistion( i, 54)->iValue;
+
+
+
+
 
 
 
@@ -17586,7 +35169,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.SignOut = MapFile.Search_Posistion( i, 56)->iValue;
+
+
+
+
 
 
 
@@ -17594,7 +35185,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.Refresh = MapFile.Search_Posistion( i, 60)->iValue;
+
+
+
+
 
 
 
@@ -17602,7 +35201,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             map.LimitDay = MapFile.Search_Posistion( i, 62)->iValue;
+
+
+
+
 
 
 
@@ -17610,7 +35217,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17618,7 +35233,15 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
             *v2 = map;
+
+
+
+
 
 
 
@@ -17626,11 +35249,27 @@ void CfgData::fetchMap()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -17642,7 +35281,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -17650,7 +35297,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17658,7 +35313,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -17666,7 +35329,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -17674,7 +35345,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17682,7 +35361,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MapMonsterFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -17690,7 +35377,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -17698,7 +35393,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -17706,7 +35409,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             CfgMapMonster mapmonster;
+
+
+
+
 
 
 
@@ -17714,7 +35425,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             mapmonster.id = MapMonsterFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -17722,7 +35441,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             mapmonster.monsterid = MapMonsterFile.Search_Posistion( i, 2)->iValue;
+
+
+
+
 
 
 
@@ -17730,7 +35457,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             mapmonster.y = MapMonsterFile.Search_Posistion( i, 4)->iValue;
+
+
+
+
 
 
 
@@ -17738,7 +35473,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             mapmonster.side = MapMonsterFile.Search_Posistion( i, 6)->iValue;
+
+
+
+
 
 
 
@@ -17746,11 +35489,23 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             mapmonster.Day = MapMonsterFile.Search_Posistion( i, 8)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17758,7 +35513,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             v1.push_back(mapmonster);
+
+
+
+
 
 
 
@@ -17766,7 +35529,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
             auto *v2 = &this->m_CfgMapMonsters[mapmonster.id];
+
+
+
+
 
 
 
@@ -17774,7 +35545,15 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -17782,7 +35561,19 @@ void CfgData::fetchMapMonster()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -17794,7 +35585,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -17802,7 +35601,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17810,7 +35617,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -17818,7 +35633,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -17826,7 +35649,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17834,7 +35665,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MapPlantFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -17842,7 +35681,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -17850,7 +35697,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -17858,7 +35713,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
             int32_t id = MapPlantFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -17866,7 +35729,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
             mapPlant.mapid = MapPlantFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -17874,7 +35745,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
             mapPlant.x = MapPlantFile.Search_Posistion( i, 3)->iValue;
+
+
+
+
 
 
 
@@ -17882,7 +35761,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -17890,7 +35777,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
             v1.push_back(mapPlant);
+
+
+
+
 
 
 
@@ -17898,7 +35793,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
             auto *v2 = &this->m_mMapPlants[id];
+
+
+
+
 
 
 
@@ -17906,7 +35809,15 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -17914,7 +35825,19 @@ void CfgData::fetchMapPlant()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -17926,7 +35849,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -17934,7 +35865,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17942,7 +35881,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -17950,7 +35897,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -17958,7 +35913,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -17966,7 +35929,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MapRegionFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -17974,7 +35945,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -17982,7 +35961,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -17990,7 +35977,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             CfgMapRegion mapRegion;
+
+
+
+
 
 
 
@@ -17998,7 +35993,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             mapRegion.mapid = MapRegionFile.Search_Posistion( i, 2)->iValue;
+
+
+
+
 
 
 
@@ -18006,7 +36009,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             mapRegion.min_y = MapRegionFile.Search_Posistion( i, 4)->iValue;
+
+
+
+
 
 
 
@@ -18014,7 +36025,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             mapRegion.max_y = MapRegionFile.Search_Posistion( i, 6)->iValue;
+
+
+
+
 
 
 
@@ -18022,11 +36041,23 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             mapRegion.mId = MapRegionFile.Search_Posistion( i, 9)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18034,7 +36065,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             *v1 = mapRegion;
+
+
+
+
 
 
 
@@ -18042,7 +36081,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
             auto v2 = this->m_mapRegionsByMapId[mapRegion.mapid];
+
+
+
+
 
 
 
@@ -18050,7 +36097,15 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -18058,7 +36113,19 @@ void CfgData::fetchMapRegion()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -18070,7 +36137,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -18078,7 +36153,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -18086,7 +36169,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -18094,7 +36185,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -18102,7 +36201,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -18110,7 +36217,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MonsterFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -18118,7 +36233,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -18126,11 +36249,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -18138,7 +36273,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18146,7 +36289,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.mid = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -18154,7 +36305,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.level = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18162,7 +36321,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18170,7 +36337,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -18178,11 +36353,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18190,11 +36377,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18202,7 +36401,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             char v19;
+
+
+
+
 
 
 
@@ -18210,11 +36417,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             randtypes = v1->pString;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -18222,7 +36441,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.type = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18230,7 +36457,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.skill_id = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18238,7 +36473,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18246,7 +36489,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             char v21;
+
+
+
+
 
 
 
@@ -18254,7 +36505,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             strSkill = v2->pString;
+
+
+
+
 
 
 
@@ -18262,11 +36521,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18274,7 +36545,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             char v23;
+
+
+
+
 
 
 
@@ -18282,7 +36561,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             v22 = v3->pString;
+
+
+
+
 
 
 
@@ -18290,7 +36577,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -18298,11 +36593,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.ai = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18310,7 +36617,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.broadcast = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -18318,7 +36633,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             nIndex += 2;
+
+
+
+
 
 
 
@@ -18326,7 +36649,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             nIndex += 5;
+
+
+
+
 
 
 
@@ -18334,7 +36665,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.TaskShare = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -18342,11 +36681,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.camp = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             nIndex += 2;
+
+
+
+
 
 
 
@@ -18354,11 +36705,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.revive_skin = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18366,7 +36729,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.PortalId = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18374,7 +36745,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18382,7 +36761,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.dust = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18390,11 +36777,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.PureDamage = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18402,7 +36801,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18410,11 +36817,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.IsShowOwner = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18422,7 +36841,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.DiligenceType = MonsterFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -18430,7 +36857,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18438,7 +36873,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.MonsterHp = strtoll(v4->pString, nullptr, 10);
+
+
+
+
 
 
 
@@ -18446,7 +36889,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.Mid2 = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18454,7 +36905,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18462,7 +36921,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.vAttr[42] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18470,7 +36937,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.vAttr[44] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18478,7 +36953,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.QieGe = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18486,7 +36969,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             monster.Energy = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -18494,7 +36985,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18502,7 +37001,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             char v25;
+
+
+
+
 
 
 
@@ -18510,7 +37017,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             strItem = v5->pString;
+
+
+
+
 
 
 
@@ -18518,7 +37033,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -18526,7 +37049,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -18534,7 +37065,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18542,11 +37081,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             if (!randtypes.empty() && randtypes != "-1")
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -18554,7 +37105,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                 char v27;
+
+
+
+
 
 
 
@@ -18562,7 +37121,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -18570,11 +37137,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                 StringUtility::split(vRand, randtypes, delims);
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -18582,7 +37161,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -18590,7 +37177,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                     monster.rand_types.push_back(val);
+
+
+
+
 
 
 
@@ -18598,11 +37193,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18610,7 +37217,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             *v9 = monster;
+
+
+
+
 
 
 
@@ -18618,11 +37233,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
         }
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -18630,11 +37257,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
         CDBCFile MonsterBroadcastFile;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18642,7 +37281,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -18650,11 +37297,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             int32_t iBaseColumnCountBroadcast = MonsterBroadcastFile.GetFieldsNum();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18662,7 +37321,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -18670,7 +37337,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -18678,11 +37353,23 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                     this->m_monsterBroadcasts.push_back(v10->iValue);
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -18690,7 +37377,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -18698,7 +37393,15 @@ void CfgData::fetchMonster()
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -18706,7 +37409,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -18714,11 +37425,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
     bool ret = TabFile.OpenFromTXT( "./ServerConfig/Tables/cfg_npc.txt");
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -18726,7 +37449,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -18734,7 +37465,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -18742,7 +37481,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -18750,7 +37497,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -18758,7 +37513,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -18766,11 +37529,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -18778,7 +37553,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18786,11 +37569,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             npc.npcid = TabFile.Search_Posistion( i, 4)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18798,7 +37593,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             std::string delims;
+
+
+
+
 
 
 
@@ -18806,7 +37609,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             char v43;
+
+
+
+
 
 
 
@@ -18814,7 +37625,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18822,7 +37641,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 6);
+
+
+
+
 
 
 
@@ -18830,7 +37657,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18838,11 +37673,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             StringUtility::split(mapids, str, delims);
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -18850,7 +37697,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -18858,7 +37713,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 npc.mapids.push_back(val);
+
+
+
+
 
 
 
@@ -18866,7 +37729,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18874,7 +37745,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             npc.y = TabFile.Search_Posistion( i, 8)->iValue;
+
+
+
+
 
 
 
@@ -18882,11 +37761,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             npc.func_extra = TabFile.Search_Posistion( i, 10)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18894,7 +37785,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             char v48;
+
+
+
+
 
 
 
@@ -18902,11 +37801,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             param = v4->pString;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -18914,7 +37825,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             char v50;
+
+
+
+
 
 
 
@@ -18922,7 +37841,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18930,11 +37857,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             StringUtility::split(vparam, param, v49);
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -18942,7 +37881,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -18950,7 +37897,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 npc.params.push_back(val);
+
+
+
+
 
 
 
@@ -18958,7 +37913,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18966,7 +37929,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -18974,7 +37945,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             char v52;
+
+
+
+
 
 
 
@@ -18982,11 +37961,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             platform = v8->pString;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -18994,7 +37985,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -19002,7 +38001,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 char v54;
+
+
+
+
 
 
 
@@ -19010,7 +38017,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -19018,11 +38033,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 StringUtility::split(vpf, platform, v53);
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -19030,7 +38057,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -19038,7 +38073,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -19046,7 +38089,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19054,7 +38105,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             std::string v55;
+
+
+
+
 
 
 
@@ -19062,11 +38121,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     v55 = "|";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19074,7 +38145,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v11 = TabFile.Search_Posistion( i, 27);
+
+
+
+
 
 
 
@@ -19082,11 +38161,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             v57 = v11->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19094,11 +38185,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             StringUtility::split(CostVector, v57, v55);
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -19106,7 +38209,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -19114,7 +38225,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 char v61;
+
+
+
+
 
 
 
@@ -19122,7 +38241,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -19130,7 +38257,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 StringUtility::split(CostItem, costStr, v60);
+
+
+
+
 
 
 
@@ -19138,11 +38273,23 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 if (CostItem.size() == 3)
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -19150,7 +38297,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     NpcCost.ItemType = atoi(CostItem[0].c_str());
+
+
+
+
 
 
 
@@ -19158,7 +38313,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     NpcCost.ItemCount = atoi(CostItem[2].c_str());
+
+
+
+
 
 
 
@@ -19166,7 +38329,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -19174,7 +38345,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19182,7 +38361,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             *v19 = npc;
+
+
+
+
 
 
 
@@ -19190,7 +38377,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -19198,7 +38393,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
         CDBCFile TabFileAir;
+
+
+
+
 
 
 
@@ -19206,7 +38409,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -19214,7 +38425,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -19222,7 +38441,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             iBaseColumnCount = TabFileAir.GetFieldsNum();
+
+
+
+
 
 
 
@@ -19230,7 +38457,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
             if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -19238,7 +38473,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
+
+
+
+
 
 
 
@@ -19246,7 +38489,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     CfgNpcAirport airport;
+
+
+
+
 
 
 
@@ -19254,7 +38505,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     airport.npcid = TabFileAir.Search_Posistion( i_0, 1)->iValue;
+
+
+
+
 
 
 
@@ -19262,7 +38521,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     airport.kingdom_id = TabFileAir.Search_Posistion( i_0, 4)->iValue;
+
+
+
+
 
 
 
@@ -19270,7 +38537,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     airport.map_x = TabFileAir.Search_Posistion( i_0, 6)->iValue;
+
+
+
+
 
 
 
@@ -19278,7 +38553,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     airport.cost = TabFileAir.Search_Posistion( i_0, 8)->iValue;
+
+
+
+
 
 
 
@@ -19286,7 +38569,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                     auto *v20 = &this->m_npcAirports[airport.id];
+
+
+
+
 
 
 
@@ -19294,7 +38585,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -19302,7 +38601,15 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -19310,7 +38617,19 @@ void CfgData::fetchNpc()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -19322,7 +38641,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -19330,7 +38657,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -19338,7 +38673,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -19346,7 +38689,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -19354,7 +38705,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -19362,7 +38721,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -19370,7 +38737,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -19378,7 +38753,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -19386,11 +38769,23 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             CfgPlant plant{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19398,7 +38793,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             plant.type = TabFile.Search_Posistion( i, 3)->iValue;
+
+
+
+
 
 
 
@@ -19406,7 +38809,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19414,7 +38825,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             std::string str;
+
+
+
+
 
 
 
@@ -19422,11 +38841,23 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                     delims = "|";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19434,7 +38865,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, 5);
+
+
+
+
 
 
 
@@ -19442,7 +38881,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19450,11 +38897,23 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             StringUtility::split(strItems, str, delims);
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -19462,7 +38921,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -19470,7 +38937,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 char v27;
+
+
+
+
 
 
 
@@ -19478,7 +38953,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -19486,11 +38969,23 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 StringUtility::split(EventVt, eventStr, v26);
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -19498,7 +38993,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -19506,7 +39009,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                     Event.EventId = atoi(EventVt[0].c_str());
+
+
+
+
 
 
 
@@ -19514,7 +39025,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                     plant.EventMaxRate += Event.Probability;
+
+
+
+
 
 
 
@@ -19522,7 +39041,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -19530,7 +39057,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19538,7 +39073,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             plant.start_hour = TabFile.Search_Posistion( i, 7)->iValue;
+
+
+
+
 
 
 
@@ -19546,7 +39089,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             plant.gather_time = TabFile.Search_Posistion( i, 9)->iValue;
+
+
+
+
 
 
 
@@ -19554,7 +39105,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             plant.hide_time = TabFile.Search_Posistion( i, 16)->iValue;
+
+
+
+
 
 
 
@@ -19562,7 +39121,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             plant.boss_id = TabFile.Search_Posistion( i, 19)->iValue;
+
+
+
+
 
 
 
@@ -19570,7 +39137,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             plant.revive_skin = TabFile.Search_Posistion( i, 21)->iValue;
+
+
+
+
 
 
 
@@ -19578,7 +39153,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19586,7 +39169,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             char v29;
+
+
+
+
 
 
 
@@ -19594,7 +39185,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19602,7 +39201,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v7 = TabFile.Search_Posistion( i, 23);
+
+
+
+
 
 
 
@@ -19610,11 +39217,23 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             v30 = v7->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19622,7 +39241,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             StringUtility::split(ItemString, v30, v28);
+
+
+
+
 
 
 
@@ -19630,7 +39257,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             for (auto& itemStr : ItemString)
+
+
+
+
 
 
 
@@ -19638,7 +39273,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 std::string v33;
+
+
+
+
 
 
 
@@ -19646,7 +39289,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                             v33 = ":";
+
+
+
+
 
 
 
@@ -19654,7 +39305,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 StringVector RateVt;
+
+
+
+
 
 
 
@@ -19662,7 +39321,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -19670,7 +39337,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -19678,7 +39353,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
                     plant.ItemVt.push_back(val);
+
+
+
+
 
 
 
@@ -19686,7 +39369,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -19694,7 +39385,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
             auto *v11 = &this->m_plants[plant.id];
+
+
+
+
 
 
 
@@ -19702,7 +39401,15 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -19710,7 +39417,19 @@ void CfgData::fetchPlant()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -19722,7 +39441,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -19730,7 +39457,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -19738,7 +39473,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -19746,7 +39489,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -19754,7 +39505,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -19762,7 +39521,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -19770,7 +39537,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -19778,7 +39553,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -19786,11 +39569,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             CfgTask task;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19798,7 +39593,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19806,11 +39609,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             snprintf(task.name, sizeof(task.name), "%s", v1->pString);
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19818,7 +39633,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.group = TabFile.Search_Posistion( i, 3)->iValue;
+
+
+
+
 
 
 
@@ -19826,7 +39649,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.pretask = TabFile.Search_Posistion( i, 5)->iValue;
+
+
+
+
 
 
 
@@ -19834,7 +39665,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.main_order = TabFile.Search_Posistion( i, 7)->iValue;
+
+
+
+
 
 
 
@@ -19842,7 +39681,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.level = TabFile.Search_Posistion( i, 9)->iValue;
+
+
+
+
 
 
 
@@ -19850,7 +39697,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.kingdom = TabFile.Search_Posistion( i, 11)->iValue;
+
+
+
+
 
 
 
@@ -19858,7 +39713,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.end_npc = TabFile.Search_Posistion( i, 13)->iValue;
+
+
+
+
 
 
 
@@ -19866,7 +39729,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19874,7 +39745,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             char v12;
+
+
+
+
 
 
 
@@ -19882,11 +39761,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             strItems = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19894,7 +39785,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -19902,7 +39801,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -19910,7 +39817,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.award_money = TabFile.Search_Posistion( i, 17)->iValue;
+
+
+
+
 
 
 
@@ -19918,7 +39833,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.dilong = TabFile.Search_Posistion( i, 19)->iValue;
+
+
+
+
 
 
 
@@ -19926,7 +39849,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.fuwen = TabFile.Search_Posistion( i, 21)->iValue;
+
+
+
+
 
 
 
@@ -19934,7 +39865,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19942,7 +39881,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             char v15;
+
+
+
+
 
 
 
@@ -19950,11 +39897,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             v14 = v3->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19962,7 +39921,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&v13, &v14);
+
+
+
+
 
 
 
@@ -19970,7 +39937,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -19978,7 +39953,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             char v18;
+
+
+
+
 
 
 
@@ -19986,11 +39969,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             v17 = v4->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -19998,7 +39993,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             CfgData::parseTaskItemJobString(v16, task.id, &v17);
+
+
+
+
 
 
 
@@ -20006,7 +40009,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -20014,7 +40025,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20022,7 +40041,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             char v20;
+
+
+
+
 
 
 
@@ -20030,7 +40057,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             strRequest = v5->pString;
+
+
+
+
 
 
 
@@ -20038,7 +40073,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -20046,7 +40089,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.JunTuanZiJin = TabFile.Search_Posistion( i, 51)->iValue;
+
+
+
+
 
 
 
@@ -20054,7 +40105,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.acScore = TabFile.Search_Posistion( i, 53)->iValue;
+
+
+
+
 
 
 
@@ -20062,7 +40121,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.quality = TabFile.Search_Posistion( i, 61)->iValue;
+
+
+
+
 
 
 
@@ -20070,7 +40137,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.dust = TabFile.Search_Posistion( i, 63)->iValue;
+
+
+
+
 
 
 
@@ -20078,11 +40153,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.talent_point = TabFile.Search_Posistion( i, 67)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20090,7 +40177,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             char v23;
+
+
+
+
 
 
 
@@ -20098,7 +40193,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20106,7 +40209,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v6 = TabFile.Search_Posistion( i, 68);
+
+
+
+
 
 
 
@@ -20114,11 +40225,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             v22 = v6->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20126,7 +40249,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             CfgData::parseTaskDrop((CfgData *const)&v21, task.id, &v22);
+
+
+
+
 
 
 
@@ -20134,7 +40265,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -20142,11 +40281,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             task.BuffId = TabFile.Search_Posistion( i, 70)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20154,11 +40305,23 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             *v7 = task;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20166,7 +40329,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -20174,7 +40345,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -20182,7 +40361,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -20190,7 +40377,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -20198,7 +40393,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -20206,7 +40409,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -20214,7 +40425,15 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -20222,7 +40441,19 @@ void CfgData::fetchTask()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -20234,7 +40465,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -20242,7 +40481,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20250,7 +40497,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -20258,7 +40513,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -20266,7 +40529,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20274,7 +40545,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -20282,7 +40561,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -20290,7 +40577,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -20298,11 +40593,23 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
             CfgTrap trap;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20310,7 +40617,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
             trap.cd = TabFile.Search_Posistion( i, 2)->iValue;
+
+
+
+
 
 
 
@@ -20318,11 +40633,23 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
             trap.event_type = TabFile.Search_Posistion( i, 4)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20330,7 +40657,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
             trap.effect = v1->pString;
+
+
+
+
 
 
 
@@ -20338,7 +40673,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
             trap.life = TabFile.Search_Posistion( i, 12)->iValue;
+
+
+
+
 
 
 
@@ -20346,7 +40689,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
             auto *v2 = &this->m_traps[trap.id];
+
+
+
+
 
 
 
@@ -20354,7 +40705,15 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -20362,7 +40721,19 @@ void CfgData::fetchTrap()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -20374,7 +40745,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -20382,7 +40761,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20390,7 +40777,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -20398,7 +40793,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -20406,7 +40809,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20414,7 +40825,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -20422,7 +40841,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -20430,7 +40857,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -20438,7 +40873,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             CfgLevelExp levelExp;
+
+
+
+
 
 
 
@@ -20446,7 +40889,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20454,11 +40905,23 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             levelExp.upgrade_exp = strtoll(v1->pString, nullptr, 10);
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20466,11 +40929,23 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             levelExp.max_exp = strtoll(v2->pString, nullptr, 10);
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20478,7 +40953,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             levelExp.mount_exp = TabFile.Search_Posistion( i, 4)->iValue;
+
+
+
+
 
 
 
@@ -20486,7 +40969,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             levelExp.attr_point = TabFile.Search_Posistion( i, 6)->iValue;
+
+
+
+
 
 
 
@@ -20494,7 +40985,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20502,7 +41001,15 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
             *v3 = levelExp;
+
+
+
+
 
 
 
@@ -20510,11 +41017,27 @@ void CfgData::fetchLevelExp()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -20526,7 +41049,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -20534,7 +41065,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20542,7 +41081,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -20550,7 +41097,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -20558,7 +41113,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20566,7 +41129,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = LevelAttrFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -20574,7 +41145,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -20582,7 +41161,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -20590,11 +41177,23 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             CfgLevelAttr levelAttr;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20602,11 +41201,23 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             levelAttr.job = LevelAttrFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20614,7 +41225,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -20622,11 +41241,23 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/cfg_level_attr.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20634,7 +41265,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = LevelAttrFile.Search_Posistion( i, 2);
+
+
+
+
 
 
 
@@ -20642,7 +41281,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20650,7 +41297,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -20658,7 +41313,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -20666,7 +41329,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             char v13;
+
+
+
+
 
 
 
@@ -20674,7 +41345,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20682,7 +41361,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = LevelAttrFile.Search_Posistion( i, 3);
+
+
+
+
 
 
 
@@ -20690,7 +41377,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             v14 = v2->pString;
+
+
+
+
 
 
 
@@ -20698,7 +41393,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             AttrAddonVector v11;
+
+
+
+
 
 
 
@@ -20706,7 +41409,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             levelAttr.addonPoint = v11;
+
+
+
+
 
 
 
@@ -20714,7 +41425,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             int __k = (levelAttr.job << 16) | levelAttr.level;
+
+
+
+
 
 
 
@@ -20722,7 +41441,15 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
             *v3 = levelAttr;
+
+
+
+
 
 
 
@@ -20730,11 +41457,27 @@ void CfgData::fetchLevelAttr()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -20746,7 +41489,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -20754,7 +41505,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20762,7 +41521,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -20770,7 +41537,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -20778,7 +41553,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20786,7 +41569,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = JobFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -20794,7 +41585,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -20802,7 +41601,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -20810,7 +41617,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
             CfgJob job;
+
+
+
+
 
 
 
@@ -20818,7 +41633,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
             job.job_task = JobFile.Search_Posistion( i, 4)->iValue;
+
+
+
+
 
 
 
@@ -20826,7 +41649,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
             job.base_skill = JobFile.Search_Posistion( i, 6)->iValue;
+
+
+
+
 
 
 
@@ -20834,7 +41665,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
             auto *v1 = &this->m_jobs[job.id];
+
+
+
+
 
 
 
@@ -20842,7 +41681,15 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -20850,7 +41697,19 @@ void CfgData::fetchJob()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -20862,7 +41721,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -20870,7 +41737,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20878,7 +41753,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -20886,7 +41769,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -20894,7 +41785,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -20902,7 +41801,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = ChrShopFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -20910,7 +41817,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -20918,11 +41833,23 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -20930,7 +41857,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
             chrShop.Index = ChrShopFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -20938,7 +41873,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
             chrShop.ItemClass = ChrShopFile.Search_Posistion( i, 2)->iValue;
+
+
+
+
 
 
 
@@ -20946,7 +41889,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
             chrShop.LimitCount = ChrShopFile.Search_Posistion( i, 4)->iValue;
+
+
+
+
 
 
 
@@ -20954,7 +41905,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
             chrShop.ConstType = ChrShopFile.Search_Posistion( i, 9)->iValue;
+
+
+
+
 
 
 
@@ -20962,7 +41921,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -20970,7 +41937,15 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
             *v1 = chrShop;
+
+
+
+
 
 
 
@@ -20978,11 +41953,23 @@ void CfgData::fetchChrShop()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -20990,7 +41977,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -20998,7 +41993,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21006,7 +42009,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -21014,7 +42025,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -21022,7 +42041,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21030,7 +42057,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -21038,7 +42073,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -21046,7 +42089,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -21054,7 +42105,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
             CfgMovie movie;
+
+
+
+
 
 
 
@@ -21062,7 +42121,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
             int32_t MoveId = TabFile.Search_Posistion( i, 2)->iValue;
+
+
+
+
 
 
 
@@ -21070,7 +42137,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
             if (movie.id == MoveId)
+
+
+
+
 
 
 
@@ -21078,7 +42153,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
                 auto *v1 = &this->m_movie[movie.id];
+
+
+
+
 
 
 
@@ -21086,7 +42169,15 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -21094,11 +42185,27 @@ void CfgData::fetchMovie()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -21110,7 +42217,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -21118,7 +42233,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21126,7 +42249,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -21134,7 +42265,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -21142,7 +42281,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21150,7 +42297,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MonsterFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -21158,7 +42313,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -21166,7 +42329,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -21174,7 +42345,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             CfgMonsterAI ai;
+
+
+
+
 
 
 
@@ -21182,7 +42361,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21190,7 +42377,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ai.id = MonsterFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -21198,7 +42393,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ai.target = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21206,7 +42409,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ai.view_range = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21214,7 +42425,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ai.rest_range = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21222,7 +42441,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ai.rest_time_max = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21230,7 +42457,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ai.run_distance = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21238,7 +42473,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ai.run_cd = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21246,7 +42489,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -21254,7 +42505,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
             auto *v1 = &this->m_mMonsterAI[ai.id];
+
+
+
+
 
 
 
@@ -21262,7 +42521,15 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -21270,7 +42537,19 @@ void CfgData::fetchMonsterAI()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -21282,7 +42561,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -21290,7 +42577,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21298,7 +42593,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -21306,7 +42609,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -21314,7 +42625,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21322,11 +42641,23 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MonsterFile.GetFieldsNum();
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21334,7 +42665,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -21342,7 +42681,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -21350,11 +42697,23 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             memset(&monster, 0, sizeof(monster));
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21362,7 +42721,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             monster.mid = MonsterFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -21370,11 +42737,23 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             monster.level = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21382,7 +42761,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -21390,11 +42777,23 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21402,7 +42801,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             monster.vAttr[42] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21410,7 +42817,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             monster.vAttr[44] = MonsterFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21418,7 +42833,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21426,11 +42849,23 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             auto result = this->m_mMonsterAdjust.insert(std::make_pair(key, monster));
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -21438,7 +42873,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21446,7 +42889,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     CDBCFile MonsterFile2;
+
+
+
+
 
 
 
@@ -21454,7 +42905,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
     if (MonsterFile2.OpenFromTXT( "./ServerConfig/Tables/BossGrow.txt"))
+
+
+
+
 
 
 
@@ -21462,7 +42921,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
         iBaseTableCount = MonsterFile2.GetRecordsNum();
+
+
+
+
 
 
 
@@ -21470,7 +42937,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -21478,7 +42953,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -21486,7 +42969,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -21494,11 +42985,23 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 memset(&monster, 0, sizeof(monster));
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -21506,7 +43009,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 monster.mid = MonsterFile2.Search_Posistion( i_0, 0)->iValue;
+
+
+
+
 
 
 
@@ -21514,7 +43025,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 monster.exp = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+
+
+
+
 
 
 
@@ -21522,7 +43041,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -21530,7 +43057,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -21538,11 +43073,23 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 }
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -21550,7 +43097,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 monster.vAttr[42] = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+
+
+
+
 
 
 
@@ -21558,7 +43113,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 monster.vAttr[44] = MonsterFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+
+
+
+
 
 
 
@@ -21566,7 +43129,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -21574,7 +43145,15 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
                 this->m_mMonsterAdjust.insert(std::make_pair(key, monster));
+
+
+
+
 
 
 
@@ -21582,15 +43161,35 @@ void CfgData::fetchMonsterAdjustTable()
 
 
 
+
+
+
+
         }
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -21602,7 +43201,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -21610,7 +43217,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21618,7 +43233,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -21626,7 +43249,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -21634,7 +43265,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21642,7 +43281,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MonsterDropFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -21650,7 +43297,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -21658,7 +43313,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -21666,7 +43329,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             CfgMonsterDropGroup monsterDropGroup;
+
+
+
+
 
 
 
@@ -21674,7 +43345,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21682,7 +43361,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             monsterDropGroup.group_id = MonsterDropFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -21690,7 +43377,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             monsterDropGroup.item_class = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21698,7 +43393,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             monsterDropGroup.bind_type = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21706,7 +43409,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             monsterDropGroup.probability = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21714,7 +43425,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             monsterDropGroup.cost_value = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21722,7 +43441,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             monsterDropGroup.daily_limit = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21730,7 +43457,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21738,7 +43473,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -21746,7 +43489,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             p_StringTime = v1->pString;
+
+
+
+
 
 
 
@@ -21754,11 +43505,23 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21766,7 +43529,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             char v9;
+
+
+
+
 
 
 
@@ -21774,7 +43545,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             v8 = v2->pString;
+
+
+
+
 
 
 
@@ -21782,7 +43561,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -21790,7 +43577,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             monsterDropGroup.festival_group = MonsterDropFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21798,7 +43593,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21806,7 +43609,15 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
             v3.push_back(monsterDropGroup);
+
+
+
+
 
 
 
@@ -21814,11 +43625,27 @@ void CfgData::fetchMonsterDropGroup()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -21830,7 +43657,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -21838,7 +43673,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21846,7 +43689,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -21854,7 +43705,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -21862,7 +43721,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -21870,7 +43737,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MonsterGroupFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -21878,7 +43753,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -21886,7 +43769,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -21894,7 +43785,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             CfgMonsterGroupDrop monsterGroupDrop;
+
+
+
+
 
 
 
@@ -21902,7 +43801,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -21910,7 +43817,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             monsterGroupDrop.mid = MonsterGroupFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -21918,7 +43833,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             monsterGroupDrop.probability = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21926,7 +43849,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             monsterGroupDrop.end_time = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21934,7 +43865,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             monsterGroupDrop.job = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21942,7 +43881,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             monsterGroupDrop.dropType = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21950,7 +43897,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             monsterGroupDrop.hard = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21958,7 +43913,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             monsterGroupDrop.world_event = MonsterGroupFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -21966,7 +43929,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -21974,7 +43945,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             if (monsterGroupDrop.begin_time < 1440 && monsterGroupDrop.end_time < 1440 &&
+
+
+
+
 
 
 
@@ -21982,7 +43961,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -21990,11 +43977,23 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
                 v1.push_back(monsterGroupDrop);
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -22002,7 +44001,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -22010,7 +44017,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
                     "wrong cfg_monster_group_drop data with mid = %d, group_id = %d\n", 
+
+
+
+
 
 
 
@@ -22018,7 +44033,15 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -22026,11 +44049,27 @@ void CfgData::fetchMonsterGroupDrop()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22042,7 +44081,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -22050,7 +44097,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22058,7 +44113,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22066,7 +44129,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -22074,7 +44145,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22082,7 +44161,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = MonsterTaskFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -22090,7 +44177,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -22098,7 +44193,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -22106,7 +44209,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
             CfgMonsterTaskDrop monsterTaskDrop;
+
+
+
+
 
 
 
@@ -22114,7 +44225,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
             monsterTaskDrop.tid = MonsterTaskFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -22122,7 +44241,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
             monsterTaskDrop.probability = MonsterTaskFile.Search_Posistion( i, 3)->iValue;
+
+
+
+
 
 
 
@@ -22130,7 +44257,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
             auto v1 = this->m_monsterTaskDrops[monsterTaskDrop.mid];
+
+
+
+
 
 
 
@@ -22138,7 +44273,15 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -22146,7 +44289,19 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22162,7 +44317,19 @@ void CfgData::fetchMonsterTaskDrop()
 
 
 
+
+
+
+
+
+
+
+
 void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *const strPos)
+
+
+
+
 
 
 
@@ -22170,7 +44337,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
     retstr.clear();
+
+
+
+
 
 
 
@@ -22178,7 +44353,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
     if (!strPos->empty())
+
+
+
+
 
 
 
@@ -22186,7 +44369,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
         std::string delims;
+
+
+
+
 
 
 
@@ -22194,7 +44385,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
             delims = "|";
+
+
+
+
 
 
 
@@ -22202,7 +44401,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
         StringVector PosString;
+
+
+
+
 
 
 
@@ -22210,7 +44417,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -22218,7 +44433,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -22226,7 +44449,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
             char v18;
+
+
+
+
 
 
 
@@ -22234,7 +44465,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -22242,7 +44481,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
             StringUtility::split(Pos, posStr, v17);
+
+
+
+
 
 
 
@@ -22250,7 +44497,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
             if (Pos.size() == 2)
+
+
+
+
 
 
 
@@ -22258,7 +44513,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
                 Position stu;
+
+
+
+
 
 
 
@@ -22266,7 +44529,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
                 stu.y = atoi(Pos[1].c_str());
+
+
+
+
 
 
 
@@ -22274,7 +44545,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -22282,7 +44561,15 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22290,7 +44577,19 @@ void CfgData::paresPosition(std::vector<Position>& retstr, const std::string *co
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22302,7 +44601,15 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -22310,7 +44617,15 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22318,11 +44633,23 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
         result.nParam1 = 0;
 
 
 
+
+
+
+
         result.nParam2 = 0;
+
+
+
+
 
 
 
@@ -22330,11 +44657,23 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22342,7 +44681,15 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     char v13;
+
+
+
+
 
 
 
@@ -22350,7 +44697,15 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22358,11 +44713,23 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     StringUtility::split(vParam, *str, delims);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22370,11 +44737,23 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     if (vParam.size() == 2)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22382,11 +44761,23 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
         result.nParam2 = atoi(vParam[1].c_str());
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22394,7 +44785,15 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22402,7 +44801,15 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
         result.nParam2 = 0;
+
+
+
+
 
 
 
@@ -22410,7 +44817,15 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22418,7 +44833,19 @@ Param2 CfgData::paraseParam2(const std::string *const str)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22430,7 +44857,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -22438,7 +44873,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22446,7 +44889,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22454,7 +44905,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     char v19;
+
+
+
+
 
 
 
@@ -22462,7 +44921,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22470,11 +44937,23 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     StringUtility::split(vstr, *str, delims);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22482,7 +44961,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22490,7 +44977,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
             "CfgData::paraseInt32Vector() check size err from %s, where size = %d, str = %s\n",
+
+
+
+
 
 
 
@@ -22498,7 +44993,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22506,7 +45009,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22514,7 +45025,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
         for (auto& valStr : vstr)
+
+
+
+
 
 
 
@@ -22522,7 +45041,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
             int val = atoi(valStr.c_str());
+
+
+
+
 
 
 
@@ -22530,7 +45057,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -22538,7 +45073,15 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22546,7 +45089,19 @@ void CfgData::paraseInt32Vector(CfgInt32Vector& retstr, const std::string *const
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22558,7 +45113,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -22566,7 +45129,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22574,7 +45145,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22582,7 +45161,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
     char v22;
+
+
+
+
 
 
 
@@ -22590,7 +45177,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22598,11 +45193,23 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
     StringUtility::split(strAttrAddons, *addonAttr, delims);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22610,7 +45217,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22618,7 +45233,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
         char v25;
+
+
+
+
 
 
 
@@ -22626,7 +45249,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -22634,7 +45265,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
         StringUtility::split(strAttrAddon, addonStr, v24);
+
+
+
+
 
 
 
@@ -22642,11 +45281,23 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
         if (strAttrAddon.size() == 2)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -22654,7 +45305,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
             attrAddon.index = atoi(strAttrAddon[0].c_str());
+
+
+
+
 
 
 
@@ -22662,7 +45321,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
             if (attrAddon.index > 0 && attrAddon.addon > 0)
+
+
+
+
 
 
 
@@ -22670,7 +45337,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
                 retstr->push_back(attrAddon);
+
+
+
+
 
 
 
@@ -22678,7 +45353,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -22686,7 +45369,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -22694,7 +45385,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
                 "CfgData::paraseAttrAddon() wrong data from %s, where index = %d, str = %s\n",
+
+
+
+
 
 
 
@@ -22702,7 +45401,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -22710,7 +45417,15 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -22718,7 +45433,19 @@ void CfgData::paraseAttrAddon(AttrAddonVector& retstr, const std::string *const 
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22730,7 +45457,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -22738,7 +45473,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22746,7 +45489,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (!cfgGem) return 0;
+
+
+
+
 
 
 
@@ -22754,11 +45505,23 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         return (overlay == 0) ? 1 : overlay;
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22766,7 +45529,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22774,7 +45545,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (!cfgItem) return 0;
+
+
+
+
 
 
 
@@ -22782,11 +45561,23 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         return (overlay == 0) ? 1 : overlay;
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22794,7 +45585,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22802,7 +45601,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (!pWuHun) return 0;
+
+
+
+
 
 
 
@@ -22810,11 +45617,23 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         return (overlay == 0) ? 1 : overlay;
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22822,7 +45641,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22830,7 +45657,15 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22838,7 +45673,19 @@ int32_t CfgData::getOverlay(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22850,7 +45697,15 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -22858,7 +45713,15 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22866,11 +45729,23 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (pEquip) return pEquip->m_nPrice;
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22878,7 +45753,15 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22886,11 +45769,23 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (pGem) return pGem->m_nPrice;
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22898,7 +45793,15 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22906,11 +45809,23 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (pPetEquip) return pPetEquip->nPrice;
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22918,7 +45833,15 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22926,7 +45849,15 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (pItem) return pItem->out_value;
+
+
+
+
 
 
 
@@ -22934,11 +45865,27 @@ int32_t CfgData::getOutValue(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     return -1;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -22950,7 +45897,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -22958,7 +45913,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22966,7 +45929,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22974,7 +45945,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (pEquip) return pEquip->m_nBroadcast > 0;
+
+
+
+
 
 
 
@@ -22982,7 +45961,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -22990,7 +45977,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -22998,7 +45993,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (pPetEquip) return pPetEquip->nBroadcast > 0;
+
+
+
+
 
 
 
@@ -23006,7 +46009,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -23014,7 +46025,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -23022,7 +46041,15 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
         if (pItem) return pItem->broadcast > 0;
+
+
+
+
 
 
 
@@ -23030,11 +46057,23 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -23042,7 +46081,19 @@ bool CfgData::dropBroadcast(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -23054,7 +46105,15 @@ bool CfgData::canSell(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -23062,7 +46121,15 @@ bool CfgData::canSell(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
     CfgItem *pCfgItem = getItem(nId);
+
+
+
+
 
 
 
@@ -23070,7 +46137,19 @@ bool CfgData::canSell(int32_t nId, int8_t nClass)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -23082,7 +46161,15 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -23090,7 +46177,15 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23098,7 +46193,15 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -23106,7 +46209,15 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
         if (task.type == 9 && task.level <= Level && task.max_level >= Level && task.group == Times)
+
+
+
+
 
 
 
@@ -23114,7 +46225,15 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
             TaskIdVt.push_back(task.id);
+
+
+
+
 
 
 
@@ -23122,11 +46241,23 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23134,7 +46265,15 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23142,11 +46281,27 @@ int32_t CfgData::InitXuWuTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     return TaskIdVt.front();
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -23158,7 +46313,15 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -23166,7 +46329,15 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23174,7 +46345,15 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -23182,7 +46361,15 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
         if (task.type == 42 && task.level <= Level && task.max_level >= Level && task.group == Times)
+
+
+
+
 
 
 
@@ -23190,7 +46377,15 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
             TaskIdVt.push_back(task.id);
+
+
+
+
 
 
 
@@ -23198,11 +46393,23 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23210,7 +46417,15 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23218,11 +46433,27 @@ int32_t CfgData::InitXinMoTask(int32_t Level, int32_t Times)
 
 
 
+
+
+
+
     return TaskIdVt.front();
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -23234,7 +46465,15 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -23242,7 +46481,15 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23250,7 +46497,15 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -23258,11 +46513,23 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
         if (task.type == 4 && task.level <= Level && task.max_level >= Level)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -23270,7 +46537,15 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -23278,7 +46553,15 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23286,7 +46569,15 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23294,11 +46585,23 @@ int32_t CfgData::RandPdbfTask(int32_t Level)
 
 
 
+
+
+
+
     return TaskVt.front();
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -23306,7 +46609,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -23314,7 +46625,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23322,7 +46641,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -23330,7 +46657,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -23338,7 +46673,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23346,7 +46689,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -23354,7 +46705,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -23362,7 +46721,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -23370,7 +46737,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             CfgActiveSkill skill;
+
+
+
+
 
 
 
@@ -23378,11 +46753,23 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             new (&skill.summon_attr) std::vector<AttrAddon>();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23390,11 +46777,23 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.id = TabFile.Search_Posistion( i, 0)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -23402,7 +46801,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.groupid = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23410,7 +46817,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.kind = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23418,7 +46833,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.range = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23426,7 +46849,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.self = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23434,7 +46865,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.beneficial = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23442,7 +46881,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.addon_skill = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23450,7 +46897,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.addon_cd = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23458,7 +46913,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.addon_trig_times = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23466,7 +46929,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.cd_adjust = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23474,7 +46945,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.power = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23482,7 +46961,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.attack_type = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23490,7 +46977,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.building_modify = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23498,11 +46993,23 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.buff = TabFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -23510,7 +47017,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.summon_id = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23518,11 +47033,23 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23530,7 +47057,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -23538,11 +47073,23 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/cfg_skill_info.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23550,7 +47097,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -23558,7 +47113,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23566,7 +47129,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -23574,7 +47145,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -23582,7 +47161,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -23590,7 +47177,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.boss_addon_damage = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -23598,7 +47193,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             skill.shu_lian_du = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -23606,7 +47209,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23614,7 +47225,15 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -23622,7 +47241,19 @@ void CfgData::InitActiveSkillTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -23634,7 +47265,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -23642,7 +47281,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23650,7 +47297,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -23658,7 +47313,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -23666,7 +47329,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23674,7 +47345,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -23682,7 +47361,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -23690,7 +47377,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -23698,7 +47393,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             CfgPassiveSkill stu;
+
+
+
+
 
 
 
@@ -23706,7 +47409,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             new (&stu.vAttrs) std::vector<AttrAddon>();
+
+
+
+
 
 
 
@@ -23714,7 +47425,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23722,7 +47441,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -23730,11 +47457,23 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23742,7 +47481,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -23750,11 +47497,23 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/SkillPassiveAttr.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23762,7 +47521,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -23770,7 +47537,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23778,7 +47553,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -23786,11 +47569,23 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23798,7 +47593,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             char v12;
+
+
+
+
 
 
 
@@ -23806,7 +47609,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23814,7 +47625,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -23822,11 +47641,23 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             v13 = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23834,7 +47665,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             CfgData::paraseTalentAddon(&v10, &v13, i, &v11);
+
+
+
+
 
 
 
@@ -23842,7 +47681,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -23850,7 +47697,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -23858,7 +47713,15 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
             CfgSkillTable::AddPassiveSkill(&this->m_cfgSkillTable, &stu);
+
+
+
+
 
 
 
@@ -23866,11 +47729,27 @@ void CfgData::InitPassiveSkillTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -23882,7 +47761,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -23890,7 +47777,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23898,7 +47793,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -23906,7 +47809,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -23914,7 +47825,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -23922,7 +47841,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -23930,7 +47857,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -23938,7 +47873,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -23946,11 +47889,23 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             CfgTrigSkill stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23958,7 +47913,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -23966,11 +47929,23 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             stu.trigType = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -23978,7 +47953,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             stu.trigParam = v1->pString;
+
+
+
+
 
 
 
@@ -23986,7 +47969,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             stu.trigRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -23994,7 +47985,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             stu.trigBuff = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24002,7 +48001,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             stu.specialParam = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24010,7 +48017,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -24018,7 +48033,15 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
             CfgSkillTable::AddTrigSkill(&this->m_cfgSkillTable, &stu);
+
+
+
+
 
 
 
@@ -24026,11 +48049,27 @@ void CfgData::InitTrigSkillTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -24042,7 +48081,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -24050,7 +48097,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24058,7 +48113,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -24066,7 +48129,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -24074,7 +48145,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24082,7 +48161,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -24090,7 +48177,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -24098,7 +48193,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -24106,11 +48209,23 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             CfgTalent stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24118,7 +48233,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             stu.id = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -24126,7 +48249,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             stu.skillid = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -24134,23 +48265,47 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             stu.Playerlevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
-            ++nIndex;
 
-
-
-            ++nIndex;
 
 
 
             ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
 
 
 
             
+
+
+
+
 
 
 
@@ -24158,7 +48313,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -24166,11 +48329,23 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             bCombi = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24178,7 +48353,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -24186,11 +48369,23 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24198,7 +48393,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             char v10;
+
+
+
+
 
 
 
@@ -24206,7 +48409,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24214,7 +48425,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             char v12;
+
+
+
+
 
 
 
@@ -24222,11 +48441,23 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             path = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24234,7 +48465,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
+
+
+
+
 
 
 
@@ -24242,7 +48481,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -24250,7 +48497,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24258,7 +48513,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -24266,7 +48529,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             stu.GongGaoId = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24274,7 +48545,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24282,7 +48561,15 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -24290,7 +48577,19 @@ void CfgData::InitTalentTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -24302,7 +48601,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -24310,7 +48617,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24318,7 +48633,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -24326,7 +48649,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -24334,7 +48665,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24342,7 +48681,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -24350,7 +48697,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -24358,7 +48713,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -24366,11 +48729,23 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             CfgTalentPage stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24378,11 +48753,23 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             stu.job = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24390,7 +48777,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             char v6;
+
+
+
+
 
 
 
@@ -24398,7 +48793,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24406,7 +48809,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -24414,11 +48825,23 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             path = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24426,7 +48849,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
+
+
+
+
 
 
 
@@ -24434,7 +48865,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -24442,7 +48881,15 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
             CfgTalentTable::AddTalentPage(&this->m_cfgTalentTable, &stu);
+
+
+
+
 
 
 
@@ -24450,11 +48897,27 @@ void CfgData::InitTalentPageTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -24466,7 +48929,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -24474,7 +48945,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24482,7 +48961,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -24490,7 +48977,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -24498,7 +48993,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24506,7 +49009,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -24514,7 +49025,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -24522,7 +49041,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -24530,11 +49057,23 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             CfgFamilySkill stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24542,7 +49081,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -24550,7 +49097,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             stu.nFamilyLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -24558,7 +49113,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24566,7 +49129,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -24574,11 +49145,23 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/FamilySkill.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24586,7 +49169,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -24594,7 +49185,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24602,7 +49201,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -24610,7 +49217,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -24618,7 +49233,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             stu.PlayerLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24626,7 +49249,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24634,7 +49265,15 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -24642,7 +49281,19 @@ void CfgData::InitFamilySkillTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -24654,7 +49305,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -24662,7 +49321,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24670,7 +49337,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -24678,7 +49353,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -24686,7 +49369,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24694,7 +49385,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -24702,7 +49401,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -24710,11 +49417,23 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -24722,11 +49441,23 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
             
 
 
 
+
+
+
+
             int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -24734,7 +49465,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24742,11 +49481,23 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
             char v6;
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -24754,7 +49505,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24762,7 +49521,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -24770,11 +49537,23 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24782,7 +49561,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -24790,7 +49577,15 @@ void CfgData::InitTalentActiveTable()
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -24798,7 +49593,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -24806,7 +49609,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24814,7 +49625,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -24822,7 +49641,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -24830,7 +49657,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -24838,7 +49673,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -24846,7 +49689,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -24854,7 +49705,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -24862,11 +49721,23 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             CfgEquip equip{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24874,11 +49745,23 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_nId = readFile.Search_Posistion( i, 0)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -24886,7 +49769,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_nGrade = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24894,7 +49785,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_nJob = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24902,7 +49801,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_nSuitId = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24910,7 +49817,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -24918,7 +49833,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24926,7 +49849,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -24934,11 +49865,23 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/Equip.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24946,7 +49889,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -24954,7 +49905,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24962,7 +49921,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -24970,11 +49937,23 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24982,7 +49961,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             char v13;
+
+
+
+
 
 
 
@@ -24990,7 +49977,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -24998,7 +49993,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -25006,11 +50009,23 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             v14 = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25018,7 +50033,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(v11, &v14, i, &v12);
+
+
+
+
 
 
 
@@ -25026,7 +50049,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -25034,7 +50065,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_DropLuck = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -25042,7 +50081,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_BackType = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -25050,7 +50097,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_nBroadcast = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -25058,15 +50113,31 @@ void CfgData::InitEquipTable()
 
 
 
-            ++nIndex;
 
-
-
-            ++nIndex;
 
 
 
             ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
 
 
 
@@ -25074,7 +50145,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_BackGold = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25082,7 +50161,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25090,7 +50177,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             char v18;
+
+
+
+
 
 
 
@@ -25098,7 +50193,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25106,7 +50209,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v3 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -25114,11 +50225,23 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             v19 = v3->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25126,7 +50249,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(v16, &v19, i, &v17);
+
+
+
+
 
 
 
@@ -25134,7 +50265,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -25142,7 +50281,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -25150,7 +50297,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_SellDay = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25158,7 +50313,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_WingEquipRefiningLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25166,7 +50329,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_XinMoBag = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25174,7 +50345,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             equip.m_TeJieParam = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25182,7 +50361,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25190,7 +50377,15 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -25198,7 +50393,19 @@ void CfgData::InitEquipTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -25210,7 +50417,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -25218,7 +50433,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25226,7 +50449,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -25234,7 +50465,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -25242,7 +50481,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25250,7 +50497,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -25258,7 +50513,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -25266,7 +50529,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -25274,11 +50545,23 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             CfgEquipUpStar stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25286,7 +50569,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             stu.m_nType = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -25294,7 +50585,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             stu.m_nRate = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -25302,11 +50601,23 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             stu.m_nFailLostStar = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25314,7 +50625,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -25322,11 +50641,23 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             bCombi = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25334,7 +50665,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -25342,7 +50681,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -25350,11 +50697,23 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25362,7 +50721,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -25370,11 +50737,23 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/EquipUpStar.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25382,7 +50761,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -25390,7 +50777,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25398,7 +50793,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -25406,7 +50809,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -25414,7 +50825,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25422,7 +50841,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             stu.m_RongLianAttr = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25430,7 +50857,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25438,7 +50873,15 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -25446,7 +50889,19 @@ void CfgData::InitEquipUpStarTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -25458,7 +50913,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -25466,7 +50929,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25474,7 +50945,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -25482,7 +50961,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -25490,7 +50977,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25498,7 +50993,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -25506,7 +51009,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -25514,7 +51025,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -25522,7 +51041,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             WingCfg stu;
+
+
+
+
 
 
 
@@ -25530,7 +51057,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             new (&stu.ConstItems) std::list<ItemData>();
+
+
+
+
 
 
 
@@ -25538,7 +51073,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25546,7 +51089,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             stu.Level = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -25554,7 +51105,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25562,7 +51121,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -25570,11 +51137,23 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             bCombi = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25582,7 +51161,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -25590,7 +51177,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -25598,7 +51193,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             stu.SuccessPoints = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25606,7 +51209,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             stu.Rate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25614,7 +51225,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             stu.SkillId = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25622,7 +51241,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             stu.IsClear = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -25630,11 +51257,23 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25642,7 +51281,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -25650,11 +51297,23 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/AttributeWing.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25662,7 +51321,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -25670,7 +51337,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25678,7 +51353,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -25686,7 +51369,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -25694,7 +51385,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             WingCfg p_stu;
+
+
+
+
 
 
 
@@ -25702,7 +51401,15 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
             CfgWingTable::AddWingCfg(&this->m_cfgWing, &p_stu);
+
+
+
+
 
 
 
@@ -25710,11 +51417,27 @@ void CfgData::InitWingCfgTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -25726,7 +51449,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -25734,7 +51465,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25742,7 +51481,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -25750,7 +51497,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -25758,7 +51513,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25766,7 +51529,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -25774,7 +51545,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -25782,7 +51561,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -25790,7 +51577,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             CfgCarrier stu;
+
+
+
+
 
 
 
@@ -25798,11 +51593,23 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             new (&stu.lSkills) std::list<int>();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25810,7 +51617,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             stu.nId = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -25818,7 +51633,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25826,7 +51649,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             char v6;
+
+
+
+
 
 
 
@@ -25834,7 +51665,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25842,7 +51681,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -25850,11 +51697,23 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             path = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25862,7 +51721,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             paraseInt32List(&__x, &path, atoi(size.c_str()), nullptr);
+
+
+
+
 
 
 
@@ -25870,7 +51737,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -25878,7 +51753,15 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
             CfgCarrierTable::AddCarrier(&this->m_cfgCarrierTable, &stu);
+
+
+
+
 
 
 
@@ -25886,11 +51769,27 @@ void CfgData::InitCarrierTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -25902,7 +51801,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -25910,7 +51817,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25918,7 +51833,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -25926,7 +51849,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -25934,7 +51865,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -25942,7 +51881,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -25950,7 +51897,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -25958,7 +51913,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -25966,11 +51929,23 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
             CfgPetData pet;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25978,7 +51953,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
             pet.m_nPetId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -25986,11 +51969,23 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -25998,7 +51993,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -26006,7 +52009,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
                 pet.m_vSkillOpen[j] = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -26014,7 +52025,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26022,7 +52041,15 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -26030,7 +52057,19 @@ void CfgData::InitPetTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -26042,7 +52081,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -26050,11 +52097,23 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     bool ret = readFile.OpenFromTXT( "./ServerConfig/Tables/Family.txt");
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26062,7 +52121,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26070,7 +52137,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -26078,7 +52153,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26086,11 +52169,23 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26098,7 +52193,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26106,7 +52209,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -26114,7 +52225,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -26122,7 +52241,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26130,7 +52257,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
             family.nLevel = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -26138,7 +52273,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
             family.nMaxMembers = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -26146,7 +52289,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
             family.vPosition[2] = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -26154,7 +52305,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26162,7 +52321,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -26170,7 +52337,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26178,7 +52353,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     CDBCFile readFile2;
+
+
+
+
 
 
 
@@ -26186,7 +52369,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26194,7 +52385,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26202,7 +52401,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
         iBaseColumnCount = readFile2.GetFieldsNum();
+
+
+
+
 
 
 
@@ -26210,7 +52417,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -26218,7 +52433,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
             for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
+
+
+
+
 
 
 
@@ -26226,7 +52449,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
                 CfgFamilyBoss stu;
+
+
+
+
 
 
 
@@ -26234,7 +52465,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
                 stu.nFamilyLevel = readFile2.Search_Posistion( i_0, 0)->iValue;
+
+
+
+
 
 
 
@@ -26242,7 +52481,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
                 stu.FamilyExp = readFile2.Search_Posistion( i_0, ++nIndex_0)->iValue;
+
+
+
+
 
 
 
@@ -26250,7 +52497,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
                 ++nIndex_0;
+
+
+
+
 
 
 
@@ -26258,7 +52513,15 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
                 CfgFamilyTable::AddFamilyBoss(&this->m_cfgFamilyTable, &stu);
+
+
+
+
 
 
 
@@ -26266,15 +52529,35 @@ void CfgData::InitFamilyTable()
 
 
 
+
+
+
+
         }
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -26286,7 +52569,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -26294,7 +52585,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26302,7 +52601,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26310,7 +52617,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -26318,7 +52633,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26326,7 +52649,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -26334,7 +52665,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -26342,7 +52681,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -26350,7 +52697,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
             HoeCfg Stu;
+
+
+
+
 
 
 
@@ -26358,7 +52713,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
             Stu.nId = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -26366,7 +52729,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -26374,7 +52745,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -26382,7 +52761,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
             auto *v1 = &this->m_HoeCfgMap[Stu.nId];
+
+
+
+
 
 
 
@@ -26390,7 +52777,15 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -26398,7 +52793,19 @@ void CfgData::InitHoeTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -26410,7 +52817,15 @@ HoeCfg *CfgData::GetHoeCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -26418,7 +52833,15 @@ HoeCfg *CfgData::GetHoeCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_HoeCfgMap.end())
+
+
+
+
 
 
 
@@ -26426,7 +52849,15 @@ HoeCfg *CfgData::GetHoeCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -26434,11 +52865,27 @@ HoeCfg *CfgData::GetHoeCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -26450,7 +52897,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -26458,7 +52913,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26466,7 +52929,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26474,7 +52945,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -26482,7 +52961,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26490,7 +52977,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -26498,7 +52993,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -26506,11 +53009,23 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -26518,11 +53033,23 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
 
 
 
+
+
+
+
             int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -26530,7 +53057,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -26538,11 +53073,23 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26550,7 +53097,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             char v14;
+
+
+
+
 
 
 
@@ -26558,11 +53113,23 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             params = v1->pString;
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -26570,7 +53137,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             title.sPlatform = v2->pString;
+
+
+
+
 
 
 
@@ -26578,7 +53153,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             title.nSex = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -26586,7 +53169,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             title.nPriority = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -26594,7 +53185,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26602,7 +53201,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             char v15;
+
+
+
+
 
 
 
@@ -26610,7 +53217,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             getttr = v3->pString;
+
+
+
+
 
 
 
@@ -26618,7 +53233,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26626,7 +53249,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             char v16;
+
+
+
+
 
 
 
@@ -26634,7 +53265,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             dressattr = v4->pString;
+
+
+
+
 
 
 
@@ -26642,7 +53281,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26650,7 +53297,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             char v18;
+
+
+
+
 
 
 
@@ -26658,7 +53313,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26666,11 +53329,23 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             StringUtility::split(strParams, params, delims);
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -26678,7 +53353,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -26686,7 +53369,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
                 title.vParams.push_back(val);
+
+
+
+
 
 
 
@@ -26694,7 +53385,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26702,7 +53401,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             char v23;
+
+
+
+
 
 
 
@@ -26710,7 +53417,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26718,7 +53433,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(v21, &getttr, i, &path);
+
+
+
+
 
 
 
@@ -26726,7 +53449,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -26734,7 +53465,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             char v26;
+
+
+
+
 
 
 
@@ -26742,7 +53481,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26750,7 +53497,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(v24, &dressattr, i, &v25);
+
+
+
+
 
 
 
@@ -26758,11 +53513,23 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
                     
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26770,7 +53537,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -26778,7 +53553,15 @@ void CfgData::InitTitleTable()
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -26786,7 +53569,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -26794,7 +53585,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26802,7 +53601,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26810,7 +53617,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -26818,7 +53633,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26826,11 +53649,23 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26838,7 +53673,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26846,7 +53689,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -26854,7 +53705,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -26862,7 +53721,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
             stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -26870,7 +53737,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
             stu.nOpenTimes = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -26878,7 +53753,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
             stu.nCostGold = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -26886,11 +53769,23 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
             CfgGoldEggTable::AddGoldEgg(&this->m_cfgGoldEggTable, &stu);
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -26898,7 +53793,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -26906,7 +53809,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     CDBCFile readFile2;
+
+
+
+
 
 
 
@@ -26914,7 +53825,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -26922,7 +53841,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
         iBaseColumnCount = readFile2.GetFieldsNum();
+
+
+
+
 
 
 
@@ -26930,7 +53857,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -26938,7 +53873,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
             for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
+
+
+
+
 
 
 
@@ -26946,7 +53889,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
                 int32_t nId = readFile2.Search_Posistion( i_0, 0)->iValue;
+
+
+
+
 
 
 
@@ -26954,7 +53905,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
                 stu.nId = readFile2.Search_Posistion( i_0, 1)->iValue;
+
+
+
+
 
 
 
@@ -26962,7 +53921,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
                 stu.nOpenTimes = readFile2.Search_Posistion( i_0, 3)->iValue;
+
+
+
+
 
 
 
@@ -26970,7 +53937,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
                 stu.nCostGold = readFile2.Search_Posistion( i_0, 5)->iValue;
+
+
+
+
 
 
 
@@ -26978,7 +53953,15 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
                 CfgGoldEggTable::AddGoldEggProduce(&this->m_cfgGoldEggTable, nId, &stu);
+
+
+
+
 
 
 
@@ -26986,15 +53969,35 @@ void CfgData::InitGoldEggTable()
 
 
 
+
+
+
+
         }
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -27006,7 +54009,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -27014,7 +54025,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27022,7 +54041,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -27030,7 +54057,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -27038,7 +54073,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27046,7 +54089,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -27054,7 +54105,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -27062,7 +54121,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -27070,7 +54137,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             CfgLimitTime stu;
+
+
+
+
 
 
 
@@ -27078,7 +54153,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             stu.nIndex = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -27086,11 +54169,23 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27098,7 +54193,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             char v6;
+
+
+
+
 
 
 
@@ -27106,7 +54209,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             strTime = v1->pString;
+
+
+
+
 
 
 
@@ -27114,7 +54225,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27122,7 +54241,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -27130,7 +54257,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -27138,7 +54273,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -27146,7 +54289,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -27154,7 +54305,15 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
             CfgLimitTimeTable::AddLimitTime(&this->m_cfgLimitTimeTable, &stu);
+
+
+
+
 
 
 
@@ -27162,11 +54321,27 @@ void CfgData::InitLimitTimeTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -27178,7 +54353,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -27186,7 +54369,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27194,7 +54385,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -27202,7 +54401,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -27210,7 +54417,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27218,7 +54433,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -27226,7 +54449,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -27234,7 +54465,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -27242,7 +54481,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             CfgMysteryShop stu;
+
+
+
+
 
 
 
@@ -27250,7 +54497,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27258,7 +54513,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             stu.nId = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -27266,11 +54529,23 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27278,7 +54553,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             char v9;
+
+
+
+
 
 
 
@@ -27286,11 +54569,23 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             strItem = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27298,7 +54593,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemString(v4, &strItem);
+
+
+
+
 
 
 
@@ -27306,7 +54609,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -27314,11 +54625,23 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             stu.nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -27326,7 +54649,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             stu.nMinLevel = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -27334,7 +54665,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             stu.nBroad = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -27342,7 +54681,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27350,7 +54697,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             char v11;
+
+
+
+
 
 
 
@@ -27358,11 +54713,23 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             v10 = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27370,7 +54737,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             stu.exchange.m_nId = v17.m_nId;
+
+
+
+
 
 
 
@@ -27378,7 +54753,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             stu.exchange.m_nCount = v17.m_nCount;
+
+
+
+
 
 
 
@@ -27386,7 +54769,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27394,7 +54785,15 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -27402,7 +54801,19 @@ void CfgData::InitMysteryShopTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -27414,7 +54825,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -27422,7 +54841,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27430,7 +54857,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -27438,7 +54873,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -27446,7 +54889,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27454,7 +54905,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -27462,7 +54921,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -27470,7 +54937,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -27478,11 +54953,23 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             CfgBuyGift stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27490,7 +54977,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -27498,7 +54993,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27506,7 +55009,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             char v6;
+
+
+
+
 
 
 
@@ -27514,7 +55025,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             items = v1->pString;
+
+
+
+
 
 
 
@@ -27522,7 +55041,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             nIndex += 3;
+
+
+
+
 
 
 
@@ -27530,7 +55057,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27538,7 +55073,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &items);
+
+
+
+
 
 
 
@@ -27546,7 +55089,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27554,7 +55105,15 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
             *v2 = stu;
+
+
+
+
 
 
 
@@ -27562,11 +55121,27 @@ void CfgData::InitBuyGiftTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -27578,7 +55153,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -27586,7 +55169,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27594,7 +55185,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -27602,7 +55201,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -27610,7 +55217,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27618,7 +55233,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -27626,7 +55249,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -27634,7 +55265,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -27642,11 +55281,23 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             CfgExchange stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27654,7 +55305,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -27662,7 +55321,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27670,7 +55337,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -27678,7 +55353,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             items = v1->pString;
+
+
+
+
 
 
 
@@ -27686,7 +55369,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27694,7 +55385,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -27702,7 +55401,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             rewards = v2->pString;
+
+
+
+
 
 
 
@@ -27710,7 +55417,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             stu.nLimit = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -27718,7 +55433,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27726,7 +55449,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -27734,7 +55465,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27742,7 +55481,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &rewards);
+
+
+
+
 
 
 
@@ -27750,7 +55497,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27758,7 +55513,15 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -27766,7 +55529,19 @@ void CfgData::InitExchangeTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -27778,7 +55553,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -27786,7 +55569,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27794,7 +55585,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -27802,7 +55601,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -27810,7 +55617,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27818,7 +55633,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -27826,7 +55649,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -27834,7 +55665,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -27842,11 +55681,23 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             CfgMysteryGift stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27854,7 +55705,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -27862,11 +55721,23 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             stu.nCondition = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27874,7 +55745,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             char v6;
+
+
+
+
 
 
 
@@ -27882,11 +55761,23 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             strItems = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -27894,7 +55785,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -27902,7 +55801,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -27910,7 +55817,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             stu.nBroadId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -27918,7 +55833,15 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
             CfgMysteryGiftTable::Add(&this->m_cfgMysteryGiftTable, &stu);
+
+
+
+
 
 
 
@@ -27926,11 +55849,27 @@ void CfgData::InitMysteryGiftTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -27942,7 +55881,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -27950,7 +55897,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27958,7 +55913,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -27966,7 +55929,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -27974,7 +55945,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -27982,7 +55961,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -27990,7 +55977,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -27998,7 +55993,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -28006,11 +56009,23 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             CfgDrawReward stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28018,7 +56033,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -28026,11 +56049,23 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             stu.nRate = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28038,7 +56073,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             memset(&item, 0, sizeof(item));
+
+
+
+
 
 
 
@@ -28046,7 +56089,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             item.itemId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -28054,7 +56105,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             item.bind = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -28062,7 +56121,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -28070,7 +56137,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28078,7 +56153,15 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -28086,7 +56169,19 @@ void CfgData::InitDrawTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -28098,7 +56193,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -28106,7 +56209,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28114,7 +56225,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -28122,7 +56241,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -28130,7 +56257,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28138,7 +56273,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -28146,7 +56289,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -28154,7 +56305,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -28162,11 +56321,23 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             CfgMapRoad stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28174,7 +56345,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -28182,11 +56361,23 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             stu.nMapId = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28194,7 +56385,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             char v13;
+
+
+
+
 
 
 
@@ -28202,7 +56401,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             strRoad = v1->pString;
+
+
+
+
 
 
 
@@ -28210,7 +56417,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28218,7 +56433,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             char v15;
+
+
+
+
 
 
 
@@ -28226,7 +56449,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28234,7 +56465,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             StringUtility::split(vRoad, strRoad, delims);
+
+
+
+
 
 
 
@@ -28242,7 +56481,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             for (auto& roadStr : vRoad)
+
+
+
+
 
 
 
@@ -28250,7 +56497,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
                 std::string v17;
+
+
+
+
 
 
 
@@ -28258,7 +56513,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
                             v17 = ":";
+
+
+
+
 
 
 
@@ -28266,7 +56529,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
                 StringVector vPos;
+
+
+
+
 
 
 
@@ -28274,7 +56545,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
                             
+
+
+
+
 
 
 
@@ -28282,7 +56561,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -28290,7 +56577,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
                     __x.x = atoi(vPos[0].c_str());
+
+
+
+
 
 
 
@@ -28298,7 +56593,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
                     stu.road.push_back(__x);
+
+
+
+
 
 
 
@@ -28306,7 +56609,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -28314,7 +56625,15 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
             CfgMapRoadTable::Add(&this->m_cfgMapRoadTable, &stu);
+
+
+
+
 
 
 
@@ -28322,11 +56641,27 @@ void CfgData::InitMapRoadTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -28338,7 +56673,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -28346,7 +56689,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28354,7 +56705,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -28362,7 +56721,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -28370,7 +56737,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28378,7 +56753,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -28386,7 +56769,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -28394,7 +56785,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -28402,11 +56801,23 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
             CfgTrailer stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28414,7 +56825,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
             stu.nId = TabFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -28422,7 +56841,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
             stu.TrailerQuality = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -28430,7 +56857,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
             stu.PureDamage = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -28438,7 +56873,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28446,7 +56889,15 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -28454,7 +56905,19 @@ void CfgData::InitTrailerTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -28466,7 +56929,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -28474,7 +56945,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28482,7 +56961,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -28490,7 +56977,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -28498,7 +56993,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28506,7 +57009,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -28514,7 +57025,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -28522,7 +57041,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
         int32_t nGroupId = 0;
+
+
+
+
 
 
 
@@ -28530,11 +57057,23 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
         std::list<CardGroup> cardList;
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -28542,7 +57081,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -28550,11 +57097,23 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             memset(&stu, 0, sizeof(stu));
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28562,7 +57121,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             int32_t nId = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -28570,7 +57137,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             stu.nClass = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -28578,7 +57153,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             stu.nBind = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -28586,7 +57169,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             stu.nShow = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -28594,7 +57185,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             stu.nMin = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -28602,7 +57201,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             stu.nBroad = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -28610,11 +57217,23 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28622,7 +57241,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -28630,7 +57257,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -28638,11 +57273,23 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                     v1->Add(nGroupId, &cardList);
 
 
 
+
+
+
+
                     nGroupId = stu.nGroup;
+
+
+
+
 
 
 
@@ -28650,11 +57297,23 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                     cardList.clear();
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -28662,7 +57321,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -28670,7 +57337,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -28678,7 +57353,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -28686,7 +57369,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                 card.id = nGroupIndex;
+
+
+
+
 
 
 
@@ -28694,7 +57385,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                 card.min = stu.nMin;
+
+
+
+
 
 
 
@@ -28702,7 +57401,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
                 cardList.push_back(card);
+
+
+
+
 
 
 
@@ -28710,7 +57417,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28718,7 +57433,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -28726,7 +57449,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
         if (nGroupId > 0)
+
+
+
+
 
 
 
@@ -28734,7 +57465,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
             CCardGroupBoxManager *v2 = Answer::Singleton<CCardGroupBoxManager>::instance();
+
+
+
+
 
 
 
@@ -28742,7 +57481,15 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -28750,7 +57497,19 @@ void CfgData::InitMYSJRewardTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -28762,7 +57521,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -28770,7 +57537,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28778,7 +57553,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -28786,7 +57569,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -28794,7 +57585,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28802,7 +57601,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -28810,7 +57617,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -28818,7 +57633,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -28826,11 +57649,23 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             CfgMaintainCompensate stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28838,11 +57673,23 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             stu.nIndex = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28850,7 +57697,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             char v6;
+
+
+
+
 
 
 
@@ -28858,7 +57713,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             p_StringTime = v1->pString;
+
+
+
+
 
 
 
@@ -28866,11 +57729,23 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28878,7 +57753,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             char v9;
+
+
+
+
 
 
 
@@ -28886,11 +57769,23 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             strItems = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -28898,7 +57793,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -28906,7 +57809,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -28914,7 +57825,15 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
             CfgMaintainCompensateTable::Add(&this->m_cfgMaintainCompensateTable, &stu);
+
+
+
+
 
 
 
@@ -28922,11 +57841,27 @@ void CfgData::InitMaintainCompensateTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -28938,7 +57873,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -28946,7 +57889,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28954,7 +57905,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -28962,7 +57921,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -28970,7 +57937,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -28978,7 +57953,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -28986,7 +57969,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -28994,7 +57985,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -29002,11 +58001,23 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             CfgWishReward stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29014,7 +58025,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             int32_t nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -29022,7 +58041,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29030,7 +58057,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             char v6;
+
+
+
+
 
 
 
@@ -29038,11 +58073,23 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             strItems = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29050,7 +58097,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -29058,7 +58113,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -29066,7 +58129,15 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
             CfgWishRewardTable::Add(&this->m_cfgWishRewardTable, nId, &stu);
+
+
+
+
 
 
 
@@ -29074,11 +58145,27 @@ void CfgData::InitWishRewardTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29090,7 +58177,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -29098,7 +58193,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29106,7 +58209,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -29114,7 +58225,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -29122,7 +58241,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29130,7 +58257,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -29138,7 +58273,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -29146,7 +58289,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -29154,16 +58305,33 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
             int32_t nTimes = readFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
             int32_t nIndex = 0;
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29171,7 +58339,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
             char v5;
+
+
+
+
 
 
 
@@ -29179,11 +58355,23 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
             bCombi = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29191,7 +58379,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -29199,7 +58395,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29207,7 +58411,15 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -29215,7 +58427,19 @@ void CfgData::InitBFZLEnterCostTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29227,7 +58451,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -29235,7 +58467,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29243,7 +58483,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -29251,7 +58499,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -29259,7 +58515,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29267,7 +58531,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -29275,7 +58547,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -29283,7 +58563,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -29291,7 +58579,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             int32_t nDays = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -29299,11 +58595,25 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
+            int32_t nIndex = 0;
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29311,7 +58621,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             char v9;
+
+
+
+
 
 
 
@@ -29319,11 +58637,23 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             strItem = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29331,7 +58661,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemString(item1, &strItem);
+
+
+
+
 
 
 
@@ -29339,7 +58677,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29347,7 +58693,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             char v11;
+
+
+
+
 
 
 
@@ -29355,11 +58709,23 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             v10 = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29367,7 +58733,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemString(item2, &v10);
+
+
+
+
 
 
 
@@ -29375,7 +58749,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29383,7 +58765,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             char v13;
+
+
+
+
 
 
 
@@ -29391,11 +58781,23 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             v12 = v3->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29403,7 +58805,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemString(item3, &v12);
+
+
+
+
 
 
 
@@ -29411,7 +58821,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             int32_t nOldPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -29419,7 +58837,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             int32_t nBroadcast = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -29427,7 +58853,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29435,7 +58869,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
             CfgBlacketMarketTable::Add(&this->m_cfgBlacketMarketTable, nDays, nOrder, 2, &item2, nPrice, nBroadcast);
+
+
+
+
 
 
 
@@ -29443,7 +58885,15 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -29451,7 +58901,19 @@ void CfgData::InitBlacketMarketTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29463,7 +58925,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
 {
+    int32_t nIndex = 0;
+
+
+
 
 
 
@@ -29471,7 +58941,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29479,7 +58957,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -29487,7 +58973,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -29495,7 +58989,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29503,7 +59005,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -29511,7 +59021,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -29519,7 +59037,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -29527,7 +59053,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
             int32_t nLevel = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -29535,7 +59069,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -29543,7 +59085,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
             auto *v1 = &this->m_cfgLevelChatTable[nLevel];
+
+
+
+
 
 
 
@@ -29551,7 +59101,15 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -29559,7 +59117,19 @@ void CfgData::InitLevelChatTimesTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29571,7 +59141,15 @@ int32_t CfgData::GetChatTimes(int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -29579,7 +59157,15 @@ int32_t CfgData::GetChatTimes(int32_t nLevel)
 
 
 
+
+
+
+
     if (it != this->m_cfgLevelChatTable.end())
+
+
+
+
 
 
 
@@ -29587,7 +59173,15 @@ int32_t CfgData::GetChatTimes(int32_t nLevel)
 
 
 
+
+
+
+
         return it->second;
+
+
+
+
 
 
 
@@ -29595,11 +59189,27 @@ int32_t CfgData::GetChatTimes(int32_t nLevel)
 
 
 
+
+
+
+
     return -1;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29611,7 +59221,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -29619,7 +59237,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29627,7 +59253,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -29635,7 +59269,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -29643,7 +59285,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29651,7 +59301,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -29659,7 +59317,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -29667,7 +59333,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -29675,7 +59349,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
             std::string platform;
+
+
+
+
 
 
 
@@ -29683,7 +59365,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, 0);
+
+
+
+
 
 
 
@@ -29691,7 +59381,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -29699,7 +59397,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
             stu.nGold = readFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -29707,7 +59413,16 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
+            int32_t nIndex = 0;
             ++nIndex;
+
+
+
+
 
 
 
@@ -29715,7 +59430,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -29723,7 +59446,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
             auto *v2 = &this->m_cfgSuperMember[platform];
+
+
+
+
 
 
 
@@ -29731,7 +59462,15 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -29739,7 +59478,19 @@ void CfgData::InitSuperMemberTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29751,7 +59502,15 @@ const CfgSuperMember *CfgData::GetSuperMember(const std::string *const platform)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -29759,7 +59518,15 @@ const CfgSuperMember *CfgData::GetSuperMember(const std::string *const platform)
 
 
 
+
+
+
+
     if (it != this->m_cfgSuperMember.end())
+
+
+
+
 
 
 
@@ -29767,7 +59534,15 @@ const CfgSuperMember *CfgData::GetSuperMember(const std::string *const platform)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -29775,11 +59550,27 @@ const CfgSuperMember *CfgData::GetSuperMember(const std::string *const platform)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29791,7 +59582,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -29799,7 +59598,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29807,7 +59614,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -29815,7 +59630,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -29823,7 +59646,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -29831,7 +59662,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -29839,7 +59678,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -29847,7 +59694,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -29855,11 +59710,23 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             CfgSouGouSkin stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29867,7 +59734,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             std::string platform;
+
+
+
+
 
 
 
@@ -29875,7 +59750,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -29883,11 +59766,23 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29895,7 +59790,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             char v10;
+
+
+
+
 
 
 
@@ -29903,11 +59806,23 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             strItems = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -29915,7 +59830,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -29923,7 +59846,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -29931,7 +59862,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -29939,7 +59878,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
             auto *v3 = &this->m_cfgSouGouSkin[platform];
+
+
+
+
 
 
 
@@ -29947,7 +59894,15 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -29955,7 +59910,19 @@ void CfgData::InitSouGouSkinTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -29967,7 +59934,15 @@ const CfgSouGouSkin *CfgData::GetSouGouSkin(const std::string *const platform)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -29975,7 +59950,15 @@ const CfgSouGouSkin *CfgData::GetSouGouSkin(const std::string *const platform)
 
 
 
+
+
+
+
     if (it != this->m_cfgSouGouSkin.end())
+
+
+
+
 
 
 
@@ -29983,7 +59966,15 @@ const CfgSouGouSkin *CfgData::GetSouGouSkin(const std::string *const platform)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -29991,11 +59982,27 @@ const CfgSouGouSkin *CfgData::GetSouGouSkin(const std::string *const platform)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -30007,7 +60014,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -30015,7 +60030,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30023,7 +60046,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -30031,7 +60062,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -30039,7 +60078,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30047,7 +60094,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -30055,7 +60110,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -30063,7 +60126,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -30071,11 +60142,23 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             CfgPetEquip stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30083,7 +60166,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             stu.nId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -30091,7 +60182,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             stu.nPrice = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -30099,7 +60198,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             stu.nSuitId = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -30107,7 +60214,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30115,7 +60230,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             std::string addonAttr;
+
+
+
+
 
 
 
@@ -30123,11 +60246,23 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
                     path = "./ServerConfig/Tables/PetEquip.txt";
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30135,7 +60270,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -30143,7 +60286,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30151,7 +60302,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(__x, &addonAttr, i, &path);
+
+
+
+
 
 
 
@@ -30159,7 +60318,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -30167,7 +60334,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             stu.nBroadcast = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -30175,11 +60350,23 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             stu.nGrade = readFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30187,7 +60374,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             char v12;
+
+
+
+
 
 
 
@@ -30195,7 +60390,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30203,7 +60406,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
                     const CDBCFile::FIELD *v2 = readFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -30211,11 +60422,23 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             v13 = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30223,7 +60446,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             CfgData::paraseAttrAddon(v10, &v13, i, &v11);
+
+
+
+
 
 
 
@@ -30231,7 +60462,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -30239,7 +60478,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -30247,7 +60494,15 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
             CfgPetEquipTable::AddEquip(&this->m_cfgPetEquipTable, &stu);
+
+
+
+
 
 
 
@@ -30255,11 +60510,27 @@ void CfgData::InitPetEquipTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -30271,7 +60542,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -30279,7 +60558,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30287,7 +60574,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -30295,7 +60590,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -30303,7 +60606,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30311,7 +60622,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -30319,7 +60638,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -30327,7 +60654,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -30335,7 +60670,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30343,7 +60686,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             const CDBCFile::FIELD *v1 = readFile.Search_Posistion( i, 0);
+
+
+
+
 
 
 
@@ -30351,23 +60702,47 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             stu.nIconId = readFile.Search_Posistion( i, ++nIndex)->iValue;
 
 
 
-            ++nIndex;
 
-
-
-            ++nIndex;
 
 
 
             ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
+
+
+
+            ++nIndex;
+
+
+
+
 
 
 
             
+
+
+
+
 
 
 
@@ -30375,7 +60750,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -30383,11 +60766,23 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             strItems = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30395,7 +60790,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -30403,7 +60806,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -30411,7 +60822,15 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
             CfgWeiXinTable::Add(&this->m_cfgWeiXinTable, &stu);
+
+
+
+
 
 
 
@@ -30419,11 +60838,27 @@ void CfgData::InitWeiXinTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -30435,7 +60870,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -30443,7 +60886,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30451,7 +60902,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -30459,7 +60918,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -30467,7 +60934,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30475,7 +60950,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -30483,7 +60966,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -30491,7 +60982,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -30499,7 +60998,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30507,7 +61014,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30515,7 +61030,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -30523,11 +61046,23 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             strItems = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30535,7 +61070,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -30543,7 +61086,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -30551,7 +61102,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             stu = v2->pString;
+
+
+
+
 
 
 
@@ -30559,7 +61118,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -30567,7 +61134,15 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
             CfgAdultGiftTable::Add(&this->m_cfgAdultGiftTable, &stu);
+
+
+
+
 
 
 
@@ -30575,11 +61150,27 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -30595,7 +61186,19 @@ void CfgData::InitAdultGiftTable()
 
 
 
+
+
+
+
+
+
+
+
 void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], const std::string *const strSkill)
+
+
+
+
 
 
 
@@ -30603,11 +61206,23 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
     if (strSkill->empty() || strSkill->size() <= 3) return;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30615,7 +61230,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
     char v22;
+
+
+
+
 
 
 
@@ -30623,7 +61246,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30631,11 +61262,23 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
     StringUtility::split(skills, *strSkill, delims);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30643,7 +61286,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
     if (isize > 9) isize = 10;
+
+
+
+
 
 
 
@@ -30651,7 +61302,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
     for (int32_t i = 0; i < isize; ++i)
+
+
+
+
 
 
 
@@ -30659,7 +61318,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
         std::string v23;
+
+
+
+
 
 
 
@@ -30667,7 +61334,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
             v23 = ":";
+
+
+
+
 
 
 
@@ -30675,7 +61350,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
         StringVector skill;
+
+
+
+
 
 
 
@@ -30683,7 +61366,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -30691,7 +61382,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -30699,7 +61398,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
             (*vSkill)[i].minHp = atoi(skill[1].c_str());
+
+
+
+
 
 
 
@@ -30707,7 +61414,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -30715,7 +61430,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -30723,7 +61446,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
                 "CfgData::parseMonsterSkill wrong data with id = %d, string = %s\n",
+
+
+
+
 
 
 
@@ -30731,7 +61462,15 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -30739,7 +61478,19 @@ void CfgData::parseMonsterSkill(int32_t id, MonsterSkill (*const vSkill)[10], co
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -30751,7 +61502,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -30759,11 +61518,23 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     memset(&request, 0, sizeof(request));
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30771,7 +61542,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     char v21;
+
+
+
+
 
 
 
@@ -30779,7 +61558,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30787,11 +61574,23 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     StringUtility::split(requests, *strRequest, delims);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30799,7 +61598,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30807,7 +61614,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -30815,11 +61630,23 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
         request.param1 = atoi(requests[0].c_str());
 
 
 
+
+
+
+
         request.param2 = atoi(requests[1].c_str());
+
+
+
+
 
 
 
@@ -30827,7 +61654,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
         break;
+
+
+
+
 
 
 
@@ -30835,7 +61670,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
         request.param1 = atoi(requests[0].c_str());
+
+
+
+
 
 
 
@@ -30843,7 +61686,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
         break;
+
+
+
+
 
 
 
@@ -30851,11 +61702,23 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
         request.param1 = atoi(requests[0].c_str());
 
 
 
+
+
+
+
         break;
+
+
+
+
 
 
 
@@ -30863,7 +61726,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
         Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_ERROR,
+
+
+
+
 
 
 
@@ -30871,7 +61742,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
             id, strRequest->c_str());
+
+
+
+
 
 
 
@@ -30879,7 +61758,15 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -30887,11 +61774,27 @@ TaskRequest CfgData::parseTaskCondition(int32_t id, int32_t condition, const std
 
 
 
+
+
+
+
     return request;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -30903,7 +61806,15 @@ void CfgData::parseTaskDrop(int32_t id, const std::string *const strDrop)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -30911,7 +61822,15 @@ void CfgData::parseTaskDrop(int32_t id, const std::string *const strDrop)
 
 
 
+
+
+
+
     if (strDrop->empty() || *strDrop == "-1") return;
+
+
+
+
 
 
 
@@ -30919,11 +61838,27 @@ void CfgData::parseTaskDrop(int32_t id, const std::string *const strDrop)
 
 
 
+
+
+
+
     // 实现解析逻辑...
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -30935,7 +61870,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -30943,11 +61886,23 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     if (Time <= 0) return Time;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -30955,7 +61910,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     int32_t diffDay = CfgData::getServerDiffDay(v4, SERVER_TYPE::SVT_NORMAL);
+
+
+
+
 
 
 
@@ -30963,7 +61926,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     switch (diffDay)
+
+
+
+
 
 
 
@@ -30971,7 +61942,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     case 0: return 10 * (Time / 100);
+
+
+
+
 
 
 
@@ -30979,7 +61958,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     case 2: return 30 * (Time / 100);
+
+
+
+
 
 
 
@@ -30987,7 +61974,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     case 4: return 60 * (Time / 100);
+
+
+
+
 
 
 
@@ -30995,7 +61990,15 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     case 6: return 80 * (Time / 100);
+
+
+
+
 
 
 
@@ -31003,11 +62006,27 @@ int32_t CfgData::GetMonsterReviveTime(int32_t Time, int32_t BossId)
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -31019,7 +62038,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -31027,7 +62054,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31035,7 +62070,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -31043,7 +62086,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -31051,7 +62102,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31059,7 +62118,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -31067,7 +62134,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -31075,7 +62150,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -31083,7 +62166,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31091,7 +62182,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31099,7 +62198,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -31107,7 +62214,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             strItems = v1->pString;
+
+
+
+
 
 
 
@@ -31115,11 +62230,23 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             MemChrBagVector __x;
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -31127,7 +62254,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -31135,7 +62270,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             stu = v2->pString;
+
+
+
+
 
 
 
@@ -31143,11 +62286,23 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31155,7 +62310,15 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
             *v3 = stu;
+
+
+
+
 
 
 
@@ -31163,11 +62326,23 @@ void CfgData::InitMobilePhoneGiftTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -31175,7 +62350,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -31183,7 +62366,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31191,7 +62382,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -31199,7 +62398,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -31207,7 +62414,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31215,7 +62430,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -31223,7 +62446,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -31231,7 +62462,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -31239,7 +62478,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31247,7 +62494,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             const CDBCFile::FIELD *v1 = TabFile.Search_Posistion( i, nIndex);
+
+
+
+
 
 
 
@@ -31255,7 +62510,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             stu.nIconDownload = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -31263,11 +62526,23 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31275,7 +62550,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -31283,11 +62566,23 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             strItems = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31295,7 +62590,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -31303,7 +62606,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -31311,7 +62622,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
             auto *v3 = &this->m_CfgMiniClient[stu.strPlatfrom];
+
+
+
+
 
 
 
@@ -31319,7 +62638,15 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -31327,7 +62654,19 @@ void CfgData::InitMiniClientTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -31339,7 +62678,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -31347,7 +62694,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31355,7 +62710,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -31363,7 +62726,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -31371,7 +62742,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31379,7 +62758,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -31387,7 +62774,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -31395,7 +62790,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -31403,7 +62806,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             CfgWuHunShop stu;
+
+
+
+
 
 
 
@@ -31411,7 +62822,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31419,7 +62838,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             stu.Index = TabFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -31427,11 +62854,23 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31439,7 +62878,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             char v10;
+
+
+
+
 
 
 
@@ -31447,11 +62894,23 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             strItem = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31459,7 +62918,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemString(v4, &strItem);
+
+
+
+
 
 
 
@@ -31467,7 +62934,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -31475,7 +62950,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -31483,11 +62966,23 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31495,7 +62990,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             v2.push_back(stu);
+
+
+
+
 
 
 
@@ -31503,7 +63006,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
             auto *v3 = &this->m_CfgWuHunShopItemMap[stu.Index];
+
+
+
+
 
 
 
@@ -31511,7 +63022,15 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -31519,7 +63038,19 @@ void CfgData::InitWuHunShopTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -31531,7 +63062,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -31539,7 +63078,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31547,7 +63094,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -31555,7 +63110,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -31563,7 +63126,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31571,7 +63142,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -31579,7 +63158,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -31587,7 +63174,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -31595,11 +63190,23 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             WuHunItem stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31607,7 +63214,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             stu.nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -31615,7 +63230,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             stu.nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -31623,11 +63246,23 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             stu.nNeedQuality = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31635,7 +63270,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -31643,7 +63286,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31651,7 +63302,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             char v9;
+
+
+
+
 
 
 
@@ -31659,11 +63318,23 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             v8 = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31671,7 +63342,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             CfgData::parseAddAttribues(&__x, &v8, i, &v6);
+
+
+
+
 
 
 
@@ -31679,7 +63358,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -31687,7 +63374,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             stu.nTalentLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -31695,7 +63390,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             nIndex += 8;
+
+
+
+
 
 
 
@@ -31703,7 +63406,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             nIndex += 3;
+
+
+
+
 
 
 
@@ -31711,7 +63422,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31719,7 +63438,15 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
             *v2 = stu;
+
+
+
+
 
 
 
@@ -31727,11 +63454,27 @@ void CfgData::InitWuHunItemTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -31743,7 +63486,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -31751,7 +63502,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31759,7 +63518,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -31767,7 +63534,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -31775,7 +63550,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -31783,7 +63566,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -31791,7 +63582,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -31799,7 +63598,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -31807,11 +63614,23 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             CreateWuHun stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31819,7 +63638,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             stu.nId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -31827,7 +63654,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31835,7 +63670,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             char v11;
+
+
+
+
 
 
 
@@ -31843,11 +63686,23 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             bCombi = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31855,7 +63710,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -31863,11 +63726,23 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31875,7 +63750,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             char v14;
+
+
+
+
 
 
 
@@ -31883,11 +63766,23 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             v13 = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31895,7 +63790,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseRateItemDataListString call
+
+
+
+
 
 
 
@@ -31903,7 +63806,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -31911,7 +63822,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31919,7 +63838,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             char v16;
+
+
+
+
 
 
 
@@ -31927,11 +63854,23 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             strItem = v3->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31939,7 +63878,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             stu.SpecialCost.m_nId = v25.m_nId;
+
+
+
+
 
 
 
@@ -31947,7 +63894,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             stu.SpecialCost.m_nCount = v25.m_nCount;
+
+
+
+
 
 
 
@@ -31955,7 +63910,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31963,7 +63926,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             char v19;
+
+
+
+
 
 
 
@@ -31971,11 +63942,23 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             v18 = v4->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -31983,7 +63966,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseRateItemDataListString call
+
+
+
+
 
 
 
@@ -31991,7 +63982,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -31999,7 +63998,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
             auto *v5 = &this->m_CreateWuHunMap[stu.nId];
+
+
+
+
 
 
 
@@ -32007,7 +64014,15 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -32015,7 +64030,19 @@ void CfgData::InitWuHunCreateTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -32027,7 +64054,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -32035,7 +64070,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32043,7 +64086,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -32051,7 +64102,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -32059,7 +64118,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32067,11 +64134,23 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32079,7 +64158,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -32087,7 +64174,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -32095,7 +64190,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             memset(&stu, 0, sizeof(stu));
+
+
+
+
 
 
 
@@ -32103,7 +64206,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32111,11 +64222,23 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             stu.BossLevel = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32123,7 +64246,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             char v9;
+
+
+
+
 
 
 
@@ -32131,7 +64262,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             BossMapListString = v2->pString;
+
+
+
+
 
 
 
@@ -32139,7 +64278,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32147,7 +64294,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             paraseInt32List(&__x, &BossMapListString, 0, nullptr);
+
+
+
+
 
 
 
@@ -32155,7 +64310,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32163,7 +64326,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             BossLevelInfo::BossLevelInfo(&p_stu, &stu);
+
+
+
+
 
 
 
@@ -32171,7 +64342,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -32179,7 +64358,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32187,7 +64374,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     CDBCFile TabFile2;
+
+
+
+
 
 
 
@@ -32195,7 +64390,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -32203,7 +64406,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
         iBaseColumnCount = TabFile2.GetFieldsNum();
+
+
+
+
 
 
 
@@ -32211,7 +64422,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -32219,7 +64438,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
+
+
+
+
 
 
 
@@ -32227,7 +64454,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 MapBossInfo stu;
+
+
+
+
 
 
 
@@ -32235,11 +64470,23 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 new (&stu.BossMapList) std::list<int>();
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -32247,11 +64494,23 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 stu.nId = TabFile2.Search_Posistion( i_0, nIndex_0++)->iValue;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -32259,7 +64518,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 char v12;
+
+
+
+
 
 
 
@@ -32267,7 +64534,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 BossMapListString_0 = v3->pString;
+
+
+
+
 
 
 
@@ -32275,7 +64550,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -32283,7 +64566,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 paraseInt32List(&v13, &BossMapListString_0, 0, nullptr);
+
+
+
+
 
 
 
@@ -32291,7 +64582,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -32299,7 +64598,15 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
                 MapBossInfo::MapBossInfo(&v14, &stu);
+
+
+
+
 
 
 
@@ -32307,19 +64614,43 @@ void CfgData::InitBossDistribution()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
         }
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -32331,7 +64662,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -32339,7 +64678,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32347,7 +64694,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -32355,7 +64710,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -32363,7 +64726,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32371,7 +64742,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -32379,7 +64758,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -32387,7 +64774,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -32395,7 +64790,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             SpecialBossMapCfg stu;
+
+
+
+
 
 
 
@@ -32403,7 +64806,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32411,7 +64822,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             stu.MapId = TabFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -32419,7 +64838,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32427,7 +64854,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -32435,11 +64870,23 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             strItem = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32447,7 +64894,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             stu.ConstItem.m_nId = v13.m_nId;
+
+
+
+
 
 
 
@@ -32455,7 +64910,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             stu.ConstItem.m_nCount = v13.m_nCount;
+
+
+
+
 
 
 
@@ -32463,7 +64926,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             stu.StartCD = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -32471,7 +64942,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -32479,7 +64958,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
             auto *v2 = &this->m_SpecialBossMapCfgMap[stu.MapId];
+
+
+
+
 
 
 
@@ -32487,7 +64974,15 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -32495,7 +64990,19 @@ void CfgData::InitSpecialBossMapCfgMap()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -32507,7 +65014,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -32515,7 +65030,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32523,7 +65046,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -32531,7 +65062,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -32539,7 +65078,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32547,7 +65094,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -32555,7 +65110,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -32563,7 +65126,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
         this->m_DuiHuanLimit.clear();
+
+
+
+
 
 
 
@@ -32571,7 +65142,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -32579,7 +65158,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
             DuiHuanLimit stu;
+
+
+
+
 
 
 
@@ -32587,7 +65174,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
             int32_t MaxLevel = TabFile.Search_Posistion( i, 1)->iValue;
+
+
+
+
 
 
 
@@ -32595,7 +65190,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
             stu.ConstGold = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -32603,7 +65206,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
             stu.Limit = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -32611,7 +65222,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32619,7 +65238,15 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
             *v1 = stu;
+
+
+
+
 
 
 
@@ -32627,11 +65254,27 @@ void CfgData::InitDuiHuanLimitTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -32643,7 +65286,15 @@ DuiHuanLimit *CfgData::GetDuiHuanLimitCount(int32_t Level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -32651,7 +65302,15 @@ DuiHuanLimit *CfgData::GetDuiHuanLimitCount(int32_t Level)
 
 
 
+
+
+
+
     if (it != this->m_DuiHuanLimit.end())
+
+
+
+
 
 
 
@@ -32659,7 +65318,15 @@ DuiHuanLimit *CfgData::GetDuiHuanLimitCount(int32_t Level)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -32667,11 +65334,27 @@ DuiHuanLimit *CfgData::GetDuiHuanLimitCount(int32_t Level)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -32683,7 +65366,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -32691,7 +65382,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32699,7 +65398,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -32707,7 +65414,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -32715,7 +65430,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32723,7 +65446,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -32731,7 +65462,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -32739,7 +65478,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
         this->m_SuperTeHuiCfgMap.clear();
+
+
+
+
 
 
 
@@ -32747,7 +65494,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -32755,11 +65510,23 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             SuperTeHuiCfg stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32767,7 +65534,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             stu.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -32775,7 +65550,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32783,7 +65566,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -32791,11 +65582,23 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             strItems = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32803,7 +65606,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -32811,7 +65622,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -32819,7 +65638,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             stu.nGongGaoId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -32827,7 +65654,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32835,7 +65670,15 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
             *v2 = stu;
+
+
+
+
 
 
 
@@ -32843,11 +65686,27 @@ void CfgData::InitSuperTeHuiTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -32859,7 +65718,15 @@ SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -32867,7 +65734,15 @@ SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_SuperTeHuiCfgMap.end())
+
+
+
+
 
 
 
@@ -32875,7 +65750,15 @@ SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -32883,11 +65766,27 @@ SuperTeHuiCfg *CfgData::GetSuperTeHuiCfg(int32_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -32899,7 +65798,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -32907,7 +65814,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32915,7 +65830,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -32923,7 +65846,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -32931,7 +65862,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -32939,7 +65878,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -32947,7 +65894,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -32955,7 +65910,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
         this->m_JewelPavilionCfgMap.clear();
+
+
+
+
 
 
 
@@ -32963,7 +65926,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -32971,7 +65942,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             JewelPavilionCfg stu;
+
+
+
+
 
 
 
@@ -32979,7 +65958,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -32987,7 +65974,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             stu.nDay = TabFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -32995,11 +65990,23 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33007,7 +66014,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -33015,11 +66030,23 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             strItem = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33027,7 +66054,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             CItemHelper().parseItemString(v3, &strItem);
+
+
+
+
 
 
 
@@ -33035,7 +66070,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -33043,7 +66086,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -33051,7 +66102,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
             auto key = std::make_pair(stu.nDay, stu.nIndex);
+
+
+
+
 
 
 
@@ -33059,7 +66118,15 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -33067,7 +66134,19 @@ void CfgData::InitJewelPavilionTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33079,7 +66158,15 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -33087,7 +66174,15 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 
 
 
+
+
+
+
     auto it = this->m_JewelPavilionCfgMap.find(key);
+
+
+
+
 
 
 
@@ -33095,7 +66190,15 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33103,7 +66206,15 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -33111,7 +66222,19 @@ JewelPavilionCfg *CfgData::GetJewelPavilionCfg(int32_t nDay, int32_t nIndex)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33123,7 +66246,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -33131,7 +66262,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33139,7 +66278,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33147,7 +66294,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -33155,7 +66310,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33163,7 +66326,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -33171,7 +66342,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -33179,7 +66358,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
         this->m_GoblinCfgMap.clear();
+
+
+
+
 
 
 
@@ -33187,7 +66374,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -33195,7 +66390,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
             GoblinCfg stu;
+
+
+
+
 
 
 
@@ -33203,7 +66406,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
             int32_t nType = TabFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -33211,7 +66422,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
             stu.UpAttr = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -33219,7 +66438,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -33227,7 +66454,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -33235,7 +66470,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
             auto key = std::make_pair(nType, nLevel);
+
+
+
+
 
 
 
@@ -33243,7 +66486,15 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -33251,7 +66502,19 @@ void CfgData::InitGoblinTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33263,7 +66526,15 @@ GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -33271,7 +66542,15 @@ GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     auto it = this->m_GoblinCfgMap.find(key);
+
+
+
+
 
 
 
@@ -33279,7 +66558,15 @@ GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33287,7 +66574,15 @@ GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -33295,7 +66590,19 @@ GoblinCfg *CfgData::GetGoblinCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33307,7 +66614,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -33315,7 +66630,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33323,7 +66646,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33331,7 +66662,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -33339,7 +66678,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33347,7 +66694,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -33355,7 +66710,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -33363,7 +66726,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
         this->m_ShouHuRefinishingCfgMap.clear();
+
+
+
+
 
 
 
@@ -33371,7 +66742,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -33379,11 +66758,23 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             ShouHuRefinishingCfg stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33391,7 +66782,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             int32_t nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -33399,7 +66798,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33407,7 +66814,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             char v12;
+
+
+
+
 
 
 
@@ -33415,11 +66830,23 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             bCombi = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33427,7 +66854,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -33435,11 +66870,23 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33447,7 +66894,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             char v15;
+
+
+
+
 
 
 
@@ -33455,7 +66910,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33463,7 +66926,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             char v17;
+
+
+
+
 
 
 
@@ -33471,11 +66942,23 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             v16 = v3->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33483,7 +66966,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             CfgData::parseAddAttribues(&__x, &v16, i, &v14);
+
+
+
+
 
 
 
@@ -33491,7 +66982,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -33499,7 +66998,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -33507,7 +67014,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
             auto key = std::make_pair(nType, nLevel);
+
+
+
+
 
 
 
@@ -33515,7 +67030,15 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -33523,7 +67046,19 @@ void CfgData::InitShouHuRefining()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33535,7 +67070,15 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nL
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -33543,7 +67086,15 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nL
 
 
 
+
+
+
+
     auto it = this->m_ShouHuRefinishingCfgMap.find(key);
+
+
+
+
 
 
 
@@ -33551,7 +67102,15 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nL
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33559,7 +67118,15 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nL
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -33567,7 +67134,19 @@ ShouHuRefinishingCfg *CfgData::GetShouHuRefinishingCfg(int32_t nType, int32_t nL
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33579,7 +67158,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -33587,7 +67174,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33595,7 +67190,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33603,7 +67206,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -33611,7 +67222,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33619,11 +67238,23 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33631,7 +67262,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33639,7 +67278,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -33647,7 +67294,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -33655,7 +67310,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33663,7 +67326,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             int32_t nType = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -33671,7 +67342,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33679,7 +67358,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             char v19;
+
+
+
+
 
 
 
@@ -33687,7 +67374,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33695,7 +67390,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             char v21;
+
+
+
+
 
 
 
@@ -33703,11 +67406,23 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             v20 = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33715,7 +67430,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             CfgData::parseAddAttribues(&__x, &v20, i, &v18);
+
+
+
+
 
 
 
@@ -33723,11 +67446,23 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33735,7 +67470,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             char v24;
+
+
+
+
 
 
 
@@ -33743,11 +67486,23 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             bCombi = v3->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33755,7 +67510,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             // TODO: fix CItemHelper::parseItemDataListString call
+
+
+
+
 
 
 
@@ -33763,7 +67526,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -33771,7 +67542,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             stu.SuitId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -33779,11 +67558,23 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -33791,11 +67582,23 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             this->m_WingEquipPolishCfgMap.insert(std::make_pair(key, stu));
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -33803,7 +67606,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -33811,7 +67622,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     CDBCFile TabFile2;
+
+
+
+
 
 
 
@@ -33819,7 +67638,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33827,7 +67654,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
         iBaseColumnCount = TabFile2.GetFieldsNum();
+
+
+
+
 
 
 
@@ -33835,7 +67670,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
         if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -33843,7 +67686,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             this->m_WingEquipPolishSuitMap.clear();
+
+
+
+
 
 
 
@@ -33851,7 +67702,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
             for (int32_t i_0 = 0; i_0 < iBaseTableCount; ++i_0)
+
+
+
+
 
 
 
@@ -33859,15 +67718,32 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 int32_t nId = TabFile2.Search_Posistion( i_0, 0)->iValue;
 
 
 
+
+
+
+
+                int32_t nIndex = 0;
                 ++nIndex;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -33875,7 +67751,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 char v29;
+
+
+
+
 
 
 
@@ -33883,7 +67767,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -33891,7 +67783,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 char v31;
+
+
+
+
 
 
 
@@ -33899,11 +67799,23 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 v30 = v5->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -33911,7 +67823,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 CfgData::parseAddAttribues(&AddAttrs, &v30, i_0, &v28);
+
+
+
+
 
 
 
@@ -33919,7 +67839,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -33927,7 +67855,15 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
                 v6 = AddAttrs;
+
+
+
+
 
 
 
@@ -33935,15 +67871,35 @@ void CfgData::InitWingEquipPolish()
 
 
 
+
+
+
+
         }
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33955,7 +67911,15 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -33963,7 +67927,15 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     auto it = this->m_WingEquipPolishCfgMap.find(key);
+
+
+
+
 
 
 
@@ -33971,7 +67943,15 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -33979,7 +67959,15 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -33987,7 +67975,19 @@ WingEquipPolish *CfgData::GetWingEquipPolishCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -33999,7 +67999,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -34007,7 +68015,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34015,7 +68031,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -34023,7 +68047,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -34031,7 +68063,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34039,7 +68079,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -34047,7 +68095,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -34055,7 +68111,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
         this->m_GuiGuDaoRenCfgMap.clear();
+
+
+
+
 
 
 
@@ -34063,7 +68127,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -34071,11 +68143,23 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             GuiGuDaoRenCfg stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34083,7 +68167,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             stu.nNpcId = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -34091,11 +68183,23 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34103,7 +68207,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             char v23;
+
+
+
+
 
 
 
@@ -34111,7 +68223,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             RefreshMonsterString = v1->pString;
+
+
+
+
 
 
 
@@ -34119,7 +68239,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34127,7 +68255,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             char v25;
+
+
+
+
 
 
 
@@ -34135,7 +68271,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34143,7 +68287,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             StringUtility::split(SplitStr, RefreshMonsterString, delims);
+
+
+
+
 
 
 
@@ -34151,11 +68303,23 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             for (auto& monsterStr : SplitStr)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -34163,7 +68327,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 char v29;
+
+
+
+
 
 
 
@@ -34171,7 +68343,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -34179,7 +68359,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 StringUtility::split(vstr, monsterStr, v28);
+
+
+
+
 
 
 
@@ -34187,7 +68375,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 if (vstr.size() == 4)
+
+
+
+
 
 
 
@@ -34195,7 +68391,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                     RefreshMonster tmpStu;
+
+
+
+
 
 
 
@@ -34203,7 +68407,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                     tmpStu.BossId = atoi(vstr[1].c_str());
+
+
+
+
 
 
 
@@ -34211,7 +68423,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                     tmpStu.GongGaoId = atoi(vstr[3].c_str());
+
+
+
+
 
 
 
@@ -34219,7 +68439,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -34227,7 +68455,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34235,11 +68471,23 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             stu.vItem.reserve(3);
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34247,7 +68495,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -34255,7 +68511,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 char v32;
+
+
+
+
 
 
 
@@ -34263,11 +68527,23 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 strItem = v11->pString;
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -34275,7 +68551,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 stu.vItemData.push_back(__x);
+
+
+
+
 
 
 
@@ -34283,7 +68567,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -34291,7 +68583,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 char v35;
+
+
+
+
 
 
 
@@ -34299,7 +68599,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 v34 = v12->pString;
+
+
+
+
 
 
 
@@ -34307,7 +68615,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 MemChrBag v33;
+
+
+
+
 
 
 
@@ -34315,7 +68631,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                 stu.vItem.push_back(v33);
+
+
+
+
 
 
 
@@ -34323,11 +68647,23 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34335,7 +68671,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             char v38;
+
+
+
+
 
 
 
@@ -34343,7 +68687,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34351,7 +68703,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             char v40;
+
+
+
+
 
 
 
@@ -34359,11 +68719,23 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             str = v13->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34371,7 +68743,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             CfgData::paraseInt32Vector(v36, &str, &path, 0);
+
+
+
+
 
 
 
@@ -34379,7 +68759,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
                     ++nIndex;
+
+
+
+
 
 
 
@@ -34387,7 +68775,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
             auto *v14 = &this->m_GuiGuDaoRenCfgMap[stu.nNpcId];
+
+
+
+
 
 
 
@@ -34395,7 +68791,15 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -34403,7 +68807,19 @@ void CfgData::InitGuiGuDaoRenTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -34415,7 +68831,15 @@ GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -34423,7 +68847,15 @@ GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
 
 
 
+
+
+
+
     if (it != this->m_GuiGuDaoRenCfgMap.end())
+
+
+
+
 
 
 
@@ -34431,7 +68863,15 @@ GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -34439,11 +68879,27 @@ GuiGuDaoRenCfg *CfgData::GetGuiGuDaoRenCfg(int32_t NpcId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -34455,7 +68911,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -34463,7 +68927,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34471,7 +68943,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -34479,7 +68959,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -34487,7 +68975,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34495,7 +68991,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -34503,7 +69007,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -34511,7 +69023,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -34519,11 +69039,23 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             CfgShiZhuang stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34531,11 +69063,23 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             stu.nId = readFile.Search_Posistion( i, 0)->iValue;
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -34543,11 +69087,23 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34555,7 +69111,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -34563,7 +69127,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
                 AddAttr.m_nAddAttrType = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -34571,7 +69143,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
                 if (AddAttr.m_nAddAttrValue > 0)
+
+
+
+
 
 
 
@@ -34579,7 +69159,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
                     stu.vAttr.push_back(AddAttr);
+
+
+
+
 
 
 
@@ -34587,7 +69175,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -34595,7 +69191,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             stu.nSuitId = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -34603,7 +69207,15 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
             CfgShiZhuangTable::AddShiZhuang(&this->m_cfgShiZhuangTable, &stu);
+
+
+
+
 
 
 
@@ -34611,11 +69223,27 @@ void CfgData::InitShiZhuangTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -34627,7 +69255,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -34635,7 +69271,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34643,7 +69287,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -34651,7 +69303,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -34659,7 +69319,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34667,7 +69335,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = readFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -34675,7 +69351,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -34683,7 +69367,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -34691,11 +69383,23 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             CfgShiZhuangLevel stu;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34703,7 +69407,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             stu.nType = readFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -34711,7 +69423,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             stu.nLevelExp = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -34719,7 +69439,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             stu.nCostItem = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -34727,7 +69455,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             stu.nSmallCritRate = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -34735,7 +69471,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             stu.nBroadcast = readFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -34743,7 +69487,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34751,7 +69503,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -34759,7 +69519,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
                 AddAttr.m_nAddAttrType = readFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -34767,7 +69535,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
                 if (AddAttr.m_nAddAttrValue > 0)
+
+
+
+
 
 
 
@@ -34775,7 +69551,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
                     stu.vAttr.push_back(AddAttr);
+
+
+
+
 
 
 
@@ -34783,7 +69567,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -34791,7 +69583,15 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
             CfgShiZhuangTable::AddShiZhuangLevel(&this->m_cfgShiZhuangTable, &stu);
+
+
+
+
 
 
 
@@ -34799,11 +69599,27 @@ void CfgData::InitShiZhuangLevelTable()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -34815,7 +69631,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -34823,7 +69647,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34831,7 +69663,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -34839,7 +69679,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -34847,7 +69695,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34855,7 +69711,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -34863,7 +69727,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -34871,7 +69743,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -34879,7 +69759,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             int32_t nIndex = 0;
+
+
+
+
 
 
 
@@ -34887,7 +69775,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             int32_t nId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -34895,7 +69791,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34903,7 +69807,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -34911,11 +69823,23 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             strItem = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34923,7 +69847,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             CItemHelper().parseRateItemDataString(ItemRate, &strItem);
+
+
+
+
 
 
 
@@ -34931,7 +69863,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -34939,7 +69879,15 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -34947,7 +69895,19 @@ void CfgData::InitMonthlyChouJiangTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -34959,7 +69919,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -34967,7 +69935,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34975,7 +69951,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -34983,7 +69967,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -34991,7 +69983,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -34999,7 +69999,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -35007,7 +70015,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -35015,7 +70031,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -35023,7 +70047,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             ActDropItem stu;
+
+
+
+
 
 
 
@@ -35031,7 +70063,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35039,7 +70079,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             int32_t Type = TabFile.Search_Posistion( i, 0)->iValue;
+
+
+
+
 
 
 
@@ -35047,7 +70095,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             stu.nMaxLevel = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -35055,7 +70111,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             stu.nId = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -35063,7 +70127,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             stu.nCount = TabFile.Search_Posistion( i, ++nIndex)->iValue;
+
+
+
+
 
 
 
@@ -35071,11 +70143,23 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35083,7 +70167,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             char v8;
+
+
+
+
 
 
 
@@ -35091,7 +70183,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             p_StringTime = v1->pString;
+
+
+
+
 
 
 
@@ -35099,11 +70199,23 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35111,7 +70223,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             char v10;
+
+
+
+
 
 
 
@@ -35119,7 +70239,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             v9 = v2->pString;
+
+
+
+
 
 
 
@@ -35127,7 +70255,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -35135,7 +70271,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             ++nIndex;
+
+
+
+
 
 
 
@@ -35143,7 +70287,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
             auto v3 = this->m_ActDropItemListMap[Type];
+
+
+
+
 
 
 
@@ -35151,7 +70303,15 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -35159,7 +70319,19 @@ void CfgData::InitActDropTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -35171,7 +70343,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -35179,7 +70359,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -35187,7 +70375,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -35195,7 +70391,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -35203,7 +70407,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -35211,7 +70423,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -35219,7 +70439,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -35227,7 +70455,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -35235,7 +70471,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             CfgOutLinkFestival stu;
+
+
+
+
 
 
 
@@ -35243,11 +70487,23 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             stu.strPlatfrom.clear();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35255,11 +70511,23 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             stu.nIndex = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35267,7 +70535,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -35275,7 +70551,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             p_StringTime = v1->pString;
+
+
+
+
 
 
 
@@ -35283,11 +70567,23 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
                     ++nIndex;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35295,7 +70591,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             char v9;
+
+
+
+
 
 
 
@@ -35303,7 +70607,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             v8 = v2->pString;
+
+
+
+
 
 
 
@@ -35311,7 +70623,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -35319,7 +70639,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35327,7 +70655,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             stu.strPlatfrom = v3->pString;
+
+
+
+
 
 
 
@@ -35335,7 +70671,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35343,7 +70687,15 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -35351,7 +70703,19 @@ void CfgData::InitOutLinkFestivalTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -35363,7 +70727,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -35371,7 +70743,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -35379,7 +70759,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -35387,7 +70775,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -35395,7 +70791,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -35403,7 +70807,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -35411,7 +70823,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -35419,7 +70839,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -35427,11 +70855,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             CfgFestivalActivity stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35439,7 +70879,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             stu.nIcon = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -35447,7 +70895,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             stu.nEndDay = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -35455,7 +70911,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             stu.nPlantCount = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -35463,7 +70927,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             stu.nNpcCount = TabFile.Search_Posistion( i, nIndex++)->iValue;
+
+
+
+
 
 
 
@@ -35471,11 +70943,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             stu.nPlantTime = TabFile.Search_Posistion( i, nIndex++)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35483,7 +70967,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -35491,11 +70983,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 char vAlloc;
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -35503,7 +71007,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35511,7 +71023,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 paraseInt32List(&vStart, &strStartDay, 0, nullptr);
+
+
+
+
 
 
 
@@ -35519,7 +71039,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     stu.vStartDayList.push_back(vStart[idx]);
+
+
+
+
 
 
 
@@ -35527,11 +71055,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -35539,11 +71079,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 char vAlloc;
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -35551,7 +71103,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35559,7 +71119,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 paraseInt32List(&vEnd, &strEndDay, 0, nullptr);
+
+
+
+
 
 
 
@@ -35567,7 +71135,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     stu.vEndDayList.push_back(vEnd[idx]);
+
+
+
+
 
 
 
@@ -35575,7 +71151,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35583,7 +71167,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -35591,11 +71183,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 char vAlloc;
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -35603,7 +71207,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35611,7 +71223,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 CDBCFile::_ConvertStringToVector(strPlantPos.c_str(), &vPlantPos, "|", 1, 1);
+
+
+
+
 
 
 
@@ -35619,7 +71239,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -35627,7 +71255,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     CDBCFile::_ConvertStringToVector(posStr.c_str(), &parts, ":", 1, 0);
+
+
+
+
 
 
 
@@ -35635,7 +71271,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -35643,7 +71287,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         pos.nMapId = atoi(parts[0].c_str());
+
+
+
+
 
 
 
@@ -35651,7 +71303,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         pos.nY = atoi(parts[2].c_str());
+
+
+
+
 
 
 
@@ -35659,7 +71319,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -35667,11 +71335,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                     }
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35679,7 +71359,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -35687,11 +71375,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 char vAlloc;
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -35699,7 +71399,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35707,7 +71415,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 CDBCFile::_ConvertStringToVector(strNpcPos.c_str(), &vNpcPos, "|", 1, 1);
+
+
+
+
 
 
 
@@ -35715,11 +71431,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 {
 
 
 
+
+
+
+
                     std::vector<std::string> parts;
+
+
+
+
 
 
 
@@ -35727,11 +71455,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     if (parts.size() >= 3)
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -35739,7 +71479,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         pos.nMapId = atoi(parts[0].c_str());
+
+
+
+
 
 
 
@@ -35747,7 +71495,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         pos.nY = atoi(parts[2].c_str());
+
+
+
+
 
 
 
@@ -35755,7 +71511,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -35763,15 +71527,31 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                     }
 
 
 
+
+
+
+
             
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35779,7 +71559,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -35787,11 +71575,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 char vAlloc;
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -35799,7 +71599,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35807,7 +71615,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35815,11 +71631,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -35827,11 +71655,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 char vAlloc;
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -35839,7 +71679,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35847,7 +71695,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35855,7 +71711,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -35863,7 +71727,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -35871,11 +71743,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 char vAlloc;
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -35883,7 +71767,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35891,11 +71783,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 CDBCFile::_ConvertStringToVector(strChangeCfg.c_str(), &vCfgEntries, "#", 1, 1);
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -35903,7 +71807,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -35911,7 +71823,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     CDBCFile::_ConvertStringToVector(entry.c_str(), &parts, "|", 1, 1);
+
+
+
+
 
 
 
@@ -35919,7 +71839,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     {
+
+
+
+
 
 
 
@@ -35927,7 +71855,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         cfgItem.nTimes = atoi(parts[0].c_str());
+
+
+
+
 
 
 
@@ -35935,7 +71871,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -35943,7 +71887,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         {
+
+
+
+
 
 
 
@@ -35951,7 +71903,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                             CDBCFile::_ConvertStringToVector(parts[2].c_str(), &vGetItems, "~", 1, 1);
+
+
+
+
 
 
 
@@ -35959,7 +71919,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                             {
+
+
+
+
 
 
 
@@ -35967,7 +71935,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                 std::string strItem = itemStr;
+
+
+
+
 
 
 
@@ -35975,7 +71951,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                 cfgItem.vGetItems.push_back(item);
+
+
+
+
 
 
 
@@ -35983,11 +71967,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         }
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -35995,7 +71991,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         {
+
+
+
+
 
 
 
@@ -36003,7 +72007,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                             CDBCFile::_ConvertStringToVector(parts[3].c_str(), &vCostItems, "~", 1, 1);
+
+
+
+
 
 
 
@@ -36011,7 +72023,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                             {
+
+
+
+
 
 
 
@@ -36019,7 +72039,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                 std::string strItem = itemStr;
+
+
+
+
 
 
 
@@ -36027,7 +72055,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                 cfgItem.vCostItems.push_back(item);
+
+
+
+
 
 
 
@@ -36035,7 +72071,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         }
+
+
+
+
 
 
 
@@ -36043,7 +72087,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                         stu.vChangeCfgList.push_back(cfgItem);
+
+
+
+
 
 
 
@@ -36051,7 +72103,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -36059,7 +72119,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                     }
+
+
+
+
 
 
 
@@ -36067,7 +72135,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
             // 解析答题列表 (answers separated by |, groups separated by #)
+
+
+
+
 
 
 
@@ -36075,7 +72151,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 std::string strAnswer;
+
+
+
+
 
 
 
@@ -36083,7 +72167,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                             const CDBCFile::FIELD *pField = TabFile.Search_Posistion( i, nIndex++);
+
+
+
+
 
 
 
@@ -36091,7 +72183,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -36099,11 +72199,23 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 CDBCFile::_ConvertStringToVector(strAnswer.c_str(), &vAnswerGroups, "#", 1, 1);
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -36111,7 +72223,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 {
+
+
+
+
 
 
 
@@ -36119,7 +72239,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                     CDBCFile::_ConvertStringToVector(group.c_str(), &vAnswers, "|", 1, 1);
+
+
+
+
 
 
 
@@ -36127,7 +72255,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -36135,7 +72271,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
                                     }
+
+
+
+
 
 
 
@@ -36143,7 +72287,15 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -36151,7 +72303,19 @@ void CfgData::InitFestivalActivityTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36163,7 +72327,15 @@ CfgFestivalActivityTable *CfgData::GetFestivalActivityTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36171,7 +72343,19 @@ CfgFestivalActivityTable *CfgData::GetFestivalActivityTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36183,7 +72367,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36191,7 +72383,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36199,7 +72399,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -36207,7 +72415,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -36215,7 +72431,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36223,7 +72447,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -36231,7 +72463,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -36239,7 +72479,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -36247,7 +72495,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             CfgYYGameApp stu;
+
+
+
+
 
 
 
@@ -36255,11 +72511,23 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             new (&stu.Rewards) std::vector<MemChrBag>();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36267,11 +72535,23 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36279,7 +72559,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -36287,11 +72575,23 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             strItems = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36299,7 +72599,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -36307,7 +72615,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -36315,7 +72631,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36323,7 +72647,15 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
             *v2 = stu;
+
+
+
+
 
 
 
@@ -36331,11 +72663,27 @@ void CfgData::InitYYDaTing()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36347,7 +72695,15 @@ CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36355,7 +72711,15 @@ CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_CfgYYGameAppMap.end())
+
+
+
+
 
 
 
@@ -36363,7 +72727,15 @@ CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -36371,11 +72743,27 @@ CfgYYGameApp *CfgData::GetYYGameApp(int32_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36387,7 +72775,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36395,7 +72791,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36403,7 +72807,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -36411,7 +72823,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -36419,7 +72839,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36427,7 +72855,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -36435,7 +72871,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -36443,7 +72887,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -36451,11 +72903,23 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             LuDaShiVip stu{};
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36463,11 +72927,23 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36475,7 +72951,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -36483,11 +72967,23 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             strItems = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36495,7 +72991,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -36503,7 +73007,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -36511,7 +73023,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             stu.nVipType = TabFile.Search_Posistion( i, 8)->iValue;
+
+
+
+
 
 
 
@@ -36519,7 +73039,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36527,7 +73055,15 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
             *v2 = stu;
+
+
+
+
 
 
 
@@ -36535,11 +73071,27 @@ void CfgData::InitLaDaShiHuiYuan()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36551,7 +73103,15 @@ LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36559,7 +73119,15 @@ LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_LuDaShiVipMap.end())
+
+
+
+
 
 
 
@@ -36567,7 +73135,15 @@ LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -36575,11 +73151,27 @@ LuDaShiVip *CfgData::GetLaDaShiHuiYuan(int32_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36591,7 +73183,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36599,7 +73199,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36607,7 +73215,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -36615,7 +73231,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -36623,7 +73247,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36631,7 +73263,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -36639,7 +73279,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -36647,7 +73295,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -36655,7 +73311,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             CfgYYVip stu;
+
+
+
+
 
 
 
@@ -36663,11 +73327,23 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             new (&stu.Rewards) std::vector<MemChrBag>();
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36675,11 +73351,23 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36687,7 +73375,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             char v11;
+
+
+
+
 
 
 
@@ -36695,11 +73391,23 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             strItems = v2->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36707,7 +73415,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -36715,7 +73431,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -36723,7 +73447,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             stu.nPric = TabFile.Search_Posistion( i, 5)->iValue;
+
+
+
+
 
 
 
@@ -36731,7 +73463,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36739,7 +73479,15 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
             *v3 = stu;
+
+
+
+
 
 
 
@@ -36747,11 +73495,27 @@ void CfgData::InitYYVip()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36763,7 +73527,15 @@ CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36771,7 +73543,15 @@ CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_CfgYYVipMap.end())
+
+
+
+
 
 
 
@@ -36779,7 +73559,15 @@ CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -36787,11 +73575,27 @@ CfgYYVip *CfgData::GetYYVip(int32_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36803,7 +73607,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36811,7 +73623,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36819,7 +73639,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -36827,7 +73655,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             return;
+
+
+
+
 
 
 
@@ -36835,7 +73671,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -36843,7 +73687,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
     int32_t iBaseColumnCount = TabFile.GetFieldsNum();
+
+
+
+
 
 
 
@@ -36851,7 +73703,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
     if (iBaseColumnCount > 0)
+
+
+
+
 
 
 
@@ -36859,7 +73719,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
         for (int32_t i = 0; i < iBaseTableCount; ++i)
+
+
+
+
 
 
 
@@ -36867,7 +73735,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             CfgSgGameApp stu;
+
+
+
+
 
 
 
@@ -36875,11 +73751,23 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             // stu.vRewards initialized by default constructor
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36887,11 +73775,23 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             stu.nType = TabFile.Search_Posistion( i, 1)->iValue;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36899,7 +73799,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             char v7;
+
+
+
+
 
 
 
@@ -36907,11 +73815,23 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             strItems = v1->pString;
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36919,7 +73839,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             CItemHelper().parseItemVectorString(&__x, &strItems);
+
+
+
+
 
 
 
@@ -36927,7 +73855,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -36935,7 +73871,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -36943,7 +73887,15 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
             *v2 = stu;
+
+
+
+
 
 
 
@@ -36951,11 +73903,27 @@ void CfgData::InitSouGouDaTing()
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -36967,7 +73935,15 @@ CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -36975,7 +73951,15 @@ CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_CfgSgGameAppMap.end())
+
+
+
+
 
 
 
@@ -36983,7 +73967,15 @@ CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -36991,11 +73983,27 @@ CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37011,7 +74019,19 @@ CfgSgGameApp *CfgData::GetSoGouGameApp(int32_t nIndex)
 
 
 
+
+
+
+
+
+
+
+
 void CfgData::parseAddAttribues(const std::string *const addonAttr, 
+
+
+
+
 
 
 
@@ -37019,7 +74039,15 @@ void CfgData::parseAddAttribues(const std::string *const addonAttr,
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -37027,11 +74055,27 @@ void CfgData::parseAddAttribues(const std::string *const addonAttr,
 
 
 
+
+
+
+
     // 此方法在多个地方被调用，用于解析 AddAttribute 列表
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37043,7 +74087,15 @@ const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -37051,7 +74103,15 @@ const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
 
 
 
+
+
+
+
     if (it != this->m_CfgMiniClient.end())
+
+
+
+
 
 
 
@@ -37059,7 +74119,15 @@ const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -37067,11 +74135,23 @@ const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -37083,7 +74163,19 @@ const CfgMiniClient *CfgData::GetMiniClient(const std::string *const platform)
 
 
 
+
+
+
+
+
+
+
+
 void CfgData::parseAddAttribues(std::list<AddAttribute> *result, 
+
+
+
+
 
 
 
@@ -37091,7 +74183,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -37099,7 +74199,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37107,7 +74215,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
     char v22;
+
+
+
+
 
 
 
@@ -37115,7 +74231,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37123,7 +74247,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
     StringUtility::split(strAttrAddons, *addonAttr, delims);
+
+
+
+
 
 
 
@@ -37131,7 +74263,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
     for (auto& addonStr : strAttrAddons)
+
+
+
+
 
 
 
@@ -37139,7 +74279,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
         std::string v24;
+
+
+
+
 
 
 
@@ -37147,7 +74295,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
             v24 = ":";
+
+
+
+
 
 
 
@@ -37155,7 +74311,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
         StringVector strAttrAddon;
+
+
+
+
 
 
 
@@ -37163,7 +74327,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -37171,7 +74343,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -37179,7 +74359,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
             attr.m_nAddAttrType = atoi(strAttrAddon[0].c_str());
+
+
+
+
 
 
 
@@ -37187,7 +74375,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
             if (attr.m_nAddAttrValue > 0)
+
+
+
+
 
 
 
@@ -37195,7 +74391,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
                 result->push_back(attr);
+
+
+
+
 
 
 
@@ -37203,7 +74407,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -37211,7 +74423,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -37219,7 +74439,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
                 "CfgData::parseAddAttribues() wrong data from %s, where index = %d, str = %s\n",
+
+
+
+
 
 
 
@@ -37227,7 +74455,15 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -37235,7 +74471,19 @@ void CfgData::parseAddAttribues(std::list<AddAttribute> *result,
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37247,7 +74495,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
                                  const std::string *const str, int32_t nIndex, const std::string *const path)
+
+
+
+
 
 
 
@@ -37255,11 +74511,23 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
     if (str->empty() || *str == "-1") return;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37267,7 +74535,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
     char v10;
+
+
+
+
 
 
 
@@ -37275,7 +74551,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37283,7 +74567,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
     StringUtility::split(strTalentAddons, *str, delims);
+
+
+
+
 
 
 
@@ -37291,7 +74583,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
     for (auto& talentStr : strTalentAddons)
+
+
+
+
 
 
 
@@ -37299,7 +74599,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
         std::string v12;
+
+
+
+
 
 
 
@@ -37307,7 +74615,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
             v12 = ":";
+
+
+
+
 
 
 
@@ -37315,7 +74631,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
         StringVector vParam;
+
+
+
+
 
 
 
@@ -37323,7 +74647,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -37331,7 +74663,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -37339,7 +74679,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
             addon.nSkillId = atoi(vParam[0].c_str());
+
+
+
+
 
 
 
@@ -37347,7 +74695,15 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
             result->push_back(addon);
+
+
+
+
 
 
 
@@ -37355,11 +74711,27 @@ void CfgData::paraseTalentAddon(std::list<TalentAddon> *result,
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37371,7 +74743,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
                                 const std::string *const str, int32_t nIndex, const std::string *const path)
+
+
+
+
 
 
 
@@ -37379,11 +74759,23 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
     if (str->empty() || *str == "-1") return;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37391,7 +74783,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
     char v14;
+
+
+
+
 
 
 
@@ -37399,7 +74799,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37407,7 +74815,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
     StringUtility::split(strParams, *str, delims);
+
+
+
+
 
 
 
@@ -37415,7 +74831,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
     for (auto& paramStr : strParams)
+
+
+
+
 
 
 
@@ -37423,7 +74847,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
         std::string v16;
+
+
+
+
 
 
 
@@ -37431,7 +74863,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
             v16 = ":";
+
+
+
+
 
 
 
@@ -37439,7 +74879,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
         StringVector vParam;
+
+
+
+
 
 
 
@@ -37447,7 +74895,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -37455,7 +74911,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -37463,7 +74927,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
             param.nParam1 = atoi(vParam[0].c_str());
+
+
+
+
 
 
 
@@ -37471,7 +74943,15 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
             result->push_back(param);
+
+
+
+
 
 
 
@@ -37479,11 +74959,27 @@ void CfgData::paraseParam2List(std::list<Param2> *result,
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37495,7 +74991,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
                                const std::string *const str, int32_t size, const std::string *const path)
+
+
+
+
 
 
 
@@ -37503,11 +75007,23 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     if (str->empty() || *str == "-1") return;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37515,7 +75031,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     char v19;
+
+
+
+
 
 
 
@@ -37523,7 +75047,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37531,7 +75063,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     StringUtility::split(vstr, *str, delims);
+
+
+
+
 
 
 
@@ -37539,11 +75079,23 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     if (size > 0 && (int32_t)vstr.size() != size)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -37551,7 +75103,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
             "CfgData::paraseInt32List() check size err from %s, where size = %d, str = %s\n",
+
+
+
+
 
 
 
@@ -37559,7 +75119,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -37567,7 +75135,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -37575,7 +75151,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -37583,7 +75167,15 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
             result->push_back(val);
+
+
+
+
 
 
 
@@ -37591,11 +75183,27 @@ void CfgData::paraseInt32List(std::list<int> *result,
 
 
 
+
+
+
+
     }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37607,7 +75215,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -37615,11 +75231,23 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     if (str->empty() || *str == "-1") return retstr;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37627,7 +75255,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     char v19;
+
+
+
+
 
 
 
@@ -37635,7 +75271,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37643,7 +75287,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     StringUtility::split(vstr, *str, delims);
+
+
+
+
 
 
 
@@ -37651,11 +75303,23 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     if (size > 0 && (int32_t)vstr.size() != size)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -37663,7 +75327,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
             "CfgData::paraseInt32Vector2() check size err from %s, where size = %d, str = %s\n",
+
+
+
+
 
 
 
@@ -37671,7 +75343,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -37679,7 +75359,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -37687,7 +75375,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
         for (auto& valStr : vstr)
+
+
+
+
 
 
 
@@ -37695,7 +75391,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
             int val = atoi(valStr.c_str());
+
+
+
+
 
 
 
@@ -37703,7 +75407,15 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -37711,11 +75423,27 @@ CfgInt32Vector *CfgData::paraseInt32Vector2(const std::string *const str, const 
 
 
 
+
+
+
+
     return retstr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37727,7 +75455,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -37735,11 +75471,23 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
     if (str->empty() || *str == "-1") return retstr;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37747,7 +75495,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
     char v18;
+
+
+
+
 
 
 
@@ -37755,7 +75511,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37763,11 +75527,23 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
     StringUtility::split(SplitStr, *str, delims);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37775,7 +75551,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37783,7 +75567,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -37791,7 +75583,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
         char v22;
+
+
+
+
 
 
 
@@ -37799,7 +75599,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -37807,7 +75615,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
         StringUtility::split(vstr, splitItem, v21);
+
+
+
+
 
 
 
@@ -37815,7 +75631,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
         std::vector<int> probability;
+
+
+
+
 
 
 
@@ -37823,7 +75647,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -37831,7 +75663,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -37839,7 +75679,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
             probability.push_back(val);
+
+
+
+
 
 
 
@@ -37847,7 +75695,15 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
         retstr->push_back(probability);
+
+
+
+
 
 
 
@@ -37855,11 +75711,27 @@ CfgInt32VtVector *CfgData::paraseInt32VtVector(const std::string *const str, con
 
 
 
+
+
+
+
     return retstr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -37871,7 +75743,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
                                       int32_t id, const std::string *const strItems)
+
+
+
+
 
 
 
@@ -37879,7 +75759,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
     retstr.clear();
+
+
+
+
 
 
 
@@ -37887,7 +75775,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37895,7 +75791,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
     char v47;
+
+
+
+
 
 
 
@@ -37903,7 +75807,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -37911,7 +75823,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
     StringUtility::split(items_receive, *strItems, delims);
+
+
+
+
 
 
 
@@ -37919,7 +75839,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
     for (auto& itemStr : items_receive)
+
+
+
+
 
 
 
@@ -37927,7 +75855,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         std::string v49;
+
+
+
+
 
 
 
@@ -37935,7 +75871,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             v49 = ":";
+
+
+
+
 
 
 
@@ -37943,7 +75887,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         StringVector item;
+
+
+
+
 
 
 
@@ -37951,7 +75903,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -37959,7 +75919,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -37967,7 +75935,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             memset(&itemData, 0, sizeof(itemData));
+
+
+
+
 
 
 
@@ -37975,11 +75951,23 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             itemData.type = atoi(item[1].c_str());
 
 
 
+
+
+
+
             itemData.count = atoi(item[2].c_str());
+
+
+
+
 
 
 
@@ -37987,11 +75975,23 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             retstr->push_back(itemData);
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -37999,7 +75999,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -38007,7 +76015,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             memset(&itemData, 0, sizeof(itemData));
+
+
+
+
 
 
 
@@ -38015,7 +76031,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             itemData.type = atoi(item[1].c_str());
+
+
+
+
 
 
 
@@ -38023,7 +76047,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             itemData.bind = atoi(item[3].c_str());
+
+
+
+
 
 
 
@@ -38031,11 +76063,23 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             retstr->push_back(itemData);
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -38043,7 +76087,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -38051,7 +76103,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             memset(&itemData, 0, sizeof(itemData));
+
+
+
+
 
 
 
@@ -38059,7 +76119,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             itemData.type = atoi(item[1].c_str());
+
+
+
+
 
 
 
@@ -38067,7 +76135,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             itemData.bind = atoi(item[3].c_str());
+
+
+
+
 
 
 
@@ -38075,7 +76151,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
             itemData.time = atoi(item[5].c_str());
+
+
+
+
 
 
 
@@ -38083,7 +76167,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -38091,7 +76183,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -38099,7 +76199,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
                 "CfgData::parseTaskItemJobString wrong data with id = %d, string = %s\n",
+
+
+
+
 
 
 
@@ -38107,7 +76215,15 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -38115,7 +76231,19 @@ void CfgData::parseTaskItemJobString(MemChrJobBagVector& retstr,
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38127,7 +76255,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38135,11 +76271,23 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
     if (strItems->empty()) return retstr;
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -38147,7 +76295,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
     char v19;
+
+
+
+
 
 
 
@@ -38155,7 +76311,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -38163,7 +76327,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
     StringUtility::split(items_receive, *strItems, delims);
+
+
+
+
 
 
 
@@ -38171,7 +76343,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
     for (auto& itemStr : items_receive)
+
+
+
+
 
 
 
@@ -38179,7 +76359,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
         std::string v21;
+
+
+
+
 
 
 
@@ -38187,7 +76375,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
             v21 = ":";
+
+
+
+
 
 
 
@@ -38195,7 +76391,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
         StringVector item;
+
+
+
+
 
 
 
@@ -38203,7 +76407,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -38211,7 +76423,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -38219,7 +76439,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
             itemData.job = atoi(item[0].c_str());
+
+
+
+
 
 
 
@@ -38227,7 +76455,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
             auto *v9 = &retstr[itemData.job];
+
+
+
+
 
 
 
@@ -38235,7 +76471,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -38243,7 +76487,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -38251,7 +76503,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
                 "CfgData::parseGambleEquip wrong data with id = %d, string = %s\n",
+
+
+
+
 
 
 
@@ -38259,7 +76519,15 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -38267,11 +76535,27 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
     return retstr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38375,7 +76659,107 @@ MemJobItemTable *CfgData::parseGambleEquip(int32_t id, const std::string *const 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 QuestionsVector *CfgData::GetAllQuestions(int8_t nType)
+
+
+
+
 
 
 
@@ -38383,7 +76767,15 @@ QuestionsVector *CfgData::GetAllQuestions(int8_t nType)
 
 
 
+
+
+
+
     auto it = this->m_mQuestions.find(nType);
+
+
+
+
 
 
 
@@ -38391,7 +76783,15 @@ QuestionsVector *CfgData::GetAllQuestions(int8_t nType)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -38399,7 +76799,15 @@ QuestionsVector *CfgData::GetAllQuestions(int8_t nType)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -38407,7 +76815,19 @@ QuestionsVector *CfgData::GetAllQuestions(int8_t nType)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38419,7 +76839,15 @@ BossInfo *CfgData::GetBossInfo(int32_t BossId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38427,7 +76855,15 @@ BossInfo *CfgData::GetBossInfo(int32_t BossId)
 
 
 
+
+
+
+
     if (it != this->m_BossInfo.end())
+
+
+
+
 
 
 
@@ -38435,7 +76871,15 @@ BossInfo *CfgData::GetBossInfo(int32_t BossId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38443,11 +76887,27 @@ BossInfo *CfgData::GetBossInfo(int32_t BossId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38459,7 +76919,15 @@ PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38467,7 +76935,15 @@ PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -38475,7 +76951,15 @@ PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -38483,7 +76967,15 @@ PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -38491,11 +76983,27 @@ PkDropRate *CfgData::GetPkDropRate(int32_t PkValues)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38507,7 +77015,15 @@ GroupMonsterVector *CfgData::GetGroupMonsterVector(int32_t MapId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38515,7 +77031,15 @@ GroupMonsterVector *CfgData::GetGroupMonsterVector(int32_t MapId)
 
 
 
+
+
+
+
     if (it != this->m_GroupMonsterMap.end())
+
+
+
+
 
 
 
@@ -38523,7 +77047,15 @@ GroupMonsterVector *CfgData::GetGroupMonsterVector(int32_t MapId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38531,11 +77063,27 @@ GroupMonsterVector *CfgData::GetGroupMonsterVector(int32_t MapId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38547,7 +77095,15 @@ CfgSysMail *CfgData::GetSysMail(int32_t Id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38555,7 +77111,15 @@ CfgSysMail *CfgData::GetSysMail(int32_t Id)
 
 
 
+
+
+
+
     if (it != this->m_sysMail.end())
+
+
+
+
 
 
 
@@ -38563,7 +77127,15 @@ CfgSysMail *CfgData::GetSysMail(int32_t Id)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38571,11 +77143,27 @@ CfgSysMail *CfgData::GetSysMail(int32_t Id)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38587,7 +77175,15 @@ CfgGameShop *CfgData::GetGameShop(int32_t nShopId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38595,7 +77191,15 @@ CfgGameShop *CfgData::GetGameShop(int32_t nShopId)
 
 
 
+
+
+
+
     if (it != this->m_GameShopMap.end())
+
+
+
+
 
 
 
@@ -38603,7 +77207,15 @@ CfgGameShop *CfgData::GetGameShop(int32_t nShopId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38611,11 +77223,27 @@ CfgGameShop *CfgData::GetGameShop(int32_t nShopId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38627,7 +77255,15 @@ CfgGameShop *CfgData::GetGameShopItem(int8_t Class, int32_t Id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38635,7 +77271,15 @@ CfgGameShop *CfgData::GetGameShopItem(int8_t Class, int32_t Id)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -38643,7 +77287,15 @@ CfgGameShop *CfgData::GetGameShopItem(int8_t Class, int32_t Id)
 
 
 
+
+
+
+
         if (shop.ItemClass == Class && shop.ItemId == Id && shop.ShopType != 4)
+
+
+
+
 
 
 
@@ -38651,7 +77303,15 @@ CfgGameShop *CfgData::GetGameShopItem(int8_t Class, int32_t Id)
 
 
 
+
+
+
+
             return &shop;
+
+
+
+
 
 
 
@@ -38659,7 +77319,15 @@ CfgGameShop *CfgData::GetGameShopItem(int8_t Class, int32_t Id)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -38667,7 +77335,19 @@ CfgGameShop *CfgData::GetGameShopItem(int8_t Class, int32_t Id)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38679,7 +77359,15 @@ BuyFaBaoResCfg *CfgData::GetBuyFaBaoResCfg(int32_t Id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38687,7 +77375,15 @@ BuyFaBaoResCfg *CfgData::GetBuyFaBaoResCfg(int32_t Id)
 
 
 
+
+
+
+
     if (it != this->m_FaBaoResMap.end())
+
+
+
+
 
 
 
@@ -38695,7 +77391,15 @@ BuyFaBaoResCfg *CfgData::GetBuyFaBaoResCfg(int32_t Id)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38703,11 +77407,27 @@ BuyFaBaoResCfg *CfgData::GetBuyFaBaoResCfg(int32_t Id)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38719,7 +77439,15 @@ XingMaiCfg *CfgData::GetXingMaiCfg(int32_t XingMaiLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38727,7 +77455,15 @@ XingMaiCfg *CfgData::GetXingMaiCfg(int32_t XingMaiLevel)
 
 
 
+
+
+
+
     if (it != this->m_XingMaiCfgTable.end())
+
+
+
+
 
 
 
@@ -38735,7 +77471,15 @@ XingMaiCfg *CfgData::GetXingMaiCfg(int32_t XingMaiLevel)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38743,11 +77487,27 @@ XingMaiCfg *CfgData::GetXingMaiCfg(int32_t XingMaiLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38759,7 +77519,15 @@ const CfgXingMaiSlot *CfgData::GetXingMaiSlot(int8_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38767,7 +77535,15 @@ const CfgXingMaiSlot *CfgData::GetXingMaiSlot(int8_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_cfgXingMaiSlotTable.end())
+
+
+
+
 
 
 
@@ -38775,7 +77551,15 @@ const CfgXingMaiSlot *CfgData::GetXingMaiSlot(int8_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38783,11 +77567,27 @@ const CfgXingMaiSlot *CfgData::GetXingMaiSlot(int8_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38799,7 +77599,15 @@ TianLingCfg *CfgData::GetTianLingCfg(int32_t TianLingLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38807,7 +77615,15 @@ TianLingCfg *CfgData::GetTianLingCfg(int32_t TianLingLevel)
 
 
 
+
+
+
+
     if (it != this->m_TianLingCfgTable.end())
+
+
+
+
 
 
 
@@ -38815,7 +77631,15 @@ TianLingCfg *CfgData::GetTianLingCfg(int32_t TianLingLevel)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38823,11 +77647,27 @@ TianLingCfg *CfgData::GetTianLingCfg(int32_t TianLingLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38839,7 +77679,15 @@ GongMingCfg *CfgData::GetGongMingCfg(int32_t GongMinLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38847,7 +77695,15 @@ GongMingCfg *CfgData::GetGongMingCfg(int32_t GongMinLevel)
 
 
 
+
+
+
+
     if (it != this->m_GongMingCfgMap.end())
+
+
+
+
 
 
 
@@ -38855,7 +77711,15 @@ GongMingCfg *CfgData::GetGongMingCfg(int32_t GongMinLevel)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38863,11 +77727,27 @@ GongMingCfg *CfgData::GetGongMingCfg(int32_t GongMinLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38879,7 +77759,15 @@ DamnationCfg *CfgData::GetDamnationCfg(int32_t Level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38887,7 +77775,15 @@ DamnationCfg *CfgData::GetDamnationCfg(int32_t Level)
 
 
 
+
+
+
+
     if (it != this->m_DamnationCfgTable.end())
+
+
+
+
 
 
 
@@ -38895,7 +77791,15 @@ DamnationCfg *CfgData::GetDamnationCfg(int32_t Level)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38903,11 +77807,27 @@ DamnationCfg *CfgData::GetDamnationCfg(int32_t Level)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38919,7 +77839,15 @@ int32_t CfgData::GetAttrBattle(int32_t nAttr)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38927,11 +77855,27 @@ int32_t CfgData::GetAttrBattle(int32_t nAttr)
 
 
 
+
+
+
+
     return this->m_cfgAttrBattle[nAttr];
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38943,7 +77887,15 @@ ScoreShopCfg *CfgData::GetScoreShopCfg(int32_t Index)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38951,7 +77903,15 @@ ScoreShopCfg *CfgData::GetScoreShopCfg(int32_t Index)
 
 
 
+
+
+
+
     if (it != this->m_ScoreShopCfgTable.end())
+
+
+
+
 
 
 
@@ -38959,7 +77919,15 @@ ScoreShopCfg *CfgData::GetScoreShopCfg(int32_t Index)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -38967,11 +77935,27 @@ ScoreShopCfg *CfgData::GetScoreShopCfg(int32_t Index)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -38983,7 +77967,15 @@ LevelRefinCfg *CfgData::GetRefining(int32_t Level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -38991,7 +77983,15 @@ LevelRefinCfg *CfgData::GetRefining(int32_t Level)
 
 
 
+
+
+
+
     if (it != this->m_LevelRefinCfgMap.end())
+
+
+
+
 
 
 
@@ -38999,7 +77999,15 @@ LevelRefinCfg *CfgData::GetRefining(int32_t Level)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39007,11 +78015,27 @@ LevelRefinCfg *CfgData::GetRefining(int32_t Level)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39023,7 +78047,15 @@ UltimateChallengeCfg *CfgData::GetUltimateChallengeCfgMap(int32_t MapId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39031,7 +78063,15 @@ UltimateChallengeCfg *CfgData::GetUltimateChallengeCfgMap(int32_t MapId)
 
 
 
+
+
+
+
     if (it != this->m_UltimateChallengeCfgMap.end())
+
+
+
+
 
 
 
@@ -39039,7 +78079,15 @@ UltimateChallengeCfg *CfgData::GetUltimateChallengeCfgMap(int32_t MapId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39047,11 +78095,27 @@ UltimateChallengeCfg *CfgData::GetUltimateChallengeCfgMap(int32_t MapId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39063,7 +78127,15 @@ CfgCachet *CfgData::GetCfgCachet(int32_t level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39071,7 +78143,15 @@ CfgCachet *CfgData::GetCfgCachet(int32_t level)
 
 
 
+
+
+
+
     if (it != this->m_CfgCachetMap.end())
+
+
+
+
 
 
 
@@ -39079,7 +78159,15 @@ CfgCachet *CfgData::GetCfgCachet(int32_t level)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39087,11 +78175,27 @@ CfgCachet *CfgData::GetCfgCachet(int32_t level)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39103,7 +78207,15 @@ int32_t CfgData::GetCachetLevel(int64_t Exp)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39111,7 +78223,15 @@ int32_t CfgData::GetCachetLevel(int64_t Exp)
 
 
 
+
+
+
+
     for (auto& pair : this->m_CfgCachetMap)
+
+
+
+
 
 
 
@@ -39119,7 +78239,15 @@ int32_t CfgData::GetCachetLevel(int64_t Exp)
 
 
 
+
+
+
+
         if (pair.second.nNeedCacht <= Exp && pair.second.nLevel > Level)
+
+
+
+
 
 
 
@@ -39127,7 +78255,15 @@ int32_t CfgData::GetCachetLevel(int64_t Exp)
 
 
 
+
+
+
+
             Level = pair.second.nLevel;
+
+
+
+
 
 
 
@@ -39135,7 +78271,15 @@ int32_t CfgData::GetCachetLevel(int64_t Exp)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -39143,7 +78287,19 @@ int32_t CfgData::GetCachetLevel(int64_t Exp)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39155,7 +78311,15 @@ BossKilledReward *CfgData::GetBossKilledReward(int32_t BossId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39163,7 +78327,15 @@ BossKilledReward *CfgData::GetBossKilledReward(int32_t BossId)
 
 
 
+
+
+
+
     if (it != this->m_BossKilledRewardMap.end())
+
+
+
+
 
 
 
@@ -39171,7 +78343,15 @@ BossKilledReward *CfgData::GetBossKilledReward(int32_t BossId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39179,11 +78359,27 @@ BossKilledReward *CfgData::GetBossKilledReward(int32_t BossId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39195,7 +78391,15 @@ SystemOpenGift *CfgData::GetSystemOpenGift(int32_t Id)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39203,7 +78407,15 @@ SystemOpenGift *CfgData::GetSystemOpenGift(int32_t Id)
 
 
 
+
+
+
+
     if (it != this->m_SystemOpenGiftMap.end())
+
+
+
+
 
 
 
@@ -39211,7 +78423,15 @@ SystemOpenGift *CfgData::GetSystemOpenGift(int32_t Id)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39219,11 +78439,27 @@ SystemOpenGift *CfgData::GetSystemOpenGift(int32_t Id)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39235,7 +78471,15 @@ bool CfgData::IsSpecialMap(int32_t MapId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39243,11 +78487,27 @@ bool CfgData::IsSpecialMap(int32_t MapId)
 
 
 
+
+
+
+
     return it != this->m_SpecialMapMap.end();
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39259,7 +78519,15 @@ TestServerReward *CfgData::GetTestServerReward(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39267,7 +78535,15 @@ TestServerReward *CfgData::GetTestServerReward(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_TestServerRewardMap.end())
+
+
+
+
 
 
 
@@ -39275,7 +78551,15 @@ TestServerReward *CfgData::GetTestServerReward(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39283,11 +78567,27 @@ TestServerReward *CfgData::GetTestServerReward(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39299,7 +78599,15 @@ GuWuCfg *CfgData::GetGuWuCfg(int32_t Level)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39307,7 +78615,15 @@ GuWuCfg *CfgData::GetGuWuCfg(int32_t Level)
 
 
 
+
+
+
+
     if (it != this->m_GuWuCfgMap.end())
+
+
+
+
 
 
 
@@ -39315,7 +78631,15 @@ GuWuCfg *CfgData::GetGuWuCfg(int32_t Level)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39323,11 +78647,27 @@ GuWuCfg *CfgData::GetGuWuCfg(int32_t Level)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39339,7 +78679,15 @@ FunctionOpenMail *CfgData::GetOpenFunctionMailnCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39347,7 +78695,15 @@ FunctionOpenMail *CfgData::GetOpenFunctionMailnCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_FunctionOpenMailMap.end())
+
+
+
+
 
 
 
@@ -39355,7 +78711,15 @@ FunctionOpenMail *CfgData::GetOpenFunctionMailnCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39363,11 +78727,27 @@ FunctionOpenMail *CfgData::GetOpenFunctionMailnCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39379,7 +78759,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39387,7 +78775,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     int32_t MaxRate = 0;
+
+
+
+
 
 
 
@@ -39395,7 +78791,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -39403,7 +78807,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -39411,7 +78823,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -39419,7 +78839,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -39427,7 +78855,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
             {
+
+
+
+
 
 
 
@@ -39435,7 +78871,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
                 MaxRate += task.Rate;
+
+
+
+
 
 
 
@@ -39443,7 +78887,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -39451,7 +78903,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -39459,7 +78919,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -39467,11 +78935,23 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     int32_t nRand = random->generate(1, MaxRate);
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -39479,7 +78959,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -39487,7 +78975,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -39495,7 +78991,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -39503,7 +79007,15 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -39511,11 +79023,27 @@ int32_t CfgData::RandXiangYaoTaskId(int32_t Level, bool bBest)
 
 
 
+
+
+
+
     return SpareId;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39527,7 +79055,15 @@ int32_t CfgData::getXiangYaoStart(int32_t TaskId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39535,7 +79071,15 @@ int32_t CfgData::getXiangYaoStart(int32_t TaskId)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -39543,7 +79087,15 @@ int32_t CfgData::getXiangYaoStart(int32_t TaskId)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -39551,7 +79103,15 @@ int32_t CfgData::getXiangYaoStart(int32_t TaskId)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -39559,11 +79119,27 @@ int32_t CfgData::getXiangYaoStart(int32_t TaskId)
 
 
 
+
+
+
+
     return 0;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39575,7 +79151,15 @@ ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39583,7 +79167,15 @@ ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_ShenWeiTaskCfgMap.end())
+
+
+
+
 
 
 
@@ -39591,7 +79183,15 @@ ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39599,11 +79199,31 @@ ShenWeiTaskCfg *CfgData::GetShenWeiTaskCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -39619,7 +79239,15 @@ const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const std::string *const p
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39627,7 +79255,15 @@ const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const std::string *const p
 
 
 
+
+
+
+
     if (it != this->m_CfgMobilePhoneGift.end())
+
+
+
+
 
 
 
@@ -39635,7 +79271,15 @@ const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const std::string *const p
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39643,11 +79287,31 @@ const CfgMobilePhoneGift *CfgData::GetMobilePhoneGift(const std::string *const p
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -39663,7 +79327,15 @@ CfgWuHunShop *CfgData::GetWuHunShopItem(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39671,7 +79343,15 @@ CfgWuHunShop *CfgData::GetWuHunShopItem(int32_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_CfgWuHunShopItemMap.end())
+
+
+
+
 
 
 
@@ -39679,7 +79359,15 @@ CfgWuHunShop *CfgData::GetWuHunShopItem(int32_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39687,11 +79375,27 @@ CfgWuHunShop *CfgData::GetWuHunShopItem(int32_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39703,7 +79407,15 @@ WuHunItem *CfgData::GetWuHunItem(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39711,7 +79423,15 @@ WuHunItem *CfgData::GetWuHunItem(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_WuHunItemMap.end())
+
+
+
+
 
 
 
@@ -39719,7 +79439,15 @@ WuHunItem *CfgData::GetWuHunItem(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39727,11 +79455,27 @@ WuHunItem *CfgData::GetWuHunItem(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39743,7 +79487,15 @@ CreateWuHun *CfgData::GetCreateWuHun(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39751,7 +79503,15 @@ CreateWuHun *CfgData::GetCreateWuHun(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_CreateWuHunMap.end())
+
+
+
+
 
 
 
@@ -39759,7 +79519,15 @@ CreateWuHun *CfgData::GetCreateWuHun(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39767,11 +79535,27 @@ CreateWuHun *CfgData::GetCreateWuHun(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39783,7 +79567,15 @@ SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(int32_t MapId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39791,7 +79583,15 @@ SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(int32_t MapId)
 
 
 
+
+
+
+
     if (it != this->m_SpecialBossMapCfgMap.end())
+
+
+
+
 
 
 
@@ -39799,7 +79599,15 @@ SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(int32_t MapId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -39807,11 +79615,47 @@ SpecialBossMapCfg *CfgData::GetSpecialBossMapCfg(int32_t MapId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -39843,7 +79687,15 @@ WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39851,7 +79703,15 @@ WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     auto it = this->m_WinRefiningCfgMap.find(key);
+
+
+
+
 
 
 
@@ -39859,7 +79719,15 @@ WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -39867,7 +79735,15 @@ WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -39875,7 +79751,35 @@ WinRefiningCfg *CfgData::GetWingEquipRefiningCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -39903,7 +79807,15 @@ const CfgYYSuperBuff *CfgData::GetSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39911,7 +79823,15 @@ const CfgYYSuperBuff *CfgData::GetSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -39919,7 +79839,15 @@ const CfgYYSuperBuff *CfgData::GetSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -39927,7 +79855,15 @@ const CfgYYSuperBuff *CfgData::GetSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -39935,11 +79871,27 @@ const CfgYYSuperBuff *CfgData::GetSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -39951,7 +79903,15 @@ const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -39959,7 +79919,15 @@ const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -39967,7 +79935,15 @@ const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -39975,7 +79951,15 @@ const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -39983,11 +79967,31 @@ const CfgYYSuperBuff *CfgData::Get37wanSuperBuff(int32_t SuperLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -40003,7 +80007,15 @@ PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(std::string *p_Platform, int32_
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40011,7 +80023,15 @@ PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(std::string *p_Platform, int32_
 
 
 
+
+
+
+
     auto it = this->m_PlatformDaTingMap.find(key);
+
+
+
+
 
 
 
@@ -40019,7 +80039,15 @@ PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(std::string *p_Platform, int32_
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -40027,7 +80055,15 @@ PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(std::string *p_Platform, int32_
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -40035,7 +80071,19 @@ PlatformDaTing *CfgData::GetGetPlatformDaTingCfg(std::string *p_Platform, int32_
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40047,7 +80095,15 @@ MiniClientCfg *CfgData::GetMiniClientCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40055,7 +80111,15 @@ MiniClientCfg *CfgData::GetMiniClientCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
     auto it = this->m_GetMiniClientMap.find(key);
+
+
+
+
 
 
 
@@ -40063,7 +80127,15 @@ MiniClientCfg *CfgData::GetMiniClientCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -40071,7 +80143,15 @@ MiniClientCfg *CfgData::GetMiniClientCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -40079,7 +80159,19 @@ MiniClientCfg *CfgData::GetMiniClientCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40091,7 +80183,15 @@ PlatformVip *CfgData::GetGetPlatformVipCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40099,7 +80199,15 @@ PlatformVip *CfgData::GetGetPlatformVipCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
     auto it = this->m_PlatformVipMap.find(key);
+
+
+
+
 
 
 
@@ -40107,7 +80215,15 @@ PlatformVip *CfgData::GetGetPlatformVipCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -40115,7 +80231,15 @@ PlatformVip *CfgData::GetGetPlatformVipCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -40123,7 +80247,19 @@ PlatformVip *CfgData::GetGetPlatformVipCfg(std::string *p_Platform, int32_t nId)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40135,7 +80271,15 @@ PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(std::string *p_Platform, int
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40143,7 +80287,15 @@ PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(std::string *p_Platform, int
 
 
 
+
+
+
+
     auto it = this->m_PlatformRewardCfgMap.find(key);
+
+
+
+
 
 
 
@@ -40151,7 +80303,15 @@ PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(std::string *p_Platform, int
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -40159,7 +80319,15 @@ PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(std::string *p_Platform, int
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -40167,7 +80335,19 @@ PlatformRewardCfg *CfgData::GetGetPlatformRewardCfg(std::string *p_Platform, int
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40179,7 +80359,15 @@ DiligenceCfg *CfgData::GetDiligenceCfg(int32_t nType)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40187,7 +80375,15 @@ DiligenceCfg *CfgData::GetDiligenceCfg(int32_t nType)
 
 
 
+
+
+
+
     if (it != this->m_DiligenceCfgMap.end())
+
+
+
+
 
 
 
@@ -40195,7 +80391,15 @@ DiligenceCfg *CfgData::GetDiligenceCfg(int32_t nType)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40203,11 +80407,27 @@ DiligenceCfg *CfgData::GetDiligenceCfg(int32_t nType)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40219,7 +80439,15 @@ ContributionCfg *CfgData::GettFamilyDonateCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40227,7 +80455,15 @@ ContributionCfg *CfgData::GettFamilyDonateCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_ContributionCfgMap.end())
+
+
+
+
 
 
 
@@ -40235,7 +80471,15 @@ ContributionCfg *CfgData::GettFamilyDonateCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40243,11 +80487,27 @@ ContributionCfg *CfgData::GettFamilyDonateCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40259,7 +80519,15 @@ ShangRenCfg *CfgData::GetShangRenCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40267,7 +80535,15 @@ ShangRenCfg *CfgData::GetShangRenCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_ShangRenCfgMap.end())
+
+
+
+
 
 
 
@@ -40275,7 +80551,15 @@ ShangRenCfg *CfgData::GetShangRenCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40283,11 +80567,27 @@ ShangRenCfg *CfgData::GetShangRenCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40299,7 +80599,15 @@ SelectItemCfg *CfgData::GetSelectItemCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40307,7 +80615,15 @@ SelectItemCfg *CfgData::GetSelectItemCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_SelectItemCfgMap.end())
+
+
+
+
 
 
 
@@ -40315,7 +80631,15 @@ SelectItemCfg *CfgData::GetSelectItemCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40323,11 +80647,27 @@ SelectItemCfg *CfgData::GetSelectItemCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40339,7 +80679,15 @@ XunLeiCfg *CfgData::GetXunLeiCfg(int32_t nIndex)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40347,7 +80695,15 @@ XunLeiCfg *CfgData::GetXunLeiCfg(int32_t nIndex)
 
 
 
+
+
+
+
     if (it != this->m_XunLeiCfgMap.end())
+
+
+
+
 
 
 
@@ -40355,7 +80711,15 @@ XunLeiCfg *CfgData::GetXunLeiCfg(int32_t nIndex)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40363,11 +80727,27 @@ XunLeiCfg *CfgData::GetXunLeiCfg(int32_t nIndex)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40379,7 +80759,15 @@ CrossTowerCfg *CfgData::GetCrossTowerCfg(int32_t MapId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40387,7 +80775,15 @@ CrossTowerCfg *CfgData::GetCrossTowerCfg(int32_t MapId)
 
 
 
+
+
+
+
     if (it != this->m_CrossTowerCfgMap.end())
+
+
+
+
 
 
 
@@ -40395,7 +80791,15 @@ CrossTowerCfg *CfgData::GetCrossTowerCfg(int32_t MapId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40403,11 +80807,27 @@ CrossTowerCfg *CfgData::GetCrossTowerCfg(int32_t MapId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40419,7 +80839,15 @@ MoFuSkillCfg *CfgData::GetMoFuSkillCfg(int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40427,7 +80855,15 @@ MoFuSkillCfg *CfgData::GetMoFuSkillCfg(int32_t nLevel)
 
 
 
+
+
+
+
     if (it != this->m_MoFuSkillCfgMap.end())
+
+
+
+
 
 
 
@@ -40435,7 +80871,15 @@ MoFuSkillCfg *CfgData::GetMoFuSkillCfg(int32_t nLevel)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40443,11 +80887,27 @@ MoFuSkillCfg *CfgData::GetMoFuSkillCfg(int32_t nLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40459,7 +80919,15 @@ ZhuNengCfg *CfgData::GetZhuNengCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40467,7 +80935,15 @@ ZhuNengCfg *CfgData::GetZhuNengCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     auto it = this->m_ZhuNengCfgMap.find(key);
+
+
+
+
 
 
 
@@ -40475,7 +80951,15 @@ ZhuNengCfg *CfgData::GetZhuNengCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -40483,7 +80967,15 @@ ZhuNengCfg *CfgData::GetZhuNengCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -40491,7 +80983,19 @@ ZhuNengCfg *CfgData::GetZhuNengCfg(int32_t nType, int32_t nLevel)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40503,7 +81007,15 @@ MoFuDuiHuan *CfgData::GetMoFuDuiHuanlCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40511,7 +81023,15 @@ MoFuDuiHuan *CfgData::GetMoFuDuiHuanlCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_MoFuDuiHuanMap.end())
+
+
+
+
 
 
 
@@ -40519,7 +81039,15 @@ MoFuDuiHuan *CfgData::GetMoFuDuiHuanlCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40527,11 +81055,27 @@ MoFuDuiHuan *CfgData::GetMoFuDuiHuanlCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40543,7 +81087,15 @@ ChristmasDuiHuan *CfgData::GetChristmasDuiHuanCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40551,7 +81103,15 @@ ChristmasDuiHuan *CfgData::GetChristmasDuiHuanCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_ChristmasDuiHuanMap.end())
+
+
+
+
 
 
 
@@ -40559,7 +81119,15 @@ ChristmasDuiHuan *CfgData::GetChristmasDuiHuanCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40567,11 +81135,27 @@ ChristmasDuiHuan *CfgData::GetChristmasDuiHuanCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40583,7 +81167,15 @@ int32_t CfgData::GetTongTianChiReward(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40591,7 +81183,15 @@ int32_t CfgData::GetTongTianChiReward(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_TongTianChiRankReward.end())
+
+
+
+
 
 
 
@@ -40599,7 +81199,15 @@ int32_t CfgData::GetTongTianChiReward(int32_t nId)
 
 
 
+
+
+
+
         return it->second;
+
+
+
+
 
 
 
@@ -40607,11 +81215,27 @@ int32_t CfgData::GetTongTianChiReward(int32_t nId)
 
 
 
+
+
+
+
     return 0;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40623,7 +81247,15 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40631,7 +81263,15 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -40639,7 +81279,15 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
+
+
+
+
     if (it != this->m_ChargeDungeonCfgMap.end())
+
+
+
+
 
 
 
@@ -40647,7 +81295,15 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
+
+
+
+
         CfgChargeDungeon& cfg = it->second;
+
+
+
+
 
 
 
@@ -40655,7 +81311,15 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -40663,7 +81327,15 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -40671,11 +81343,27 @@ int32_t CfgData::GetChargeDungeonId(int32_t nId, int32_t Todaycharge)
 
 
 
+
+
+
+
     return 0;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40687,7 +81375,15 @@ BaoKuFuBen *CfgData::GetBaoKuFuBen(int32_t FuBenId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40695,7 +81391,15 @@ BaoKuFuBen *CfgData::GetBaoKuFuBen(int32_t FuBenId)
 
 
 
+
+
+
+
     if (it != this->m_BaoKuFuBenMap.end())
+
+
+
+
 
 
 
@@ -40703,7 +81407,15 @@ BaoKuFuBen *CfgData::GetBaoKuFuBen(int32_t FuBenId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40711,11 +81423,27 @@ BaoKuFuBen *CfgData::GetBaoKuFuBen(int32_t FuBenId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40727,7 +81455,15 @@ BaoKuRandomMap *CfgData::GetBaoKuRandomMap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40735,7 +81471,19 @@ BaoKuRandomMap *CfgData::GetBaoKuRandomMap()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40747,7 +81495,15 @@ const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40755,7 +81511,15 @@ const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_TreasureHunterCfgMap.end())
+
+
+
+
 
 
 
@@ -40763,7 +81527,15 @@ const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40771,11 +81543,27 @@ const TreasureHunterCfg *CfgData::GetTreasureHunterCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40787,7 +81575,15 @@ const SunAndMoonCfg *CfgData::GetSunAndMoonCfg(int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40795,7 +81591,15 @@ const SunAndMoonCfg *CfgData::GetSunAndMoonCfg(int32_t nLevel)
 
 
 
+
+
+
+
     if (it != this->m_SunAndMoonCfgMap.end())
+
+
+
+
 
 
 
@@ -40803,7 +81607,15 @@ const SunAndMoonCfg *CfgData::GetSunAndMoonCfg(int32_t nLevel)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40811,11 +81623,27 @@ const SunAndMoonCfg *CfgData::GetSunAndMoonCfg(int32_t nLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40827,7 +81655,15 @@ const ZhanHunCfg *CfgData::GetZhanHunCfg(int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40835,7 +81671,15 @@ const ZhanHunCfg *CfgData::GetZhanHunCfg(int32_t nLevel)
 
 
 
+
+
+
+
     if (it != this->m_ZhanHunCfgMap.end())
+
+
+
+
 
 
 
@@ -40843,7 +81687,15 @@ const ZhanHunCfg *CfgData::GetZhanHunCfg(int32_t nLevel)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40851,11 +81703,27 @@ const ZhanHunCfg *CfgData::GetZhanHunCfg(int32_t nLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40867,7 +81735,15 @@ const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(int32_t nSlot, int32_t 
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40875,7 +81751,15 @@ const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(int32_t nSlot, int32_t 
 
 
 
+
+
+
+
     auto it = this->m_VipEquipPosLevelUpMap.find(key);
+
+
+
+
 
 
 
@@ -40883,7 +81767,15 @@ const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(int32_t nSlot, int32_t 
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -40891,7 +81783,15 @@ const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(int32_t nSlot, int32_t 
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -40899,7 +81799,19 @@ const VipEquipPosLevelUp *CfgData::GetVipEquipPosLevelUp(int32_t nSlot, int32_t 
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40911,7 +81823,15 @@ const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40919,7 +81839,15 @@ const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(int32_t nLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -40927,7 +81855,15 @@ const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(int32_t nLevel)
 
 
 
+
+
+
+
         {
+
+
+
+
 
 
 
@@ -40935,7 +81871,15 @@ const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(int32_t nLevel)
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -40943,11 +81887,27 @@ const VipEQuipPosSuit *CfgData::GetVipEQuipPosSuit(int32_t nLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40959,7 +81919,15 @@ const CVipClubLuckyDrop *CfgData::GetCVipClubLuckyDrop(int32_t nCondition)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -40967,7 +81935,15 @@ const CVipClubLuckyDrop *CfgData::GetCVipClubLuckyDrop(int32_t nCondition)
 
 
 
+
+
+
+
     if (it != this->m_CVipClubLuckyDropMap.end())
+
+
+
+
 
 
 
@@ -40975,7 +81951,15 @@ const CVipClubLuckyDrop *CfgData::GetCVipClubLuckyDrop(int32_t nCondition)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -40983,11 +81967,27 @@ const CVipClubLuckyDrop *CfgData::GetCVipClubLuckyDrop(int32_t nCondition)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -40999,7 +81999,15 @@ const ZeroBuyPetCfg *CfgData::GetZeroBuyPetCfg()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41007,7 +82015,15 @@ const ZeroBuyPetCfg *CfgData::GetZeroBuyPetCfg()
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -41015,7 +82031,15 @@ const ZeroBuyPetCfg *CfgData::GetZeroBuyPetCfg()
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -41023,7 +82047,19 @@ const ZeroBuyPetCfg *CfgData::GetZeroBuyPetCfg()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41035,7 +82071,15 @@ const ShiQuCfg *CfgData::GetShiQuCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41043,7 +82087,15 @@ const ShiQuCfg *CfgData::GetShiQuCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_ShiQuCfgMap.end())
+
+
+
+
 
 
 
@@ -41051,7 +82103,15 @@ const ShiQuCfg *CfgData::GetShiQuCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -41059,11 +82119,27 @@ const ShiQuCfg *CfgData::GetShiQuCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41075,7 +82151,15 @@ const LittleHelperCfg *CfgData::GetLittleHelperCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41083,7 +82167,15 @@ const LittleHelperCfg *CfgData::GetLittleHelperCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_LittleHelperCfgMap.end())
+
+
+
+
 
 
 
@@ -41091,7 +82183,15 @@ const LittleHelperCfg *CfgData::GetLittleHelperCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -41099,11 +82199,27 @@ const LittleHelperCfg *CfgData::GetLittleHelperCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41115,7 +82231,15 @@ const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(int32_t nId, int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41123,7 +82247,15 @@ const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(int32_t nId, int32_t nLevel)
 
 
 
+
+
+
+
     auto it = this->m_ShiZhuLevelUpMap.find(key);
+
+
+
+
 
 
 
@@ -41131,7 +82263,15 @@ const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(int32_t nId, int32_t nLevel)
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -41139,7 +82279,15 @@ const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(int32_t nId, int32_t nLevel)
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -41147,7 +82295,19 @@ const ShiZhuLevelUp *CfgData::GetShiZhuLevelUp(int32_t nId, int32_t nLevel)
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41159,7 +82319,15 @@ const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(int32_t nType, int32_t 
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41167,7 +82335,15 @@ const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(int32_t nType, int32_t 
 
 
 
+
+
+
+
     auto it = this->m_NationalDayTaskCfgMap.find(key);
+
+
+
+
 
 
 
@@ -41175,7 +82351,15 @@ const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(int32_t nType, int32_t 
 
 
 
+
+
+
+
     {
+
+
+
+
 
 
 
@@ -41183,7 +82367,15 @@ const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(int32_t nType, int32_t 
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -41191,7 +82383,19 @@ const NationalDayTaskCfg *CfgData::GetNationalDayTaskCfg(int32_t nType, int32_t 
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41203,7 +82407,15 @@ const NationalDayLevelCfg *CfgData::GetNationalDayLevelCfg(int32_t nLevel)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41211,7 +82423,15 @@ const NationalDayLevelCfg *CfgData::GetNationalDayLevelCfg(int32_t nLevel)
 
 
 
+
+
+
+
     if (it != this->m_NationalDayLevelCfgMap.end())
+
+
+
+
 
 
 
@@ -41219,7 +82439,15 @@ const NationalDayLevelCfg *CfgData::GetNationalDayLevelCfg(int32_t nLevel)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -41227,11 +82455,27 @@ const NationalDayLevelCfg *CfgData::GetNationalDayLevelCfg(int32_t nLevel)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41243,7 +82487,15 @@ const EquipRongHe *CfgData::GetEquipRongHe(int32_t ItemId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41251,7 +82503,15 @@ const EquipRongHe *CfgData::GetEquipRongHe(int32_t ItemId)
 
 
 
+
+
+
+
     if (it != this->m_EquipRongHeMap.end())
+
+
+
+
 
 
 
@@ -41259,7 +82519,15 @@ const EquipRongHe *CfgData::GetEquipRongHe(int32_t ItemId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -41267,11 +82535,27 @@ const EquipRongHe *CfgData::GetEquipRongHe(int32_t ItemId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41283,7 +82567,15 @@ const RongHeCfg *CfgData::GetRongHeCfg(int32_t nId)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41291,7 +82583,15 @@ const RongHeCfg *CfgData::GetRongHeCfg(int32_t nId)
 
 
 
+
+
+
+
     if (it != this->m_RongHeCfgMap.end())
+
+
+
+
 
 
 
@@ -41299,7 +82599,15 @@ const RongHeCfg *CfgData::GetRongHeCfg(int32_t nId)
 
 
 
+
+
+
+
         return &it->second;
+
+
+
+
 
 
 
@@ -41307,11 +82615,23 @@ const RongHeCfg *CfgData::GetRongHeCfg(int32_t nId)
 
 
 
+
+
+
+
     return nullptr;
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -41319,7 +82639,15 @@ void CfgData::InitAttrBattleTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41327,7 +82655,19 @@ void CfgData::InitAttrBattleTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41339,7 +82679,15 @@ void CfgData::InitBeastShrineEnterCostTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41347,7 +82695,19 @@ void CfgData::InitBeastShrineEnterCostTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41359,7 +82719,15 @@ void CfgData::InitBossFirstKilledTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41367,7 +82735,19 @@ void CfgData::InitBossFirstKilledTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41379,7 +82759,15 @@ void CfgData::InitBossInfo()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41387,7 +82775,19 @@ void CfgData::InitBossInfo()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41399,7 +82799,15 @@ void CfgData::InitBossKilledReward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41407,7 +82815,19 @@ void CfgData::InitBossKilledReward()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41419,7 +82839,15 @@ void CfgData::InitBuyFaBaoResTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41427,7 +82855,19 @@ void CfgData::InitBuyFaBaoResTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41439,7 +82879,15 @@ void CfgData::InitCachetCfg()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41447,7 +82895,19 @@ void CfgData::InitCachetCfg()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41459,7 +82919,15 @@ void CfgData::InitChouJiangTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41467,7 +82935,19 @@ void CfgData::InitChouJiangTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41479,7 +82959,15 @@ void CfgData::InitDaTiHD()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41487,7 +82975,19 @@ void CfgData::InitDaTiHD()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41499,7 +82999,15 @@ void CfgData::InitDamnationTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41507,7 +83015,19 @@ void CfgData::InitDamnationTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41519,7 +83039,15 @@ void CfgData::InitEquipBackTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41527,7 +83055,19 @@ void CfgData::InitEquipBackTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41539,7 +83079,15 @@ void CfgData::InitEquipBackTask()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41547,7 +83095,19 @@ void CfgData::InitEquipBackTask()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41559,7 +83119,15 @@ void CfgData::InitEquipBlessTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41567,7 +83135,19 @@ void CfgData::InitEquipBlessTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41579,7 +83159,15 @@ void CfgData::InitEquipUpPhase()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41587,7 +83175,19 @@ void CfgData::InitEquipUpPhase()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41599,7 +83199,15 @@ void CfgData::InitFaBaoTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41607,7 +83215,19 @@ void CfgData::InitFaBaoTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41619,7 +83239,15 @@ void CfgData::InitFunctionOpenMailMap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41627,7 +83255,19 @@ void CfgData::InitFunctionOpenMailMap()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41639,7 +83279,15 @@ void CfgData::InitGoblinData()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41647,7 +83295,19 @@ void CfgData::InitGoblinData()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41659,7 +83319,15 @@ void CfgData::InitGongMinTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41667,7 +83335,19 @@ void CfgData::InitGongMinTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41679,7 +83359,15 @@ void CfgData::InitGroupMonster()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41687,7 +83375,19 @@ void CfgData::InitGroupMonster()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41699,7 +83399,15 @@ void CfgData::InitGuWuCfgMap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41707,7 +83415,19 @@ void CfgData::InitGuWuCfgMap()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41719,7 +83439,15 @@ void CfgData::InitLevelRefiningTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41727,7 +83455,19 @@ void CfgData::InitLevelRefiningTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41739,7 +83479,15 @@ void CfgData::InitLibraryTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41747,7 +83495,19 @@ void CfgData::InitLibraryTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41759,7 +83519,15 @@ void CfgData::InitLuckDropTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41767,7 +83535,19 @@ void CfgData::InitLuckDropTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41779,7 +83559,15 @@ void CfgData::InitPkDropRateTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41787,7 +83575,19 @@ void CfgData::InitPkDropRateTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41799,7 +83599,15 @@ void CfgData::InitScoreShopTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41807,7 +83615,19 @@ void CfgData::InitScoreShopTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41819,7 +83639,15 @@ void CfgData::InitShangChengTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41827,7 +83655,19 @@ void CfgData::InitShangChengTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41839,7 +83679,15 @@ void CfgData::InitShenWeiTaskTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41847,7 +83695,19 @@ void CfgData::InitShenWeiTaskTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41859,7 +83719,15 @@ void CfgData::InitShunWangTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41867,7 +83735,19 @@ void CfgData::InitShunWangTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41879,7 +83759,15 @@ void CfgData::InitSpeciaEquipCfgMap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41887,7 +83775,19 @@ void CfgData::InitSpeciaEquipCfgMap()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41899,7 +83799,15 @@ void CfgData::InitSpeciaSkillDistanceTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41907,7 +83815,19 @@ void CfgData::InitSpeciaSkillDistanceTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41919,7 +83839,15 @@ void CfgData::InitSpecialMap()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41927,7 +83855,19 @@ void CfgData::InitSpecialMap()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41939,7 +83879,15 @@ void CfgData::InitSpecialMonster()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41947,7 +83895,19 @@ void CfgData::InitSpecialMonster()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41959,7 +83919,15 @@ void CfgData::InitStrengthenTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41967,7 +83935,19 @@ void CfgData::InitStrengthenTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41979,7 +83959,15 @@ void CfgData::InitSysMail()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -41987,7 +83975,19 @@ void CfgData::InitSysMail()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -41999,7 +83999,15 @@ void CfgData::InitSystemOpenReward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42007,7 +84015,19 @@ void CfgData::InitSystemOpenReward()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42019,7 +84039,15 @@ void CfgData::InitTestServerReward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42027,7 +84055,19 @@ void CfgData::InitTestServerReward()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42039,7 +84079,15 @@ void CfgData::InitTianLingTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42047,7 +84095,19 @@ void CfgData::InitTianLingTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42059,7 +84119,15 @@ void CfgData::InitTouZiTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42067,7 +84135,19 @@ void CfgData::InitTouZiTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42079,7 +84159,15 @@ void CfgData::InitTreasureMapTabale()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42087,7 +84175,19 @@ void CfgData::InitTreasureMapTabale()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42099,7 +84199,15 @@ void CfgData::InitUltimateChallengeCfg()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42107,7 +84215,19 @@ void CfgData::InitUltimateChallengeCfg()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42119,7 +84239,15 @@ void CfgData::InitVplanTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42127,7 +84255,23 @@ void CfgData::InitVplanTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -42143,7 +84287,15 @@ void CfgData::InitXianYaoTaskTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42151,7 +84303,19 @@ void CfgData::InitXianYaoTaskTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42163,7 +84327,15 @@ void CfgData::InitXingMaiSlotTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42171,7 +84343,19 @@ void CfgData::InitXingMaiSlotTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42183,7 +84367,15 @@ void CfgData::InitXingMaiTable()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42191,7 +84383,19 @@ void CfgData::InitXingMaiTable()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42203,7 +84407,15 @@ void CfgData::InitSpeed360Reward()
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42211,7 +84423,19 @@ void CfgData::InitSpeed360Reward()
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -42223,7 +84447,15 @@ void CQiFuTable::InitQiFuTable(CQiFuTable* table)
 
 
 
+
+
+
+
 {
+
+
+
+
 
 
 
@@ -42231,7 +84463,15 @@ void CQiFuTable::InitQiFuTable(CQiFuTable* table)
 
 
 
+
+
+
+
     // TODO: Implement from IDA pseudocode
+
+
+
+
 
 
 
@@ -42243,7 +84483,19 @@ void CQiFuTable::InitQiFuTable(CQiFuTable* table)
 
 
 
+
+
+
+
+
+
+
+
 void VipTable::InitVipTable(VipTable* table)
+
+
+
+
 
 
 
@@ -42251,11 +84503,23 @@ void VipTable::InitVipTable(VipTable* table)
 
 
 
+
+
+
+
     (void)table;
 
 
 
+
+
+
+
     // TODO: Implement from IDA pseudocode
+
+
+
+
 
 
 
