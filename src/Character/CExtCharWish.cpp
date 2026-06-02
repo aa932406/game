@@ -1,5 +1,6 @@
 // CExtCharWish.cpp
 #include "CExtCharWish.h"
+#include "Database/PlayerDBData.h"
 #include <cstring>
 
 CExtCharWish::CExtCharWish()

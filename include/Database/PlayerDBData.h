@@ -13,6 +13,7 @@
 #include "Character/CExtCharExchange.h"
 #include "Character/CExtCharMysteryShop.h"
 #include "Character/CExtCharPortal.h"
+#include "Character/CExtCharWish.h"
 #include "Other/RwLock.h"
 
 namespace Answer { class MySqlDBGuard; }
@@ -73,6 +74,11 @@ public:
         int32_t m_Luck;
         int32_t m_HuanHua;
     } m_CharWingDBData;
+
+    // 许愿数据 (供 CExtCharWish 使用)
+    struct {
+        std::list<CharWishInfo> lstWishs;
+    } m_WishDBData;
 
     // 神秘商店数据 (供 CExtCharMysteryShop 使用)
     struct {
