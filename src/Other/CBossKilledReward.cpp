@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CBossKilledReward.h"
 #include "Other/BossKilledRewardInfo.h"
 #include "GameService.h"

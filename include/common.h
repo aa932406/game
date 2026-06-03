@@ -42,7 +42,7 @@
 #include "Answer/Logger.h"
 #include "Answer/DayTime.h"
 #include "Answer/Mutex.h"
-#include "Answer/Random.h"
+#include "Common/Random.h"
 #include "Answer/MD5.h"
 #include "Answer/StringUtility.h"
 
@@ -62,7 +62,7 @@
 // --- Game core ---
 #include "Game/GameService.h"
 #include "Game/Player.h"
-#include "Game/Map.h"
+#include "Map/Map.h"
 #include "Game/MapManager.h"
 #include "Game/Dungeon.h"
 #include "Game/Monster.h"
@@ -81,6 +81,8 @@
 #include "Other/User.h"
 #include "Other/CVip.h"
 #include "Other/CHuoYueDu.h"
+#include "Other/MemChrBag.h"
+#include "Database/PlayerDBData.h"
 
 // --- Network ---
 #include "Network/ConnStubs.h"

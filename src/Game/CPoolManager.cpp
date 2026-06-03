@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/CPoolManager.h"
 
 #include <cstring>

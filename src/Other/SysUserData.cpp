@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/SysUserData.h"
 #include "Network/NetPacket.h"
 #include <cstring>

@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CTerritory.h"
 
 #include "Game/Map.h"

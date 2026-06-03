@@ -11,7 +11,7 @@
 #include "Common/CommonTypes.h"
 #include "Map/Map.h"
 #include "Map/IMapEvent.h"
-#include "Config/CfgDungeon.h"
+
 #include "Other/DamageSum.h"
 
 class Monster;
@@ -64,30 +64,6 @@ struct DungeonReward
     MemChrBag Item;
 };
 
-// 宝库随机配置项
-struct BaoKuRandomItem
-{
-    int32_t nItemId;
-    int32_t nItemClass;
-    int32_t nGongGaoId;
-};
-
-struct BaoKuRandom
-{
-    int32_t Index;
-    int32_t XValue;
-    int32_t YValue;
-    BaoKuRandomItem Items[5];
-};
-
-// 宝库副本配置
-struct BaoKuFuBen
-{
-    int32_t AddTimes;
-    int32_t InitCount;
-    int32_t BuyCount;
-    int32_t Gold;
-};
 
 // 副本完成信息 (32字节)
 struct DungeonFinshInfo
@@ -103,25 +79,25 @@ public:
     virtual ~Dungeon();
 
     // Map虚函数重写
-    virtual void init(CMapRunner *pRunner, const CfgMap *cfgmap) override;
-    virtual void update() override;
-    virtual bool canEnter(Player *player) override;
-    virtual bool OnSitRevive(Player *player) override;
-    virtual bool SpecialSitRevive() override;
-    virtual bool CanAutoRevive() override;
-    virtual bool CanUsePet() override;
-    virtual bool CanStayInMap() override;
-    virtual int32_t GetAvgBattle() override;
-    virtual int32_t getNow() override;
-    virtual int64_t getTick() override;
-    virtual void onMonsterDie(Monster *monster, Player *player, bool IsGroupMonster) override;
+    virtual void init(CMapRunner *pRunner, const CfgMap *cfgmap);
+    virtual void update();
+    virtual bool canEnter(Player *player);
+    virtual bool OnSitRevive(Player *player);
+    virtual bool SpecialSitRevive();
+    virtual bool CanAutoRevive();
+    virtual bool CanUsePet();
+    virtual bool CanStayInMap();
+    virtual int32_t GetAvgBattle();
+    virtual int32_t getNow();
+    virtual int64_t getTick();
+    virtual void onMonsterDie(Monster *monster, Player *player, bool IsGroupMonster);
 
     // IMapEvent虚函数重写
-    virtual void init(const CfgMapEventList *events, int64_t nTime) override;
-    virtual void openEvent(int32_t eventId) override;
-    virtual void closeEvent(int32_t eventId) override;
-    virtual void openEvents(int32_t *eventIds, int32_t count) override;
-    virtual void closeEvents(int32_t *eventIds, int32_t count) override;
+    virtual void init(const CfgMapEventList *events, int64_t nTime);
+    virtual void openEvent(int32_t eventId);
+    virtual void closeEvent(int32_t eventId);
+    virtual void openEvents(int32_t *eventIds, int32_t count);
+    virtual void closeEvents(int32_t *eventIds, int32_t count);
 
     // Dungeon特有方法
     void init(CMapRunner *pRunner, const CfgDungeon *cfgDungeon, const CfgMap *cfgmap, int32_t nId);

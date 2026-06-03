@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CMonthlyChouJiang.h"
 #include "GameService.h"
 #include "Player.h"

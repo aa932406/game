@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CTouZi.h"
 #include "Game/Player.h"
 #include "GameService.h"

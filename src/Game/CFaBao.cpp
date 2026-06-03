@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/CFaBao.h"
 #include "Game/Player.h"
 #include "Game/GameService.h"

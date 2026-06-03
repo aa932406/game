@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/MonsterDungeon.h"
 
 #include "Game/Dungeon.h"

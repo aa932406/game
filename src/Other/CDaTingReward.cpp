@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CDaTingReward.h"
 #include "GameService.h"
 #include "Player.h"

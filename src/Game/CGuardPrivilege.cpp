@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/CGuardPrivilege.h"
 #include "Game/Player.h"
 #include "Game/GameService.h"

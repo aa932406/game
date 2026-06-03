@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CKaiFuBoss.h"
 #include "Answer.h"
 #include "GameService.h"

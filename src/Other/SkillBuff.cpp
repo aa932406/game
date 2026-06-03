@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/SkillBuff.h"
 
 #include "Game/Unit.h"

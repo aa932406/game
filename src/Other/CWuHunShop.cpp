@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CWuHunShop.h"
 #include "Game/Player.h"
 #include "GameService.h"

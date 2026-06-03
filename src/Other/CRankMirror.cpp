@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CRankMirror.h"
 
 #include <cstring>

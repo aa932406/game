@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/COutLinkFestival.h"
 
 #include "Game/GameService.h"
