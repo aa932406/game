@@ -98,6 +98,8 @@ public:
     std::string GetPassport() const;
     std::string GetPlatform() const;
     std::string GetFromWay() const;
+    int32_t getFamilyId() const { return 0; }
+    int32_t GetCharTitle() { return 0; }
     
     CharId_t getCid() const { return m_cid; }
     int32_t getLevel() const { return m_level; }
@@ -303,6 +305,9 @@ public:
     static void SetNeedSyncAround(Player* player) { if (player) player->SetNeedSyncAround(); }
     static void setSyncToTeamFlag(Player* player) { (void)player; }
     static int32_t GetTeamId(Player* player) { (void)player; return 0; }
+    static int32_t getFamilyId(Player* player) { return player ? player->getFamilyId() : 0; }
+    static int32_t GetCharTitle(Player* player) { return player ? player->GetCharTitle() : 0; }
+    static DailyActivity* GetPlayerDailyActivity(Player* player) { return player ? player->GetPlayerDailyActivity() : nullptr; }
     static void RecalcAttr(Player* player) { if (player) player->RecalcAttr(); }
     static void* GetPlayerFunctionOpen(Player* player) { (void)player; return nullptr; }
     static void sendBuyItemInfo(Player* player, int32_t itemId, int8_t itemClass, int32_t count, int32_t costValue, int32_t index) {}
