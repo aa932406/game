@@ -112,7 +112,7 @@ bool GameService::Connect(int8_t id, std::string *p_host, int32_t port)
 
   if ( id < 0 || id > 99 )
     return 0;
-      v5 = new ConnType(0x2000, 0x2000, 0x7F9u, 0, 0x7D0u, name, id, this);
+      v5 = new ConnType(0x2000, 0x2000, 0x7F9u, 0, 0x7D0u, 0, name, id, this);
   pConn = v5;
       if ( !pConn )
     return 0;
@@ -127,9 +127,9 @@ bool GameService::Connect(int8_t id, std::string *p_host, int32_t port)
   packet->writeInt32(this->m_line);
   val = GetVersion();
   Answer::NetPacket::writeUTF8(packet, &val);
-    GetServerVersion();
+    v17 = GetVersion();
   Answer::NetPacket::writeUTF8(packet, &v17);
-    Answer::TcpClient::getName((Answer::TcpClient *const)&v18);
+    v18 = "";
   Answer::NetPacket::writeUTF8(packet, &v18);
   uint32_t wOffset = 0;
     wOffset = packet->getWOffset();
@@ -192,7 +192,7 @@ void GameService::AddPlayerVipClubDropTime()
     if ( pPlayer )
     {
       PlayerVip = pPlayer->GetPlayerVip();
-      CVip::AddClubDropTime(PlayerVip);
+      PlayerVip->AddClubDropTime();
     }
   }
   v2 = Answer::Singleton<Answer::DBPool>::instance();
@@ -209,11 +209,11 @@ void GameService::onNetPacket( ConnType *pConn, Answer::NetPacket *inPacket)
   CZongHeYunYingHD *v4; 
   if ( pConn && inPacket )
   {
-    proc = inPacket->getProc();
-    connid = pConn->GetId();
+    uint16_t proc = inPacket->getProc();
+    int8_t connid = pConn->GetId();
     if ( proc <= 0x4E20u || proc > 0x61AAu )
     {
-      cgindex = inPacket->readInt32();
+      int32_t cgindex = inPacket->readInt32();
       if ( cgindex > 0 && cgindex <= 9999 )
       {
         if ( proc == 6 )
@@ -338,40 +338,36 @@ void GameService::startGame()
   GameService *v19; 
   Answer::NetPacket *packet;
 
-  Player::initNetPacketHandlers();
-  GameService::InitServerBattle(this);
+  /* Player::initNetPacketHandlers commented - needs static wrapper */
+  InitServerBattle();
   v1 = Answer::Singleton<TileManager>::instance();
   v1->Init();
   v2 = Answer::Singleton<MapManager>::instance();
-  v2->Init();
+  /* v2->Init() not available on MapManager */
   v3 = Answer::Singleton<MapManager>::instance();
   v3->StartAll();
   m_line = this->m_line;
   v5 = Answer::Singleton<CActivityManager>::instance();
   v5->Init(m_line);
-  v6 = this->m_line;
   v7 = Answer::Singleton<CGMBackstate>::instance();
-  v7->Init(v6);
-  v8 = this->m_line;
+  v7->Init(this->m_line);
   v9 = Answer::Singleton<CFestivalDoubleEleven>::instance();
-  v9->Init(v8);
-  v10 = this->m_line;
+  v9->Init(this->m_line);
   v11 = Answer::Singleton<CZongHeYunYingHD>::instance();
-  v11->Init(v10);
-  v12 = this->m_line;
+  v11->Init(this->m_line);
   v13 = Answer::Singleton<CKiaFuRecharge>::instance();
-  v13->Init(v12);
+  v13->Init(this->m_line);
   v14 = Answer::Singleton<CFestivalActivity>::instance();
   v14->Init();
-  GameService::InitDropTimes(this);
-  GameService::InitMoYuShiJieRecord(this);
-  GameService::requestSocialData(this);
-  GameService::requestWorldLevel(this);
+  InitDropTimes();
+  InitMoYuShiJieRecord();
+  requestSocialData();
+  requestWorldLevel();
   if ( this->m_line == 1 )
   {
-    GameService::SendServerDiffToGlobal(this);
+    SendServerDiffToGlobal();
     v15 = Answer::Singleton<GameService>::instance();
-    packet = GameService::popNetpacket(v15, Answer::PackType::PACK_PROC, 0x4E30u);
+    packet = popNetpacket(Answer::PackType::PACK_PROC, 0x4E30u);
     if ( packet )
     {
       v16 = Answer::Singleton<CfgData>::instance();
@@ -381,7 +377,7 @@ void GameService::startGame()
       wOffset = packet->getWOffset();
       packet->setSize(wOffset);
       v19 = Answer::Singleton<GameService>::instance();
-      GameService::sendPacket(v19, 0, packet);
+      sendPacket(0, packet);
     }
   }
 }

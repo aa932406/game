@@ -64,7 +64,7 @@ public:
     static int8_t GetId(MutiConn* p) { return p ? p->m_id : 0; }
     int8_t GetId() const { return m_id; }
 
-    void connect(Answer::InetAddress* addr) { (void)addr; }
+    bool connect(Answer::InetAddress* addr) { (void)addr; return true; }
     void start() {}
     Answer::NetPacket* popNetpacket() { return nullptr; }
     Answer::NetPacket* popNetpacket(uint32_t size) { (void)size; return nullptr; }
