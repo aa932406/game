@@ -430,6 +430,12 @@ typedef std::vector<IconState> IconStateList;
 typedef IconStateList TgpIconStateList;
 
 // ============================================================
+// 基础基类定义
+// ============================================================
+
+struct IDataStruct {};
+
+// ============================================================
 // 前置声明
 // ============================================================
 
@@ -522,6 +528,8 @@ namespace Answer {
     class NetPacket;
     class Random;
     class Mutex;
+    class MySqlDBGuard;
+    class MySqlQuery;
     template<typename T> class Singleton;
     template<typename T> class SafeQueue;
 }

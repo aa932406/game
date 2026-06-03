@@ -19,7 +19,7 @@ public:
     void PackageData(Answer::NetPacket *packet);
     void UnPackageData(Answer::NetPacket *inPacket, int64_t nCid);
 
-private:
+public:
     std::string talents;
     int32_t     m_nPower;
 };

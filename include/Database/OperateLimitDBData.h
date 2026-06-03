@@ -8,7 +8,7 @@
 #include <set>
 #include <cstring>
 
-#include "Database/PlayerDBData.h"
+#include "Common/CommonTypes.h"
 #include "Character/CExtOperateLimit.h"
 
 class OperateLimitDBData : public IDataStruct {

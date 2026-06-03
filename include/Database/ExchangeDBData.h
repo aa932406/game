@@ -13,11 +13,15 @@
 #include "Answer/MySqlQuery.h"
 #include "Common/CommonTypes.h"
 
-struct ExchangeRecord {
+#ifndef EXCHANGE_RECORD_DEFINED
+#define EXCHANGE_RECORD_DEFINED
+struct ExchangeRecord
+{
     int8_t nType;
     int16_t nIndex;
     int32_t nCount;
 };
+#endif
 
 class ExchangeDBData {
 public:
@@ -27,6 +31,6 @@ public:
     bool LoadFromDB(Answer::MySqlDBGuard* const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid);
     void PackageData(Answer::NetPacket* packet);
 
-private:
+public:
     std::list<ExchangeRecord> lstExchange;
 };

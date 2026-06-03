@@ -6,12 +6,15 @@
 
 struct ShowIcon;
 
+#ifndef HUO_YUE_DU_RECORD_DEFINED
+#define HUO_YUE_DU_RECORD_DEFINED
 class HuoYueDuRecord
 {
 public:
     int32_t nCount;
     int8_t IsGetReward;
 };
+#endif
 
 class CHuoYueDu : public CExtSystemBase
 {

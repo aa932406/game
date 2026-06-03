@@ -16,13 +16,17 @@ namespace Answer {
 typedef int64_t CharId_t;
 typedef std::list<std::string> SqlStringList;
 
-struct CharWishInfo {
+#ifndef CHAR_WISH_INFO_DEFINED
+#define CHAR_WISH_INFO_DEFINED
+struct CharWishInfo
+{
     int32_t nId;
     int32_t nItemId;
     int32_t nStartTime;
     int32_t nGetReward;
     std::string strInfo;
 };
+#endif
 
 class CharWishDBData {
 public:

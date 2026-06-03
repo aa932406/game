@@ -9,11 +9,14 @@
 
 namespace Answer { class NetPacket; }
 
+#ifndef HUO_YUE_DU_RECORD_DEFINED
+#define HUO_YUE_DU_RECORD_DEFINED
 struct HuoYueDuRecord
 {
     int32_t state;
     int32_t day;
 };
+#endif
 
 class CHuoYueDuData
 {

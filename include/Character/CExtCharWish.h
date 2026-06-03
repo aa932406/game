@@ -6,6 +6,8 @@
 #include <list>
 #include <string>
 
+#ifndef CHAR_WISH_INFO_DEFINED
+#define CHAR_WISH_INFO_DEFINED
 struct CharWishInfo
 {
     int32_t nId;
@@ -14,6 +16,7 @@ struct CharWishInfo
     std::string strInfo;
     int8_t nGetReward;
 };
+#endif
 
 class CExtCharWish : public CExtSystemBase
 {

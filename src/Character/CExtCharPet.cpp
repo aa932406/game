@@ -34,8 +34,8 @@ void CExtCharPet::OnLoadFromDB(const PlayerDBData* dbData)
 {
     if (dbData)
     {
-        m_nStar = dbData->m_CharPets.petData.nStar;
-        m_HuanHua = dbData->m_CharPets.petData.nHuanHua;
+        m_nStar = dbData->m_CharPets.nStar;
+        m_HuanHua = dbData->m_CharPets.nHuanHua;
         if (!m_HuanHua) m_HuanHua = m_nStar;
     }
 }
@@ -44,8 +44,8 @@ void CExtCharPet::OnSaveToDB(PlayerDBData* dbData)
 {
     if (dbData && m_pFightPet)
     {
-        dbData->m_CharPets.petData.nStar = m_nStar;
-        dbData->m_CharPets.petData.nHuanHua = m_HuanHua;
+        dbData->m_CharPets.nStar = m_nStar;
+        dbData->m_CharPets.nHuanHua = m_HuanHua;
     }
 }
 

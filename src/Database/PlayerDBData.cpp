@@ -1,354 +1,285 @@
 #include "Database/PlayerDBData.h"
+#include "Answer/DayTime.h"
+#include "Answer/MySqlQuery.h"
+#include "Answer/MySqlDBGuard.h"
+#include "Answer/NetPacket.h"
 
 PlayerDBData::PlayerDBData()
+    : connid(0)
+    , cgindex(0)
+    , loadTime(0)
+    , saveRefCount(0)
+    , m_nJueWei(0)
 {
-    /* base init: IDataStruct::IDataStruct(this); */
-    /* vcall: this->_vptr_IDataStruct = (int (**)(...))&off_8D4970; */
-    MemCharacterData::MemCharacterData(&this->chr);
-    SysUserData::SysUserData(&this->sysUser);
-    DailyActivityData::DailyActivityData(&this->signInfo);
-    MemChrEquipData::MemChrEquipData(&this->equipData);
-    MemChrGemData::MemChrGemData(&this->gemData);
-    MemChrBagData::MemChrBagData(&this->bagData);
-    MemChrSkillData::MemChrSkillData(&this->skillData);
-    MemChrTaskData::MemChrTaskData(&this->taskData);
-    MemChrTaskCycleData::MemChrTaskCycleData(&this->taskCycleData);
-    MemChrActionData::MemChrActionData(&this->actionData);
-    MemChrAutoFightData::MemChrAutoFightData(&this->autoFight);
-    MemChrSystemSettingData::MemChrSystemSettingData(&this->systemSetting);
-    MemChrBuffData::MemChrBuffData(&this->buffData);
-    MemChrDepotData::MemChrDepotData(&this->gambleDepot);
-    SysUserPreventWallowData::SysUserPreventWallowData(&this->sysUserPreventWallow);
-    MemAttrData::MemAttrData(&this->attrData);
-    CurrencyDBData::CurrencyDBData(&this->m_CurrencyData);
-    OperateLimitDBData::OperateLimitDBData(&this->m_OperateLimit);
-    PetDBData::PetDBData(&this->m_CharPets);
-    FriendExpReward::FriendExpReward(&this->m_FriendExpReward);
-    MailDBData::MailDBData(&this->m_MailDBData);
-    ShangChengData::ShangChengData(&this->m_ShangChengData);
-    BossKilledRewardData::BossKilledRewardData(&this->m_BossKilledReward);
-    CFaBaoData::CFaBaoData(&this->m_FaBaoData);
-    CGoblinData::CGoblinData(&this->m_CGoblinData);
-    CharFamilyDBData::CharFamilyDBData(&this->m_FamilyData);
-    WorshipDBData::WorshipDBData(&this->m_WorshipData);
-    CJueWeiData::CJueWeiData(&this->m_JueWeiData);
-    ScoreShopData::ScoreShopData(&this->m_ScoreShopData);
-    TouZiData::TouZiData(&this->m_TouZiData);
-    CHuoYueDuData::CHuoYueDuData(&this->m_HuoYueDuData);
-    MysteryShopDBData::MysteryShopDBData(&this->m_MysteryShopDBData);
-    ExchangeDBData::ExchangeDBData(&this->m_ExchangeDBData);
-    CharWishDBData::CharWishDBData(&this->m_WishDBData);
-    CVplanData::CVplanData(&this->m_VplanData);
-    CharWingDBData::CharWingDBData(&this->m_CharWingDBData);
-    MagicBoxDBData::MagicBoxDBData(&this->m_MagicBoxDBData);
-    VipData::VipData(&this->m_vipData);
-    ChouJiangData::ChouJiangData(&this->m_ChouJinagData);
-    MoneyRewardTaskData::MoneyRewardTaskData(&this->m_MoneyRewardTaskData);
-    WuHunShopDBData::WuHunShopDBData(&this->m_WuHunShopDBData);
-    CShiZhuangData::CShiZhuangData(&this->m_ShiZhuangData);
-    CMonthlyChouJiangData::CMonthlyChouJiangData(&this->m_CMonthlyChouJiangData);
-    CMingGeData::CMingGeData(&this->m_CMingGeData);
-    CKunData::CKunData(&this->m_CKunData);
-    CFlopDraw::CFlopDraw(&this->m_CFlopDraw);
-    CSevenDayData::CSevenDayData(&this->m_CSevenDayData);
-    PortalDBData::PortalDBData(&this->m_PortalDBData);
-    XinMoDBData::XinMoDBData(&this->m_XinMoDBData);
-    CLittleHelperData::CLittleHelperData(&this->m_CLittleHelper);
-    NationalDayData::NationalDayData(&this->m_NationalDayData);
-    EquipRongHeData::EquipRongHeData(&this->m_EquipRongHeData);
-    /* base init: PlayerDBData::CleanUp(this); */
 }
 
 PlayerDBData::~PlayerDBData()
 {
-    /* vcall: this->_vptr_IDataStruct = (int (**)(...))&off_8D4970; */
-    EquipRongHeData::~EquipRongHeData(&this->m_EquipRongHeData);
-    NationalDayData::~NationalDayData(&this->m_NationalDayData);
-    CLittleHelperData::~CLittleHelperData(&this->m_CLittleHelper);
-    XinMoDBData::~XinMoDBData(&this->m_XinMoDBData);
-    PortalDBData::~PortalDBData(&this->m_PortalDBData);
-    CSevenDayData::~CSevenDayData(&this->m_CSevenDayData);
-    CFlopDraw::~CFlopDraw(&this->m_CFlopDraw);
-    CKunData::~CKunData(&this->m_CKunData);
-    CMingGeData::~CMingGeData(&this->m_CMingGeData);
-    CMonthlyChouJiangData::~CMonthlyChouJiangData(&this->m_CMonthlyChouJiangData);
-    CShiZhuangData::~CShiZhuangData(&this->m_ShiZhuangData);
-    WuHunShopDBData::~WuHunShopDBData(&this->m_WuHunShopDBData);
-    MoneyRewardTaskData::~MoneyRewardTaskData(&this->m_MoneyRewardTaskData);
-    ChouJiangData::~ChouJiangData(&this->m_ChouJinagData);
-    VipData::~VipData(&this->m_vipData);
-    MagicBoxDBData::~MagicBoxDBData(&this->m_MagicBoxDBData);
-    CharWingDBData::~CharWingDBData(&this->m_CharWingDBData);
-    CVplanData::~CVplanData(&this->m_VplanData);
-    CharWishDBData::~CharWishDBData(&this->m_WishDBData);
-    ExchangeDBData::~ExchangeDBData(&this->m_ExchangeDBData);
-    MysteryShopDBData::~MysteryShopDBData(&this->m_MysteryShopDBData);
-    CHuoYueDuData::~CHuoYueDuData(&this->m_HuoYueDuData);
-    TouZiData::~TouZiData(&this->m_TouZiData);
-    ScoreShopData::~ScoreShopData(&this->m_ScoreShopData);
-    CJueWeiData::~CJueWeiData(&this->m_JueWeiData);
-    WorshipDBData::~WorshipDBData(&this->m_WorshipData);
-    CharFamilyDBData::~CharFamilyDBData(&this->m_FamilyData);
-    CGoblinData::~CGoblinData(&this->m_CGoblinData);
-    CFaBaoData::~CFaBaoData(&this->m_FaBaoData);
-    BossKilledRewardData::~BossKilledRewardData(&this->m_BossKilledReward);
-    ShangChengData::~ShangChengData(&this->m_ShangChengData);
-    MailDBData::~MailDBData(&this->m_MailDBData);
-    FriendExpReward::~FriendExpReward(&this->m_FriendExpReward);
-    PetDBData::~PetDBData(&this->m_CharPets);
-    OperateLimitDBData::~OperateLimitDBData(&this->m_OperateLimit);
-    CurrencyDBData::~CurrencyDBData(&this->m_CurrencyData);
-    MemAttrData::~MemAttrData(&this->attrData);
-    SysUserPreventWallowData::~SysUserPreventWallowData(&this->sysUserPreventWallow);
-    MemChrDepotData::~MemChrDepotData(&this->gambleDepot);
-    MemChrBuffData::~MemChrBuffData(&this->buffData);
-    MemChrSystemSettingData::~MemChrSystemSettingData(&this->systemSetting);
-    MemChrAutoFightData::~MemChrAutoFightData(&this->autoFight);
-    MemChrActionData::~MemChrActionData(&this->actionData);
-    MemChrTaskCycleData::~MemChrTaskCycleData(&this->taskCycleData);
-    MemChrTaskData::~MemChrTaskData(&this->taskData);
-    MemChrSkillData::~MemChrSkillData(&this->skillData);
-    MemChrBagData::~MemChrBagData(&this->bagData);
-    MemChrGemData::~MemChrGemData(&this->gemData);
-    MemChrEquipData::~MemChrEquipData(&this->equipData);
-    DailyActivityData::~DailyActivityData(&this->signInfo);
-    SysUserData::~SysUserData(&this->sysUser);
-    MemCharacterData::~MemCharacterData(&this->chr);
 }
 
 void PlayerDBData::CleanUp()
 {
-    this->connid = 0;
-    this->cgindex = 0;
-    this->loadTime = 0;
-    this->saveRefCount = 0;
-    MemCharacterData::CleanUp(&this->chr);
-    MemAttrData::CleanUp(&this->attrData);
-    SysUserData::CleanUp(&this->sysUser);
-    DailyActivityData::CleanUp(&this->signInfo);
-    MemChrEquipData::CleanUp(&this->equipData);
-    MemChrGemData::CleanUp(&this->gemData);
-    MemChrBagData::CleanUp(&this->bagData);
-    MemChrSkillData::CleanUp(&this->skillData);
-    MemChrTaskData::CleanUp(&this->taskData);
-    MemChrTaskCycleData::CleanUp(&this->taskCycleData);
-    MemChrActionData::CleanUp(&this->actionData);
-    MemChrAutoFightData::CleanUp(&this->autoFight);
-    MemChrSystemSettingData::CleanUp(&this->systemSetting);
-    MemChrBuffData::CleanUp(&this->buffData);
-    MemChrDepotData::CleanUp(&this->gambleDepot);
-    SysUserPreventWallowData::CleanUp(&this->sysUserPreventWallow);
-    CurrencyDBData::CleanUp(&this->m_CurrencyData);
-    OperateLimitDBData::CleanUp(&this->m_OperateLimit);
-    PetDBData::CleanUp(&this->m_CharPets);
-    FriendExpReward::CleanUp(&this->m_FriendExpReward);
-    MailDBData::CleanUp(&this->m_MailDBData);
-    ShangChengData::CleanUp(&this->m_ShangChengData);
-    BossKilledRewardData::CleanUp(&this->m_BossKilledReward);
-    CFaBaoData::CleanUp(&this->m_FaBaoData);
-    CGoblinData::CleanUp(&this->m_CGoblinData);
-    CharFamilyDBData::CleanUp(&this->m_FamilyData);
-    WorshipDBData::CleanUp(&this->m_WorshipData);
-    CJueWeiData::CleanUp(&this->m_JueWeiData);
-    ScoreShopData::CleanUp(&this->m_ScoreShopData);
-    TouZiData::CleanUp(&this->m_TouZiData);
-    CHuoYueDuData::CleanUp(&this->m_HuoYueDuData);
-    MysteryShopDBData::CleanUp(&this->m_MysteryShopDBData);
-    ExchangeDBData::CleanUp(&this->m_ExchangeDBData);
-    CharWishDBData::CleanUp(&this->m_WishDBData);
-    CVplanData::CleanUp(&this->m_VplanData);
-    CharWingDBData::CleanUp(&this->m_CharWingDBData);
-    MagicBoxDBData::CleanUp(&this->m_MagicBoxDBData);
-    VipData::CleanUp(&this->m_vipData);
-    CShiZhuangData::CleanUp(&this->m_ShiZhuangData);
-    CMonthlyChouJiangData::CleanUp(&this->m_CMonthlyChouJiangData);
-    ChouJiangData::CleanUp(&this->m_ChouJinagData);
-    MoneyRewardTaskData::CleanUp(&this->m_MoneyRewardTaskData);
-    WuHunShopDBData::CleanUp(&this->m_WuHunShopDBData);
-    CMingGeData::CleanUp(&this->m_CMingGeData);
-    CKunData::CleanUp(&this->m_CKunData);
-    CFlopDraw::CleanUp(&this->m_CFlopDraw);
-    CSevenDayData::CleanUp(&this->m_CSevenDayData);
-    PortalDBData::CleanUp(&this->m_PortalDBData);
-    XinMoDBData::CleanUp(&this->m_XinMoDBData);
-    CLittleHelperData::CleanUp(&this->m_CLittleHelper);
-    NationalDayData::CleanUp(&this->m_NationalDayData);
-    EquipRongHeData::CleanUp(&this->m_EquipRongHeData);
+    connid = 0;
+    cgindex = 0;
+    loadTime = 0;
+    saveRefCount = 0;
+
+    // Anonymous structs - zero out inline
+    bzero(bagData.bagData, sizeof(bagData.bagData));
+    bagData.m_ItemLimit.clear();
+
+    gambleDepot.OpneCount = 0;
+    gambleDepot.Password.clear();
+    gambleDepot.SecondPassword.clear();
+    bzero(gambleDepot.gambleDepot, sizeof(gambleDepot.gambleDepot));
+    bzero(gambleDepot.Currency, sizeof(gambleDepot.Currency));
+
+    m_CharPets.nStar = 0;
+    m_CharPets.nHuanHua = 0;
+
+    m_PortalDBData.m_PortalInfoList.clear();
+    m_PortalDBData.nPortalId = 0;
+
+    skillData.talents.clear();
+    skillData.m_nPower = 0;
+
+    m_CharWingDBData.m_Level = 0;
+    m_CharWingDBData.m_Luck = 0;
+    m_CharWingDBData.m_HuanHua = 0;
+
+    m_WishDBData.lstWishs.clear();
+
+    m_WorshipData.nTimes = 0;
+    m_WorshipData.strCharList.clear();
+
+    m_CFlopDraw.m_FlopDrawRecordMap.clear();
+
+    m_CLittleHelper.m_ActLittleHelperInfoMap.clear();
+    m_CLittleHelper.m_LittleHelperId = 0;
+
+    taskCycleData.nFinishTimes = 0;
+    taskCycleData.nTaskId = 0;
+    taskCycleData.nState = 0;
+
+    m_OperateLimit.m_mOperateLimit.clear();
+
+    bzero(m_CurrencyData.vCurrency, sizeof(m_CurrencyData.vCurrency));
+
+    bzero(equipData.vEquip, sizeof(equipData.vEquip));
+
+    gemData.gemInfo.clear();
+    gemData.posLevel.clear();
+    gemData.Strengthen.clear();
+    gemData.ShenYaoEquipPos.clear();
+
+    bzero(&chr, sizeof(chr));
+
+    m_MysteryShopDBData.lstShop.clear();
+
+    m_FamilyData.nFamilyId = 0;
+    m_FamilyData.nPosition = 0;
+    m_FamilyData.nContribution = 0;
+    m_FamilyData.nDailyContribution = 0;
+    m_FamilyData.strSkills.clear();
+    m_FamilyData.nMedLevel = 0;
+    m_FamilyData.nMedRes = 0;
+    m_FamilyData.nHoe = 0;
+    m_FamilyData.EnterDungeionFamilyId = 0;
+    m_FamilyData.EnterCount = 0;
+    m_FamilyData.EnterTime = 0;
+
+    m_ExchangeDBData.lstExchange.clear();
+
+    // Typed instances - call their CleanUp
+    sysUser.CleanUp();
+    signInfo.CleanUp();
+    taskData.CleanUp();
+    actionData.CleanUp();
+    autoFight.CleanUp();
+    systemSetting.CleanUp();
+    buffData.CleanUp();
+    sysUserPreventWallow.CleanUp();
+    attrData.CleanUp();
+    m_FriendExpReward.CleanUp();
+    m_MailDBData.CleanUp();
+    m_ShangChengData.CleanUp();
+    m_BossKilledReward.CleanUp();
+    m_FaBaoData.CleanUp();
+    m_CGoblinData.CleanUp();
+    m_JueWeiData.CleanUp();
+    m_ScoreShopData.CleanUp();
+    m_TouZiData.CleanUp();
+    m_HuoYueDuData.CleanUp();
+    m_MysteryShopDBData.CleanUp();
+    m_ExchangeDBData.CleanUp();
+    m_WishDBData.CleanUp();
+    m_VplanData.CleanUp();
+    m_CharWingDBData.CleanUp();
+    m_MagicBoxDBData.CleanUp();
+    m_vipData.CleanUp();
+    m_ChouJinagData.CleanUp();
+    m_MoneyRewardTaskData.CleanUp();
+    m_WuHunShopDBData.CleanUp();
+    m_ShiZhuangData.CleanUp();
+    m_CMonthlyChouJiangData.CleanUp();
+    m_CMingGeData.CleanUp();
+    m_CKunData.CleanUp();
+    m_CFlopDraw.CleanUp();
+    m_CSevenDayData.CleanUp();
+    m_PortalDBData.CleanUp();
+    m_XinMoDBData.CleanUp();
+    m_CLittleHelper.CleanUp();
+    m_NationalDayData.CleanUp();
+    m_EquipRongHeData.CleanUp();
+    m_CharPets.CleanUp();
+
+    m_nJueWei = 0;
 }
 
 void PlayerDBData::SaveToSqlString(SqlStringList *const sqls, char (*const szSQL)[4096], CharId_t nCid)
 {
-    MemCharacterData::SaveToSqlString(&this->chr, sqls, szSQL, nCid);
-    MemAttrData::SaveToSqlString(&this->attrData, sqls, szSQL, nCid);
-    SysUserData::SaveToSqlString(&this->sysUser, sqls, szSQL, nCid);
-    SysUserPreventWallowData::SaveToSqlString(&this->sysUserPreventWallow, sqls, szSQL, nCid);
-    DailyActivityData::SaveToSqlString(&this->signInfo, sqls, szSQL, nCid);
-    MemChrEquipData::SaveToSqlString(&this->equipData, sqls, szSQL, nCid);
-    MemChrGemData::SaveToSqlString(&this->gemData, sqls, szSQL, nCid);
-    MemChrBagData::SaveToSqlString(&this->bagData, sqls, szSQL, nCid);
-    MemChrDepotData::SaveToSqlString(&this->gambleDepot, sqls, szSQL, nCid);
-    MemChrSkillData::SaveToSqlString(&this->skillData, sqls, szSQL, nCid);
-    MemChrTaskData::SaveToSqlString(&this->taskData, sqls, szSQL, nCid);
-    MemChrTaskCycleData::SaveToSqlString(&this->taskCycleData, sqls, szSQL, nCid);
-    MemChrActionData::SaveToSqlString(&this->actionData, sqls, szSQL, nCid);
-    MemChrAutoFightData::SaveToSqlString(&this->autoFight, sqls, szSQL, nCid);
-    MemChrSystemSettingData::SaveToSqlString(&this->systemSetting, sqls, szSQL, nCid);
-    MemChrBuffData::SaveToSqlString(&this->buffData, sqls, szSQL, nCid);
-    CurrencyDBData::SaveToSqlString(&this->m_CurrencyData, sqls, szSQL, nCid);
-    OperateLimitDBData::SaveToSqlString(&this->m_OperateLimit, sqls, szSQL, nCid);
-    PetDBData::SaveToSqlString(&this->m_CharPets, sqls, szSQL, nCid);
-    FriendExpReward::SaveToSqlString(&this->m_FriendExpReward, sqls, szSQL, nCid);
-    MailDBData::SaveToSqlString(&this->m_MailDBData, sqls, szSQL, nCid);
-    ShangChengData::SaveToSqlString(&this->m_ShangChengData, sqls, szSQL, nCid);
-    BossKilledRewardData::SaveToSqlString(&this->m_BossKilledReward, sqls, szSQL, nCid);
-    CFaBaoData::SaveToSqlString(&this->m_FaBaoData, sqls, szSQL, nCid);
-    CGoblinData::SaveToSqlString(&this->m_CGoblinData, sqls, szSQL, nCid);
-    CharFamilyDBData::SaveToSqlString(&this->m_FamilyData, sqls, szSQL, nCid);
-    WorshipDBData::SaveToSqlString(&this->m_WorshipData, sqls, szSQL, nCid);
-    CJueWeiData::SaveToSqlString(&this->m_JueWeiData, sqls, szSQL, nCid);
-    ScoreShopData::SaveToSqlString(&this->m_ScoreShopData, sqls, szSQL, nCid);
-    TouZiData::SaveToSqlString(&this->m_TouZiData, sqls, szSQL, nCid);
-    CHuoYueDuData::SaveToSqlString(&this->m_HuoYueDuData, sqls, szSQL, nCid);
-    MysteryShopDBData::SaveToSqlString(&this->m_MysteryShopDBData, sqls, szSQL, nCid);
-    ExchangeDBData::SaveToSqlString(&this->m_ExchangeDBData, sqls, szSQL, nCid);
-    CharWishDBData::SaveToSqlString(&this->m_WishDBData, sqls, szSQL, nCid);
-    CharWingDBData::SaveToSqlString(&this->m_CharWingDBData, sqls, szSQL, nCid);
-    MagicBoxDBData::SaveToSqlString(&this->m_MagicBoxDBData, sqls, szSQL, nCid);
-    VipData::SaveToSqlString(&this->m_vipData, sqls, szSQL, nCid);
-    CShiZhuangData::SaveToSqlString(&this->m_ShiZhuangData, sqls, szSQL, nCid);
-    CMonthlyChouJiangData::SaveToSqlString(&this->m_CMonthlyChouJiangData, sqls, szSQL, nCid);
-    ChouJiangData::SaveToSqlString(&this->m_ChouJinagData, sqls, szSQL, nCid);
-    MoneyRewardTaskData::SaveToSqlString(&this->m_MoneyRewardTaskData, sqls, szSQL, nCid);
-    WuHunShopDBData::SaveToSqlString(&this->m_WuHunShopDBData, sqls, szSQL, nCid);
-    CMingGeData::SaveToSqlString(&this->m_CMingGeData, sqls, szSQL, nCid);
-    CKunData::SaveToSqlString(&this->m_CKunData, sqls, szSQL, nCid);
-    CFlopDraw::SaveToSqlString(&this->m_CFlopDraw, sqls, szSQL, nCid);
-    CSevenDayData::SaveToSqlString(&this->m_CSevenDayData, sqls, szSQL, nCid);
-    PortalDBData::SaveToSqlString(&this->m_PortalDBData, sqls, szSQL, nCid);
-    XinMoDBData::SaveToSqlString(&this->m_XinMoDBData, sqls, szSQL, nCid);
-    CLittleHelperData::SaveToSqlString(&this->m_CLittleHelper, sqls, szSQL, nCid);
-    NationalDayData::SaveToSqlString(&this->m_NationalDayData, sqls, szSQL, nCid);
-    EquipRongHeData::SaveToSqlString(&this->m_EquipRongHeData, sqls, szSQL, nCid);
+    sysUser.SaveToSqlString(sqls, szSQL, nCid);
+    signInfo.SaveToSqlString(sqls, szSQL, nCid);
+    taskData.SaveToSqlString(sqls, szSQL, nCid);
+    actionData.SaveToSqlString(sqls, szSQL, nCid);
+    autoFight.SaveToSqlString(sqls, szSQL, nCid);
+    systemSetting.SaveToSqlString(sqls, szSQL, nCid);
+    buffData.SaveToSqlString(sqls, szSQL, nCid);
+    sysUserPreventWallow.SaveToSqlString(sqls, szSQL, nCid);
+    attrData.SaveToSqlString(sqls, szSQL, nCid);
+    m_FriendExpReward.SaveToSqlString(sqls, szSQL, nCid);
+    m_MailDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_ShangChengData.SaveToSqlString(sqls, szSQL, nCid);
+    m_BossKilledReward.SaveToSqlString(sqls, szSQL, nCid);
+    m_FaBaoData.SaveToSqlString(sqls, szSQL, nCid);
+    m_CGoblinData.SaveToSqlString(sqls, szSQL, nCid);
+    m_FamilyData.SaveToSqlString(sqls, szSQL, nCid);
+    m_WorshipData.SaveToSqlString(sqls, szSQL, nCid);
+    m_JueWeiData.SaveToSqlString(sqls, szSQL, nCid);
+    m_ScoreShopData.SaveToSqlString(sqls, szSQL, nCid);
+    m_TouZiData.SaveToSqlString(sqls, szSQL, nCid);
+    m_HuoYueDuData.SaveToSqlString(sqls, szSQL, nCid);
+    m_MysteryShopDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_ExchangeDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_WishDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_VplanData.SaveToSqlString(sqls, szSQL, nCid);
+    m_CharWingDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_MagicBoxDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_vipData.SaveToSqlString(sqls, szSQL, nCid);
+    m_ChouJinagData.SaveToSqlString(sqls, szSQL, nCid);
+    m_MoneyRewardTaskData.SaveToSqlString(sqls, szSQL, nCid);
+    m_WuHunShopDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_ShiZhuangData.SaveToSqlString(sqls, szSQL, nCid);
+    m_CMonthlyChouJiangData.SaveToSqlString(sqls, szSQL, nCid);
+    m_CMingGeData.SaveToSqlString(sqls, szSQL, nCid);
+    m_CKunData.SaveToSqlString(sqls, szSQL, nCid);
+    m_CFlopDraw.SaveToSqlString(sqls, szSQL, nCid);
+    m_CSevenDayData.SaveToSqlString(sqls, szSQL, nCid);
+    m_PortalDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_XinMoDBData.SaveToSqlString(sqls, szSQL, nCid);
+    m_CLittleHelper.SaveToSqlString(sqls, szSQL, nCid);
+    m_NationalDayData.SaveToSqlString(sqls, szSQL, nCid);
+    m_EquipRongHeData.SaveToSqlString(sqls, szSQL, nCid);
 }
 
 bool PlayerDBData::LoadFromDB(Answer::MySqlDBGuard *const db, char (*const szSQL)[4096], int64_t nUid, int32_t nSid, CharId_t nCid)
 {
-    CharId_t nCida; // [rsp+0h] [rbp-40h]
+    loadTime = Answer::DayTime::now();
 
-    this->loadTime = Answer::DayTime::now();
-    if ( !MemCharacterData::LoadFromDB(&this->chr, db, szSQL, nUid, nSid, 0) )
-    return 0;
-    nCida = this->chr.data.cid;
-    if ( SysUserData::LoadFromDB(&this->sysUser, db, szSQL, nUid, nSid, 0) )
-    SysUserPreventWallowData::LoadFromDB(&this->sysUserPreventWallow, db, szSQL, nUid, nSid, 0);
-    MemChrDepotData::LoadFromDB(&this->gambleDepot, db, szSQL, nUid, nSid, nCida);
-    DailyActivityData::LoadFromDB(&this->signInfo, db, szSQL, nUid, nSid, nCida);
-    MemChrEquipData::LoadFromDB(&this->equipData, db, szSQL, nUid, nSid, nCida);
-    MemChrGemData::LoadFromDB(&this->gemData, db, szSQL, nUid, nSid, nCida);
-    MemChrBagData::LoadFromDB(&this->bagData, db, szSQL, nUid, nSid, nCida);
-    MemChrSkillData::LoadFromDB(&this->skillData, db, szSQL, nUid, nSid, nCida);
-    MemChrTaskData::LoadFromDB(&this->taskData, db, szSQL, nUid, nSid, nCida);
-    MemChrTaskCycleData::LoadFromDB(&this->taskCycleData, db, szSQL, nUid, nSid, nCida);
-    MemChrActionData::LoadFromDB(&this->actionData, db, szSQL, nUid, nSid, nCida);
-    MemChrAutoFightData::LoadFromDB(&this->autoFight, db, szSQL, nUid, nSid, nCida);
-    MemChrSystemSettingData::LoadFromDB(&this->systemSetting, db, szSQL, nUid, nSid, nCida);
-    MemChrBuffData::LoadFromDB(&this->buffData, db, szSQL, nUid, nSid, nCida);
-    CurrencyDBData::LoadFromDB(&this->m_CurrencyData, db, szSQL, nUid, nSid, nCida);
-    OperateLimitDBData::LoadFromDB(&this->m_OperateLimit, db, szSQL, nUid, nSid, nCida);
-    PetDBData::LoadFromDB(&this->m_CharPets, db, szSQL, nUid, nSid, nCida);
-    FriendExpReward::LoadFromDB(&this->m_FriendExpReward, db, szSQL, nUid, nSid, nCida);
-    MailDBData::LoadFromDB(&this->m_MailDBData, db, szSQL, nUid, nSid, nCida);
-    ShangChengData::LoadFromDB(&this->m_ShangChengData, db, szSQL, nUid, nSid, nCida);
-    BossKilledRewardData::LoadFromDB(&this->m_BossKilledReward, db, szSQL, nUid, nSid, nCida);
-    CFaBaoData::LoadFromDB(&this->m_FaBaoData, db, szSQL, nUid, nSid, nCida);
-    CGoblinData::LoadFromDB(&this->m_CGoblinData, db, szSQL, nUid, nSid, nCida);
-    CharFamilyDBData::LoadFromDB(&this->m_FamilyData, db, szSQL, nUid, nSid, nCida);
-    WorshipDBData::LoadFromDB(&this->m_WorshipData, db, szSQL, nUid, nSid, nCida);
-    CJueWeiData::LoadFromDB(&this->m_JueWeiData, db, szSQL, nUid, nSid, nCida);
-    ScoreShopData::LoadFromDB(&this->m_ScoreShopData, db, szSQL, nUid, nSid, nCida);
-    TouZiData::LoadFromDB(&this->m_TouZiData, db, szSQL, nUid, nSid, nCida);
-    CHuoYueDuData::LoadFromDB(&this->m_HuoYueDuData, db, szSQL, nUid, nSid, nCida);
-    MysteryShopDBData::LoadFromDB(&this->m_MysteryShopDBData, db, szSQL, nUid, nSid, nCida);
-    ExchangeDBData::LoadFromDB(&this->m_ExchangeDBData, db, szSQL, nUid, nSid, nCida);
-    CharWishDBData::LoadFromDB(&this->m_WishDBData, db, szSQL, nUid, nSid, nCida);
-    CVplanData::LoadFromDB(&this->m_VplanData, db, szSQL, nUid, nSid, nCida);
-    CharWingDBData::LoadFromDB(&this->m_CharWingDBData, db, szSQL, nUid, nSid, nCida);
-    MagicBoxDBData::LoadFromDB(&this->m_MagicBoxDBData, db, szSQL, nUid, nSid, nCida);
-    VipData::LoadFromDB(&this->m_vipData, db, szSQL, nUid, nSid, nCida);
-    CShiZhuangData::LoadFromDB(&this->m_ShiZhuangData, db, szSQL, nUid, nSid, nCida);
-    CMonthlyChouJiangData::LoadFromDB(&this->m_CMonthlyChouJiangData, db, szSQL, nUid, nSid, nCida);
-    ChouJiangData::LoadFromDB(&this->m_ChouJinagData, db, szSQL, nUid, nSid, nCida);
-    MoneyRewardTaskData::LoadFromDB(&this->m_MoneyRewardTaskData, db, szSQL, nUid, nSid, nCida);
-    WuHunShopDBData::LoadFromDB(&this->m_WuHunShopDBData, db, szSQL, nUid, nSid, nCida);
-    CMingGeData::LoadFromDB(&this->m_CMingGeData, db, szSQL, nUid, nSid, nCida);
-    CKunData::LoadFromDB(&this->m_CKunData, db, szSQL, nUid, nSid, nCida);
-    CFlopDraw::LoadFromDB(&this->m_CFlopDraw, db, szSQL, nUid, nSid, nCida);
-    CSevenDayData::LoadFromDB(&this->m_CSevenDayData, db, szSQL, nUid, nSid, nCida);
-    PortalDBData::LoadFromDB(&this->m_PortalDBData, db, szSQL, nUid, nSid, nCida);
-    XinMoDBData::LoadFromDB(&this->m_XinMoDBData, db, szSQL, nUid, nSid, nCida);
-    CLittleHelperData::LoadFromDB(&this->m_CLittleHelper, db, szSQL, nUid, nSid, nCida);
-    NationalDayData::LoadFromDB(&this->m_NationalDayData, db, szSQL, nUid, nSid, nCida);
-    EquipRongHeData::LoadFromDB(&this->m_EquipRongHeData, db, szSQL, nUid, nSid, nCida);
-    return 1;
+    sysUser.LoadFromDB(db, szSQL, nUid, nSid, 0);
+    sysUserPreventWallow.LoadFromDB(db, szSQL, nUid, nSid, 0);
+    signInfo.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    taskData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    actionData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    autoFight.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    systemSetting.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    buffData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    attrData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_FriendExpReward.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_MailDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_ShangChengData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_BossKilledReward.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_FaBaoData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CGoblinData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_FamilyData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_WorshipData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_JueWeiData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_ScoreShopData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_TouZiData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_HuoYueDuData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_MysteryShopDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_ExchangeDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_WishDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_VplanData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CharWingDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_MagicBoxDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_vipData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_ChouJinagData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_MoneyRewardTaskData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_WuHunShopDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_ShiZhuangData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CMonthlyChouJiangData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CMingGeData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CKunData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CFlopDraw.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CSevenDayData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_PortalDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_XinMoDBData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_CLittleHelper.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_NationalDayData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+    m_EquipRongHeData.LoadFromDB(db, szSQL, nUid, nSid, nCid);
+
+    return true;
 }
 
 void PlayerDBData::PackageData(Answer::NetPacket *packet)
 {
-    Answer::NetPacket::writeInt8(packet, this->connid);
-    Answer::NetPacket::writeInt16(packet, this->cgindex);
-    Answer::NetPacket::writeInt32(packet, this->loadTime);
-    MemCharacterData::PackageData(&this->chr, packet);
-    MemAttrData::PackageData(&this->attrData, packet);
-    MemChrDepotData::PackageData(&this->gambleDepot, packet);
-    SysUserData::PackageData(&this->sysUser, packet);
-    SysUserPreventWallowData::PackageData(&this->sysUserPreventWallow, packet);
-    DailyActivityData::PackageData(&this->signInfo, packet);
-    MemChrEquipData::PackageData(&this->equipData, packet);
-    MemChrGemData::PackageData(&this->gemData, packet);
-    MemChrBagData::PackageData(&this->bagData, packet);
-    MemChrSkillData::PackageData(&this->skillData, packet);
-    MemChrTaskData::PackageData(&this->taskData, packet);
-    MemChrTaskCycleData::PackageData(&this->taskCycleData, packet);
-    MemChrActionData::PackageData(&this->actionData, packet);
-    MemChrAutoFightData::PackageData(&this->autoFight, packet);
-    MemChrSystemSettingData::PackageData(&this->systemSetting, packet);
-    MemChrBuffData::PackageData(&this->buffData, packet);
-    CurrencyDBData::PackageData(&this->m_CurrencyData, packet);
-    OperateLimitDBData::PackageData(&this->m_OperateLimit, packet);
-    PetDBData::PackageData(&this->m_CharPets, packet);
-    FriendExpReward::PackageData(&this->m_FriendExpReward, packet);
-    MailDBData::PackageData(&this->m_MailDBData, packet);
-    ShangChengData::PackageData(&this->m_ShangChengData, packet);
-    BossKilledRewardData::PackageData(&this->m_BossKilledReward, packet);
-    CFaBaoData::PackageData(&this->m_FaBaoData, packet);
-    CGoblinData::PackageData(&this->m_CGoblinData, packet);
-    CharFamilyDBData::PackageData(&this->m_FamilyData, packet);
-    WorshipDBData::PackageData(&this->m_WorshipData, packet);
-    CJueWeiData::PackageData(&this->m_JueWeiData, packet);
-    ScoreShopData::PackageData(&this->m_ScoreShopData, packet);
-    TouZiData::PackageData(&this->m_TouZiData, packet);
-    CHuoYueDuData::PackageData(&this->m_HuoYueDuData, packet);
-    MysteryShopDBData::PackageData(&this->m_MysteryShopDBData, packet);
-    ExchangeDBData::PackageData(&this->m_ExchangeDBData, packet);
-    CharWishDBData::PackageData(&this->m_WishDBData, packet);
-    CVplanData::PackageData(&this->m_VplanData, packet);
-    CharWingDBData::PackageData(&this->m_CharWingDBData, packet);
-    MagicBoxDBData::PackageData(&this->m_MagicBoxDBData, packet);
-    VipData::PackageData(&this->m_vipData, packet);
-    CShiZhuangData::PackageData(&this->m_ShiZhuangData, packet);
-    CMonthlyChouJiangData::PackageData(&this->m_CMonthlyChouJiangData, packet);
-    ChouJiangData::PackageData(&this->m_ChouJinagData, packet);
-    MoneyRewardTaskData::PackageData(&this->m_MoneyRewardTaskData, packet);
-    WuHunShopDBData::PackageData(&this->m_WuHunShopDBData, packet);
-    CMingGeData::PackageData(&this->m_CMingGeData, packet);
-    CKunData::PackageData(&this->m_CKunData, packet);
-    CFlopDraw::PackageData(&this->m_CFlopDraw, packet);
-    CSevenDayData::PackageData(&this->m_CSevenDayData, packet);
-    PortalDBData::PackageData(&this->m_PortalDBData, packet);
-    XinMoDBData::PackageData(&this->m_XinMoDBData, packet);
-    CLittleHelperData::PackageData(&this->m_CLittleHelper, packet);
-    NationalDayData::PackageData(&this->m_NationalDayData, packet);
-    EquipRongHeData::PackageData(&this->m_EquipRongHeData, packet);
-}
+    if (!packet) return;
 
-（内容由AI生成，仅供参考）
+    Answer::NetPacket::writeInt8(packet, connid);
+    Answer::NetPacket::writeInt16(packet, cgindex);
+    Answer::NetPacket::writeInt32(packet, loadTime);
+
+    attrData.PackageData(packet);
+    sysUser.PackageData(packet);
+    sysUserPreventWallow.PackageData(packet);
+    signInfo.PackageData(packet);
+    taskData.PackageData(packet);
+    actionData.PackageData(packet);
+    autoFight.PackageData(packet);
+    systemSetting.PackageData(packet);
+    buffData.PackageData(packet);
+    m_FriendExpReward.PackageData(packet);
+    m_MailDBData.PackageData(packet);
+    m_ShangChengData.PackageData(packet);
+    m_BossKilledReward.PackageData(packet);
+    m_FaBaoData.PackageData(packet);
+    m_CGoblinData.PackageData(packet);
+    m_FamilyData.PackageData(packet);
+    m_WorshipData.PackageData(packet);
+    m_JueWeiData.PackageData(packet);
+    m_ScoreShopData.PackageData(packet);
+    m_TouZiData.PackageData(packet);
+    m_HuoYueDuData.PackageData(packet);
+    m_MysteryShopDBData.PackageData(packet);
+    m_ExchangeDBData.PackageData(packet);
+    m_WishDBData.PackageData(packet);
+    m_VplanData.PackageData(packet);
+    m_CharWingDBData.PackageData(packet);
+    m_MagicBoxDBData.PackageData(packet);
+    m_vipData.PackageData(packet);
+    m_ChouJinagData.PackageData(packet);
+    m_MoneyRewardTaskData.PackageData(packet);
+    m_WuHunShopDBData.PackageData(packet);
+    m_ShiZhuangData.PackageData(packet);
+    m_CMonthlyChouJiangData.PackageData(packet);
+    m_CMingGeData.PackageData(packet);
+    m_CKunData.PackageData(packet);
+    m_CFlopDraw.PackageData(packet);
+    m_CSevenDayData.PackageData(packet);
+    m_PortalDBData.PackageData(packet);
+    m_XinMoDBData.PackageData(packet);
+    m_CLittleHelper.PackageData(packet);
+    m_NationalDayData.PackageData(packet);
+    m_EquipRongHeData.PackageData(packet);
+}

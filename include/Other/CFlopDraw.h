@@ -21,7 +21,7 @@ public:
     void PackageData(Answer::NetPacket *packet);
     void UnPackageData(Answer::NetPacket *inPacket, int64_t nCid);
 
-private:
+public:
     Int32Int32Int32Map m_FlopDrawRecordMap;
 };
 

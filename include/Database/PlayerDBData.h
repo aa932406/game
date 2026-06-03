@@ -16,13 +16,64 @@
 #include "Character/CExtCharWish.h"
 #include "Character/CExtOperateLimit.h"
 #include "Character/CharLittlerHelper.h"
+
+#include "Activity/DailyActivityData.h"
+
+#include "Database/CurrencyDBData.h"
+#include "Database/OperateLimitDBData.h"
+#include "Database/PetDBData.h"
+#include "Database/MailDBData.h"
+#include "Database/CharFamilyDBData.h"
+#include "Database/WorshipDBData.h"
+#include "Database/MysteryShopDBData.h"
+#include "Database/ExchangeDBData.h"
+#include "Database/CharWishDBData.h"
+#include "Database/CharWingDBData.h"
+#include "Database/MagicBoxDBData.h"
+#include "Database/WuHunShopDBData.h"
+#include "Database/PortalDBData.h"
+#include "Database/XinMoDBData.h"
+
+#include "Other/MemCharacterData.h"
+#include "Other/SysUserData.h"
+#include "Other/MemChrEquipData.h"
+#include "Other/MemChrGemData.h"
+#include "Other/MemChrBagData.h"
+#include "Other/MemChrSkillData.h"
+#include "Other/MemChrTaskData.h"
+#include "Other/MemChrTaskCycleData.h"
+#include "Other/MemChrActionData.h"
+#include "Other/MemChrAutoFightData.h"
+#include "Other/MemChrSystemSettingData.h"
+#include "Other/MemChrBuffData.h"
+#include "Other/MemChrDepotData.h"
+#include "Other/SysUserPreventWallowData.h"
+#include "Other/MemAttrData.h"
+#include "Other/FriendExpReward.h"
+#include "Other/ShangChengData.h"
+#include "Other/BossKilledRewardData.h"
+#include "Other/CFaBaoData.h"
+#include "Other/CGoblinData.h"
+#include "Other/CJueWeiData.h"
+#include "Other/ScoreShopData.h"
+#include "Other/TouZiData.h"
+#include "Other/CHuoYueDuData.h"
+#include "Other/CVplanData.h"
+#include "Other/VipData.h"
+#include "Other/ChouJiangData.h"
+#include "Other/MoneyRewardTaskData.h"
+#include "Other/CShiZhuangData.h"
+#include "Other/CMonthlyChouJiangData.h"
+#include "Other/CMingGeData.h"
+#include "Other/CKunData.h"
+#include "Other/CFlopDraw.h"
+#include "Other/CSevenDayData.h"
+#include "Other/CLittleHelperData.h"
+#include "Other/NationalDayData.h"
+#include "Other/EquipRongHeData.h"
 #include "Other/RwLock.h"
 
 namespace Answer { class MySqlDBGuard; }
-
-
-
-struct IDataStruct {};
 
 class PlayerDBData : public IDataStruct {
 public:
@@ -52,78 +103,57 @@ public:
 
     int32_t m_nJueWei;
 
-    // 宠物数据 (供 CExtCharPet 使用)
-    struct {
-        struct {
-            int32_t nStar;
-            int32_t nHuanHua;
-        } petData;
-    } m_CharPets;
+    // 宠物数据
+    PetDBData m_CharPets;
 
-    // 传送门数据 (供 CExtCharPortal 使用)
-    struct {
-        PortalInfoList lstPortal;
-        int32_t nPortalId;
-    } m_PortalDBData;
+    // 传送门数据
+    PortalDBData m_PortalDBData;
 
-    // 技能数据 (供 CExtCharSkill 使用)
-    struct {
-        std::string talents;
-        int32_t m_nPower;
-    } skillData;
+    // 翅膀数据
+    CharWingDBData m_CharWingDBData;
 
-    // 翅膀数据 (供 CExtCharWing 使用)
-    struct {
-        int32_t m_Level;
-        int32_t m_Luck;
-        int32_t m_HuanHua;
-    } m_CharWingDBData;
+    // 许愿数据
+    CharWishDBData m_WishDBData;
 
-    // 许愿数据 (供 CExtCharWish 使用)
-    struct {
-        std::list<CharWishInfo> lstWishs;
-    } m_WishDBData;
+    // 祈福数据
+    WorshipDBData m_WorshipData;
 
-    // 祈福数据 (供 CExtCharWorship 使用)
-    struct {
-        int32_t nTimes;
-        std::string strCharList;
-    } m_WorshipData;
+    // 翻牌数据
+    CFlopDraw m_CFlopDraw;
 
-    // 翻牌数据 (供 CExtFlopDraw 使用)
-    struct {
-        std::map<int32_t, std::map<int32_t, int32_t>> m_FlopDrawRecordMap;
-    } m_CFlopDraw;
+    // 小助手数据
+    CLittleHelperData m_CLittleHelper;
 
-    // 小助手数据 (供 CharLittlerHelper 使用)
-    struct {
-        std::map<int32_t, ActLittleHelperInfo> m_ActLittleHelperInfoMap;
-        int32_t m_LittleHelperId;
-    } m_CLittleHelper;
+    // 操作限制数据
+    OperateLimitDBData m_OperateLimit;
 
-    // 周期任务数据 (供 CExtChrTaskCycle 使用)
-    struct {
-        int32_t nFinishTimes;
-        int32_t nTaskId;
-        int8_t nState;
-    } taskCycleData;
+    // 货币数据
+    CurrencyDBData m_CurrencyData;
 
-    // 操作限制数据 (供 CExtOperateLimit 使用)
-    struct {
-        std::map<int32_t, OperateLimit> m_mOperateLimit;
-    } m_OperateLimit;
+    // 神秘商店数据
+    MysteryShopDBData m_MysteryShopDBData;
 
-    // 货币数据 (供 CExtCurrency 使用)
-    struct {
-        int64_t vCurrency[12];
-    } m_CurrencyData;
+    // 家族数据
+    CharFamilyDBData m_FamilyData;
 
-    // 装备数据 (供 CExtEquip 使用)
+    // 交换数据
+    ExchangeDBData m_ExchangeDBData;
+
+    // 角色摘要数据 (匿名struct，供外部通过 chr.data.cid 等访问)
     struct {
-        MemChrBag vEquip[93];
+        int32_t weapon;
+        int32_t cloth;
+        int32_t equipStar;
+        int32_t equipGem;
+        CharacterData data;
+    } chr;
+
+    // 装备数据 (匿名struct，供外部通过 equipData.vEquip 等访问)
+    struct {
+        EquipSlot vEquip[93];
     } equipData;
 
-    // 宝石/强化/神耀数据 (供 CExtEquip 使用)
+    // 宝石/强化/神耀数据 (匿名struct，供外部通过 gemData.gemInfo 等访问)
     struct {
         std::string gemInfo;
         std::string posLevel;
@@ -131,39 +161,60 @@ public:
         std::string ShenYaoEquipPos;
     } gemData;
 
-    // 角色摘要数据 (供 CExtEquip 使用)
+    // 技能数据 (匿名struct，供外部通过 skillData.talents 等访问)
     struct {
-        int32_t weapon;
-        int32_t cloth;
-        int32_t equipStar;
-        int32_t equipGem;
-    } chr;
+        std::string talents;
+        int32_t m_nPower;
+    } skillData;
 
-    // 神秘商店数据 (供 CExtCharMysteryShop 使用)
+    // 周期任务数据 (匿名struct，供外部通过 taskCycleData.nTaskId 等访问)
     struct {
-        std::list<MysteryShop> lstShop;
-    } m_MysteryShopDBData;
+        int32_t nFinishTimes;
+        int32_t nTaskId;
+        int8_t nState;
+    } taskCycleData;
 
-    // 家族数据 (供 CExtCharFamily 使用)
-    struct FamilyData {
-        int32_t nFamilyId;
-        int32_t nPosition;
-        int32_t nContribution;
-        int32_t nDailyContribution;
-        std::string strSkills;
-        int32_t nMedLevel;
-        int32_t nMedRes;
-        int32_t nHoe;
-        int32_t EnterDungeionFamilyId;
-        int32_t EnterCount;
-        int32_t EnterTime;
-    } m_FamilyData;
+    // ========== 额外添加的缺失成员 ==========
 
-    // 交换数据 (供 CExtCharExchange 使用)
-    struct {
-        std::list<ExchangeRecord> lstExchange;
-    } m_ExchangeDBData;
+    // 基本状态
+    int8_t connid;
+    int16_t cgindex;
+    int32_t loadTime;
+    int32_t saveRefCount;
 
-private:
-    // TODO: other member variables
+    // 类型化数据成员 (DB持久化用)
+    SysUserData sysUser;
+    DailyActivityData signInfo;
+    MemChrTaskData taskData;
+    MemChrActionData actionData;
+    MemChrAutoFightData autoFight;
+    MemChrSystemSettingData systemSetting;
+    MemChrBuffData buffData;
+    SysUserPreventWallowData sysUserPreventWallow;
+    MemAttrData attrData;
+    MemChrDepotData depotData;
+    FriendExpReward m_FriendExpReward;
+    MailDBData m_MailDBData;
+    ShangChengData m_ShangChengData;
+    BossKilledRewardData m_BossKilledReward;
+    CFaBaoData m_FaBaoData;
+    CGoblinData m_CGoblinData;
+    CJueWeiData m_JueWeiData;
+    ScoreShopData m_ScoreShopData;
+    TouZiData m_TouZiData;
+    CHuoYueDuData m_HuoYueDuData;
+    CVplanData m_VplanData;
+    MagicBoxDBData m_MagicBoxDBData;
+    VipData m_vipData;
+    ChouJiangData m_ChouJinagData;
+    MoneyRewardTaskData m_MoneyRewardTaskData;
+    WuHunShopDBData m_WuHunShopDBData;
+    CShiZhuangData m_ShiZhuangData;
+    CMonthlyChouJiangData m_CMonthlyChouJiangData;
+    CMingGeData m_CMingGeData;
+    CKunData m_CKunData;
+    CSevenDayData m_CSevenDayData;
+    XinMoDBData m_XinMoDBData;
+    NationalDayData m_NationalDayData;
+    EquipRongHeData m_EquipRongHeData;
 };

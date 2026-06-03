@@ -9,13 +9,20 @@
 
 namespace Answer { class NetPacket; }
 
+#ifndef MEMCHRBAG_DEFINED
+#define MEMCHRBAG_DEFINED
 struct MemChrBag
 {
     int32_t itemId;
     int8_t  itemClass;
     int32_t itemCount;
     int8_t  bind;
+    int32_t endTime;
+    int64_t srcId;
+    int32_t& slot() { return itemId; }
+    const int32_t& slot() const { return itemId; }
 };
+#endif
 
 class MemChrBagData
 {
