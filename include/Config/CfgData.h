@@ -2278,6 +2278,7 @@ public:
     int32_t getServerStartTime(SERVER_TYPE nType);
     int32_t getServerStartDayZeroTime(SERVER_TYPE nType);
     int32_t getServerDiffDay(SERVER_TYPE nType);
+    static int32_t getServerDiffDay(CfgData* cfg, SERVER_TYPE nType) { return cfg ? cfg->getServerDiffDay(nType) : 0; }
     void updateServerStartTime(int32_t kaiFuTime);
     int32_t getServerType() { return m_serverType; }
     int32_t getDebug() const { return m_debug; }

@@ -55,6 +55,7 @@ public:
   GameService& operator=(const GameService&) = delete;
 
   static GameService* GetInstance();
+  static GameService* instance() { return GetInstance(); }
 
   int32_t getLine() const { return m_line; }
   int32_t getId() const { return m_id; }

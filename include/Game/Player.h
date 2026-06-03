@@ -29,6 +29,7 @@ class CExtCharPet;
 class ItemBuff;
 #include "Activity/CZongHeYunYingHD.h"
 class DailyActivity;
+class CMoneyRewardTask;
 struct ShowIcon;
 class CHuoYueDu;
 class CFunctionOpen;
@@ -320,6 +321,7 @@ public:
     static int32_t getLastLoginTime(Player* player) { return player ? player->getLastLoginTime() : 0; }
     static void RecalcAttr(Player* player) { if (player) player->RecalcAttr(); }
     static void* GetPlayerFunctionOpen(Player* player) { (void)player; return nullptr; }
+    static CMoneyRewardTask* GetCMoneyRewardTask(Player* player) { (void)player; return nullptr; }
     static void sendBuyItemInfo(Player* player, int32_t itemId, int8_t itemClass, int32_t count, int32_t costValue, int32_t index) {}
     static bool DecMoneyAndNoBind(Player* player, int32_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return true; }
     static bool AddCurrency(Player* player, CURRENCY_TYPE type, int64_t amount, CURRENCY_CHANGE_REASON reason, int32_t param) { return player ? player->AddCurrency(type, amount, reason, param) : false; }

@@ -81,6 +81,7 @@ public:
     virtual void AddActivityBuff(Player* player, int32_t nBuffId, bool bClear);
     virtual void AdjustMonsterAttr(CfgMonster* cfgMonster, int32_t nLevel);
     virtual void SetNeedBroadcastActivityScore(bool b);
+    void setNeedBroadcastActivityScore(bool b) { SetNeedBroadcastActivityScore(b); }
     virtual bool NeedBroadcastActivityScore();
     virtual void RemoveActivityMonster(int32_t monsterId);
     virtual void SendSocialUpdateActivityState(int8_t nState);
@@ -151,5 +152,12 @@ protected:
 private:
     int32_t GetNextStartTimeInternal();
 };
+
+// ACTIVITY_STATE 隐式转换操作符
+inline int32_t operator+(ACTIVITY_STATE s) { return static_cast<int32_t>(s); }
+inline bool operator==(int32_t a, ACTIVITY_STATE b) { return a == static_cast<int32_t>(b); }
+inline bool operator==(ACTIVITY_STATE a, int32_t b) { return static_cast<int32_t>(a) == b; }
+inline bool operator!=(int32_t a, ACTIVITY_STATE b) { return a != static_cast<int32_t>(b); }
+inline bool operator!=(ACTIVITY_STATE a, int32_t b) { return static_cast<int32_t>(a) != b; }
 
 #endif // __CACTIVITY_H__
