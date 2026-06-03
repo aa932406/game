@@ -128,6 +128,7 @@ public:
     bool IsWastelands();
     bool IsXinMoCun();
     bool IsXinMoMap();
+    int32_t GetMapId() const { return 0; }  // stub, TODO: implement with m_cfgmap->id
     Position GetEnterPos();
     void updateMonsters();
     void updateNpcs();

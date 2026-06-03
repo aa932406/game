@@ -4,6 +4,7 @@
 #include "Common/CommonTypes.h"
 #include "Game/Unit.h"
 #include "Character/CExtSystemBase.h"
+#include "Other/TencentInfo.h"
 #include <string>
 #include <vector>
 #include <list>
@@ -321,6 +322,9 @@ public:
     static int64_t GetCurrency(Player* player, int32_t nType) { return player ? player->GetCurrency(static_cast<CURRENCY_TYPE>(nType)) : 0; }
     static int32_t getCreateTime(Player* player) { return player ? player->m_chr.create_time : 0; }
     static void SendIconState(Player* player, const ShowIcon* stu);
+
+    // 腾讯信息
+    static void InitTencentInfo(Player* player, TencentInfo* info) { (void)player; (void)info; }
 
     // 网络包处理
     void initNetPacketHandlers();

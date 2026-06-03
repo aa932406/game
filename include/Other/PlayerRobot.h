@@ -25,6 +25,7 @@ class PlayerRobot : public Player
 public:
     PlayerRobot();
     virtual ~PlayerRobot();
+    void init();
 };
 
 #endif // _PLAYERROBOT_H_

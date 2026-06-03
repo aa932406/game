@@ -45,6 +45,7 @@ public:
     int32_t GetPosX() const { return m_currentPos.x; }
     int32_t GetPosY() const { return m_currentPos.y; }
     Map* getMap() const { return m_pMap; }
+    static Map* getMap(StaticObj* obj) { return obj ? obj->getMap() : nullptr; }
 
 protected:
     EntityType m_entityType;    // 实体类型

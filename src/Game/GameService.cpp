@@ -1,6 +1,7 @@
 #include "GameService.h"
 
 #include "Game/Player.h"
+#include "Game/Map.h"
 #include "Game/CObjPet.h"
 #include "Game/Monster.h"
 #include "Game/Trailer.h"
@@ -12,7 +13,9 @@
 #include "Game/CWorldBoss.h"
 #include "Game/DBService.h"
 #include "Other/User.h"
+#include "Other/CVip.h"
 #include "Other/CGMBackstate.h"
+#include "Other/PlayerRobot.h"
 #include "Other/CPetManager.h"
 #include "Other/FamilyManager.h"
 #include "Other/CRankMirror.h"
@@ -358,7 +361,7 @@ void GameService::startGame()
   v13 = Answer::Singleton<CKiaFuRecharge>::instance();
   v13->Init(this->m_line);
   v14 = Answer::Singleton<CFestivalActivity>::instance();
-  v14->Init();
+  v14->Init(0);
   InitDropTimes();
   InitMoYuShiJieRecord();
   requestSocialData();
@@ -371,7 +374,7 @@ void GameService::startGame()
     if ( packet )
     {
       v16 = Answer::Singleton<CfgData>::instance();
-      Debug = v16->getDebug();
+      int32_t Debug = v16->getDebug();
       packet->writeInt32(Debug);
   uint32_t wOffset = 0;
       wOffset = packet->getWOffset();
@@ -392,7 +395,7 @@ void GameService::stopGame()
   v1->StopAll();
   v2 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v2) != 9 )
-    GameService::saveAllPlayerToDB(this);
+    saveAllPlayerToDB();
 }
 
 
@@ -472,7 +475,7 @@ void GameService::onNewMinuteCome(int32_t minute)
   }
   if ( !(minute % 5) )
   {
-    Time = Answer::DayTime::now();
+    int32_t Time = Answer::DayTime::now();
     Answer::MutexGuard lock(&this->m_ChatValidateLock);
     it = this->m_ChatValidateMap.begin();
     while ( 1 )
@@ -505,8 +508,8 @@ void GameService::OnDaySwitch()
 {
   if ( this->m_line == 1 )
   {
-    GameService::ResetDropTimes(this);
-    GameService::SendServerDiffToGlobal(this);
+    ResetDropTimes();
+    SendServerDiffToGlobal();
   }
 }
 
@@ -541,7 +544,7 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
   if ( player )
   {
     pMap_0 = StaticObj::getMap(player);
-    mapid = 0;
+    int32_t mapid = 0;
     if ( pMap_0 )
       mapid = pMap_0->GetMapId();
     Answer::Logger::print(
@@ -553,12 +556,12 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
   }
   else
   {
-    v4 = dbData->chr.data.mapid;
+    int32_t v4 = dbData->chr.data.mapid;
     v5 = Answer::Singleton<MapManager>::instance();
     pMap = v5->GetMap(v4);
     if ( !pMap )
     {
-      nRegion = 20001;
+      int32_t nRegion = 20001;
       if ( dbData->chr.data.mapid > 0 )
       {
         if ( reason == 3 && GameService::getLine(this) == 9 )
@@ -572,12 +575,12 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
       pCfgRegion = v7->getMapRegion(nRegion);
       if ( pCfgRegion )
       {
-        v8 = pCfgRegion->mapid;
+        int32_t v8 = pCfgRegion->mapid;
         v9 = Answer::Singleton<MapManager>::instance();
         pTempMap = v9->GetMap(v8);
         if ( pTempMap )
         {
-          pos = pTempMap->getRandomWalkablePositionInRegion(pCfgRegion);
+          Position pos = pTempMap->getRandomWalkablePositionInRegion(pCfgRegion);
           if ( pos.x >= 0 && pos.y >= 0 )
           {
             pMap = pTempMap;
@@ -590,7 +593,7 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
     if ( pMap )
     {
       Answer::MutexGuard lock(&this->m_userLock);
-      nIndex = getUserIndex(dbData->connid, dbData->cgindex);
+      int32_t nIndex = getUserIndex(dbData->connid, dbData->cgindex);
       pUser = this->m_users[nIndex];
       if ( pUser )
       {
@@ -694,8 +697,8 @@ void GameService::onPlayerLogout(Player *player)
 
   if ( player )
   {
-    connid = Player::getConnId(player);
-    cgindex = Player::getGateIndex(player);
+    int8_t connid = Player::getConnId(player);
+    int16_t cgindex = Player::getGateIndex(player);
     Answer::Logger::print(
       Answer::LogLevel::LOG_LEVEL_DEBUG,
       "GameService::onPlayerLogout push player %p, cgindex = %d\n",

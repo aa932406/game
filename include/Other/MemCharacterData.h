@@ -16,6 +16,9 @@ struct CharacterData
     int32_t  level;
     int32_t  job;
     int32_t  camp;
+    int32_t  mapid;
+    int32_t  x;
+    int32_t  y;
     // ... other fields, total size 0xA8
 };
 

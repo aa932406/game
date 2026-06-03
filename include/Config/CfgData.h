@@ -2274,6 +2274,7 @@ public:
     int32_t getServerDiffDay(SERVER_TYPE nType);
     void updateServerStartTime(int32_t kaiFuTime);
     int32_t getServerType() { return m_serverType; }
+    int32_t getDebug() const { return m_debug; }
     
     // Init 方法（声明部分）
     void InitGroupIconTable();
