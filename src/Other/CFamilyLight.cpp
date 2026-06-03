@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CFamilyLight.h"
 #include "Answer.h"
 #include "GameService.h"

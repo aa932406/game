@@ -15,6 +15,11 @@ enum class PackType : uint8_t
 class NetPacket
 {
 public:
+    int32_t m_size;
+    uint32_t m_wOffset;
+    uint16_t m_proc;
+    int32_t m_refCount;
+
     void writeInt32(int32_t value);
     void writeInt8(int8_t value);
     void writeInt64(int64_t value);

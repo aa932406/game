@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/MapManager.h"
 
 #include <cstring>

@@ -1,3 +1,4 @@
+#include "common.h"
 ﻿#include "Other/CVplan.h"
 
 CVplan::CVplan()

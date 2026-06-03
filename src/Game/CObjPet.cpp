@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/CObjPet.h"
 
 #include <cstring>

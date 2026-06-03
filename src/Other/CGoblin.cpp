@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CGoblin.h"
 #include "GameService.h"
 #include "Player.h"

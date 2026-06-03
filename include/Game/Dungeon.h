@@ -210,6 +210,7 @@ public:
     int32_t getDungeonGroupId() const { return m_cfgDungeon.group_id; }
     int32_t GetDurationTime() const { return m_cfgDungeon.duration + m_nAddonTime; }
     DungeonState getState() const { return m_state; }
+    CfgDungeon* GetCfgDungeon() { return &m_cfgDungeon; }
 
 private:
     CfgDungeon m_cfgDungeon;              // 副本配置

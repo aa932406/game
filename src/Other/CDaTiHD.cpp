@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CDaTiHD.h"
 #include "Answer.h"
 #include "GameService.h"

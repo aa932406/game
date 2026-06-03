@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CTianLing.h"
 #include "Game/Player.h"
 #include "GameService.h"

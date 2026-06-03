@@ -338,6 +338,7 @@ public:
     static void SendIconState(Player* player, const ShowIcon* stu);
 
     // 腾讯信息
+    class CExtCharTencent* GetCharTencent() { return nullptr; }
     static void InitTencentInfo(Player* player, TencentInfo* info) { (void)player; (void)info; }
 
     // 初始化与重连
@@ -521,6 +522,7 @@ public:
     void SendJingLiValue();
     void ResetJingLi();
     int32_t GetChatLevel();
+    int32_t GetGMLevel() { return 0; }
     void LogProc(int32_t procId);
     void LogNpc(int32_t NpcId, int32_t Opway, int32_t OtherNpcId);
     

@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CFestivalDoubleEleven.h"
 
 #include <cstring>

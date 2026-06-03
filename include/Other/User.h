@@ -16,6 +16,7 @@ public:
     void GetTencentInfo(TencentInfo& retstr);
 
     int64_t getUid() const { return m_uid; }
+    int32_t getCid() const { return m_cid; }
     int32_t getSid() const { return m_sid; }
     void setCid(int32_t cid) { m_cid = cid; }
     void setPlayer(Player* player) { m_player = player; }

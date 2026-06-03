@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CWorldBoss.h"
 
 #include <cstring>

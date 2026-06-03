@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/FamilyManager.h"
 
 #include <cstring>

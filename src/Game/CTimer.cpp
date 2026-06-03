@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/CTimer.h"
 
 #include <cstring>

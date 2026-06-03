@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/Unit.h"
 #include "Game/Map.h"
 #include "Game/CTimer.h"

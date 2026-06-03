@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CKunExt.h"
 #include "GameService.h"
 #include "Player.h"

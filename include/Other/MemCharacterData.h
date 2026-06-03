@@ -17,6 +17,9 @@ struct CharacterData
     int32_t  job;
     int32_t  sex;
     int32_t  hp;
+    int32_t  mp;
+    int32_t  kun_li;
+    int32_t  head;
     int32_t  camp;
     int32_t  mapid;
     int32_t  x;

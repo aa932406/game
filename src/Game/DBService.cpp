@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/DBService.h"
 #include "Game/GameService.h"
 #include "Game/CActivityManager.h"

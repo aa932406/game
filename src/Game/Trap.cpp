@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Game/Trap.h"
 
 #include <cstring>

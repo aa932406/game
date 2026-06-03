@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/ChouJiang.h"
 #include "Other/ChouJiangTable.h"
 #include "Other/ChouJiangData.h"

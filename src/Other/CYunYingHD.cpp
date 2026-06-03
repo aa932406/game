@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CYunYingHD.h"
 
 #include <cstring>

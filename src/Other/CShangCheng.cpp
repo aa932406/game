@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CShangCheng.h"
 #include "Game/Player.h"
 #include "GameService.h"

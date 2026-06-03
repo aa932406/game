@@ -1,3 +1,4 @@
+#include "common.h"
 #include "Other/CTrade.h"
 
 #include "Character/CExtCharBag.h"
