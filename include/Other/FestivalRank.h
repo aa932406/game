@@ -26,7 +26,9 @@ public:
     std::string strDB;
     int32_t nCharId;
     std::string strName;
+    char szName[64];
     int32_t nScore;
+    int32_t nValue;
     int32_t nTime;
     int8_t bChange;
 };

@@ -70,6 +70,10 @@ public:
     static char* getBuffer(NetPacket* p) { (void)p; return nullptr; }
     static void write(NetPacket* p, const char* buf, uint32_t len) { (void)p; (void)buf; (void)len; }
     static bool rightShift(NetPacket* p, uint32_t n) { return p ? p->rightShift(n) : false; }
+
+    static NetPacket* allocPacket(int32_t a, uint16_t b, int32_t c, int32_t d) { (void)a; (void)b; (void)c; (void)d; return new NetPacket(); }
+    static void writeString(NetPacket* p, const std::string* v) { if (p && v) { p->writeUTF8(*v); } }
+    static std::string readString(NetPacket* p) { std::string out; if (p) p->readUTF8(out); return out; }
 };
 
 } // namespace Answer

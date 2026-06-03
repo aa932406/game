@@ -13,6 +13,13 @@ public:
     void parse(const std::string* filename) { (void)filename; }
     std::string getStrValue(const std::string& key) { (void)key; return ""; }
     std::string getStrValue(const std::string* section, const std::string* key) { (void)section; (void)key; return ""; }
+
+    static std::string GetString(Inifile* ini, const std::string& section, const std::string& key, const std::string& defaultVal) {
+        (void)ini; (void)section; (void)key; return defaultVal;
+    }
+    static std::string GetString(Inifile* ini, const char* section, const char* key, const char* defaultVal) {
+        (void)ini; (void)section; (void)key; return defaultVal ? std::string(defaultVal) : std::string();
+    }
 };
 
 } // namespace Answer
