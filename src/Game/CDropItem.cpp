@@ -4,263 +4,284 @@
 #include "Game/Dungeon.h"
 #include "Game/Map.h"
 #include "Other/CEquipManager.h"
-#include "Other/CExtCurrency.h"
-#include "Other/CExtCharBag.h"
 #include "Other/CItemHelper.h"
 #include "Other/CXinMo.h"
-#include "Common/CurrencyType.h"
+#include "Character/CExtCharBag.h"
+#include "Answer/NetPacket.h"
 #include "Answer/Singleton.h"
+#include "Character/CExtCurrency.h"
+
+// CExtCurrency.h defines CURRENCY_* macros that conflict with CURRENCY_TYPE enum
+// from CommonTypes.h (included via CDropItem.h -> StaticObj.h -> CommonTypes.h).
+// Undefine them so CURRENCY_TYPE::CURRENCY_CASH etc. can be used safely in the code below.
+#undef CURRENCY_MONEY
+#undef CURRENCY_BIND_MONEY
+#undef CURRENCY_GOLD
+#undef CURRENCY_BIND_GOLD
+#undef CURRENCY_HONOR
+#undef CURRENCY_VIGOUR
+#undef CURRENCY_CONTRIBUTION
+#undef CURRENCY_AC_SOCRE
+#undef CURRENCY_BOSS_SCORE
+#undef CURRENCY_CASH
+#undef CURRENCY_MAX
+
+// CURRENCY_TYPE is defined in Common/CommonTypes.h (included via CDropItem.h)
+// CURRENCY_CHANGE_REASON is defined in Common/CommonTypes.h (with GCR/MCR_GET_DROP_ITEM)
 
 #include <cstring>
 #include <algorithm>
 
 CDropItem::CDropItem()
+    : StaticObj(EntityType::ET_DROPITEM)
+    , m_autoPick(false)
+    , m_bPicked(false)
+    , m_connid(0)
+    , m_droperType(0)
+    , m_endTick(0)
+    , m_freeTick(0)
+    , m_mid(0)
+    , m_owner(0)
+    , m_showTick(0)
+    , m_teamId(0)
 {
-    StaticObj::StaticObj(this, EntityType::ET_DROPITEM);
-    std::string::string(&this->m_name);
 }
 
 CDropItem::~CDropItem()
 {
-    std::string::~string(&this->m_name);
-    StaticObj::~StaticObj(this);
 }
 
 void CDropItem::reset()
 {
-    StaticObj::reset(this);
-    bzero(&this->m_item, 0x28u);
-    this->m_connid = 0;
-    this->m_owner = 0;
-    this->m_teamId = 0;
-    this->m_showTick = 0;
-    this->m_freeTick = 0;
-    this->m_endTick = 0;
+    StaticObj::reset();
+    memset(&m_item, 0, sizeof(m_item));
+    m_connid = 0;
+    m_owner = 0;
+    m_teamId = 0;
+    m_showTick = 0;
+    m_freeTick = 0;
+    m_endTick = 0;
 }
 
 bool CDropItem::appendInfo(Answer::NetPacket *packet)
 {
-    int8_t Type = this->m_type;
-    Answer::NetPacket::writeInt8(packet, Type);
-    Answer::NetPacket::writeInt64(packet, this->m_id);
-    Answer::NetPacket::writeInt32(packet, this->m_item.nId);
-    Answer::NetPacket::writeInt8(packet, this->m_item.nClass);
-    Answer::NetPacket::writeInt32(packet, this->m_item.nCount);
-    Answer::NetPacket::writeInt64(packet, this->m_pos.toUint64());
-    Answer::NetPacket::writeInt32(packet, this->m_teamId);
-    Answer::NetPacket::writeInt8(packet, this->m_item.nCostType);
+    if (!packet) return false;
+
+    int8_t type = static_cast<int8_t>(m_entityType);
+    packet->writeInt8(type);
+    packet->writeInt64(m_mid);
+    packet->writeInt32(m_item.nId);
+    packet->writeInt8(m_item.nClass);
+    packet->writeInt32(m_item.nCount);
+    packet->writeInt64((static_cast<uint64_t>(static_cast<uint32_t>(m_currentPos.x)) << 32) | static_cast<uint64_t>(static_cast<uint32_t>(m_currentPos.y)));
+    packet->writeInt32(m_teamId);
+    packet->writeInt8(m_item.nCostType);
     return true;
 }
 
 bool CDropItem::checkOwner(CharId_t nCharId, int32_t nTeamId)
 {
-    if ( !this->m_pMap )
-        return 0;
-    if ( Map::getTick(this->m_pMap) >= this->m_freeTick )
-        return 1;
-    if ( !this->m_owner )
-        return 1;
-    if ( this->m_owner == nCharId )
-        return 1;
-    if ( this->m_teamId && this->m_teamId == nTeamId )
-        return 1;
-    return 0;
+    if (!m_pMap)
+        return false;
+    if (m_pMap->getTick() >= m_freeTick)
+        return true;
+    if (!m_owner)
+        return true;
+    if (m_owner == nCharId)
+        return true;
+    if (m_teamId && m_teamId == nTeamId)
+        return true;
+    return false;
 }
 
-int32_t CDropItem::pick(Player *const player)
+int32_t CDropItem::pick(Player *player)
 {
-    if ( !this->m_pMap || StaticObj::getMap(player) != this->m_pMap )
+    if (!m_pMap || !player || player->getMap() != m_pMap)
         return 10002;
-    if ( this->m_bPicked )
-        return 10002;
-
-    int32_t TeamId = Player::GetTeamId(player);
-    CharId_t Cid = Player::getCid(player);
-    if ( !CDropItem::checkOwner(this, Cid, TeamId) )
+    if (m_bPicked)
         return 10002;
 
-    // 检查消耗
-    int costType = this->m_item.costType;
-    switch ( costType )
+    int32_t teamId = Player::GetTeamId(player);
+    CharId_t cid = Player::getCid(player);
+    if (!checkOwner(cid, teamId))
+        return 10002;
+
+    // Check cost affordability
+    switch (m_item.nCostType)
     {
-        case 2:
-            if ( Player::GetCurrency(player, CURRENCY_TYPE::CURRENCY_CASH) < this->m_item.costValue )
+        case 2: // Cash (yuanbao)
+            if (Player::GetCurrency(player, CURRENCY_TYPE::CURRENCY_CASH) < m_item.costValue)
                 return 10002;
             break;
-        case 3:
-            if ( Player::GetCurrency(player, CURRENCY_TYPE::CURRENCY_GOLD) < this->m_item.costValue )
+        case 3: // Gold
+            if (Player::GetCurrency(player, CURRENCY_TYPE::CURRENCY_GOLD) < m_item.costValue)
                 return 10002;
             break;
-        case 1:
+        case 1: // Money (copper coins)
         {
-            CExtCurrency *Currency = Player::GetCurrency(player);
-            if ( CExtCurrency::GetMoneyBindAndNoBind(Currency) < this->m_item.costValue )
+            CExtCurrency *currency = Player::GetCurrency(player);
+            if (!currency || CExtCurrency::GetMoneyBindAndNoBind(currency) < m_item.costValue)
                 return 10002;
             break;
         }
     }
 
-    // 构建添加的物品
+    // Build item to add to bag
     MemChrBag addItem;
     memset(&addItem, 0, sizeof(addItem));
-    addItem.itemId = this->m_item.itemId;
-    addItem.itemClass = this->m_item.itemClass;
-    addItem.itemCount = this->m_item.itemCount;
-    addItem.bind = this->m_item.bindType;
-    addItem.endTime = this->m_item.endTime;
-    addItem.srcId = this->m_item.srcId;
+    addItem.itemId = m_item.nId;
+    addItem.itemClass = m_item.nClass;
+    addItem.itemCount = m_item.nCount;
+    addItem.bind = m_item.bindType;
+    addItem.endTime = m_item.endTime;
+    addItem.srcId = m_item.srcId;
 
-    if ( this->m_item.itemCount > 0 )
+    if (m_item.nCount > 0)
     {
-        if ( this->m_item.itemClass == 2 )
+        if (m_item.nClass == 2)
         {
-            // 处理装备
-            if ( Map::IsXinMoMap(this->m_pMap) && CItemHelper::CanEnterXinMoBag(addItem.itemId, addItem.itemClass) )
+            // Handle equipment: check bag space first
+            if (m_pMap->IsXinMoMap() && CItemHelper::CanEnterXinMoBag(addItem.itemId, addItem.itemClass))
             {
                 CXinMo *pXinMo = Player::GetCXinMo(player);
-                if ( CXinMo::GetFreeSlotCount(pXinMo) <= 0 )
+                if (!pXinMo || pXinMo->GetFreeSlotCount() <= 0)
                     return 10016;
             }
             else
             {
-                CExtCharBag *Bag = Player::GetBag(player);
-                if ( CExtCharBag::GetFreeSlotCount(Bag) <= 0 )
+                CExtCharBag *bag = Player::GetBag(player);
+                if (!bag || bag->GetFreeSlotCount() <= 0)
                     return 10016;
             }
 
-            // 装备来源处理
-            if ( this->m_item.srcId > 0 )
+            // Equipment source processing
+            CEquipManager *pEquipMgr = Answer::Singleton<CEquipManager>::instance();
+            if (m_item.srcId > 0)
             {
+                // Try to fetch existing equipment by source ID
                 MemEquip pEquip;
-                CEquipManager *pEquipMgr = Answer::Singleton<CEquipManager>::instance();
-                CEquipManager::GetMemEquip(&pEquip, pEquipMgr, this->m_item.srcId);
-                if ( pEquip.id == this->m_item.srcId )
+                CEquipManager::GetMemEquip(&pEquip, pEquipMgr, m_item.srcId);
+                if (pEquip.id == m_item.srcId)
                 {
-                    if ( pEquip.owner != Player::getCid(player) )
+                    if (pEquip.owner != cid)
                     {
-                        pEquip.owner = Player::getCid(player);
-                        if ( Map::IsCrossMap(this->m_pMap) )
+                        pEquip.owner = cid;
+                        if (m_pMap->IsCrossMap())
                         {
+                            // Cross-server: create new equip record
                             MemEquip equip;
-                            int8_t ConnId = Player::getConnId(player);
-                            CEquipManager::CreateMemEquip(&equip, pEquipMgr, ConnId, 1,
-                                this->m_item.itemId, Player::getSid(player), Player::getCid(player),
-                                &pEquip.name, pEquip.MapId, pEquip.Mid, pEquip.time, pEquip.Lucky, 0);
-                            if ( equip.id > 0 )
+                            int8_t connId = Player::getConnId(player);
+                            pEquipMgr->CreateMemEquip(&equip, connId, 1,
+                                m_item.nId, Player::getSid(player), cid,
+                                &pEquip.name, pEquip.MapId, pEquip.Mid, pEquip.time, 0, 0);
+                            if (equip.id > 0)
                             {
                                 equip.star = pEquip.star;
                                 addItem.srcId = equip.id;
-                                CEquipManager::UpdateMemEquip(pEquipMgr, ConnId, &equip, 1);
+                                CEquipManager::UpdateMemEquip(pEquipMgr, connId, &equip, 1);
                                 CEquipManager::SendPlayerEquipInfo(pEquipMgr, player, &equip);
                             }
-                            MemEquip::~MemEquip(&equip);
                         }
                         else
                         {
-                            int8_t ConnId = Player::getConnId(player);
-                            CEquipManager::UpdateMemEquip(pEquipMgr, ConnId, &pEquip, 1);
+                            int8_t connId = Player::getConnId(player);
+                            CEquipManager::UpdateMemEquip(pEquipMgr, connId, &pEquip, 1);
                             CEquipManager::SendPlayerEquipInfo(pEquipMgr, player, &pEquip);
                         }
                     }
                 }
-                MemEquip::~MemEquip(&pEquip);
             }
             else
             {
-                // 创建新装备
+                // Create new equipment
                 MemEquip pEquip;
-                int8_t ConnId = Player::getConnId(player);
-                CEquipManager *pEquipMgr = Answer::Singleton<CEquipManager>::instance();
-                CEquipManager::CreateMemEquip(&pEquip, pEquipMgr, ConnId, 1,
-                    this->m_item.itemId, Player::getSid(player), Player::getCid(player),
-                    &this->m_name, StaticObj::getMapId(player), this->m_mid, 0, 0, 0);
-                if ( pEquip.id > 0 )
+                int8_t connId = Player::getConnId(player);
+                pEquipMgr->CreateMemEquip(&pEquip, connId, 1,
+                    m_item.nId, Player::getSid(player), cid,
+                    &m_name, getMapId(), m_mid, 0, 0, 0);
+                if (pEquip.id > 0)
                 {
                     CEquipManager::SendPlayerEquipInfo(pEquipMgr, player, &pEquip);
                     addItem.srcId = pEquip.id;
                 }
-                MemEquip::~MemEquip(&pEquip);
             }
         }
 
-        // 加入背包/心魔背包
+        // Add item to bag or xinmo bag
         bool bAdded = false;
-        if ( Map::IsXinMoMap(this->m_pMap) && CItemHelper::CanEnterXinMoBag(addItem.itemId, addItem.itemClass) )
+        if (m_pMap->IsXinMoMap() && CItemHelper::CanEnterXinMoBag(addItem.itemId, addItem.itemClass))
         {
-            std::vector<MemChrBag> Items;
-            std::vector<MemChrBag>::vector(&Items);
-            std::vector<MemChrBag>::push_back(&Items, &addItem);
+            std::vector<MemChrBag> items;
+            items.push_back(addItem);
             CXinMo *pXinMo = Player::GetCXinMo(player);
-            bAdded = CXinMo::AddItem(pXinMo, &Items);
-            std::vector<MemChrBag>::~vector(&Items);
-            if ( !bAdded )
+            bAdded = pXinMo && pXinMo->AddItem(&items);
+            if (!bAdded)
                 return 10016;
         }
         else
         {
-            CExtCharBag *Bag = Player::GetBag(player);
-            if ( !CExtCharBag::AddItem(Bag, &addItem, ITEM_CHANGE_REASON::ICR_PICK) )
+            CExtCharBag *bag = Player::GetBag(player);
+            if (!bag || !bag->AddItem(&addItem, ITEM_CHANGE_REASON::ICR_PICK))
                 return 10016;
         }
 
-        // 装备拾取公告
-        if ( addItem.itemClass == 2 )
+        // Equipment pick announcement for high-quality gear
+        if (addItem.itemClass == 2)
         {
-            int32_t Type = CItemHelper::GetItemType(addItem.itemId, 2);
-            if ( Type == 8 )
+            int32_t itemType = CItemHelper::GetItemType(addItem.itemId, 2);
+            if (itemType == 8)
             {
                 GameService *pGS = Answer::Singleton<GameService>::instance();
-                int8_t ConnId = Player::getConnId(player);
-                Answer::NetPacket *packet = GameService::popNetpacket(pGS, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
-                if ( packet )
+                int8_t connId = Player::getConnId(player);
+                Answer::NetPacket *packet = pGS->popNetpacket(connId, Answer::PackType::PACK_DISPATCH, 0x2CD6);
+                if (packet)
                 {
-                    Answer::NetPacket::writeInt32(packet, 413);
+                    packet->writeInt32(413);
                     std::string val;
-                    Player::getName((const Player *const)&val);
-                    Answer::NetPacket::writeUTF8(packet, &val);
-                    std::string::~string(&val);
-                    Answer::NetPacket::writeInt64(packet, Player::getCid(player));
-                    uint32_t WOffset = Answer::NetPacket::getWOffset(packet);
-                    Answer::NetPacket::setSize(packet, WOffset);
-                    GameService::worldBroadcast(pGS, ConnId, packet);
+                    Player::getName(player, &val);
+                    packet->writeUTF8(val);
+                    packet->writeInt64(cid);
+                    uint32_t wOffset = packet->getWOffset();
+                    packet->setSize(wOffset);
+                    pGS->worldBroadcast(connId, packet);
                 }
             }
         }
 
-        // 副本拾取回调
-        if ( this->m_pMap && (*((unsigned __int8 (__fastcall **)(Map *))this->m_pMap->_vptr_Map + 18))(this->m_pMap) )
+        // Notify dungeon if this is a dungeon map
+        Dungeon *pDungeon = dynamic_cast<Dungeon*>(m_pMap);
+        if (pDungeon)
         {
-            Dungeon *pDungeon = static_cast<Dungeon*>(this->m_pMap);
-            if ( pDungeon )
-                Dungeon::OnPickItem(pDungeon, player, &addItem);
+            pDungeon->OnPickItem(player, &addItem);
         }
     }
 
-    // 扣除消耗
-    switch ( this->m_item.costType )
+    // Deduct cost
+    switch (m_item.nCostType)
     {
         case 2:
-            Player::DecCurrency(player, CURRENCY_TYPE::CURRENCY_CASH, this->m_item.costValue,
-                CURRENCY_CHANGE_REASON::GCR_GET_DROP_ITEM, this->getHandle());
+            Player::DecCurrency(player, CURRENCY_TYPE::CURRENCY_CASH, m_item.costValue,
+                CURRENCY_CHANGE_REASON::GCR_GET_DROP_ITEM, getMapId());
             break;
         case 3:
-            Player::DecCurrency(player, CURRENCY_TYPE::CURRENCY_GOLD, this->m_item.costValue,
-                CURRENCY_CHANGE_REASON::GCR_GET_DROP_ITEM, this->getHandle());
+            Player::DecCurrency(player, CURRENCY_TYPE::CURRENCY_GOLD, m_item.costValue,
+                CURRENCY_CHANGE_REASON::GCR_GET_DROP_ITEM, getMapId());
             break;
         case 1:
         {
-            CExtCurrency *Currency = Player::GetCurrency(player);
-            CExtCurrency::DecMoneyAndNoBind(Currency, this->m_item.costValue,
-                CURRENCY_CHANGE_REASON::MCR_GET_DROP_ITEM, this->getHandle());
+            CExtCurrency *currency = Player::GetCurrency(player);
+            if (currency)
+                currency->DecMoneyAndNoBind(m_item.costValue,
+                    CURRENCY_CHANGE_REASON::MCR_GET_DROP_ITEM, getMapId());
             break;
         }
     }
 
-    this->m_bPicked = 1;
+    m_bPicked = true;
     return 0;
 }
 
 bool CDropItem::checkEnd()
 {
-    return !this->m_pMap || Map::getTick(this->m_pMap) > this->m_endTick || this->m_item.nId == 0;
+    return !m_pMap || m_pMap->getTick() > m_endTick || m_item.nId == 0;
 }

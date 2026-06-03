@@ -123,6 +123,8 @@ enum class CURRENCY_CHANGE_REASON
     MCR_CHR_SHOP_COST,                // 角色商店消耗
     MCR_NPC_SELL,                     // NPC出售
     GCR_BUY_LITTLE_HELPER,            // 购买小助手
+    GCR_GET_DROP_ITEM,                // 拾取掉落（金币/元宝消耗）
+    MCR_GET_DROP_ITEM,                // 拾取掉落（铜钱消耗）
 };
 #endif // CURRENCY_CHANGE_REASON_DEFINED
 
@@ -239,29 +241,7 @@ enum class PlayerInfoIndex
     PII_LEVEL = 0
 };
 
-// 物品变化原因
-#ifndef ITEM_CHANGE_REASON_DEFINED
-#define ITEM_CHANGE_REASON_DEFINED
-enum class ITEM_CHANGE_REASON
-{
-    ICR_NONE = 0,
-    IDCR_DUNGEON_RANDOM,              // 副本随机宝库
-    ICR_DUNGEON_REWARD,               // 副本奖励
-    ICR_DUNGEON_GUESS_SIZE,           // 副本猜大小
-    ICR_WORLD_BOSS_KILL_REWARD = 700,
-    IDCR_FESTIVAL_ACT_2,               // 节日活动兑换
-    IDCR_DA_TI_ACT,                    // 答题活动
-    ICR_SEARCH_BACK,                   // 找回
-    IDCR_DOG_TITLE_GET,                // 获取狗称号
-    ICR_SEVEN_LOGIN_REWARD,            // 七日登录奖励
-    ICR_MAINTAIN_COMPENSATE_REWARD,    // 维护补偿奖励
-    ICR_ONLINE_REWAR,                  // 在线奖励
-    ICR_SIGN_REWARD,                  // 签到奖励
-    ICR_WU_HUN_DRESS = 800,
-    ICR_WU_HUN_UNDRESS = 801,
-    ICR_WU_HUN_CREATE = 802,
-};
-#endif
+// 物品变化原因 - 定义在 Character/CExtCharBag.h
 
 // ============================================================
 // 结构体定义 (仅定义 CfgData.h 中未定义的类型)

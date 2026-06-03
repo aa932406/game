@@ -299,6 +299,7 @@ public:
     static CExtCurrency* GetCurrency(Player* player) { return player ? player->GetCurrency() : nullptr; }
     static void SetNeedSyncAround(Player* player) { if (player) player->SetNeedSyncAround(); }
     static void setSyncToTeamFlag(Player* player) { (void)player; }
+    static int32_t GetTeamId(Player* player) { (void)player; return 0; }
     static void RecalcAttr(Player* player) { if (player) player->RecalcAttr(); }
     static void* GetPlayerFunctionOpen(Player* player) { (void)player; return nullptr; }
     static void sendBuyItemInfo(Player* player, int32_t itemId, int8_t itemClass, int32_t count, int32_t costValue, int32_t index) {}
