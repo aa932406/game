@@ -203,6 +203,7 @@ public:
     // 连接信息
     int8_t getConnId() const { return m_connid; }
     int16_t getGateIndex() const { return m_cgindex; }
+    void setGateIndex(int16_t index) { m_cgindex = index; }
     
     // 静态包装方法 (用于C风格静态调用)
     static int8_t getConnId(Player* player) { return player ? player->m_connid : -1; }
@@ -275,6 +276,7 @@ public:
     void saveToDB(int32_t reason, int32_t param, int32_t logout_time);
     void SaveDBData(PlayerDBData* dbData);
     void init(PlayerDBData* dbData);
+    bool reconnect();
     bool refresh();
     void reset();
     
@@ -325,6 +327,10 @@ public:
 
     // 腾讯信息
     static void InitTencentInfo(Player* player, TencentInfo* info) { (void)player; (void)info; }
+
+    // 初始化与重连
+    static void init(Player* player, PlayerDBData* dbData) { if (player) player->init(dbData); }
+    static bool reconnect(Player* player) { return player ? player->reconnect() : false; }
 
     // 网络包处理
     void initNetPacketHandlers();

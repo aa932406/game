@@ -129,6 +129,7 @@ public:
     bool IsXinMoCun();
     bool IsXinMoMap();
     int32_t GetMapId() const { return 0; }  // stub, TODO: implement with m_cfgmap->id
+    int32_t GetRunnerId() const { return 0; }  // stub
     Position GetEnterPos();
     void updateMonsters();
     void updateNpcs();

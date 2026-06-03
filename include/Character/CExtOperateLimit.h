@@ -35,6 +35,7 @@ public:
     void Reset(int32_t LimitId);
     void ResetRange(int32_t MinId, int32_t MaxId, int32_t DiffDay);
     int32_t GetLimitCount(int32_t LimitId);
+    static int32_t GetLimitCount(CExtOperateLimit* self, int32_t LimitId) { return self ? self->GetLimitCount(LimitId) : 0; }
     bool CheckIsLimitedForever(int32_t LimitId);
     
     void NotifyLimitInfo();

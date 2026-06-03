@@ -15,9 +15,12 @@ public:
     void SetTencentInfo(const TencentInfo* info);
     void GetTencentInfo(TencentInfo& retstr);
 
+    void setPlayer(Player* player) { m_player = player; }
+
     // 静态包装
     static Player* getPlayer(User* user) { return user ? user->m_player : nullptr; }
     static void GetTencentInfo(TencentInfo* retstr, User* user) { if (user && retstr) user->GetTencentInfo(*retstr); }
+    static void setPlayer(User* user, Player* player) { if (user) user->setPlayer(player); }
 
 private:
     int64_t m_uid;
