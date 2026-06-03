@@ -31,6 +31,7 @@ public:
     Answer::NetPacket* popNetpacket(uint32_t size) { (void)size; return nullptr; }
 
     static void sendPacket(TcpClient* p, Answer::NetPacket* packet) { (void)p; (void)packet; }
+    static void sendPacket(void* p, Answer::NetPacket* packet) { (void)p; (void)packet; }
     void sendPacket(Answer::NetPacket* packet) { (void)packet; }
 
     static void getName(TcpClient* p, std::string* out) { if (out) *out = ""; }

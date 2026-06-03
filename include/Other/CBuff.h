@@ -1,1 +1,4 @@
-#ifndef _CBUFF_H_\n#define _CBUFF_H_\nclass CBuff {};\n#endif
+#ifndef _CBUFF_H_
+#define _CBUFF_H_
+class CBuff {};
+#endif

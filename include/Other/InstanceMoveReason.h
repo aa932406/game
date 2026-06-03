@@ -1,1 +1,6 @@
-#ifndef _INSTANCEMOVEREASON_H_\n#define _INSTANCEMOVEREASON_H_\nenum InstanceMoveReason {\n    REASON_DEFAULT = 0\n};\n#endif
+#ifndef _INSTANCEMOVEREASON_H_
+#define _INSTANCEMOVEREASON_H_
+enum InstanceMoveReason {
+    REASON_DEFAULT = 0
+};
+#endif

@@ -1,1 +1,10 @@
-#ifndef _CFGENERGY_H_\n#define _CFGENERGY_H_\n#include <cstdint>\nclass CfgEnergy {\npublic:\n    int32_t id;\n    int32_t maxEnergy;\n    int32_t recoverSpeed;\n};\n#endif
+#ifndef _CFGENERGY_H_
+#define _CFGENERGY_H_
+#include <cstdint>
+class CfgEnergy {
+public:
+    int32_t id;
+    int32_t maxEnergy;
+    int32_t recoverSpeed;
+};
+#endif

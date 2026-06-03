@@ -62,6 +62,9 @@ public:
   // 静态包装方法
   static int32_t getLine(GameService* gs) { return gs ? gs->m_line : 0; }
   static Answer::NetPacket* popNetpacket(GameService* gs, int8_t connid, Answer::PackType type, uint16_t proc) { return gs ? gs->popNetpacket(connid, type, proc) : nullptr; }
+  static void sendPacket(GameService* gs, int8_t connid, Answer::NetPacket* pkt) { if (gs) gs->sendPacket(connid, pkt); }
+  static void sendPacket(GameService* gs, int8_t& connid, Answer::NetPacket*& pkt) { if (gs) gs->sendPacket(connid, pkt); }
+  static void sendPacket(GameService* gs, int connid, Answer::NetPacket* pkt) { if (gs) gs->sendPacket(static_cast<int8_t>(connid), pkt); }
   static void sendPacketTo(GameService* gs, int8_t connid, int16_t index, Answer::NetPacket* pkt) { if (gs) gs->sendPacketTo(connid, index, pkt); }
   static int32_t replySuccess(GameService* gs, int8_t connid, int16_t index, uint16_t proc, int64_t addon) { return gs ? gs->replySuccess(connid, index, proc, addon) : -1; }
   static int32_t replyfailure(GameService* gs, int8_t connid, int16_t index, uint16_t proc, int32_t errcode, int64_t addon) { return gs ? gs->replyfailure(connid, index, proc, errcode, addon) : -1; }
