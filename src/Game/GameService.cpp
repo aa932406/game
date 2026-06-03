@@ -1555,7 +1555,7 @@ void GameService::onAddUser( ConnType *pConn, Answer::NetPacket *inPacket)
     {
       nIndex = getUserIndex(connid, cgindex);
       v3 = Answer::Singleton<CPoolManager>::instance();
-      user = v3->pop<Player>();
+      user = v3->Pop<User>();
       if ( user )
       {
         user->init(uid, sid);
