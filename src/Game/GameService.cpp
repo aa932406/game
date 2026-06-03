@@ -843,7 +843,7 @@ void GameService::SendOpenBetaIcon()
         break;
       second = it->second;
       v2 = Answer::Singleton<COpenBeta>::instance();
-      COpenBeta::getIconState(&stu, v2, second);
+      v2->getIconState(stu, second);
       v3 = it.operator->();
       Player::SendIconState(v3->second, &stu);
     }
@@ -920,7 +920,7 @@ void GameService::broadcast( Answer::NetPacket *inPacket, int8_t connid, const I
   size_t nsize;
   int32_t v4;
   uint16_t Proc;
-  uint8_t Type;
+  Answer::PackType Type;
   int32_t Size;
 
   if ( inPacket )
@@ -1114,7 +1114,7 @@ void GameService::worldBroadcast(int8_t connid, Answer::NetPacket *inPacket)
   int32_t oldSize;
   int32_t v3;
   uint16_t Proc;
-  uint8_t Type;
+  Answer::PackType Type;
   int32_t Size;
 
   if ( inPacket )
@@ -1162,7 +1162,7 @@ void GameService::worldBroadcast(Answer::NetPacket *inPacket)
   Answer::NetPacket *packet;
   int32_t Size;
   int32_t v3;
-  uint8_t Type;
+  Answer::PackType Type;
   uint16_t Proc;
 
   if ( inPacket )
@@ -1364,6 +1364,7 @@ bool GameService::SendChatValidate( Player *Owner, int32_t Channel, Answer::NetP
   std::string __rhs;
   Answer::MD5 v35;
   Answer::NetPacket *packet;
+  int32_t v4;
   if ( !inPacket || !Owner )
     return 0;
   Answer::MutexGuard lock(&this->m_playerLock);
@@ -1557,7 +1558,7 @@ void GameService::onAddUser( ConnType *pConn, Answer::NetPacket *inPacket)
       user = v3->pop<Player>();
       if ( user )
       {
-        User::init(user, uid, sid);
+        user->init(uid, sid);
         this->m_users[nIndex] = user;
       }
     }
@@ -1584,7 +1585,7 @@ void GameService::qqToPlayer( ConnType *pConn, Answer::NetPacket *inPacket)
     nIndex = getUserIndex(connid, cgindex);
     user = this->m_users[cgindex];
     if ( user )
-      User::SetTencentInfo(user, &info);
+      user->SetTencentInfo(&info);
     /* MutexGuard destroyed */
     /* info auto-destructed */
   }
@@ -1626,9 +1627,9 @@ void GameService::onRemoveUser( ConnType *pConn, Answer::NetPacket *inPacket)
         {
 // label
           this->m_users[nIndex] = 0;
-          User::reset(user);
+          user->reset();
           v10 = Answer::Singleton<CPoolManager>::instance();
-          v10->push(user);
+          v10->Push(user);
           // goto removed
         }
         inPacket->readInt64();
@@ -1892,9 +1893,9 @@ void GameService::sendSocialAddPlayer(Player *player)
       packet->writeInt32(GateIndex);
       Cid = Player::getCid(player);
       packet->writeInt64(Cid);
-      Uid = player->getUid();
+      int64_t Uid = Player::getCid(player);
       packet->writeInt64(Uid);
-      Sid = player->getSid();
+      int32_t Sid = Player::getSid(player);
       packet->writeInt32(Sid);
       Answer::NetPacket::writeInt32(packet, this->m_line);
       GMLevel = Player::GetGMLevel(player);
@@ -2842,9 +2843,9 @@ void GameService::KickUser(CharId_t cid, int32_t opWay)
       packet = popNetpacket(ConnId, Answer::PackType::PACK_PROC, 0x4E2Au);
       if ( packet )
       {
-        Uid = player->getUid();
+        int64_t Uid = Player::getCid(player);
         packet->writeInt64(Uid);
-        Sid = player->getSid();
+        int32_t Sid = Player::getSid(player);
         packet->writeInt32(Sid);
         packet->writeInt32(opWay);
   uint32_t wOffset = 0;
