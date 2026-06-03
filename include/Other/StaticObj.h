@@ -47,6 +47,9 @@ public:
     Map* getMap() const { return m_pMap; }
     static Map* getMap(StaticObj* obj) { return obj ? obj->getMap() : nullptr; }
 
+public:
+    void** _vptr_Entity;        // vtable pointer (decompiler stub)
+
 protected:
     EntityType m_entityType;    // 实体类型
     Position   m_currentPos;    // 当前像素位置

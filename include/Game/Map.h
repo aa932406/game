@@ -40,6 +40,9 @@ public:
     Map();
     ~Map();
 
+public:
+    void** _vptr_Map;        // vtable pointer (decompiler stub)
+
     Position pixelToTile(int32_t px, int32_t py);
     Position tileToPixel(int32_t tx, int32_t ty);
     Direction pixelDirection(int32_t cx_0, int32_t cy, int32_t tx, int32_t ty);

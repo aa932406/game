@@ -23,6 +23,8 @@ class Position;
 class Trailer
 {
 public:
+    void** _vptr_Entity;        // vtable pointer (decompiler stub)
+
     Trailer();
     ~Trailer();
 

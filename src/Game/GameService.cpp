@@ -1729,13 +1729,9 @@ void GameService::onGateDisconnect( ConnType *pConn, Answer::NetPacket *inPacket
 
   if ( pConn && inPacket )
   {
-    strncpy(filename, "./log/GameConnErr.txt");
-    memset(&filename[22], 0, 28);
-    v3 = std::operator|(std::_Ios_Openmode::_S_out, std::_Ios_Openmode::_S_trunc);
-    std::ofstream::basic_ofstream(v7, filename, (uint32_t)v3);
-    v4 = Answer::DayTime::now();
-    v5 = std::ostream::operator<<(v7, v4);
-    std::ostream::operator<<(v5, &std::endl<char,std::char_traits<char>>);
+    std::ofstream v7("./log/GameConnErr.txt", std::ios::out | std::ios::trunc);
+    int32_t v4 = Answer::DayTime::now();
+    v7 << v4 << std::endl;
     packet = popNetpacket(Answer::PackType::PACK_PROC, 0x4E2Eu);
     if ( packet )
     {
@@ -2956,7 +2952,8 @@ void GameService::onCheckTeShuTitle(CharId_t nCharId, int8_t nType, int32_t nPar
   {
     v4 = Answer::Singleton<Answer::DBPool>::instance();
     Answer::MySqlDBGuard db(v4);
-    Time = Answer::DayTime::now() + 86340;
+    int32_t Time = Answer::DayTime::now() + 86340;
+    char szSQL[4096];
     memset(szSQL, 0, sizeof(szSQL));
     bzero(szSQL, 0x1000u);
     snprintf(
@@ -2975,7 +2972,7 @@ void GameService::onCheckTeShuTitle(CharId_t nCharId, int8_t nType, int32_t nPar
     player = iter->second;
     if ( player )
     {
-      Now = Unit::getNow(player);
+      int32_t Now = Unit::getNow(player);
       Player::updateRecord(player, nParam + 31301, Now + 86340);
       CharTitle = player->GetCharTitle();
       CExtCharTitle::CheckAddTitle(CharTitle, nType, nParam);
