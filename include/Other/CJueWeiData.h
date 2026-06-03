@@ -18,7 +18,7 @@ public:
     void PackageData(Answer::NetPacket *packet);
     void UnPackageData(Answer::NetPacket *inPacket, int64_t nCid);
 
-private:
+public:
     int8_t nJueWei;
 };
 

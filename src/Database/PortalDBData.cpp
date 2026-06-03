@@ -1,4 +1,7 @@
 #include "Database/PortalDBData.h"
+#include "Answer/MySqlQuery.h"
+#include "Answer/MySqlDBGuard.h"
+#include "Answer/NetPacket.h"
 
 PortalDBData::PortalDBData()
     : nPortalId(0)

@@ -8,6 +8,9 @@
 #include <set>
 #include <cstring>
 
+// Forward declaration for Character/* headers that use PlayerDBData* in interface
+class PlayerDBData;
+
 #include "Common/CommonTypes.h"
 #include "Character/CExtCharBag.h"
 #include "Character/CExtCharExchange.h"

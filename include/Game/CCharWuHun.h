@@ -7,6 +7,8 @@
 #include <list>
 #include <map>
 
+#include "Database/PlayerDBData.h"
+
 class Player;
 class Map;
 class Unit;

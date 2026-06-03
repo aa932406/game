@@ -10,6 +10,8 @@
 
 #include "Other/KillerInfo.h"
 
+namespace Answer { class NetPacket; }
+
 class WorldBossInfo {
 public:
     WorldBossInfo();

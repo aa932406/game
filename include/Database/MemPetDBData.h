@@ -8,7 +8,7 @@
 #include <set>
 #include <cstring>
 
-#include "Database/PlayerDBData.h"
+#include "Common/CommonTypes.h"
 
 class MemPetDBData : public IDataStruct {
 public:

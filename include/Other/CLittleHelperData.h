@@ -21,7 +21,7 @@ public:
     void SaveRewardState(std::string *p_String);
     void PackageData(Answer::NetPacket *packet);
 
-private:
+public:
     std::map<int32_t, ActLittleHelperInfo> m_ActLittleHelperInfoMap;
     int32_t m_LittleHelperId;
 };

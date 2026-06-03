@@ -8,7 +8,7 @@
 #include <set>
 #include <cstring>
 
-#include "Database/PlayerDBData.h"
+#include "Common/CommonTypes.h"
 #include "Character/CExtCharPortal.h"
 
 class PortalDBData : public IDataStruct {

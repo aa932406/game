@@ -8,8 +8,8 @@
 #include <set>
 #include <cstring>
 
-#include "Database/PlayerDBData.h"
 #include "Common/CommonTypes.h"
+#include "Other/MemChrBagData.h"
 
 class XinMoDBData : public IDataStruct {
 public:

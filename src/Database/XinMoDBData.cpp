@@ -3,6 +3,7 @@
 #include "Answer/MySqlQuery.h"
 #include "Answer/MySqlDBGuard.h"
 #include "Answer/NetPacket.h"
+#include "Answer/Logger.h"
 #include "Answer/StringUtility.h"
 
 XinMoDBData::XinMoDBData()
