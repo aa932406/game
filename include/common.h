@@ -81,7 +81,11 @@
 #include "Other/User.h"
 #include "Other/CVip.h"
 #include "Other/CHuoYueDu.h"
+#include "Other/CVplan.h"
+#include "Other/CXinMo.h"
 #include "Other/MemChrBag.h"
+#include "Activity/CActivity.h"
+#include "Answer/Inifile.h"
 #include "Database/PlayerDBData.h"
 
 // --- Network ---
