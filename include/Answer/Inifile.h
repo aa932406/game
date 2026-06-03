@@ -20,6 +20,10 @@ public:
     static std::string GetString(Inifile* ini, const char* section, const char* key, const char* defaultVal) {
         (void)ini; (void)section; (void)key; return defaultVal ? std::string(defaultVal) : std::string();
     }
+
+    static int32_t GetInt(Inifile* ini, const std::string& section, const std::string& key, int32_t defaultVal) {
+        (void)ini; (void)section; (void)key; return defaultVal;
+    }
 };
 
 } // namespace Answer

@@ -20,6 +20,8 @@ public:
     int64_t getInt64Value(const std::string& field, int64_t defaultValue) const;
     std::string getStringValue(const std::string& field, const std::string& defaultValue) const;
     float getFloatValue(const std::string& field, float defaultValue) const;
+
+    static int32_t getInt(MySqlQuery* q, const std::string& field, int32_t defaultValue) { return q ? q->getIntValue(field, defaultValue) : defaultValue; }
 };
 
 } // namespace Answer

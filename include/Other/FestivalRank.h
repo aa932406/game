@@ -29,6 +29,7 @@ public:
     char szName[64];
     int32_t nScore;
     int32_t nValue;
+    int32_t nRankType;
     int32_t nTime;
     int8_t bChange;
 };

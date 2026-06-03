@@ -213,6 +213,7 @@ public:
     
     // 静态包装方法 (用于C风格静态调用)
     static int8_t getConnId(Player* player) { return player ? player->m_connid : -1; }
+    static CharId_t GetCharId(Player* player) { return player ? player->m_cid : 0; }
     static CharId_t getCid(Player* player) { return player ? player->m_cid : 0; }
     static int32_t getLevel(Player* player) { return player ? player->m_level : 0; }
     static int32_t getJob(Player* player) { return player ? player->m_job : 0; }
