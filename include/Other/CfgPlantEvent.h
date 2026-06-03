@@ -1,1 +1,4 @@
-#ifndef _CFGPLANTEVENT_H_\n#define _CFGPLANTEVENT_H_\nclass CfgPlantEvent {};\n#endif
+#ifndef _CFGPLANTEVENT_H_
+#define _CFGPLANTEVENT_H_
+class CfgPlantEvent {};
+#endif

@@ -1,1 +1,9 @@
-#ifndef _CFGLEVELEXP_H_\n#define _CFGLEVELEXP_H_\n#include <cstdint>\nclass CfgLevelExp {\npublic:\n    int32_t level;\n    int64_t needExp;\n};\n#endif
+#ifndef _CFGLEVELEXP_H_
+#define _CFGLEVELEXP_H_
+#include <cstdint>
+class CfgLevelExp {
+public:
+    int32_t level;
+    int64_t needExp;
+};
+#endif

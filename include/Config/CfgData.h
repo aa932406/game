@@ -239,6 +239,7 @@ struct CfgBuff {
 };
 #endif
 
+#define CFGDUNGEON_DEFINED
 struct CfgDungeon {
     int id;
     std::string name;
@@ -1800,6 +1801,7 @@ struct MapBossInfo {
     std::list<int32_t> BossMapList;
 };
 
+#define CFGPASSIVESKILL_DEFINED
 struct CfgPassiveSkill {
     int32_t id;
     int32_t type;
@@ -1808,6 +1810,7 @@ struct CfgPassiveSkill {
     std::list<TalentAddon> lTalentAddon;
 };
 
+#define CFGTRIGSKILL_DEFINED
 struct CfgTrigSkill {
     int32_t id;
     int32_t groupid;
@@ -1840,6 +1843,7 @@ struct CfgTalentPage {
     std::list<int32_t> talents;
 };
 
+#define CFGFAMILYSKILL_DEFINED
 struct CfgFamilySkill {
     int32_t nId;
     int32_t nLevel;
@@ -1850,6 +1854,7 @@ struct CfgFamilySkill {
     int32_t PlayerLevel;
 };
 
+#define CFGTALENTACTIVE_DEFINED
 struct CfgTalentActive {
     int32_t nId;
     std::list<ItemData> lItems;
@@ -1888,6 +1893,7 @@ struct BossLevelInfo {
     std::list<int32_t> BossMapList;
 };
 
+#define CFGSKILLTABLE_DEFINED
 struct CfgSkillTable {
     static void AddActiveSkill(void* a0, void* a1) {}
     static void AddFamilySkill(void* a0, void* a1) {}

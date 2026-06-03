@@ -1,1 +1,4 @@
-#ifndef _CEQUIPBACKRECORD_H_\n#define _CEQUIPBACKRECORD_H_\nclass CEquipBackRecord {};\n#endif
+#ifndef _CEQUIPBACKRECORD_H_
+#define _CEQUIPBACKRECORD_H_
+class CEquipBackRecord {};
+#endif

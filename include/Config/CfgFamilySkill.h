@@ -6,6 +6,7 @@
 #include <vector>
 
 
+#ifndef CFGFAMILYSKILL_DEFINED
 /**
  * @brief CfgFamilySkill - Config data class
  */
@@ -25,5 +26,6 @@ public:
     ~CfgFamilySkill() = default;
     CfgFamilySkill& operator=(const CfgFamilySkill& a2);
 };
+#endif // CFGFAMILYSKILL_DEFINED
 
 #endif // _CFGFAMILYSKILL_H_

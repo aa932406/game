@@ -6,6 +6,7 @@
 #include <string>
 
 
+#ifndef CFGTRIGSKILL_DEFINED
 /**
  * @brief CfgTrigSkill - Config data class
  */
@@ -29,5 +30,6 @@ public:
     ~CfgTrigSkill() = default;
     CfgTrigSkill& operator=(const CfgTrigSkill& a2);
 };
+#endif // CFGTRIGSKILL_DEFINED
 
 #endif // _CFGTRIGSKILL_H_

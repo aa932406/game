@@ -1,1 +1,5 @@
-#ifndef _ICONSTATELIST_H_\n#define _ICONSTATELIST_H_\n#include <list>\nclass IconStateList {};\n#endif
+#ifndef _ICONSTATELIST_H_
+#define _ICONSTATELIST_H_
+#include <list>
+class IconStateList {};
+#endif

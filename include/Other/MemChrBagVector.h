@@ -1,1 +1,5 @@
-#ifndef _MEMCHRBAGVECTOR_H_\n#define _MEMCHRBAGVECTOR_H_\n#include <vector>\nstruct MemChrBagVector {};\n#endif
+#ifndef _MEMCHRBAGVECTOR_H_
+#define _MEMCHRBAGVECTOR_H_
+#include <vector>
+struct MemChrBagVector {};
+#endif

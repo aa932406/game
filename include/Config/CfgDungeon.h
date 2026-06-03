@@ -7,6 +7,7 @@
 #include <vector>
 
 
+#ifndef CFGDUNGEON_DEFINED
 /**
  * @brief CfgDungeon - Config data class
  */
@@ -68,5 +69,6 @@ public:
     ~CfgDungeon() = default;
     CfgDungeon& operator=(const CfgDungeon& a2);
 };
+#endif // CFGDUNGEON_DEFINED
 
 #endif // _CFGDUNGEON_H_

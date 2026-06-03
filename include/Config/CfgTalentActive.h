@@ -6,6 +6,7 @@
 #include <list>
 
 
+#ifndef CFGTALENTACTIVE_DEFINED
 /**
  * @brief CfgTalentActive - Config data class
  */
@@ -20,5 +21,6 @@ public:
     ~CfgTalentActive() = default;
     CfgTalentActive& operator=(const CfgTalentActive& a2);
 };
+#endif // CFGTALENTACTIVE_DEFINED
 
 #endif // _CFGTALENTACTIVE_H_

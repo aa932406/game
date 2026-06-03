@@ -1,1 +1,4 @@
-#ifndef _CEQUIPBACKINFO_H_\n#define _CEQUIPBACKINFO_H_\nclass CEquipBackInfo {};\n#endif
+#ifndef _CEQUIPBACKINFO_H_
+#define _CEQUIPBACKINFO_H_
+class CEquipBackInfo {};
+#endif

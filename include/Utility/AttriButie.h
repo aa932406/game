@@ -1,1 +1,4 @@
-#ifndef _ATTRIBUTIE_H_\n#define _ATTRIBUTIE_H_\nclass AttriButie {};\n#endif
+#ifndef _ATTRIBUTIE_H_
+#define _ATTRIBUTIE_H_
+class AttriButie {};
+#endif

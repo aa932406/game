@@ -15,6 +15,7 @@ struct TalentAddon {
 #endif /* TALENT_ADDON_DEFINED */
 
 
+#ifndef CFGPASSIVESKILL_DEFINED
 /**
  * @brief CfgPassiveSkill - Config data class
  */
@@ -32,5 +33,6 @@ public:
     ~CfgPassiveSkill() = default;
     CfgPassiveSkill& operator=(const CfgPassiveSkill& a2);
 };
+#endif // CFGPASSIVESKILL_DEFINED
 
 #endif // _CFGPASSIVESKILL_H_

@@ -12,6 +12,7 @@
 #include "Config/CfgTrigSkill.h"
 
 
+#ifndef CFGSKILLTABLE_DEFINED
 /**
  * @brief CfgSkillTable - Config data class
  */
@@ -43,5 +44,6 @@ public:
     std::map<int, CfgFamilySkill> m_mFamilySkills;
     std::map<int, CfgTalentActive> m_mTalentActive;
 };
+#endif // CFGSKILLTABLE_DEFINED
 
 #endif // _CFGCFGSKILLTABLE_H_
