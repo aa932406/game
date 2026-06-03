@@ -59,7 +59,7 @@ public:
     void setState(MonsterState state);
     static void setState(Monster* p, MonsterState state) { if (p) p->setState(state); }
     static int32_t GetRunnerId(Monster* p) { (void)p; return 0; }
-    static bool HasBuffState(Monster* p, CObjState::Index_T nIdx) { return p ? p->HasBuffState(nIdx) : false; }
+    static bool HasBuffState(Monster* p, CObjState::Index_T nIdx) { (void)p; (void)nIdx; return false; }
     void onSendKillerReward(Player *pPlayer);
     void GetOwner();
     int32_t CanAddBossSocre(Player *pPlayer, int32_t nAddValue);
