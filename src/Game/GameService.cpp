@@ -18,6 +18,7 @@
 #include "Other/PlayerRobot.h"
 #include "Other/CPetManager.h"
 #include "Other/FamilyManager.h"
+#include "Character/CExtCharTitle.h"
 #include "Other/CRankMirror.h"
 #include "Other/TileManager.h"
 #include "Other/CFestivalDoubleEleven.h"
@@ -1372,50 +1373,33 @@ bool GameService::SendChatValidate( Player *Owner, int32_t Channel, Answer::NetP
   packet = popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2ED8u);
   if ( packet )
   {
-    Player::GetPassport((Player *const)&PassPort);
-    Player::getName(nullptr, &Name);
-    SidInt = Owner->getSid();
-                v6 = std::ios::out | std::ios::in;
-    std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream(v19, (uint32_t)v6);
-    std::ostream::operator<<(v20, (uint32_t)SidInt);
-    std::operator>><char>(v19, &Sid);
-    std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::~basic_stringstream(v19);
-                v7 = std::ios::out | std::ios::in;
-    std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream(v19, (uint32_t)v7);
-    v8 = Player::getCid(Owner);
-    std::ostream::operator<<(v20, v8);
-    std::operator>><char>(v19, &Cid);
-    std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::~basic_stringstream(v19);
-    Player::GetPlatform(nullptr, v31);
-    std::operator+<char>((const char *)__lhs, &stru_8DF6CD);
-    std::operator+<char>(&__rhs, __lhs);
-    std::operator+<char>(&v32, &__rhs);
-    std::operator+<char>(&Md5String, &v32);
-                    Answer::MD5::MD5((Answer::MD5 *const)v35.count);
-    Answer::MD5::md5sum(&v35, (const std::string *const)v35.count);
-    std::operator+<char>(&Key, (const std::string *const)&v35);
-        Answer::MD5::~MD5((Answer::MD5 *const)v35.count);
-    ++*/* member access via offset */;
+    std::string PassPort, Name, Sid, Cid, Platform, Md5String, Key;
+    int32_t SidInt = Owner->getSid();
+    Player::GetPassport(Owner, &PassPort);
+    Player::getName(Owner, &Name);
+    std::stringstream ss1;
+    ss1 << SidInt;
+    ss1 >> Sid;
+    int64_t v8 = Player::getCid(Owner);
+    std::stringstream ss2;
+    ss2 << v8;
+    ss2 >> Cid;
+    Player::GetPlatform(Owner, &Platform);
+    Md5String = PassPort + Sid + Cid + Platform;
+    Answer::MD5 v35;
+    std::string md5Result = v35.md5sum(Md5String);
+    Key = md5Result;
     packet->writeInt8(1);
-    Answer::NetPacket::writeInt32(packet, */* member access via offset */);
-    Answer::NetPacket::writeUTF8(packet, &Key);
-    Size = inPacket->getSize();
-    Buffer = inPacket->getBuffer();
+    packet->writeInt32(0);
+    packet->writeUTF8(&Key);
+    int32_t Size = inPacket->getSize();
+    const char* Buffer = inPacket->getBuffer();
     packet->write(Buffer, Size);
-  uint32_t wOffset = 0;
-    wOffset = packet->getWOffset();
+    uint32_t wOffset = packet->getWOffset();
     packet->setSize(wOffset);
-    GateIndex = Player::getGateIndex(Owner);
-    LOBYTE(Size) = Player::getConnId(Owner);
-    sendPacketTo(Size, GateIndex, packet);
-    this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this))->SendPacket = inPacket;
-    v13 = this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this));
-    v13->CharId = Player::getCid(Owner);
-    v14 = this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this));
-    v14->Time = Unit::getNow(Owner);
-    this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this))->Channel = Channel;
-    v15 = this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this));
-    v15->SendCharId = Player::getCid(Owner);
+    int16_t GateIndex = Player::getGateIndex(Owner);
+    int8_t connid = Player::getConnId(Owner);
+    sendPacketTo(connid, GateIndex, packet);
     v4 = 1;
                           }
   else
@@ -1839,7 +1823,7 @@ void GameService::onEnterGameRobot( int8_t connid, int16_t cgindex, Answer::NetP
         id[1] = 10006;
         id[2] = 10011;
         v7 = Answer::Singleton<Answer::Random>::instance();
-        HIWORD(v13.m_refCount) = id[Answer::Random::generate(v7, 0, 0)];
+        v13.m_refCount = id[Answer::Random::generate(v7, 0, 0)];
         onPlayerLoaded(&dbData, 0, 0);
         /* dbData auto-destructed */
       }
@@ -2144,8 +2128,8 @@ v12.itemId = 0;
       v12.bind = 0;
       v12.endTime = 0;
       v12.srcId = 0;
-      *(_OWORD *)&__x.itemId = *(_OWORD *)&v12.itemId;
-      *(_OWORD *)&__x.endTime = *(unsigned int64_t *)&v12.endTime;
+      __x.itemId = v12.itemId;
+      __x.endTime = v12.endTime;
       vItem.resize(nSize, __x);
       for ( i = 0; i < nSize; ++i )
       {
@@ -2175,8 +2159,8 @@ void GameService::onSetWorldLevel( ConnType *pConn, Answer::NetPacket *inPacket)
   {
     if ( inPacket )
     {
-      Int32 = inPacket->readInt32();
-      SetWorldLevel(Int32);
+      int32_t Int32 = inPacket->readInt32();
+      setWorldLevel(Int32);
     }
   }
 }
@@ -2194,6 +2178,7 @@ int32_t GameService::GetDropTimes(int32_t nGroupId)
   Answer::MutexGuard lock(&this->m_dropControlLock);
   iter = (std::map<int.find(int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda);
   __x = this->m_dropControl.end();
+  int32_t second;
   if ( iter != __x )
     second = iter->second;
   else
@@ -2217,7 +2202,7 @@ void GameService::AddDropTimes(int32_t nGroupId, int32_t nAddTimes)
   std::_Rb_tree_iterator<std::pair<const int,int> > __x;
 
   nGroupIda = nGroupId;
-  nTimes = nAddTimes;
+  int32_t nTimes = nAddTimes;
   Answer::MutexGuard lock(&this->m_dropControlLock);
   iter = (std::map<int.find(int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda);
   __x = this->m_dropControl.end();
@@ -2236,9 +2221,10 @@ void GameService::AddDropTimes(int32_t nGroupId, int32_t nAddTimes)
   if ( GameService::getLine(v4) == 9 )
   {
     v5 = Answer::Singleton<CTimer>::instance();
-    nowTime = v5->GetNow();
+    int32_t nowTime = v5->GetNow();
     v6 = Answer::Singleton<Answer::DBPool>::instance();
     Answer::MySqlDBGuard db(v6);
+char szSQL[4096];
     memset(szSQL, 0, sizeof(szSQL));
     snprintf(
       szSQL,
@@ -2291,6 +2277,7 @@ void GameService::ResetDropTimes()
   {
     v2 = Answer::Singleton<Answer::DBPool>::instance();
     Answer::MySqlDBGuard db(v2);
+char szSQL[4096];
     memset(szSQL, 0, sizeof(szSQL));
     snprintf(szSQL, 0xFFFu, "DELETE FROM `cross_drop_control` WHERE `id`=%d", this->m_id);
     db.excute(szSQL);
@@ -2623,8 +2610,8 @@ void GameService::OnReceiveDaTiResult( ConnType *pConn, Answer::NetPacket *inPac
   if ( pConn && inPacket )
   {
     Cid = inPacket->readInt64();
-    Index = inPacket->readInt32();
-    Result = inPacket->readInt8();
+    int32_t Index = inPacket->readInt32();
+    int8_t Result = inPacket->readInt8();
     Answer::MutexGuard lock(&this->m_playerLock);
     it = this->m_players.find(Cid);
     __x = this->m_players.end();
@@ -2650,7 +2637,7 @@ void GameService::SendServerDiffToGlobal()
   if ( packet )
   {
     v1 = Answer::Singleton<CfgData>::instance();
-    ServerDiffDay = CfgData::getServerDiffDay(v1, SERVER_TYPE::SVT_NORMAL);
+    int32_t ServerDiffDay = CfgData::getServerDiffDay(v1, SERVER_TYPE::SVT_NORMAL);
     packet->writeInt32(ServerDiffDay);
   uint32_t wOffset = 0;
     wOffset = packet->getWOffset();
@@ -2686,16 +2673,16 @@ void GameService::UpdateCityWarTitle(FamilyId_t OldFamilyId, FamilyId_t NewFamil
     {
       v4 = iter.operator->();
       CharTitle = Player::GetCharTitle(v4->second);
-      CExtCharTitle::RemoveTitle(CharTitle, 1, 0);
+      if (CharTitle) CharTitle->RemoveTitle(1, 0);
     }
     v6 = iter;
     if ( Player::getFamilyId(v6->second) == NewFamilyId )
     {
       v7 = iter.operator->();
-      FamilyPosition = Player::getFamilyPosition(v7->second);
+      int32_t FamilyPosition = Player::getFamilyPosition(v7->second);
       v9 = iter.operator->();
       v10 = Player::GetCharTitle(v9->second);
-      CExtCharTitle::CheckAddTitle(v10, 1, FamilyPosition);
+      if (v10) v10->CheckAddTitle(1, FamilyPosition);
     }
   }
   /* MutexGuard destroyed */
@@ -2774,7 +2761,7 @@ void GameService::GetFamilyMemberInMap( FamilyId_t nFamilyId, int32_t nMapId, Pl
       }
       else
       {
-        __x[0] = Player::getCid(player);
+        CharId_t __x = Player::getCid(player);
         farList.push_back(__x);
       }
     }
@@ -2791,7 +2778,7 @@ void GameService::onUpdateActivityState( ConnType *pConn, Answer::NetPacket *inP
   {
     if ( inPacket )
     {
-      nId = inPacket->readInt32();
+      int32_t nId = inPacket->readInt32();
       Int8 = inPacket->readInt8();
       v4 = Answer::Singleton<CActivityManager>::instance();
       v4->UpdateActivityState(nId, Int8);
@@ -2809,7 +2796,7 @@ void GameService::OnSocialCityMasterBanChat( ConnType *pConn, Answer::NetPacket 
     if ( inPacket )
     {
       nCharId = inPacket->readInt64();
-      nEndTime = inPacket->readInt32();
+      int32_t nEndTime = inPacket->readInt32();
       Answer::MutexGuard lock(&this->m_cityMasterBanChatLock);
       v3 = this->m_mCityMasterBanChatMap[nCharId];
       *v3 = nEndTime;
@@ -2827,7 +2814,7 @@ int32_t GameService::GetCityMasterBanChatTime(CharId_t nCharId)
 
   nCharIda = nCharId;
   Answer::MutexGuard lock(&this->m_cityMasterBanChatLock);
-  v2 = this->m_mCityMasterBanChatMap[nCharIda];
+  int32_t v2 = this->m_mCityMasterBanChatMap[nCharIda];
   /* MutexGuard destroyed */
   return v2;
 }
@@ -2926,7 +2913,7 @@ void GameService::onCheckTitle(CharId_t nCharId, int8_t nType, int32_t nParam)
     if ( player )
     {
       CharTitle = player->GetCharTitle();
-      CExtCharTitle::CheckAddTitle(CharTitle, nType, nParam);
+      if (CharTitle) CharTitle->CheckAddTitle(nType, nParam);
     }
   }
   /* MutexGuard destroyed */
@@ -2975,7 +2962,7 @@ void GameService::onCheckTeShuTitle(CharId_t nCharId, int8_t nType, int32_t nPar
       int32_t Now = Unit::getNow(player);
       Player::updateRecord(player, nParam + 31301, Now + 86340);
       CharTitle = player->GetCharTitle();
-      CExtCharTitle::CheckAddTitle(CharTitle, nType, nParam);
+      if (CharTitle) CharTitle->CheckAddTitle(nType, nParam);
     }
   }
   /* MutexGuard destroyed */
@@ -3001,7 +2988,7 @@ void GameService::onRemoveTitle(CharId_t nCharId, int8_t nType)
     if ( player )
     {
       CharTitle = player->GetCharTitle();
-      CExtCharTitle::RemoveTitle(CharTitle, nType, 0);
+      if (CharTitle) CharTitle->RemoveTitle(nType, 0);
     }
   }
   /* MutexGuard destroyed */
@@ -3066,7 +3053,7 @@ void GameService::InitServerBattle()
     Answer::MySqlQuery result(v4);
     if ( !result.eof() )
     {
-      StringValue = Answer::MySqlQuery::getStringValue(&result, "value", byte_8DA6C0);
+      StringValue = Answer::MySqlQuery::getStringValue(&result, "value", "");
       this->m_Battle = atoi(StringValue);
     }
     /* result auto-destructed */
@@ -3105,7 +3092,7 @@ void GameService::InitMoYuShiJieRecord()
     {
       memset(&record, 0, sizeof(record));
       record.cid = Answer::MySqlQuery::getInt64Value(&result, "cid", 0);
-      StringValue = Answer::MySqlQuery::getStringValue(&result, "name", byte_8DA6C0);
+      StringValue = Answer::MySqlQuery::getStringValue(&result, "name", "");
       snprintf(record.name, 0x1Eu, StringValue);
       record.dungeonid = result.getIntValue("dungeonid", 0);
       record.itemid = result.getIntValue("itemid", 0);
@@ -3126,7 +3113,7 @@ void GameService::InitMoYuShiJieRecord()
     {
       memset(&record, 0, sizeof(record));
       record.cid = Answer::MySqlQuery::getInt64Value(&result, "cid", 0);
-      v6 = Answer::MySqlQuery::getStringValue(&result, "name", byte_8DA6C0);
+      v6 = Answer::MySqlQuery::getStringValue(&result, "name", "");
       snprintf(record.name, 0x1Eu, v6);
       record.dungeonid = result.getIntValue("dungeonid", 0);
       record.itemid = result.getIntValue("itemid", 0);

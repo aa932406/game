@@ -65,6 +65,7 @@ public:
                          const std::string& p_FirstFamilyName,
                          const std::string& p_SecondFamilyName,
                          const std::string& p_ThirdFamilyName);
+    int64_t GetCityWarWinner(int8_t connid) { auto it = m_mWinFamily.find(connid); return it != m_mWinFamily.end() ? it->second : 0; }
     void SetCityWarWinner(int8_t connid, int64_t nFamilyId);
     
     // 无双战相关

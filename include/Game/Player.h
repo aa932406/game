@@ -38,6 +38,7 @@ class ChouJiang;
 class CExtChrTaskCycle;
 class CExtCharFamily;
 class CXinMo;
+class CExtCharTitle;
 
 // 角色基础数据结构
 struct PlayerChrData
@@ -99,7 +100,7 @@ public:
     std::string GetPlatform() const;
     std::string GetFromWay() const;
     int32_t getFamilyId() const { return 0; }
-    int32_t GetCharTitle() { return 0; }
+    CExtCharTitle* GetCharTitle() { return nullptr; }
     
     CharId_t getCid() const { return m_cid; }
     int32_t getLevel() const { return m_level; }
@@ -141,6 +142,9 @@ public:
     void SetDieTick();
     void SetStartProtect(int32_t nTime);
     DailyActivity* GetPlayerDailyActivity();
+    void SendFamilyWarIcon() {}
+    int32_t getFamilyPosition() const { return 0; }
+    int32_t getLastLoginTime() const { return 0; }
     
     // 地图/位置相关
     int32_t switchMap(Map* pMap, int32_t x, int32_t y, bool isFly);
@@ -306,8 +310,11 @@ public:
     static void setSyncToTeamFlag(Player* player) { (void)player; }
     static int32_t GetTeamId(Player* player) { (void)player; return 0; }
     static int32_t getFamilyId(Player* player) { return player ? player->getFamilyId() : 0; }
-    static int32_t GetCharTitle(Player* player) { return player ? player->GetCharTitle() : 0; }
+    static CExtCharTitle* GetCharTitle(Player* player) { return player ? player->GetCharTitle() : nullptr; }
     static DailyActivity* GetPlayerDailyActivity(Player* player) { return player ? player->GetPlayerDailyActivity() : nullptr; }
+    static void SendFamilyWarIcon(Player* player) { if (player) player->SendFamilyWarIcon(); }
+    static int32_t getFamilyPosition(Player* player) { return player ? player->getFamilyPosition() : 0; }
+    static int32_t getLastLoginTime(Player* player) { return player ? player->getLastLoginTime() : 0; }
     static void RecalcAttr(Player* player) { if (player) player->RecalcAttr(); }
     static void* GetPlayerFunctionOpen(Player* player) { (void)player; return nullptr; }
     static void sendBuyItemInfo(Player* player, int32_t itemId, int8_t itemClass, int32_t count, int32_t costValue, int32_t index) {}

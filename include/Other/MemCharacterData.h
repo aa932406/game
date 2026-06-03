@@ -15,6 +15,8 @@ struct CharacterData
     char     name[32];
     int32_t  level;
     int32_t  job;
+    int32_t  sex;
+    int32_t  hp;
     int32_t  camp;
     int32_t  mapid;
     int32_t  x;
