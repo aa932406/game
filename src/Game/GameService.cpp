@@ -808,7 +808,7 @@ void GameService::broadcastHuoDongDaTingIcon()
   {
     for ( it = this->m_players.begin();
           ;
-          std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
+          ++it )
     {
       __x = this->m_players.end();
       if ( it == __x )
@@ -836,7 +836,7 @@ void GameService::SendOpenBetaIcon()
   {
     for ( it = this->m_players.begin();
           ;
-          std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
+          ++it )
     {
       __x = this->m_players.end();
       if ( it == __x )
@@ -863,7 +863,7 @@ void GameService::broadFamilyWarIcon()
   {
     for ( it = this->m_players.begin();
           ;
-          std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
+          ++it )
     {
       __x = this->m_players.end();
       if ( it == __x )
@@ -934,7 +934,7 @@ void GameService::broadcast( Answer::NetPacket *inPacket, int8_t connid, const I
       nsize = indexList.size();
       v4 = 2 * (nsize + 1) + inPacket->getSize();
       Proc = inPacket->getProc();
-      Type = Answer::NetPacket::getType(inPacket);
+      Type = inPacket->getType();
       packet = popNetpacket(connid, Type, Proc, v4);
       if ( packet )
       {
@@ -1130,7 +1130,7 @@ void GameService::worldBroadcast(int8_t connid, Answer::NetPacket *inPacket)
     {
       v3 = inPacket->getSize() + 2;
       Proc = inPacket->getProc();
-      Type = Answer::NetPacket::getType(inPacket);
+      Type = inPacket->getType();
       packet = popNetpacket(connid, Type, Proc, v3);
       if ( packet )
       {
@@ -1169,7 +1169,7 @@ void GameService::worldBroadcast(Answer::NetPacket *inPacket)
   {
     for ( iter = this->m_mConn.begin();
           ;
-          std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
+          ++iter )
     {
       __x = this->m_mConn.end();
       if ( iter == __x )
@@ -1188,7 +1188,7 @@ void GameService::worldBroadcast(Answer::NetPacket *inPacket)
   uint32_t wOffset = 0;
           wOffset = packet->getWOffset();
           packet->setSize(wOffset);
-          Type = Answer::NetPacket::getType(inPacket);
+          Type = inPacket->getType();
           packet->setType(Type);
           Proc = inPacket->getProc();
           packet->setProc(Proc);
@@ -1211,7 +1211,7 @@ void GameService::broadcastActivityState(int32_t nId, int8_t nState)
 
   for ( iter = this->m_mConn.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_mConn.end();
     if ( iter == __x )
@@ -1511,7 +1511,7 @@ void GameService::saveAllPlayerToDB()
   Answer::MutexGuard lock(&this->m_playerLock);
   for ( it = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
+        ++it )
   {
     __x = this->m_players.end();
     if ( it == __x )
@@ -2092,13 +2092,13 @@ void GameService::onSocialSendSystemMail( ConnType *pConn, Answer::NetPacket *in
     if ( item.itemId <= 0 || item.itemCount <= 0 )
     {
       v5 = Answer::Singleton<DBService>::instance();
-      DBService::OnSendSysMail(v5, 0, nReceiver, nMailId, &mailParam, 0);
+      v5->OnSendSysMail( 0, nReceiver, nMailId, &mailParam, 0);
     }
     else
     {
       v3 = nReason;
       v4 = Answer::Singleton<DBService>::instance();
-      DBService::OnSendSysMail(v4, 0, nReceiver, nMailId, &item, (ITEM_CHANGE_REASON)v3, &mailParam, 0);
+      v4->OnSendSysMail( 0, nReceiver, nMailId, &item, (ITEM_CHANGE_REASON)v3, &mailParam, 0);
     }
       }
 }
@@ -2133,7 +2133,7 @@ void GameService::onSocialSendSystemMail2( ConnType *pConn, Answer::NetPacket *i
     if ( nSize <= 0 )
     {
                   v8 = Answer::Singleton<DBService>::instance();
-      DBService::OnSendSysMail(v8, 0, nReceiver, nMailId, &v15, 0);
+      v8->OnSendSysMail( 0, nReceiver, nMailId, &v15, 0);
                 }
     else
     {
@@ -2161,7 +2161,7 @@ v12.itemId = 0;
       }
                   v6 = nReason;
       v7 = Answer::Singleton<DBService>::instance();
-      DBService::OnSendSysMail(v7, 0, nReceiver, nMailId, &vItem, (ITEM_CHANGE_REASON)v6, &Param, 0);
+      v7->OnSendSysMail( 0, nReceiver, nMailId, &vItem, (ITEM_CHANGE_REASON)v6, &Param, 0);
                   /* vItem destructed automatically */
     }
   }
@@ -2461,7 +2461,7 @@ void GameService::requestSocialData()
 
   for ( iter = this->m_mConn.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_mConn.end();
     if ( iter == __x )
@@ -2541,7 +2541,7 @@ void GameService::OnReceiveDaTiRank( ConnType *pConn, Answer::NetPacket *inPacke
         case 1:
                               v4 = connid;
           v5 = Answer::Singleton<DBService>::instance();
-          DBService::OnSendSysMail(v5, v4, CharId, 6203, &Param, 0);
+          v5->OnSendSysMail( v4, CharId, 6203, &Param, 0);
                               v6 = Answer::Singleton<GameService>::instance();
           packet = GameService::popNetpacket(v6, 0, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
           if ( !packet )
@@ -2560,12 +2560,12 @@ void GameService::OnReceiveDaTiRank( ConnType *pConn, Answer::NetPacket *inPacke
         case 2:
                               v9 = connid;
           v10 = Answer::Singleton<DBService>::instance();
-          DBService::OnSendSysMail(v10, v9, CharId, 6204, &v29, 0);
+          v10->OnSendSysMail( v9, CharId, 6204, &v29, 0);
                               break;
         case 3:
                               v11 = connid;
           v12 = Answer::Singleton<DBService>::instance();
-          DBService::OnSendSysMail(v12, v11, CharId, 6205, &v31, 0);
+          v12->OnSendSysMail( v11, CharId, 6205, &v31, 0);
                               break;
         default:
           if ( Index > 10 )
@@ -2574,20 +2574,20 @@ void GameService::OnReceiveDaTiRank( ConnType *pConn, Answer::NetPacket *inPacke
             {
                                           v17 = connid;
               v18 = Answer::Singleton<DBService>::instance();
-              DBService::OnSendSysMail(v18, v17, CharId, 6206, &v37, 0);
+              v18->OnSendSysMail( v17, CharId, 6206, &v37, 0);
                                         }
             else
             {
                                           v15 = connid;
               v16 = Answer::Singleton<DBService>::instance();
-              DBService::OnSendSysMail(v16, v15, CharId, 6269, &v35, 0);
+              v16->OnSendSysMail( v15, CharId, 6269, &v35, 0);
                                         }
           }
           else
           {
                                     v13 = connid;
             v14 = Answer::Singleton<DBService>::instance();
-            DBService::OnSendSysMail(v14, v13, CharId, 6268, &v33, 0);
+            v14->OnSendSysMail( v13, CharId, 6268, &v33, 0);
                                   }
           break;
       }
@@ -2883,7 +2883,7 @@ void GameService::KickAll(int32_t opWay)
 
   for ( iter = this->m_mConn.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_mConn.end();
     if ( iter == __x )
