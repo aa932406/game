@@ -21,6 +21,9 @@ public:
         (void)ini; (void)section; (void)key; return defaultVal ? std::string(defaultVal) : std::string();
     }
 
+    int32_t getIntValue(const std::string& section, const std::string& key) { (void)section; (void)key; return 0; }
+    int32_t getInt(const std::string& section, const std::string& key) { (void)section; (void)key; return 0; }
+
     static int32_t GetInt(Inifile* ini, const std::string& section, const std::string& key, int32_t defaultVal) {
         (void)ini; (void)section; (void)key; return defaultVal;
     }

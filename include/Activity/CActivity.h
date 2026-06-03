@@ -15,7 +15,7 @@ class MonsterActivity;
 class PlantActivity;
 namespace Answer { class NetPacket; }
 
-enum class ACTIVITY_STATE : int32_t
+enum ACTIVITY_STATE : int32_t
 {
     AS_NOT_START = 0,
     AS_READY = 1,
@@ -30,6 +30,7 @@ struct ShowIcon
     int32_t nState;
     int32_t nLeftTime;
     int32_t nEffects;
+    int32_t nIconRight;
 };
 
 struct LauncherInfo

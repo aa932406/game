@@ -27,6 +27,7 @@ public:
     void CheckFunctionOpne(int32_t TaskId, int32_t Level);
     void FunctionInit(int32_t FunctionId);
     bool IsOpened(int32_t FunctionId);
+    static bool IsOpened(CFunctionOpen* func, int32_t FunctionId) { return func ? func->IsOpened(FunctionId) : false; }
     void InitFunctionOpenMailByLevel(int32_t nLevel);
     void InitFunctionOpenMailByKaiFuDay(int32_t KaiFuDay);
     void CheckFunctionOpenMailByLevel(int32_t nLevel);

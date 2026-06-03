@@ -31,6 +31,7 @@ class CTimer
 {
 public:
     static CTimer* GetInstance();
+    static CTimer* instance() { return GetInstance(); }
 
     CTimer();
     ~CTimer();
@@ -40,6 +41,7 @@ public:
     void Stop();
     int64_t GetTick();
     int32_t GetNow();
+    static int32_t GetNow(CTimer* timer) { return timer ? timer->GetNow() : 0; }
     tm GetLocalNow();
     void GetLocalNow(tm *retstr);
     bool BetweenDate(int32_t begin_date, int32_t end_date);

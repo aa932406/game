@@ -1,6 +1,9 @@
 #include "common.h"
 #include "Game/CTimer.h"
 
+class CUniteServer;
+class CKiaFuRecharge;
+
 #include <cstring>
 #include <algorithm>
 

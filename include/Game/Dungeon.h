@@ -13,6 +13,7 @@
 #include "Map/IMapEvent.h"
 
 #include "Other/DamageSum.h"
+#include "Config/CfgData.h"
 
 class Monster;
 class MonsterDungeon;

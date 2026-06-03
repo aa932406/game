@@ -51,7 +51,7 @@ public:
     Position getAroundTile(int32_t tx, int32_t ty, Direction direction);
     Position getAroudFreeTileBuyDir(int32_t tx, int32_t ty, Direction direction);
     Position getAroudFreeTile(int32_t tx, int32_t ty);
-    void init(CMapRunner *pRunner, CfgMap * cfgmap);
+    void init(CMapRunner *pRunner, const CfgMap * cfgmap);
     void update();
     bool IsCrossMap();
     void ResetRefreshMonster();

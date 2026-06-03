@@ -25,6 +25,7 @@ public:
     void writeInt64(int64_t value);
     void writeInt16(int16_t value);
     void writeUTF8(const std::string& value);
+    void writeUTF8(const std::string* value) { if (value) writeUTF8(*value); }
 
     int32_t readInt32();
     int8_t readInt8();

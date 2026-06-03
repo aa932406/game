@@ -1,4 +1,7 @@
 #pragma once
+#ifndef _MAP_H_
+#define _MAP_H_
+
 #include <cstdint>
 #include <list>
 #include <map>
@@ -242,3 +245,5 @@ protected:
     struct { char _[0x38]; } m_lastLocalNow;
     int32_t m_NeedUpdate;
 };
+
+#endif // _MAP_H_
