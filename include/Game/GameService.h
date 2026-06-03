@@ -62,6 +62,8 @@ public:
   // 静态包装方法
   static int32_t getLine(GameService* gs) { return gs ? gs->m_line : 0; }
   static Answer::NetPacket* popNetpacket(GameService* gs, int8_t connid, Answer::PackType type, uint16_t proc) { return gs ? gs->popNetpacket(connid, type, proc) : nullptr; }
+  static uint32_t getWOffset() { return 0; }
+  static uint32_t getWOffset(void* p) { (void)p; return 0; }
   static void sendPacket(GameService* gs, int8_t connid, Answer::NetPacket* pkt) { if (gs) gs->sendPacket(connid, pkt); }
   static void sendPacket(GameService* gs, int8_t& connid, Answer::NetPacket*& pkt) { if (gs) gs->sendPacket(connid, pkt); }
   static void sendPacket(GameService* gs, int connid, Answer::NetPacket* pkt) { if (gs) gs->sendPacket(static_cast<int8_t>(connid), pkt); }

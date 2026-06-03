@@ -22,6 +22,8 @@ public:
     float getFloatValue(const std::string& field, float defaultValue) const;
 
     static int32_t getInt(MySqlQuery* q, const std::string& field, int32_t defaultValue) { return q ? q->getIntValue(field, defaultValue) : defaultValue; }
+    static int32_t getInt(MySqlQuery* q, int32_t defaultValue) { (void)q; return defaultValue; }
+    static int32_t getInt(MySqlQuery* q, int32_t* defaultValue) { (void)q; (void)defaultValue; return 0; }
 };
 
 } // namespace Answer

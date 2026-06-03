@@ -213,6 +213,7 @@ public:
     
     // 静态包装方法 (用于C风格静态调用)
     static int8_t getConnId(Player* player) { return player ? player->m_connid : -1; }
+    static CharId_t GetCharId() { return 0; }
     static CharId_t GetCharId(Player* player) { return player ? player->m_cid : 0; }
     static CharId_t getCid(Player* player) { return player ? player->m_cid : 0; }
     static int32_t getLevel(Player* player) { return player ? player->m_level : 0; }
@@ -303,6 +304,7 @@ public:
     static CExtOperateLimit* GetOperateLimit(Player* player) { return player ? player->m_extOperateLimit : nullptr; }
     static ChrTask* GetTask(Player* player) { return player ? player->m_task : nullptr; }
     static CXinMo* GetCXinMo(Player* player) { return nullptr; }
+    static int32_t GetCamp(Player* player) { (void)player; return 0; }
     static void recalcAttr(Player* player, int bNow, int bInit) { if (player) player->recalcAttr(bNow != 0, bInit != 0); }
     static bool queryBagInfo(Player* player, Answer::NetPacket* inPacket, Int32Vector* vSlot) { return player ? player->queryBagInfo(inPacket, vSlot) : false; }
     static void sendUpdateSocialPlayerInfo(Player* player, int index, int64_t value) { if (player) player->sendUpdateSocialPlayerInfo(static_cast<PlayerInfoIndex>(index), value); }

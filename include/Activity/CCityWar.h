@@ -69,18 +69,16 @@ public:
                          const std::string& p_ThirdFamilyName);
 
 private:
-        // TODO: 确认类型 m_Apply
-        // TODO: 确认类型 m_First
-        // TODO: 确认类型 m_FirstFamilyName
-        // TODO: 确认类型 m_Leader
-        // TODO: 确认类型 m_Second
-        // TODO: 确认类型 m_SecondFamilyName
-        // TODO: 确认类型 m_Third
-        // TODO: 确认类型 m_ThirdFamilyName
-        // TODO: 确认类型 m_bUpdateFamilyScroe
-        // TODO: 确认类型 m_lFamilyScore
-        // TODO: 确认类型 m_mFamilyScore
-        // TODO: 确认类型 m_mPlayerScore
+        int32_t m_First;
+        std::string m_FirstFamilyName;
+        int32_t m_Second;
+        std::string m_SecondFamilyName;
+        int32_t m_Third;
+        std::string m_ThirdFamilyName;
+        int64_t m_lFamilyScore;
+        std::map<FamilyId_t, int32_t> m_mFamilyScore;
+        std::map<CharId_t, PlayerScore> m_mPlayerScore;
+        bool m_bUpdateFamilyScroe;
         int32_t m_nFamilyId;
         int32_t m_nIndex;
         int32_t m_nLastFamilyId;
@@ -88,8 +86,6 @@ private:
         int64_t m_nStartTime;
         int32_t m_nState;
         int64_t m_nWinTime;
-        // TODO: 确认类型 m_pMonster
-        // TODO: 确认类型 m_players
 };
 
 #endif // _CCITYWAR_H_

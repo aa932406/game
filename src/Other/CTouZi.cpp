@@ -122,7 +122,7 @@ int32_t CTouZi::OnTouZi(Answer::NetPacket* inPacket)
     if (GongGaoId > 0)
     {
         GameService* pGame = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket* packet = GameService::popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CD6);
+        Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CD6);
         if (packet)
         {
             packet->writeInt32(GongGaoId);
@@ -225,7 +225,7 @@ int32_t CTouZi::GetMonthTouZiReward(int16_t nIndex)
     if (pCfg->nGongGaoId > 0)
     {
         GameService* pGame = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket* packet = GameService::popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CD6);
+        Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CD6);
         if (packet)
         {
             packet->writeInt32(pCfg->nGongGaoId);
@@ -249,7 +249,7 @@ void CTouZi::SendTouZiInfo()
         return;
     int8_t ConnId = Player::getConnId(m_pPlayer);
     GameService* pGame = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(pGame, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CE8);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(pGame, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CE8);
     if (!packet)
         return;
     packet->writeInt32(m_SevenDayTouZiTime);

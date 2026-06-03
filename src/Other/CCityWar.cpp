@@ -133,7 +133,7 @@ void CCityWar::OnUpdate(CActivityMap* pMap)
                     score.bUpdateScroeRank = 0;
                     score.lScoreRank.sort(PlayerScoreRankGreater());
                     GameService* gs = Answer::Singleton<GameService>::instance();
-                    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2E2Au);
+                    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2E2Au);
                     if (!packet)
                         return;
                     appendPlayerRankInfo(packet, &score.lScoreRank);
@@ -290,7 +290,7 @@ LABEL_CLEAR:
 void CCityWar::NotOccupyGongGao()
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2CD6u);
     if (packet)
     {
         packet->writeInt32(342);
@@ -351,7 +351,7 @@ void CCityWar::onMonsterDie(MonsterActivity* pMonster, Player* pKiller)
     if (pMonster && pKiller && IsRuning())
     {
         GameService* gs = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+        Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2CD6u);
         if (packet)
         {
             packet->writeInt32(336);
@@ -390,7 +390,7 @@ void CCityWar::onPlayerKilled(Player* pDier, Player* pAttacker)
             checkChangeFamily(0);
 
         GameService* gs = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+        Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2CD6u);
         if (packet)
         {
             packet->writeInt32(341);
@@ -546,7 +546,7 @@ void CCityWar::SendPlayerActivityInfo(Player* player)
         {
             int8_t connId = Player::getConnId(player);
             GameService* gs = Answer::Singleton<GameService>::instance();
-            Answer::NetPacket* packet = GameService::popNetpacket(gs, connId, Answer::PackType::PACK_DISPATCH, 0x2E22u);
+            Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( connId, Answer::PackType::PACK_DISPATCH, 0x2E22u);
             if (!packet)
                 return;
             packet->writeInt32(m_cfgActivity->id);
@@ -566,7 +566,7 @@ void CCityWar::SendPlayerActivityInfo(Player* player)
         {
             int8_t connId = Player::getConnId(player);
             GameService* gs = Answer::Singleton<GameService>::instance();
-            Answer::NetPacket* packet = GameService::popNetpacket(gs, connId, Answer::PackType::PACK_DISPATCH, 0x4EADu);
+            Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( connId, Answer::PackType::PACK_DISPATCH, 0x4EADu);
             if (!packet)
                 return;
             packet->writeInt32(Player::getGateIndex(player));
@@ -607,7 +607,7 @@ void CCityWar::SendPlayerActivityScore(Player* player)
         if (iter != m_mFamilyScore.end())
         {
             GameService* gs = Answer::Singleton<GameService>::instance();
-            Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2E2Au);
+            Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2E2Au);
             if (packet)
             {
                 appendPlayerRankInfo(packet, &iter->second.lScoreRank);
@@ -732,7 +732,7 @@ void CCityWar::win()
                 DBService* db = Answer::Singleton<DBService>::instance();
                 DBService::OnSendSysMail(db, 0, info.FamilyLeaderCid, 6371, nullptr, 0);
                 GameService* gs2 = Answer::Singleton<GameService>::instance();
-                Answer::NetPacket* packet = GameService::popNetpacket(gs2, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+                Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(gs2, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
                 if (!packet)
                     return;
                 packet->writeInt32(442);
@@ -745,7 +745,7 @@ void CCityWar::win()
         }
 
         GameService* gs4 = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket* packet2 = GameService::popNetpacket(gs4, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+        Answer::NetPacket* packet2 = GameService::GetInstance()->popNetpacket(gs4, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
         if (!packet2)
             return;
         packet2->writeInt32(338);
@@ -757,7 +757,7 @@ void CCityWar::win()
     else
     {
         GameService* gs = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+        Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2CD6u);
         if (!packet)
             return;
         packet->writeInt32(339);
@@ -962,7 +962,7 @@ void CCityWar::SendAppyCityWarInfo(Player* player)
     {
         int8_t connId = Player::getConnId(player);
         GameService* gs = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket* packet = GameService::popNetpacket(gs, connId, Answer::PackType::PACK_DISPATCH, 0x2E2Eu);
+        Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( connId, Answer::PackType::PACK_DISPATCH, 0x2E2Eu);
         if (packet)
         {
             packet->writeInt32(m_Apply.size());
@@ -1044,7 +1044,7 @@ void CCityWar::AutoApplyCityWar()
 void CCityWar::GongGao(FamilyId_t familyId, int32_t gongGaoId)
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2CD6u);
     if (packet)
     {
         packet->writeInt32(gongGaoId);
@@ -1078,7 +1078,7 @@ int32_t CCityWar::canEnter(Player* player, CActivityMap* pTargetMap)
 void CCityWar::packetActivityScore(int8_t connid)
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, connid, Answer::PackType::PACK_DISPATCH, 0x2E26u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( connid, Answer::PackType::PACK_DISPATCH, 0x2E26u);
     if (!packet)
         return;
     packet->writeInt32(m_cfgActivity->id);
@@ -1123,7 +1123,7 @@ void CCityWar::appendPlayerRankInfo(Answer::NetPacket* packet, std::list<PlayerS
 void CCityWar::broadcastReady()
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2CD6u);
     if (packet)
     {
         packet->writeInt32(330);
@@ -1136,7 +1136,7 @@ void CCityWar::broadcastReady()
 void CCityWar::broadcastStart()
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2CD6u);
     if (packet)
     {
         packet->writeInt32(331);

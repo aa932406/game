@@ -118,7 +118,7 @@ void Trap::broadcastState()
       if ( this->m_pMap )
       {
         v1 = Answer::Singleton<GameService>::instance();
-        packet = GameService::popNetpacket(v1, Answer::PackType::PACK_DISPATCH, 0x2741u);
+        packet = GameService::GetInstance()->popNetpacket(v1, Answer::PackType::PACK_DISPATCH, 0x2741u);
         if ( packet )
         {
           v2 = (*((int64_t (__fastcall **)(Trap *const))this->_vptr_Entity + 2))(this);

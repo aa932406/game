@@ -133,6 +133,10 @@ public:
     bool IsXinMoMap();
     int32_t GetMapId() const { return 0; }  // stub, TODO: implement with m_cfgmap->id
     int32_t GetRunnerId() const { return 0; }  // stub
+    int32_t GetType() const { return 0; }  // stub
+    static int32_t GetType(Map* p) { return p ? p->GetType() : 0; }
+    int32_t GetId() const { return 0; }  // stub
+    static int32_t GetId(Map* p) { return p ? p->GetId() : 0; }
     Position GetEnterPos();
     void updateMonsters();
     void updateNpcs();

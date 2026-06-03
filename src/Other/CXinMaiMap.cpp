@@ -90,7 +90,7 @@ void CXinMaiMap::sendPlayerScore(Player* player)
         count = it->second;
     int8_t connId = Player::getConnId(player);
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, connId, Answer::PackType::PACK_DISPATCH, 0x2E24u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(gs, connId, Answer::PackType::PACK_DISPATCH, 0x2E24u);
     if (packet)
     {
         packet->writeInt32(m_cfgActivity->id);
@@ -106,7 +106,7 @@ void CXinMaiMap::sendPlayerScore(Player* player)
 void CXinMaiMap::packetActivityScore(int8_t connid)
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2E26u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2E26u);
     if (!packet)
         return;
     packet->writeInt32(m_cfgActivity->id);
@@ -166,7 +166,7 @@ void CXinMaiMap::onTimeEnd()
 void CXinMaiMap::broadcastReady()
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
     if (packet)
     {
         packet->writeInt32(491);
@@ -179,7 +179,7 @@ void CXinMaiMap::broadcastReady()
 void CXinMaiMap::broadcastStart()
 {
     GameService* gs = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket* packet = GameService::popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
+    Answer::NetPacket* packet = GameService::GetInstance()->popNetpacket(gs, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
     if (packet)
     {
         packet->writeInt32(492);

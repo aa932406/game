@@ -158,7 +158,7 @@ void CWorldBoss::PacketBossInfo(Answer::NetPacket *packet, int8_t nBossType)
 void CWorldBoss::broadcastBossKilled(int32_t Mid, std::string *p_KillerName, CharId_t KillerId)
 {
     GameService *pGame = GameService::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CB3);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CB3);
     if (!packet)
         return;
 
@@ -173,7 +173,7 @@ void CWorldBoss::broadcastBossKilled(int32_t Mid, std::string *p_KillerName, Cha
 void CWorldBoss::broadcastBossRevive(int32_t Mid, int32_t BossId, int32_t MapId)
 {
     GameService *pGame = GameService::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CB3);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CB3);
     if (!packet)
         return;
 
@@ -476,7 +476,7 @@ void CWorldBoss::InitDropRecord()
 void CWorldBoss::SendDropRecord(int8_t connid, int16_t nGateIndex)
 {
     GameService *pGame = GameService::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, connid, Answer::PackType::PACK_DISPATCH, 0x2ED6);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, connid, Answer::PackType::PACK_DISPATCH, 0x2ED6);
     if (!packet)
         return;
 
@@ -534,7 +534,7 @@ void CWorldBoss::SendRuinsBossInfo(Player *player, BossType nBossType, int32_t n
 
     int8_t ConnId = Player::getConnId(player);
     GameService *pGame = GameService::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CDD);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CDD);
     if (!packet)
         return;
 
@@ -579,7 +579,7 @@ void CWorldBoss::UpdateRuinsBossInfo(Map *pMap, const WorldBossInfo *info, int32
         return;
 
     GameService *pGame = GameService::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CDE);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CDE);
     if (!packet)
         return;
 

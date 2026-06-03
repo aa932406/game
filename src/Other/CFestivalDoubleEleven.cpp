@@ -9,7 +9,6 @@ CFestivalDoubleEleven::CFestivalDoubleEleven()
 {
     m_nDay = -1;
     m_nMinute = 0;
-    Answer::Mutex::Mutex(&m_lock);
     m_bDie = 1;
     m_MonsterId = 0;
     m_nVersion = 0;
@@ -32,85 +31,6 @@ CFestivalDoubleEleven::CFestivalDoubleEleven()
 
 CFestivalDoubleEleven::~CFestivalDoubleEleven()
 {
-    std::vector<LianRechargeCfg>::~vector(&m_LianRechargeCfgVt);
-    std::vector<MemChrBag>::~vector(&m_vGouWuCheItem);
-    std::vector<int>::~vector(&m_vGouWuCheGiftPrice);
-    std::vector<RateItem>::~vector(&m_vBossScoreDrawReward);
-    std::vector<int>::~vector(&m_nDailyRechargeDrawLimit);
-    std::vector<int>::~vector(&m_vScoreLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vBossScoreReward);
-    std::vector<int>::~vector(&m_vGetBossScoreMail);
-    std::vector<int>::~vector(&m_vBossScoreiLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vBossScoreRankReward);
-    std::vector<int>::~vector(&m_vBossScoreRankMail);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vFriendQingYiReward);
-    std::vector<int>::~vector(&m_vFriendQingYiLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vEquipQingYiReward);
-    std::vector<int>::~vector(&m_vEquipQingYiLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vCrossChouJiangRankReward);
-    std::vector<int>::~vector(&m_vCrossChouJiangRankMail);
-    std::vector<int>::~vector(&m_vCrossChouJiangRankLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vCrossXiaoFeiSumRankReward);
-    std::vector<int>::~vector(&m_vCrossXiaoFeiSumRankMail);
-    std::vector<int>::~vector(&m_vCrossXiaoFeiSumRankLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vCrossRechargeSumRankReward);
-    std::vector<int>::~vector(&m_vCrossRechargeSumRankMail);
-    std::vector<int>::~vector(&m_vCrossRechargeSumRankLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vRechargeSumRankReward);
-    std::vector<int>::~vector(&m_vRechargeSumRankMail);
-    std::vector<int>::~vector(&m_vRechargeSumRankLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vPetIllusionItemReward);
-    std::vector<int>::~vector(&m_vPetIllusionItemLimit);
-    std::vector<int>::~vector(&m_vRechargeBackValue);
-    std::vector<int>::~vector(&m_vRechargeBackLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vBuyGiftItem);
-    std::vector<int>::~vector(&m_vBuyGiftBroadcast);
-    std::vector<int>::~vector(&m_vBuyGiftPrice);
-    std::vector<int>::~vector(&m_nRechargeDrawValue);
-    std::map<int,int>::~map(&m_mEquipUpStarBackStarCount);
-    std::vector<ShopGoods>::~vector(&m_vDailyLimitShop2Goods);
-    std::vector<int>::~vector(&m_vDailyLimitShop2Broadcast);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vDaTiRankReward);
-    std::vector<int>::~vector(&m_vDaTiRankMail);
-    std::vector<MemChrBag>::~vector(&m_Items);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vXiaoFeiSumReward);
-    std::vector<int>::~vector(&m_vXiaoFeiSumBroadcast);
-    std::vector<int>::~vector(&m_vXiaoFeiSumLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vRechargeSumReward);
-    std::vector<int>::~vector(&m_vRechargeSumBroadcast);
-    std::vector<int>::~vector(&m_vRechargeSumLimit);
-    std::vector<MemChrBag>::~vector(&m_BackItem);
-    std::vector<int>::~vector(&m_NeedValue);
-    std::vector<std::vector<ShopGoods>>::~vector(&m_vGiftShopGoods);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vXiaoFeiSumRankReward);
-    std::vector<int>::~vector(&m_vXiaoFeiSumRankMail);
-    std::vector<int>::~vector(&m_vDailyRechargeBroad);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vDailyRechargeReward);
-    std::vector<int>::~vector(&m_vDailyRechargeLimit);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vMoYuShiJieDrop);
-    std::vector<int>::~vector(&m_nXiaoFeiDrawValue);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vXiaoFeiRankReward);
-    std::vector<int>::~vector(&m_vXiaoFeiRankMail);
-    std::vector<int>::~vector(&m_vXiaoFeiRankLimit);
-    std::vector<MemChrBag>::~vector(&m_vWishReward);
-    std::vector<MemChrBag>::~vector(&m_vOnlineReward);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vLandSumGift);
-    std::vector<MemChrBag>::~vector(&m_vDailyLimitShopItem);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vHuoYueDuSumReward);
-    std::vector<int>::~vector(&m_vHuoYueDuSumLimit);
-    std::vector<TimeArea>::~vector(&m_vWorldBossMinute);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vDrawRankReward);
-    std::vector<int>::~vector(&m_vDrawRankMail);
-    std::vector<MemChrBag>::~vector(&m_vDrawLoopReward);
-    std::vector<std::vector<MemChrBag>>::~vector(&m_vLandGift);
-    std::map<signed char,std::vector<FestivalRank>>::~map(&m_mBossScoreRank);
-    std::map<signed char,std::vector<FestivalRank>>::~map(&m_mCrossChouJiangRank);
-    std::map<signed char,std::vector<FestivalRank>>::~map(&m_mCrossRechargeSumRank);
-    std::map<signed char,std::vector<FestivalRank>>::~map(&m_mCrossXiaoFeiSumRank);
-    std::map<signed char,std::vector<FestivalRank>>::~map(&m_mRechargeSumRank);
-    std::map<signed char,std::vector<FestivalRank>>::~map(&m_mXiaoFeiSumRank);
-    std::map<signed char,std::vector<std::vector<FestivalRank>>>::~map(&m_mXiaoFeiRank);
-    std::map<signed char,std::vector<FestivalRank>>::~map(&m_mDrawRank);
     Answer::Mutex::~Mutex(&m_lock);
 }
 
@@ -1020,7 +940,6 @@ void CFestivalDoubleEleven::resetRankData(int32_t line)
 {
     Answer::DBPool *v2 = Answer::Singleton<Answer::DBPool>::instance();
     Answer::MySqlDBGuard db;
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v2);
     
     if (line == 1)
     {
@@ -1036,7 +955,6 @@ void CFestivalDoubleEleven::resetRankData(int32_t line)
         m_mBossScoreRank.clear();
     }
     
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::resetPlayerData()
@@ -1053,7 +971,6 @@ int32_t CFestivalDoubleEleven::loadVersion(int32_t line)
     Answer::MySqlDBGuard db;
     Answer::MySqlQuery result;
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v2);
     snprintf(szSQL, sizeof(szSQL), 
              "SELECT version FROM mem_double_eleven_version WHERE line=%d", line);
     Answer::MySqlQuery::MySqlQuery(&result);
@@ -1068,7 +985,6 @@ int32_t CFestivalDoubleEleven::loadVersion(int32_t line)
         }
     }
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
     
     return v6;
 }
@@ -1081,7 +997,6 @@ void CFestivalDoubleEleven::saveVersion(int32_t line)
     Answer::MySqlDBGuard db;
     std::string tname;
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v2);
     
     snprintf(szSQL, sizeof(szSQL), 
              "DELETE FROM mem_double_eleven_version WHERE line=%d", line);
@@ -1093,7 +1008,6 @@ void CFestivalDoubleEleven::saveVersion(int32_t line)
              line, m_nVersion, nNowTime);
     Answer::MySqlDBGuard::excute(&db, szSQL);
     
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::loadDrawRank()
@@ -1103,7 +1017,6 @@ void CFestivalDoubleEleven::loadDrawRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=1 ORDER BY rank_value DESC LIMIT 100");
     
@@ -1125,7 +1038,6 @@ void CFestivalDoubleEleven::loadDrawRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::checkDrawRankInvalid(int8_t connid)
@@ -1161,9 +1073,7 @@ void CFestivalDoubleEleven::checkDrawRank()
             // 执行SQL
             Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
             Answer::MySqlDBGuard db;
-            Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
             Answer::MySqlDBGuard::excute(&db, szSQL);
-            Answer::MySqlDBGuard::~MySqlDBGuard(&db);
         }
     }
 }
@@ -2093,7 +2003,6 @@ void CFestivalDoubleEleven::loadXiaoFeiRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, sub_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=2 ORDER BY rank_value DESC");
     
@@ -2127,7 +2036,6 @@ void CFestivalDoubleEleven::loadXiaoFeiRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::updateXiaoFeiRank(Player *player)
@@ -2215,9 +2123,7 @@ void CFestivalDoubleEleven::checkXiaoFeiRank()
                          rank.nCharId, kv.first, (int)day, rank.nValue, rank.szName, (int)time(NULL));
                 Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
                 Answer::MySqlDBGuard db;
-                Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
                 Answer::MySqlDBGuard::excute(&db, szSQL);
-                Answer::MySqlDBGuard::~MySqlDBGuard(&db);
             }
         }
     }
@@ -2254,7 +2160,6 @@ void CFestivalDoubleEleven::loadXiaoFeiSumRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=3 ORDER BY rank_value DESC LIMIT 100");
     
@@ -2276,7 +2181,6 @@ void CFestivalDoubleEleven::loadXiaoFeiSumRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::updateXiaoFeiSumRank(Player *player)
@@ -2353,9 +2257,7 @@ void CFestivalDoubleEleven::checkXiaoFeiSumRank()
                      rank.nCharId, kv.first, rank.nValue, rank.szName, (int)time(NULL));
             Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
             Answer::MySqlDBGuard db;
-            Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
             Answer::MySqlDBGuard::excute(&db, szSQL);
-            Answer::MySqlDBGuard::~MySqlDBGuard(&db);
         }
     }
 }
@@ -2388,7 +2290,6 @@ void CFestivalDoubleEleven::loadRechargeSumRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=4 ORDER BY rank_value DESC LIMIT 100");
     
@@ -2410,7 +2311,6 @@ void CFestivalDoubleEleven::loadRechargeSumRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::updateRechargeSumRank(Player *player)
@@ -2486,9 +2386,7 @@ void CFestivalDoubleEleven::checkRechargeSumRank()
                      rank.nCharId, kv.first, rank.nValue, rank.szName, (int)time(NULL));
             Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
             Answer::MySqlDBGuard db;
-            Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
             Answer::MySqlDBGuard::excute(&db, szSQL);
-            Answer::MySqlDBGuard::~MySqlDBGuard(&db);
         }
     }
 }
@@ -2618,7 +2516,6 @@ void CFestivalDoubleEleven::loadCrossRechargeSumRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=5 ORDER BY rank_value DESC LIMIT 100");
     
@@ -2640,7 +2537,6 @@ void CFestivalDoubleEleven::loadCrossRechargeSumRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::updateCrossRechargeSumRank(Player *player)
@@ -2716,9 +2612,7 @@ void CFestivalDoubleEleven::checkCrossRechargeSumRank()
                      rank.nCharId, kv.first, rank.nValue, rank.szName, (int)time(NULL));
             Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
             Answer::MySqlDBGuard db;
-            Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
             Answer::MySqlDBGuard::excute(&db, szSQL);
-            Answer::MySqlDBGuard::~MySqlDBGuard(&db);
         }
     }
 }
@@ -2751,7 +2645,6 @@ void CFestivalDoubleEleven::loadCrossXiaoFeiSumRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=6 ORDER BY rank_value DESC LIMIT 100");
     
@@ -2773,7 +2666,6 @@ void CFestivalDoubleEleven::loadCrossXiaoFeiSumRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::updateCrossXiaoFeiSumRank(Player *player)
@@ -2850,9 +2742,7 @@ void CFestivalDoubleEleven::checkCrossXiaoFeiSumRank()
                      rank.nCharId, kv.first, rank.nValue, rank.szName, (int)time(NULL));
             Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
             Answer::MySqlDBGuard db;
-            Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
             Answer::MySqlDBGuard::excute(&db, szSQL);
-            Answer::MySqlDBGuard::~MySqlDBGuard(&db);
         }
     }
 }
@@ -2885,7 +2775,6 @@ void CFestivalDoubleEleven::loadCrossChouJiangRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=7 ORDER BY rank_value DESC LIMIT 100");
     
@@ -2907,7 +2796,6 @@ void CFestivalDoubleEleven::loadCrossChouJiangRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::updateCrossChouJiangRank(Player *player)
@@ -2984,9 +2872,7 @@ void CFestivalDoubleEleven::checkCrossChouJiangRank()
                      rank.nCharId, kv.first, rank.nValue, rank.szName, (int)time(NULL));
             Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
             Answer::MySqlDBGuard db;
-            Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
             Answer::MySqlDBGuard::excute(&db, szSQL);
-            Answer::MySqlDBGuard::~MySqlDBGuard(&db);
         }
     }
 }
@@ -3019,7 +2905,6 @@ void CFestivalDoubleEleven::loadBossScoreRank()
     Answer::MySqlQuery result;
     char szSQL[4096];
     
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
     snprintf(szSQL, sizeof(szSQL),
              "SELECT char_id, rank_type, rank_value, char_name FROM mem_double_eleven_rank WHERE activity_type=8 ORDER BY rank_value DESC LIMIT 100");
     
@@ -3041,7 +2926,6 @@ void CFestivalDoubleEleven::loadBossScoreRank()
     }
     
     Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
 }
 
 void CFestivalDoubleEleven::updateBossScoreRank(Player *player)
@@ -3118,9 +3002,7 @@ void CFestivalDoubleEleven::checkBossScoreRank()
                      rank.nCharId, kv.first, rank.nValue, rank.szName, (int)time(NULL));
             Answer::DBPool* pool = Answer::Singleton<Answer::DBPool>::instance();
             Answer::MySqlDBGuard db;
-            Answer::MySqlDBGuard::MySqlDBGuard(&db, pool);
             Answer::MySqlDBGuard::excute(&db, szSQL);
-            Answer::MySqlDBGuard::~MySqlDBGuard(&db);
         }
     }
 }

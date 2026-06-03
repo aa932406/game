@@ -386,6 +386,7 @@ struct PlayerScore
     CharId_t cid;
     int32_t  score;
     int32_t  damage;
+    CharId_t nCharId;
 };
 
 // 角色Buff数据

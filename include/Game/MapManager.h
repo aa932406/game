@@ -52,6 +52,7 @@ public:
 
     static MapManager* GetInstance();
     Map* GetMap(int32_t mapid);
+    static Map* getMap(int32_t mapid) { MapManager* mgr = GetInstance(); return mgr ? mgr->GetMap(mapid) : nullptr; }
 
 private:
         int32_t m_DungenId;

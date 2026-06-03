@@ -11,6 +11,11 @@
 // Buff 前置声明
 class Buff;
 
+// 最大Buff数量
+#ifndef MAX_BUFF_COUNT
+#define MAX_BUFF_COUNT 40
+#endif
+
 // Unit 继承自 StaticObj (从反编译代码确认: StaticObj::StaticObj(this, entitytype))
 class Unit : public StaticObj
 {

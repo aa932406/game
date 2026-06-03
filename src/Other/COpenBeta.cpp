@@ -214,7 +214,7 @@ void COpenBeta::SendActivityInfo(Player *player)
 
     int8_t ConnId = Player::getConnId(player);
     GameService *pGame = GameService::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CFF);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CFF);
     if (!packet)
         return;
 
@@ -241,7 +241,7 @@ void COpenBeta::SendBossIconState()
     if (GameService::getLine(pGame) == 9)
         return;
 
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, 0, Answer::PackType::PACK_DISPATCH, 0x2CC3);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, 0, Answer::PackType::PACK_DISPATCH, 0x2CC3);
     if (!packet)
         return;
 
@@ -286,7 +286,7 @@ void COpenBeta::BossDie(int32_t MonsterId, std::string *p_name, CharId_t Cid)
 void COpenBeta::BroadcastBossKilled(std::string *name, CharId_t cid)
 {
     GameService *pGame = GameService::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CB3);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(pGame, Answer::PackType::PACK_DISPATCH, 0x2CB3);
     if (!packet)
         return;
 

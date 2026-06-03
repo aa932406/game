@@ -110,7 +110,7 @@ void Dungeon::addPlayer(Player *player, int32_t x, int32_t y)
             {
                 int8_t ConnId = Player::getConnId(player);
                 GameService *v8 = Answer::Singleton<GameService>::instance();
-                Answer::NetPacket *packet = GameService::popNetpacket(v8, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6);
+                Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6);
                 if (!packet)
                     return;
                 Answer::NetPacket::writeInt32(packet, 1);
@@ -132,7 +132,7 @@ void Dungeon::addPlayer(Player *player, int32_t x, int32_t y)
         {
             int8_t v13 = Player::getConnId(player);
             GameService *v14 = Answer::Singleton<GameService>::instance();
-            Answer::NetPacket *packet_0 = GameService::popNetpacket(v14, v13, Answer::PackType::PACK_DISPATCH, 0x2D3C);
+            Answer::NetPacket *packet_0 = GameService::GetInstance()->popNetpacket(v14, v13, Answer::PackType::PACK_DISPATCH, 0x2D3C);
             if (!packet_0)
                 return;
             Answer::NetPacket::writeInt32(packet_0, m_cfgDungeon.id);
@@ -966,7 +966,7 @@ void Dungeon::AddRandomList(Player *player, int32_t nIndex)
 
     int8_t ConnId = Player::getConnId(player);
     GameService *v4 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v4, ConnId, Answer::PackType::PACK_DISPATCH, 0x2D3D);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2D3D);
     if (packet)
     {
         Answer::NetPacket::writeInt32(packet, m_cfgDungeon.id);
@@ -1069,7 +1069,7 @@ int32_t Dungeon::RandPosIndex(Player *player)
                 {
                     int8_t ConnId = Player::getConnId(player);
                     GameService *v14 = Answer::Singleton<GameService>::instance();
-                    Answer::NetPacket *packet = GameService::popNetpacket(v14, ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6);
+                    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2CD6);
                     if (packet)
                     {
                         Answer::NetPacket::writeInt32(packet, pair.second.Items[m_Random - 1].nGongGaoId);
@@ -1464,7 +1464,7 @@ void Dungeon::checkSummonBoss()
 void Dungeon::sendStartSummon()
 {
     GameService *v1 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v1, Answer::PackType::PACK_DISPATCH, 0x2DF5);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2DF5);
     if (packet)
     {
         int32_t LeftTime = Dungeon::GetLeftTime();
@@ -1735,7 +1735,7 @@ void Dungeon::sendDungeonResult(Player *player, int32_t param)
 
     int8_t ConnId = Player::getConnId(player);
     GameService *v4 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v4, ConnId, Answer::PackType::PACK_DISPATCH, 0x2727);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2727);
     if (packet)
     {
         Answer::NetPacket::writeInt32(packet, param);
@@ -1753,7 +1753,7 @@ void Dungeon::sendDungeonResult(Player *player, int32_t param)
 void Dungeon::broadcastDungeonEvent(int32_t evtId)
 {
     GameService *v2 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v2, Answer::PackType::PACK_DISPATCH, 0x2728);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(Answer::PackType::PACK_DISPATCH, 0x2728);
     if (packet)
     {
         int32_t DungeonId = Dungeon::getDungeonId();
@@ -1768,7 +1768,7 @@ void Dungeon::broadcastDungeonEvent(int32_t evtId)
 void Dungeon::broadcastPlayMovie(int32_t movieID)
 {
     GameService *v2 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v2, Answer::PackType::PACK_DISPATCH, 0x2729);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(Answer::PackType::PACK_DISPATCH, 0x2729);
     if (packet)
     {
         Answer::NetPacket::writeInt32(packet, movieID);
@@ -1781,7 +1781,7 @@ void Dungeon::broadcastPlayMovie(int32_t movieID)
 void Dungeon::broadcastDungeonInfo()
 {
     GameService *v1 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v1, Answer::PackType::PACK_DISPATCH, 0x272A);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x272A);
     if (packet)
     {
         int32_t LeftTime = Dungeon::GetLeftTime();
@@ -1800,7 +1800,7 @@ void Dungeon::broadcastDungeonInfo()
 void Dungeon::broadcastDamageList()
 {
     GameService *v1 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v1, Answer::PackType::PACK_DISPATCH, 0x272B);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x272B);
     if (packet && !m_damages.empty())
     {
         Answer::NetPacket::writeInt32(packet, (int32_t)m_damages.size());
@@ -1821,7 +1821,7 @@ void Dungeon::broadcastSummonBoss(const std::string *name, int8_t nState)
 {
     GameService *v3 = Answer::Singleton<GameService>::instance();
     int32_t LeftTime = Dungeon::GetLeftTime();
-    Answer::NetPacket *packet = GameService::popNetpacket(v3, Answer::PackType::PACK_DISPATCH, 0x2DF4);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(Answer::PackType::PACK_DISPATCH, 0x2DF4);
     if (packet)
     {
         Answer::NetPacket::writeInt32(packet, LeftTime);
@@ -1842,7 +1842,7 @@ void Dungeon::checkBroadcastDamageList()
 void Dungeon::sendRandEventTime()
 {
     GameService *v1 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v1, Answer::PackType::PACK_DISPATCH, 0x2DF6);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket( Answer::PackType::PACK_DISPATCH, 0x2DF6);
     if (packet)
     {
         Answer::NetPacket::writeInt32(packet, m_cfgDungeon.rand_time);
@@ -1855,7 +1855,7 @@ void Dungeon::sendRandEventTime()
 void Dungeon::DungeonGongGao(int8_t connid, CharId_t CharId, std::string *p_Name)
 {
     GameService *v4 = Answer::Singleton<GameService>::instance();
-    Answer::NetPacket *packet = GameService::popNetpacket(v4, connid, Answer::PackType::PACK_DISPATCH, 0x2CC1);
+    Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(connid, Answer::PackType::PACK_DISPATCH, 0x2CC1);
     if (packet)
     {
         Answer::NetPacket::writeInt64(packet, CharId);
@@ -1912,7 +1912,7 @@ int32_t Dungeon::GuessTheSize(Player *player, int32_t nId)
 
         // 全服公告
         GameService *v9 = Answer::Singleton<GameService>::instance();
-        Answer::NetPacket *packet = GameService::popNetpacket(v9, 0, Answer::PackType::PACK_DISPATCH, 0x2CD6);
+        Answer::NetPacket *packet = GameService::GetInstance()->popNetpacket(v9, 0, Answer::PackType::PACK_DISPATCH, 0x2CD6);
         if (packet)
         {
             Answer::NetPacket::writeInt32(packet, 455);
