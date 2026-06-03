@@ -45,14 +45,14 @@ public:
     void effect();
 
 private:
-        const CfgActivity* m_cfgTrap;  // TODO: 确认配置类型
-        // TODO: 确认类型 m_currentPos
-        // TODO: 确认类型 m_currentTile
+        const CfgActivity* m_cfgTrap;
+        Position m_currentPos;
+        Position m_currentTile;
         int64_t m_liftTime;
-        // TODO: 确认类型 m_pMap
-        // TODO: 确认类型 m_state
+        Map* m_pMap;
+        TrapState m_state;
         int64_t m_stateTick;
-        // TODO: 确认类型 m_user
+        Player* m_user;
 };
 
 #endif // _TRAP_H_

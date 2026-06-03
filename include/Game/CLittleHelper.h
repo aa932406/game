@@ -61,10 +61,10 @@ private:
         int64_t m_PickTick;
         int32_t m_TarDropId;
         int32_t m_WorkState;
-        // TODO: 确认类型 m_nStandPlace
+        int32_t m_nStandPlace;
         int32_t m_nState;
-        // TODO: 确认类型 m_pMap
-        // TODO: 确认类型 m_pPlayer
+        Map* m_pMap;
+        Player* m_pPlayer;
 };
 
 #endif // _CLITTLEHELPER_H_

@@ -44,6 +44,9 @@ public:
     {
         delete obj;
     }
+
+    template<typename T>
+    void regPool(int32_t minCount, int32_t maxCount) { (void)minCount; (void)maxCount; }
 };
 
 #endif // _CPOOLMANAGER_H_

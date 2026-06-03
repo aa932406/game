@@ -41,7 +41,7 @@ public:
 private:
         int64_t m_nLastTick;
         int32_t m_nState;
-        // TODO: 确认类型 m_pPlayer
+        Player* m_pPlayer;
 };
 
 #endif // _CGUARDPRIVILEGE_H_

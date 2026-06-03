@@ -57,6 +57,7 @@ public:
     void onRunOnRoad();
     bool needSync();
     void setState(MonsterState state);
+    static void setState(Monster* p, MonsterState state) { if (p) p->setState(state); }
     void onSendKillerReward(Player *pPlayer);
     void GetOwner();
     int32_t CanAddBossSocre(Player *pPlayer, int32_t nAddValue);
