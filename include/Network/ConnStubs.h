@@ -6,6 +6,9 @@
 
 namespace Answer {
 
+class NetPacket;
+class InetAddress;
+
 class InetAddress {
 public:
     InetAddress() {}
@@ -24,12 +27,14 @@ public:
     static void start(TcpClient* p) { if (p) p->start(); }
 
     static Answer::NetPacket* popNetpacket(void* p) { (void)p; return nullptr; }
+    Answer::NetPacket* popNetpacket() { return nullptr; }
+    Answer::NetPacket* popNetpacket(uint32_t size) { (void)size; return nullptr; }
 
-    template<typename T, typename U>
-    static void sendPacket(T* p, U* packet) { (void)p; (void)packet; }
+    static void sendPacket(TcpClient* p, Answer::NetPacket* packet) { (void)p; (void)packet; }
+    void sendPacket(Answer::NetPacket* packet) { (void)packet; }
 
-    template<typename T>
-    static void getName(T* val) { (void)val; }
+    static void getName(TcpClient* p, std::string* out) { if (out) *out = ""; }
+    static void getName2(TcpClient* p, std::string& out) { (void)p; out = ""; }
 };
 
 class Thread {
@@ -37,6 +42,13 @@ public:
     Thread() {}
     ~Thread() {}
     static void start(void* pConn) { (void)pConn; }
+};
+
+class TcpService {
+public:
+    static void sendPacketTo(void* pConn, int16_t cgindex, Answer::NetPacket* packet) { (void)pConn; (void)cgindex; (void)packet; }
+    static int32_t replySuccess(void* pConn, int16_t cgindex, uint16_t proc, int64_t addon) { (void)pConn; (void)cgindex; (void)proc; (void)addon; return 0; }
+    static int32_t replyfailure(void* pConn, int16_t cgindex, uint16_t proc, int32_t errcode, int64_t addon) { (void)pConn; (void)cgindex; (void)proc; (void)errcode; (void)addon; return 10002; }
 };
 
 } // namespace Answer
@@ -50,6 +62,16 @@ public:
     ~MutiConn() {}
 
     static int8_t GetId(MutiConn* p) { return p ? p->m_id : 0; }
+    int8_t GetId() const { return m_id; }
+
+    void connect(Answer::InetAddress* addr) { (void)addr; }
+    void start() {}
+    Answer::NetPacket* popNetpacket() { return nullptr; }
+    Answer::NetPacket* popNetpacket(uint32_t size) { (void)size; return nullptr; }
+    void sendPacket(Answer::NetPacket* packet) { (void)packet; }
+    void sendPacketTo(int16_t cgindex, Answer::NetPacket* packet) { (void)cgindex; (void)packet; }
+    int32_t replySuccess(int16_t cgindex, uint16_t proc, int64_t addon) { (void)cgindex; (void)proc; (void)addon; return 0; }
+    int32_t replyfailure(int16_t cgindex, uint16_t proc, int32_t errcode, int64_t addon) { (void)cgindex; (void)proc; (void)errcode; (void)addon; return 10002; }
 
     int8_t m_id;
     T* m_svc;

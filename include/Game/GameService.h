@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Answer/Mutex.h"
+#include "Network/ConnStubs.h"
 
 // Forward declarations
 class Player;
@@ -78,6 +79,10 @@ public:
   void stopGame();
   int8_t GetAutoConnId();
   int8_t GetConnId(CharId_t cid);
+  ConnType* GetConn(int8_t connid);
+  static ConnType* GetConn(GameService* gs, int8_t connid) { return gs ? gs->GetConn(connid) : nullptr; }
+  static ConnType* GetConn(GameService* gs) { return gs && !gs->m_mConn.empty() ? gs->m_mConn.begin()->second : nullptr; }
+  Player* getUserPlayer(int8_t connid, int16_t cgindex);
   void onUpdatePay();
   void onNewMinuteCome(int32_t minute);
   void OnDaySwitch();

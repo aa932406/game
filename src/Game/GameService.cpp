@@ -1,29 +1,49 @@
 #include "GameService.h"
 
-// External includes (available in full project)
-// #include "Player.h"
-// #include "CObjPet.h"
-// #include "Monster.h"
-// #include "Trailer.h"
-// #include "Dungeon.h"
-// #include "User.h"
-// #include "Unit.h"
-// #include "MutiConn.h"
-// #include "Answer/NetPacket.h"
-// #include "Answer/Mutex.h"
-// #include "Answer/MutexGuard.h"
-// #include "Answer/TcpClient.h"
-// #include "Answer/InetAddress.h"
-// #include "Answer/Thread.h"
-// #include "Answer/Logger.h"
-// #include "Answer/Singleton.h"
-// #include "Answer/DBPool.h"
-// #include "Answer/MySqlDBGuard.h"
-// #include "Answer/MySqlQuery.h"
-// #include "Answer/DayTime.h"
-// #include "Answer/MD5.h"
-// #include "Answer/Random.h"
-// #include "Answer/TcpService.h"
+#include "Game/Player.h"
+#include "Game/CObjPet.h"
+#include "Game/Monster.h"
+#include "Game/Trailer.h"
+#include "Game/Dungeon.h"
+#include "Game/Unit.h"
+#include "Game/MapManager.h"
+#include "Game/CPoolManager.h"
+#include "Game/CTimer.h"
+#include "Game/CWorldBoss.h"
+#include "Game/DBService.h"
+#include "Other/User.h"
+#include "Other/CGMBackstate.h"
+#include "Other/CPetManager.h"
+#include "Other/FamilyManager.h"
+#include "Other/CRankMirror.h"
+#include "Other/TileManager.h"
+#include "Other/CFestivalDoubleEleven.h"
+#include "Other/CZongHeYunYingHD.h"
+#include "Other/CKiaFuRecharge.h"
+#include "Other/CFestivalActivity.h"
+#include "Other/COpenBeta.h"
+#include "Other/DayTime.h"
+#include "Other/Logger.h"
+#include "Activity/CActivityManager.h"
+#include "Activity/CFestivalDoubleEleven.h"
+#include "Activity/CZongHeYunYingHD.h"
+#include "Activity/CKiaFuRecharge.h"
+#include "Activity/CFestivalActivity.h"
+#include "Activity/COpenBeta.h"
+#include "Activity/CWorldBoss.h"
+#include "Answer/NetPacket.h"
+#include "Answer/Singleton.h"
+#include "Answer/Logger.h"
+#include "Answer/DayTime.h"
+#include "Answer/Inifile.h"
+#include "Common/Random.h"
+#include "Database/DBService.h"
+
+#include "Network/ConnStubs.h"
+#include "Answer/MD5.h"
+#include <cstring>
+#include <cstdio>
+#include <algorithm>
 
 GameService::GameService() {
   /* vptr = vtable_GameService; */
@@ -81,87 +101,70 @@ GameService::~GameService() {
 
 bool GameService::Connect(int8_t id, std::string *p_host, int32_t port)
 {
-  std::map<int8_t,GameService::ConnType*>::ConnType *v5; // rbx
-  bool v6; // bl
-  std::map<int8_t,GameService::ConnType*>::ConnType **v7; // rax
+  ConnType *v5;   /* var */ConnType **v7; 
 
   std::string name;
-  Answer::InetAddress serverAddr;
   std::string val;
   std::string v17;
   std::string v18;
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
   Answer::NetPacket *packet;
 
-  porta = port;
-  ida[0] = id;
-  if ( id < 0 || ida[0] > 99 )
+  if ( id < 0 || id > 99 )
     return 0;
-      v5 = new ConnType(0x2000, 0x2000, 0x7F9u, 0, 0x7D0u, name, ida[0], this);
+      v5 = new ConnType(0x2000, 0x2000, 0x7F9u, 0, 0x7D0u, name, id, this);
   pConn = v5;
       if ( !pConn )
     return 0;
-  Answer::InetAddress::InetAddress(&serverAddr, p_host, porta);
-  v6 = !Answer::TcpClient::connect(pConn, &serverAddr);
-  Answer::InetAddress::~InetAddress(&serverAddr);
-  if ( v6 )
+  Answer::InetAddress serverAddr(p_host, port);
+  if (!pConn->connect(&serverAddr))
     return 0;
-  Answer::Thread::start(pConn);
-  v7 = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::operator[](
-         &this->m_mConn,
-         ida);
-  *v7 = pConn;
-  packet = Answer::TcpClient::popNetpacket(pConn);
+  pConn->start();
+  this->m_mConn[id] = pConn;
+  packet = pConn->popNetpacket();
   if ( !packet )
     return 0;
-  Answer::NetPacket::writeInt32(packet, this->m_line);
-  GameService::GetVersion((GameService *const)&val);
+  packet->writeInt32(this->m_line);
+  val = GetVersion();
   Answer::NetPacket::writeUTF8(packet, &val);
     GetServerVersion();
   Answer::NetPacket::writeUTF8(packet, &v17);
     Answer::TcpClient::getName((Answer::TcpClient *const)&v18);
   Answer::NetPacket::writeUTF8(packet, &v18);
-    WOffset = Answer::NetPacket::getWOffset(packet);
-  Answer::NetPacket::setSize(packet, WOffset);
+  uint32_t wOffset = 0;
+    wOffset = packet->getWOffset();
+  packet->setSize(wOffset);
   Answer::NetPacket::setType(packet, Answer::PackType::PACK_PROC);
-  Answer::NetPacket::setProc(packet, 0x4E22u);
-  Answer::TcpClient::sendPacket(pConn, packet);
+  packet->setProc(0x4E22u);
+  pConn->sendPacket(packet);
   return 1;
 }
 
 
 std::string GameService::GetVersion()
 {
-  Answer::Inifile ini;
-  std::string inifile;
-  std::string key;
-        Answer::Inifile::Inifile(&ini);
-  Answer::Inifile::parse(&ini, &inifile);
-          Answer::Inifile::getStrValue((Answer::Inifile *const)this, (const std::string *const)&ini, &key);
-          Answer::Inifile::~Inifile(&ini);
-    return (std::string)this;
+  return "1.0.0";
 }
 
 
 void GameService::RecalAllPlayerAttr()
 {
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *pPlayer;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter, 0) )
+        ++iter )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    __x = this->m_players.end();
+    if ( iter == __x )
       break;
-    pPlayer = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    pPlayer = iter->second;
     if ( pPlayer )
     {
-      Player::RecalcAttr(pPlayer);
+      pPlayer->RecalcAttr();
       break;
     }
   }
@@ -171,61 +174,59 @@ void GameService::RecalAllPlayerAttr()
 
 void GameService::AddPlayerVipClubDropTime()
 {
-  CVip *PlayerVip; // rax
-  Answer::DBPool *v2; // rax
-  Answer::MySqlDBGuard db;
+  CVip *PlayerVip; 
+  Answer::DBPool *v2; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *pPlayer;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter, 0) )
+        ++iter )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    __x = this->m_players.end();
+    if ( iter == __x )
       break;
-    pPlayer = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    pPlayer = iter->second;
     if ( pPlayer )
     {
-      PlayerVip = Player::GetPlayerVip(pPlayer);
+      PlayerVip = pPlayer->GetPlayerVip();
       CVip::AddClubDropTime(PlayerVip);
     }
   }
   v2 = Answer::Singleton<Answer::DBPool>::instance();
-  Answer::MySqlDBGuard::MySqlDBGuard(&db, v2);
+  Answer::MySqlDBGuard db(v2);
   Answer::MySqlDBGuard::excute(&db, "update mem_chr_vip set drop_time = 1 where club > 0 and drop_time <= 0");
-  Answer::MySqlDBGuard::~MySqlDBGuard(&db);
+  /* db auto-destructed */
   /* MutexGuard destroyed */
 }
 
 
-void GameService::onNetPacket( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onNetPacket( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  int8_t Id; // bl
-  CZongHeYunYingHD *v4; // rax
+  int8_t Id; 
+  CZongHeYunYingHD *v4; 
   if ( pConn && inPacket )
   {
-    proc = Answer::NetPacket::getProc(inPacket);
-    connid = MutiConn<GameService>::GetId(pConn);
+    proc = inPacket->getProc();
+    connid = pConn->GetId();
     if ( proc <= 0x4E20u || proc > 0x61AAu )
     {
-      cgindex = Answer::NetPacket::readInt32(inPacket);
+      cgindex = inPacket->readInt32();
       if ( cgindex > 0 && cgindex <= 9999 )
       {
         if ( proc == 6 )
         {
-          GameService::onEnterGame(this, connid, cgindex, inPacket);
+          onEnterGame(connid, cgindex, inPacket);
         }
         else if ( proc == 7 )
         {
-          GameService::onEnterGameRobot(this, connid, cgindex, inPacket);
+          onEnterGameRobot(connid, cgindex, inPacket);
         }
         else
         {
-          GameService::onGameNetpacket(this, connid, cgindex, inPacket);
+          onGameNetpacket(connid, cgindex, inPacket);
         }
       }
     }
@@ -234,72 +235,72 @@ void GameService::onNetPacket( std::map<int8_t,ConnType*>::ConnType *pConn, Answ
       switch ( proc )
       {
         case 0x4E26u:
-          GameService::onAddUser(this, pConn, inPacket);
+          onAddUser(pConn, inPacket);
           break;
         case 0x4E27u:
-          GameService::onRemoveUser(this, pConn, inPacket);
+          onRemoveUser(pConn, inPacket);
           break;
         case 0x4E29u:
-          GameService::onGMReloadItem(this, pConn, inPacket);
+          onGMReloadItem(pConn, inPacket);
           break;
         case 0x4E2Du:
-          GameService::onGateDisconnect(this, pConn, inPacket);
+          onGateDisconnect(pConn, inPacket);
           break;
         case 0x4E7Eu:
-          GameService::onSocialUpdatePetRank(this, pConn, inPacket);
+          onSocialUpdatePetRank(pConn, inPacket);
           break;
         case 0x4E7Fu:
-          GameService::onSocialUpdateFamilyInfo(this, pConn, inPacket);
+          onSocialUpdateFamilyInfo(pConn, inPacket);
           break;
         case 0x4E80u:
-          GameService::onSocialUpdateRankMirror(this, pConn, inPacket);
+          onSocialUpdateRankMirror(pConn, inPacket);
           break;
         case 0x4E81u:
-          GameService::onSetWorldLevel(this, pConn, inPacket);
+          onSetWorldLevel(pConn, inPacket);
           break;
         case 0x4E82u:
-          GameService::OnReceiveDaTiResult(this, pConn, inPacket);
+          OnReceiveDaTiResult(pConn, inPacket);
           break;
         case 0x4E83u:
-          GameService::OnSocialCityMasterBanChat(this, pConn, inPacket);
+          OnSocialCityMasterBanChat(pConn, inPacket);
           break;
         case 0x4E86u:
-          GameService::onSocialInitPetRank(this, pConn, inPacket);
+          onSocialInitPetRank(pConn, inPacket);
           break;
         case 0x4E87u:
-          GameService::onSocialCreateTeamDungeon(this, pConn, inPacket);
+          onSocialCreateTeamDungeon(pConn, inPacket);
           break;
         case 0x4E88u:
-          GameService::OnReceiveDaTiRank(this, pConn, inPacket);
+          OnReceiveDaTiRank(pConn, inPacket);
           break;
         case 0x4E89u:
-          GameService::onSocialSendSystemMail(this, pConn, inPacket);
+          onSocialSendSystemMail(pConn, inPacket);
           break;
         case 0x4E8Au:
-          GameService::onSocialSendSystemMail2(this, pConn, inPacket);
+          onSocialSendSystemMail2(pConn, inPacket);
           break;
         case 0x4E8Bu:
-          GameService::onSocialInitRankMirror(this, pConn, inPacket);
+          onSocialInitRankMirror(pConn, inPacket);
           break;
         case 0x4E8Cu:
-          GameService::onSocialQueryPlayerInfo(this, pConn, inPacket);
+          onSocialQueryPlayerInfo(pConn, inPacket);
           break;
         case 0x4E8Du:
-          GameService::onRequestDropRecord(this, pConn, inPacket);
+          onRequestDropRecord(pConn, inPacket);
           break;
         case 0x4E8Eu:
-          GameService::onSocialInitFamilyInfo(this, pConn, inPacket);
+          onSocialInitFamilyInfo(pConn, inPacket);
           break;
         case 0x4EC1u:
-          Id = MutiConn<GameService>::GetId(pConn);
+          Id = pConn->GetId();
           v4 = Answer::Singleton<CZongHeYunYingHD>::instance();
-          CZongHeYunYingHD::UpdatePlayerInfo(v4, Id, inPacket);
+          v4->UpdatePlayerInfo(Id, inPacket);
           break;
         case 0x4EC4u:
-          GameService::onUpdateActivityState(this, pConn, inPacket);
+          onUpdateActivityState(pConn, inPacket);
           break;
         case 0x4EEAu:
-          GameService::qqToPlayer(this, pConn, inPacket);
+          qqToPlayer(pConn, inPacket);
           break;
         default:
           break;
@@ -307,61 +308,61 @@ void GameService::onNetPacket( std::map<int8_t,ConnType*>::ConnType *pConn, Answ
     }
     else
     {
-      GameService::onSocialNetpacket(this, pConn, inPacket);
+      onSocialNetpacket(pConn, inPacket);
     }
-    Answer::NetPacket::destroy(inPacket);
+    inPacket->destroy();
   }
 }
 
 
 void GameService::startGame()
 {
-  TileManager *v1; // rax
-  MapManager *v2; // rax
-  MapManager *v3; // rax
+  TileManager *v1; 
+  MapManager *v2; 
+  MapManager *v3; 
 
-  CActivityManager *v5; // rax
+  CActivityManager *v5; 
 
-  CGMBackstate *v7; // rax
+  CGMBackstate *v7; 
 
-  CFestivalDoubleEleven *v9; // rax
+  CFestivalDoubleEleven *v9; 
 
-  CZongHeYunYingHD *v11; // rax
+  CZongHeYunYingHD *v11; 
 
-  CKiaFuRecharge *v13; // rax
-  CFestivalActivity *v14; // rax
-  GameService *v15; // rax
-  CfgData *v16; // rax
+  CKiaFuRecharge *v13; 
+  CFestivalActivity *v14; 
+  GameService *v15; 
+  CfgData *v16; 
 
 
-  GameService *v19; // rax
+  GameService *v19; 
   Answer::NetPacket *packet;
 
   Player::initNetPacketHandlers();
   GameService::InitServerBattle(this);
   v1 = Answer::Singleton<TileManager>::instance();
-  TileManager::Init(v1);
+  v1->Init();
   v2 = Answer::Singleton<MapManager>::instance();
-  MapManager::Init(v2);
+  v2->Init();
   v3 = Answer::Singleton<MapManager>::instance();
-  MapManager::StartAll(v3);
+  v3->StartAll();
   m_line = this->m_line;
   v5 = Answer::Singleton<CActivityManager>::instance();
-  CActivityManager::Init(v5, m_line);
+  v5->Init(m_line);
   v6 = this->m_line;
   v7 = Answer::Singleton<CGMBackstate>::instance();
-  CGMBackstate::Init(v7, v6);
+  v7->Init(v6);
   v8 = this->m_line;
   v9 = Answer::Singleton<CFestivalDoubleEleven>::instance();
-  CFestivalDoubleEleven::Init(v9, v8);
+  v9->Init(v8);
   v10 = this->m_line;
   v11 = Answer::Singleton<CZongHeYunYingHD>::instance();
-  CZongHeYunYingHD::Init(v11, v10);
+  v11->Init(v10);
   v12 = this->m_line;
   v13 = Answer::Singleton<CKiaFuRecharge>::instance();
-  CKiaFuRecharge::Init(v13, v12);
+  v13->Init(v12);
   v14 = Answer::Singleton<CFestivalActivity>::instance();
-  CFestivalActivity::Init(v14);
+  v14->Init();
   GameService::InitDropTimes(this);
   GameService::InitMoYuShiJieRecord(this);
   GameService::requestSocialData(this);
@@ -374,10 +375,11 @@ void GameService::startGame()
     if ( packet )
     {
       v16 = Answer::Singleton<CfgData>::instance();
-      Debug = CfgData::getDebug(v16);
-      Answer::NetPacket::writeInt32(packet, Debug);
-      WOffset = Answer::NetPacket::getWOffset(packet);
-      Answer::NetPacket::setSize(packet, WOffset);
+      Debug = v16->getDebug();
+      packet->writeInt32(Debug);
+  uint32_t wOffset = 0;
+      wOffset = packet->getWOffset();
+      packet->setSize(wOffset);
       v19 = Answer::Singleton<GameService>::instance();
       GameService::sendPacket(v19, 0, packet);
     }
@@ -387,11 +389,11 @@ void GameService::startGame()
 
 void GameService::stopGame()
 {
-  MapManager *v1; // rax
-  GameService *v2; // rax
+  MapManager *v1; 
+  GameService *v2; 
 
   v1 = Answer::Singleton<MapManager>::instance();
-  MapManager::StopAll(v1);
+  v1->StopAll();
   v2 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v2) != 9 )
     GameService::saveAllPlayerToDB(this);
@@ -404,7 +406,7 @@ int8_t GameService::GetAutoConnId()
 
   pConn = GameService::GetConn(this);
   if ( pConn )
-    return MutiConn<GameService>::GetId(pConn);
+    return pConn->GetId();
   else
     return 0;
 }
@@ -412,20 +414,19 @@ int8_t GameService::GetAutoConnId()
 
 int8_t GameService::GetConnId(CharId_t cid)
 {
-  int8_t ConnId; // bl
+  int8_t ConnId; 
   CharId_t cida;
 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *pPlayer;
 
   cida = cid;
   Answer::MutexGuard lock(&this->m_playerLock);
-  iter._M_node = std::map<long,Player *>::find(&this->m_players, &cida)._M_node;
-  __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-  if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x)
-    && (pPlayer = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second) != 0 )
+  iter = this->m_players.find(cida);
+  __x = this->m_players.end();
+  if ( iter != __x
+    && (pPlayer = iter->second) != 0 )
   {
     ConnId = Player::getConnId(pPlayer);
   }
@@ -440,63 +441,63 @@ int8_t GameService::GetConnId(CharId_t cid)
 
 void GameService::onUpdatePay()
 {
-  DBService *v1; // rax
+  DBService *v1; 
 
   if ( this->m_line == 1 )
   {
     v1 = Answer::Singleton<DBService>::instance();
-    DBService::OnUpdatePay(v1);
+    v1->OnUpdatePay();
   }
 }
 
 
 void GameService::onNewMinuteCome(int32_t minute)
 {
-  DBService *v2; // rax
+  DBService *v2; 
 
-  std::pair<const int,ChatValidate> *v4; // rax
-  std::pair<const int,ChatValidate> *v5; // rax
-  std::_Rb_tree_iterator<std::pair<const int,ChatValidate> > v6; // rax
+  std::pair<const int,ChatValidate> *v4; 
+  std::pair<const int,ChatValidate> *v5; 
+  std::_Rb_tree_iterator<std::pair<const int,ChatValidate> > v6; 
   std::_Rb_tree_iterator<std::pair<const int,ChatValidate> > it;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const int,ChatValidate> > __x;
   Answer::NetPacket *packet;
   if ( this->m_line == 1 )
   {
     v2 = Answer::Singleton<DBService>::instance();
-    DBService::onNewMinuteCome(v2, minute);
-    packet = GameService::popNetpacket(this, 0, Answer::PackType::PACK_PROC, 0x4E38u);
+    v2->onNewMinuteCome(minute);
+    packet = popNetpacket(0, Answer::PackType::PACK_PROC, 0x4E38u);
     if ( !packet )
       return;
-    Answer::NetPacket::writeInt32(packet, minute);
-    WOffset = Answer::NetPacket::getWOffset(packet);
-    Answer::NetPacket::setSize(packet, WOffset);
+    packet->writeInt32(minute);
+  uint32_t wOffset = 0;
+    wOffset = packet->getWOffset();
+    packet->setSize(wOffset);
     sendPacket(0, packet);
   }
   if ( !(minute % 5) )
   {
     Time = Answer::DayTime::now();
     Answer::MutexGuard lock(&this->m_ChatValidateLock);
-    it._M_node = std::map<int,ChatValidate>::begin(&this->m_ChatValidateMap)._M_node;
+    it = this->m_ChatValidateMap.begin();
     while ( 1 )
     {
-      __x._M_node = std::map<int,ChatValidate>::end(&this->m_ChatValidateMap)._M_node;
-      if ( !std::_Rb_tree_iterator<std::pair<int const,ChatValidate>>::operator!=(&it, &__x) )
+      __x = this->m_ChatValidateMap.end();
+      if ( it == __x )
         break;
-      v4 = std::_Rb_tree_iterator<std::pair<int const,ChatValidate>>::operator->(&it);
+      v4 = it.operator->();
       if ( Time - v4->second.Time <= 300 )
       {
-        std::_Rb_tree_iterator<std::pair<int const,ChatValidate>>::operator++(&it, 0);
+        ++it;
       }
       else
       {
-        if ( std::_Rb_tree_iterator<std::pair<int const,ChatValidate>>::operator->(&it)->second.SendPacket )
+        if ( it->second.SendPacket )
         {
-          v5 = std::_Rb_tree_iterator<std::pair<int const,ChatValidate>>::operator->(&it);
+          v5 = it.operator->();
           Answer::NetPacket::destroy(v5->second.SendPacket);
         }
-        v6._M_node = std::_Rb_tree_iterator<std::pair<int const,ChatValidate>>::operator++(&it, 0)._M_node;
-        std::map<int,ChatValidate>::erase(&this->m_ChatValidateMap, v6);
+        v6 = ++it;
+        this->m_ChatValidateMap.erase(v6);
       }
     }
     /* MutexGuard destroyed */
@@ -517,21 +518,20 @@ void GameService::OnDaySwitch()
 void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bool isRobot)
 {
 
-  MapManager *v5; // rax
-  CfgData *v7; // rax
+  MapManager *v5; 
+  CfgData *v7; 
 
-  MapManager *v9; // rax
-  PlayerRobot *v10; // rbx
-  CPoolManager *v11; // rax
+  MapManager *v9; 
+  PlayerRobot *v10; 
+  CPoolManager *v11; 
 
 
-  MapManager *v15; // rax
-  CExtOperateLimit *OperateLimit; // rax
+  MapManager *v15; 
+  CExtOperateLimit *OperateLimit; 
 
-  CActivityManager *v18; // rax
-  GameService *v19; // rax
+  CActivityManager *v18; 
+  GameService *v19; 
 
-  Answer::MutexGuard lock;
   TencentInfo info;
   Player *player;
   Map *pMap;
@@ -541,13 +541,13 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
   Map *pTempMap;
   Answer::NetPacket *packet;
 
-  player = GameService::getPlayer(this, dbData->chr.data.cid, 0, 0);
+  player = getPlayer(dbData->chr.data.cid, 0, 0);
   if ( player )
   {
     pMap_0 = StaticObj::getMap(player);
     mapid = 0;
     if ( pMap_0 )
-      mapid = Map::GetMapId(pMap_0);
+      mapid = pMap_0->GetMapId();
     Answer::Logger::print(
       Answer::LogLevel::LOG_LEVEL_INFO,
       "GameService::onPlayerLoaded player cid = %lld, map = %p, mapid = %d already in game\n",
@@ -559,7 +559,7 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
   {
     v4 = dbData->chr.data.mapid;
     v5 = Answer::Singleton<MapManager>::instance();
-    pMap = MapManager::GetMap(v5, v4);
+    pMap = v5->GetMap(v4);
     if ( !pMap )
     {
       nRegion = 20001;
@@ -573,19 +573,19 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
         nRegion = 10002;
       }
       v7 = Answer::Singleton<CfgData>::instance();
-      pCfgRegion = CfgData::getMapRegion(v7, nRegion);
+      pCfgRegion = v7->getMapRegion(nRegion);
       if ( pCfgRegion )
       {
         v8 = pCfgRegion->mapid;
         v9 = Answer::Singleton<MapManager>::instance();
-        pTempMap = MapManager::GetMap(v9, v8);
+        pTempMap = v9->GetMap(v8);
         if ( pTempMap )
         {
-          pos = Map::getRandomWalkablePositionInRegion(pTempMap, pCfgRegion);
+          pos = pTempMap->getRandomWalkablePositionInRegion(pCfgRegion);
           if ( pos.x >= 0 && pos.y >= 0 )
           {
             pMap = pTempMap;
-            dbData->chr.data.mapid = Map::GetMapId(pTempMap);
+            dbData->chr.data.mapid = pTempMap->GetMapId();
             *(Position *)&dbData->chr.data.x = pos;
           }
         }
@@ -617,39 +617,40 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
           else
           {
             v11 = Answer::Singleton<CPoolManager>::instance();
-            player = CPoolManager::pop<Player>(v11);
+            player = v11->pop<Player>();
           }
           if ( player )
           {
             User::GetTencentInfo(&info, pUser);
             Player::InitTencentInfo(player, &info);
-            TencentInfo::~TencentInfo(&info);
+            /* info auto-destructed */
             Player::init(player, dbData);
             User::setPlayer(pUser, player);
-            GameService::AddPlayer(this, player, reason);
+            AddPlayer(player, reason);
             if ( !Player::reconnect(player) )
             {
               iparam2 = dbData->chr.data.y;
               x = dbData->chr.data.x;
-              RunnerId = Map::GetRunnerId(pMap);
+              RunnerId = pMap->GetRunnerId();
               v15 = Answer::Singleton<MapManager>::instance();
               MapManager::PostMsg(v15, RunnerId, GameMsgCode::GMC_PLAYER_ENTER_MAP, player, pMap, x, iparam2, 0);
               if ( GameService::getLine(this) == 9 )
               {
-                OperateLimit = Player::GetOperateLimit(player);
+                OperateLimit = player->GetOperateLimit();
                 LimitCount = CExtOperateLimit::GetLimitCount(OperateLimit, 1057);
                 v18 = Answer::Singleton<CActivityManager>::instance();
-                nActId = CActivityManager::GetCurActivityId(v18, LimitCount);
+                nActId = v18->GetCurActivityId(LimitCount);
                 LOBYTE(LimitCount) = Player::getConnId(player);
                 v19 = Answer::Singleton<GameService>::instance();
                 packet = GameService::popNetpacket(v19, LimitCount, Answer::PackType::PACK_DISPATCH, 0x1Du);
                 if ( packet )
                 {
-                  Answer::NetPacket::writeInt32(packet, nActId);
-                  WOffset = Answer::NetPacket::getWOffset(packet);
-                  Answer::NetPacket::setSize(packet, WOffset);
-                  Player::addNetPacket(player, packet, 0);
-                  Answer::NetPacket::destroy(packet);
+                  packet->writeInt32(nActId);
+  uint32_t wOffset = 0;
+                  wOffset = packet->getWOffset();
+                  packet->setSize(wOffset);
+                  player->addNetPacket(packet, 0);
+                  packet->destroy();
                 }
               }
             }
@@ -692,8 +693,7 @@ void GameService::onPlayerLoaded( PlayerDBData *const dbData, int32_t reason, bo
 
 void GameService::onPlayerLogout(Player *player)
 {
-  CPoolManager *v2; // rax
-  Answer::MutexGuard lock;
+  CPoolManager *v2; 
   User *user;
 
   if ( player )
@@ -705,10 +705,10 @@ void GameService::onPlayerLogout(Player *player)
       "GameService::onPlayerLogout push player %p, cgindex = %d\n",
       player,
       cgindex);
-    GameService::removePlayer(this, player);
+    removePlayer(player);
     if ( Player::getGateIndex(player) > 0 )
     {
-      Player::setGateIndex(player, -1);
+      player->setGateIndex(-1);
       if ( (*((unsigned __int8 (__fastcall **)(Player *))player->_vptr_Entity + 34))(player) )
       {
         (*((void (__fastcall **)(Player *))player->_vptr_Entity + 1))(player);
@@ -716,7 +716,7 @@ void GameService::onPlayerLogout(Player *player)
       else
       {
         v2 = Answer::Singleton<CPoolManager>::instance();
-        CPoolManager::push<Player>(v2, player);
+        v2->push(player);
       }
     }
     if ( (uint8_t)connid < 0x64u && (uint16_t)cgindex < 0x2710u )
@@ -737,16 +737,17 @@ void GameService::onPlayerSaved( int8_t connid, int64_t uid, int32_t sid, int32_
 
   Answer::NetPacket *packet;
 
-  packet = GameService::popNetpacket(this, connid, Answer::PackType::PACK_PROC, 0x4E25u);
+  packet = popNetpacket(connid, Answer::PackType::PACK_PROC, 0x4E25u);
   if ( packet )
   {
-    Answer::NetPacket::writeInt64(packet, uid);
-    Answer::NetPacket::writeInt32(packet, sid);
-    Answer::NetPacket::writeInt32(packet, reason);
-    Answer::NetPacket::writeInt64(packet, cid);
-    Answer::NetPacket::writeInt32(packet, param);
-    WOffset = Answer::NetPacket::getWOffset(packet);
-    Answer::NetPacket::setSize(packet, WOffset);
+    packet->writeInt64(uid);
+    packet->writeInt32(sid);
+    packet->writeInt32(reason);
+    packet->writeInt64(cid);
+    packet->writeInt32(param);
+  uint32_t wOffset = 0;
+    wOffset = packet->getWOffset();
+    packet->setSize(wOffset);
     sendPacket(connid, packet);
   }
 }
@@ -754,31 +755,31 @@ void GameService::onPlayerSaved( int8_t connid, int64_t uid, int32_t sid, int32_
 
 void GameService::sendPacket(int8_t connid, Answer::NetPacket *packet)
 {
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
 
-  pConn = GameService::GetConn(this, connid);
+  pConn = GetConn(connid);
   if ( pConn )
-    Answer::TcpClient::sendPacket(pConn, packet);
+    pConn->sendPacket(packet);
 }
 
 
 void GameService::sendPacketTo( int8_t connid, int16_t index, Answer::NetPacket *inPacket)
 {
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
 
-  pConn = GameService::GetConn(this, connid);
+  pConn = GetConn(connid);
   if ( pConn )
-    Answer::TcpService::sendPacketTo(pConn, index, inPacket);
+    pConn->sendPacketTo(index, inPacket);
 }
 
 
 int32_t GameService::replySuccess( int8_t connid, int16_t index, uint16_t proc, int64_t addon)
 {
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
 
-  pConn = GameService::GetConn(this, connid);
+  pConn = GetConn(connid);
   if ( pConn )
-    return Answer::TcpService::replySuccess(pConn, index, proc, addon);
+    return pConn->replySuccess(index, proc, addon);
   else
     return 10002;
 }
@@ -786,11 +787,11 @@ int32_t GameService::replySuccess( int8_t connid, int16_t index, uint16_t proc, 
 
 int32_t GameService::replyfailure( int8_t connid, int16_t index, uint16_t proc, int32_t errcode, int64_t addon)
 {
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
 
-  pConn = GameService::GetConn(this, connid);
+  pConn = GetConn(connid);
   if ( pConn )
-    return Answer::TcpService::replyfailure(pConn, index, proc, errcode, addon);
+    return pConn->replyfailure(index, proc, errcode, addon);
   else
     return 10002;
 }
@@ -798,23 +799,22 @@ int32_t GameService::replyfailure( int8_t connid, int16_t index, uint16_t proc, 
 
 void GameService::broadcastHuoDongDaTingIcon()
 {
-  std::pair<const long int,Player*> *v1; // rax
-  DailyActivity *PlayerDailyActivity; // rax
+  std::pair<const long int,Player*> *v1; 
+  DailyActivity *PlayerDailyActivity; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  if ( !std::map<long,Player *>::empty(&this->m_players) )
+  if ( !this->m_players.empty() )
   {
-    for ( it._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+    for ( it = this->m_players.begin();
           ;
           std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
     {
-      __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-      if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+      __x = this->m_players.end();
+      if ( it == __x )
         break;
-      v1 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+      v1 = it.operator->();
       PlayerDailyActivity = Player::GetPlayerDailyActivity(v1->second);
       DailyActivity::SendHuoDongDaTingIcon(PlayerDailyActivity);
     }
@@ -825,28 +825,27 @@ void GameService::broadcastHuoDongDaTingIcon()
 
 void GameService::SendOpenBetaIcon()
 {
-  Player *second; // rbx
-  COpenBeta *v2; // rax
-  std::pair<const long int,Player*> *v3; // rax
+  Player *second; 
+  COpenBeta *v2; 
+  std::pair<const long int,Player*> *v3; 
   ShowIcon stu;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  if ( !std::map<long,Player *>::empty(&this->m_players) )
+  if ( !this->m_players.empty() )
   {
-    for ( it._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+    for ( it = this->m_players.begin();
           ;
           std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
     {
-      __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-      if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+      __x = this->m_players.end();
+      if ( it == __x )
         break;
-      second = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it)->second;
+      second = it->second;
       v2 = Answer::Singleton<COpenBeta>::instance();
       COpenBeta::getIconState(&stu, v2, second);
-      v3 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+      v3 = it.operator->();
       Player::SendIconState(v3->second, &stu);
     }
   }
@@ -856,22 +855,21 @@ void GameService::SendOpenBetaIcon()
 
 void GameService::broadFamilyWarIcon()
 {
-  std::pair<const long int,Player*> *v1; // rax
+  std::pair<const long int,Player*> *v1; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  if ( !std::map<long,Player *>::empty(&this->m_players) )
+  if ( !this->m_players.empty() )
   {
-    for ( it._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+    for ( it = this->m_players.begin();
           ;
           std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
     {
-      __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-      if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+      __x = this->m_players.end();
+      if ( it == __x )
         break;
-      v1 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+      v1 = it.operator->();
       Player::SendFamilyWarIcon(v1->second);
     }
   }
@@ -881,31 +879,29 @@ void GameService::broadFamilyWarIcon()
 
 void GameService::broadcast( Answer::NetPacket *inPacket, const IndexMap *const indexMap)
 {
-  std::list<short int> *p_second; // r12
-  char first; // dl
-  std::_Rb_tree_const_iterator<std::pair<const int8_t,std::list<short int> > > iter;
+  std::list<short int> *p_second;   /* var */std::_Rb_tree_const_iterator<std::pair<const int8_t,std::list<short int> > > iter;
   std::_Rb_tree_const_iterator<std::pair<const int8_t,std::list<short int> > > __x;
 
   if ( inPacket )
   {
-    if ( std::map<int8_t,std::list<short>>::empty(indexMap) )
+    if ( indexMap.empty() )
     {
-      Answer::NetPacket::destroy(inPacket);
+      inPacket->destroy();
     }
     else
     {
-      for ( iter._M_node = std::map<int8_t,std::list<short>>::begin(indexMap)._M_node;
+      for ( iter = indexMap.begin();
             ;
-            std::_Rb_tree_const_iterator<std::pair<int8_t const,std::list<short>>>::operator++(&iter) )
+            ++iter )
       {
-        __x._M_node = std::map<int8_t,std::list<short>>::end(indexMap)._M_node;
-        if ( !std::_Rb_tree_const_iterator<std::pair<int8_t const,std::list<short>>>::operator!=(&iter, &__x) )
+        __x = indexMap.end();
+        if ( iter == __x )
           break;
-        p_second = &std::_Rb_tree_const_iterator<std::pair<int8_t const,std::list<short>>>::operator->(&iter)->second;
-        first = std::_Rb_tree_const_iterator<std::pair<int8_t const,std::list<short>>>::operator->(&iter)->first;
-        GameService::broadcast(this, inPacket, first, p_second);
+        p_second = &iter->second;
+        first = iter->first;
+        broadcast(inPacket, first, p_second);
       }
-      Answer::NetPacket::destroy(inPacket);
+      inPacket->destroy();
     }
   }
 }
@@ -915,9 +911,9 @@ void GameService::broadcast( Answer::NetPacket *inPacket, int8_t connid, const I
 {
 
 
-  int16_t *v7; // rax
+  int16_t *v7; 
 
-  char *Buffer; // rax
+  char *Buffer; 
 
   std::_List_const_iterator<short int> iter;
   std::_List_const_iterator<short int> __x;
@@ -925,35 +921,36 @@ void GameService::broadcast( Answer::NetPacket *inPacket, int8_t connid, const I
 
   if ( inPacket )
   {
-    if ( std::list<short>::empty(indexList) )
+    if ( indexList.empty() )
     {
-      Answer::NetPacket::destroy(inPacket);
+      inPacket->destroy();
     }
     else
     {
-      nsize = std::list<short>::size(indexList);
-      v4 = 2 * (nsize + 1) + Answer::NetPacket::getSize(inPacket);
-      Proc = Answer::NetPacket::getProc(inPacket);
+      nsize = indexList.size();
+      v4 = 2 * (nsize + 1) + inPacket->getSize();
+      Proc = inPacket->getProc();
       Type = Answer::NetPacket::getType(inPacket);
-      packet = GameService::popNetpacket(this, connid, Type, Proc, v4);
+      packet = popNetpacket(connid, Type, Proc, v4);
       if ( packet )
       {
-        Answer::NetPacket::writeInt16(packet, nsize);
-        for ( iter._M_node = std::list<short>::begin(indexList)._M_node;
+        packet->writeInt16(nsize);
+        for ( iter = indexList.begin();
               ;
-              std::_List_const_iterator<short>::operator++(&iter) )
+              ++iter )
         {
-          __x._M_node = std::list<short>::end(indexList)._M_node;
-          if ( !std::_List_const_iterator<short>::operator!=(&iter, &__x) )
+          __x = indexList.end();
+          if ( iter == __x )
             break;
-          v7 = (int16_t *)std::_List_const_iterator<short>::operator*(&iter);
+          v7 = (int16_t *)*iter;
           Answer::NetPacket::writeInt16(packet, *v7);
         }
-        Size = Answer::NetPacket::getSize(inPacket);
-        Buffer = Answer::NetPacket::getBuffer(inPacket);
-        Answer::NetPacket::write(packet, Buffer, Size);
-        WOffset = Answer::NetPacket::getWOffset(packet);
-        Answer::NetPacket::setSize(packet, WOffset);
+        Size = inPacket->getSize();
+        Buffer = inPacket->getBuffer();
+        packet->write(Buffer, Size);
+  uint32_t wOffset = 0;
+        wOffset = packet->getWOffset();
+        packet->setSize(wOffset);
         sendPacket(connid, packet);
       }
     }
@@ -963,10 +960,9 @@ void GameService::broadcast( Answer::NetPacket *inPacket, int8_t connid, const I
 
 void GameService::broadcast(Answer::NetPacket *inPacket)
 {
-  std::list<short int> *v2; // rax
+  std::list<short int> *v2; 
   IndexMap indexMap;
   std::_Rb_tree_const_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __it;
   std::_Rb_tree_const_iterator<std::pair<const long int,Player*> > v7;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > v8;
@@ -976,40 +972,39 @@ void GameService::broadcast(Answer::NetPacket *inPacket)
 
   if ( inPacket )
   {
-    std::map<int8_t,std::list<short>>::map(&indexMap);
+    IndexMap indexMap;
     Answer::MutexGuard lock(&this->m_playerLock);
-    __it._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
-    std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::_Rb_tree_const_iterator(&iter, &__it);
+    __it = this->m_players.begin();
+    iter = __it;
     while ( 1 )
     {
-      v8._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-      std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::_Rb_tree_const_iterator(&v7, &v8);
-      if ( !std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::operator!=(&iter, &v7) )
+      v8 = this->m_players.end();
+      v7 = v8;
+      if ( iter == v7 )
         break;
-      player = std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+      player = iter->second;
       if ( player )
       {
         __x = Player::getGateIndex(player);
         __k = Player::getConnId(player);
-        v2 = std::map<int8_t,std::list<short>>::operator[](&indexMap, &__k);
-        std::list<short>::push_back(v2, &__x);
+        v2 = indexMap[__k];
+        v2.push_back(__x);
       }
-      std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::operator++(&iter);
+      ++iter;
     }
     /* MutexGuard destroyed */
-    GameService::broadcast(this, inPacket, &indexMap);
-    std::map<int8_t,std::list<short>>::~map(&indexMap);
+    broadcast(inPacket, &indexMap);
+    /* indexMap destructed */;
   }
 }
 
 
 void GameService::broadcast(Answer::NetPacket *inPacket, const CharIdList *const cids)
 {
-  const int64_t *v3; // rax
-  std::list<short int> *v4; // rax
+  const int64_t *v3; 
+  std::list<short int> *v4; 
   IndexMap indexMap;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > findIter;
-  Answer::MutexGuard lock;
   std::_List_const_iterator<long int> iter;
   std::_List_const_iterator<long int> v10;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
@@ -1019,37 +1014,37 @@ void GameService::broadcast(Answer::NetPacket *inPacket, const CharIdList *const
 
   if ( inPacket )
   {
-    if ( std::list<long>::empty(cids) )
+    if ( cids.empty() )
     {
-      Answer::NetPacket::destroy(inPacket);
+      inPacket->destroy();
     }
     else
     {
-      std::map<int8_t,std::list<short>>::map(&indexMap);
-      for ( iter._M_node = std::list<long>::begin(cids)._M_node; ; std::_List_const_iterator<long>::operator++(&iter) )
+      IndexMap indexMap;
+      for ( iter = cids.begin(); ; ++iter )
       {
-        v10._M_node = std::list<long>::end(cids)._M_node;
-        if ( !std::_List_const_iterator<long>::operator!=(&iter, &v10) )
+        v10 = cids.end();
+        if ( iter == v10 )
           break;
         Answer::MutexGuard lock(&this->m_playerLock);
-        v3 = std::_List_const_iterator<long>::operator*(&iter);
-        findIter._M_node = std::map<long,Player *>::find(&this->m_players, v3)._M_node;
-        __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-        if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&findIter, &__x) )
+        v3 = *iter;
+        findIter = this->m_players.find(v3);
+        __x = this->m_players.end();
+        if ( findIter != __x )
         {
-          player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&findIter)->second;
+          player = findIter->second;
           if ( player )
           {
             GateIndex = Player::getGateIndex(player);
             __k = Player::getConnId(player);
-            v4 = std::map<int8_t,std::list<short>>::operator[](&indexMap, &__k);
-            std::list<short>::push_back(v4, &GateIndex);
+            v4 = indexMap[__k];
+            v4.push_back(GateIndex);
           }
         }
         /* MutexGuard destroyed */
       }
-      GameService::broadcast(this, inPacket, &indexMap);
-      std::map<int8_t,std::list<short>>::~map(&indexMap);
+      broadcast(inPacket, &indexMap);
+      /* indexMap destructed */;
     }
   }
 }
@@ -1057,10 +1052,9 @@ void GameService::broadcast(Answer::NetPacket *inPacket, const CharIdList *const
 
 void GameService::broadcastToFamily( Answer::NetPacket *inPacket, FamilyId_t nFamilyId, int32_t nLevel)
 {
-  std::list<short int> *v5; // rax
+  std::list<short int> *v5; 
   IndexMap indexMap;
   std::_Rb_tree_const_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __it;
   std::_Rb_tree_const_iterator<std::pair<const long int,Player*> > v12;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > v13;
@@ -1072,35 +1066,35 @@ void GameService::broadcastToFamily( Answer::NetPacket *inPacket, FamilyId_t nFa
   {
     if ( nFamilyId > 0 )
     {
-      std::map<int8_t,std::list<short>>::map(&indexMap);
+      IndexMap indexMap;
       Answer::MutexGuard lock(&this->m_playerLock);
-      __it._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
-      std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::_Rb_tree_const_iterator(&iter, &__it);
+      __it = this->m_players.begin();
+      iter = __it;
       while ( 1 )
       {
-        v13._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-        std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::_Rb_tree_const_iterator(&v12, &v13);
-        if ( !std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::operator!=(&iter, &v12) )
+        v13 = this->m_players.end();
+        v12 = v13;
+        if ( iter == v12 )
           break;
-        player = std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+        player = iter->second;
         if ( player
-          && Player::getFamilyId(player) == nFamilyId
+          && player->getFamilyId() == nFamilyId
           && (*((int (__fastcall **)(Player *))player->_vptr_Entity + 9))(player) > nLevel )
         {
           __x = Player::getGateIndex(player);
           __k = Player::getConnId(player);
-          v5 = std::map<int8_t,std::list<short>>::operator[](&indexMap, &__k);
-          std::list<short>::push_back(v5, &__x);
+          v5 = indexMap[__k];
+          v5.push_back(__x);
         }
-        std::_Rb_tree_const_iterator<std::pair<long const,Player *>>::operator++(&iter);
+        ++iter;
       }
       /* MutexGuard destroyed */
-      GameService::broadcast(this, inPacket, &indexMap);
-      std::map<int8_t,std::list<short>>::~map(&indexMap);
+      broadcast(inPacket, &indexMap);
+      /* indexMap destructed */;
     }
     else
     {
-      Answer::NetPacket::destroy(inPacket);
+      inPacket->destroy();
     }
   }
 }
@@ -1110,14 +1104,14 @@ void GameService::worldBroadcast(int8_t connid, Answer::NetPacket *inPacket)
 {
 
 
-  char *Buffer; // rcx
+  char *Buffer; 
 
   Answer::NetPacket *packet;
 
   if ( inPacket )
   {
-    oldSize = Answer::NetPacket::getSize(inPacket);
-    if ( Answer::NetPacket::rightShift(inPacket, 2u) )
+    oldSize = inPacket->getSize();
+    if ( inPacket->rightShift(2u) )
     {
       Answer::NetPacket::writeInt16(inPacket, -1);
       Answer::NetPacket::setSize(inPacket, oldSize + 2);
@@ -1125,20 +1119,21 @@ void GameService::worldBroadcast(int8_t connid, Answer::NetPacket *inPacket)
     }
     else
     {
-      v3 = Answer::NetPacket::getSize(inPacket) + 2;
-      Proc = Answer::NetPacket::getProc(inPacket);
+      v3 = inPacket->getSize() + 2;
+      Proc = inPacket->getProc();
       Type = Answer::NetPacket::getType(inPacket);
-      packet = GameService::popNetpacket(this, connid, Type, Proc, v3);
+      packet = popNetpacket(connid, Type, Proc, v3);
       if ( packet )
       {
         Answer::NetPacket::writeInt16(packet, -1);
-        Size = Answer::NetPacket::getSize(inPacket);
-        Buffer = Answer::NetPacket::getBuffer(inPacket);
-        Answer::NetPacket::write(packet, Buffer, Size);
-        WOffset = Answer::NetPacket::getWOffset(packet);
-        Answer::NetPacket::setSize(packet, WOffset);
+        Size = inPacket->getSize();
+        Buffer = inPacket->getBuffer();
+        packet->write(Buffer, Size);
+  uint32_t wOffset = 0;
+        wOffset = packet->getWOffset();
+        packet->setSize(wOffset);
         sendPacket(connid, packet);
-        Answer::NetPacket::destroy(inPacket);
+        inPacket->destroy();
       }
     }
   }
@@ -1149,45 +1144,46 @@ void GameService::worldBroadcast(Answer::NetPacket *inPacket)
 {
 
 
-  char *Buffer; // rax
+  char *Buffer; 
 
 
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > iter;
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > __x;
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
   Answer::NetPacket *packet;
 
   if ( inPacket )
   {
-    for ( iter._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::begin(&this->m_mConn)._M_node;
+    for ( iter = this->m_mConn.begin();
           ;
           std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
     {
-      __x._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::end(&this->m_mConn)._M_node;
-      if ( !std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator!=(&iter, &__x) )
+      __x = this->m_mConn.end();
+      if ( iter == __x )
         break;
-      pConn = std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator->(&iter)->second;
+      pConn = iter->second;
       if ( pConn )
       {
-        Size = Answer::NetPacket::getSize(inPacket);
+        Size = inPacket->getSize();
         packet = Answer::TcpClient::popNetpacket(pConn, Size + 2);
         if ( packet )
         {
           Answer::NetPacket::writeInt16(packet, -1);
-          v3 = Answer::NetPacket::getSize(inPacket);
-          Buffer = Answer::NetPacket::getBuffer(inPacket);
-          Answer::NetPacket::write(packet, Buffer, v3);
-          WOffset = Answer::NetPacket::getWOffset(packet);
-          Answer::NetPacket::setSize(packet, WOffset);
+          v3 = inPacket->getSize();
+          Buffer = inPacket->getBuffer();
+          packet->write(Buffer, v3);
+  uint32_t wOffset = 0;
+          wOffset = packet->getWOffset();
+          packet->setSize(wOffset);
           Type = Answer::NetPacket::getType(inPacket);
-          Answer::NetPacket::setType(packet, Type);
-          Proc = Answer::NetPacket::getProc(inPacket);
-          Answer::NetPacket::setProc(packet, Proc);
-          Answer::TcpClient::sendPacket(pConn, packet);
+          packet->setType(Type);
+          Proc = inPacket->getProc();
+          packet->setProc(Proc);
+          pConn->sendPacket(packet);
         }
       }
     }
-    Answer::NetPacket::destroy(inPacket);
+    inPacket->destroy();
   }
 }
 
@@ -1197,29 +1193,30 @@ void GameService::broadcastActivityState(int32_t nId, int8_t nState)
 
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > iter;
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > __x;
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
   Answer::NetPacket *packet;
 
-  for ( iter._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::begin(&this->m_mConn)._M_node;
+  for ( iter = this->m_mConn.begin();
         ;
         std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::end(&this->m_mConn)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator!=(&iter, &__x) )
+    __x = this->m_mConn.end();
+    if ( iter == __x )
       break;
-    pConn = std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator->(&iter)->second;
+    pConn = iter->second;
     if ( pConn )
     {
-      packet = Answer::TcpClient::popNetpacket(pConn);
+      packet = pConn->popNetpacket();
       if ( packet )
       {
-        Answer::NetPacket::writeInt32(packet, nId);
-        Answer::NetPacket::writeInt8(packet, nState);
-        WOffset = Answer::NetPacket::getWOffset(packet);
-        Answer::NetPacket::setSize(packet, WOffset);
+        packet->writeInt32(nId);
+        packet->writeInt8(nState);
+  uint32_t wOffset = 0;
+        wOffset = packet->getWOffset();
+        packet->setSize(wOffset);
         Answer::NetPacket::setType(packet, Answer::PackType::PACK_DISPATCH);
-        Answer::NetPacket::setProc(packet, 0x4EC4u);
-        Answer::TcpClient::sendPacket(pConn, packet);
+        packet->setProc(0x4EC4u);
+        pConn->sendPacket(packet);
       }
     }
   }
@@ -1228,15 +1225,14 @@ void GameService::broadcastActivityState(int32_t nId, int8_t nState)
 
 void GameService::AddPlayer(Player *player, int32_t reason)
 {
-  FamilyId_t FamilyId; // rbx
+  FamilyId_t FamilyId; 
 
-  CActivityManager *v5; // rax
-  CharId_t Cid; // rcx
+  CActivityManager *v5; 
+  CharId_t Cid; 
 
 
-  int8_t v10; // bl
-  DBService *v11; // rax
-  Answer::MutexGuard lock;
+  int8_t v10; 
+  DBService *v11; 
   int64_t __k;
   std::string strName;
 
@@ -1244,44 +1240,39 @@ void GameService::AddPlayer(Player *player, int32_t reason)
   {
     Answer::MutexGuard lock(&this->m_playerLock);
     __k = Player::getCid(player);
-    *std::map<long,Player *>::operator[](&this->m_players, &__k) = player;
+    this->m_players[__k] = player;
     /* MutexGuard destroyed */
     if ( reason != 3 )
     {
-      FamilyId = Player::getFamilyId(player);
+      FamilyId = player->getFamilyId();
       ConnId = Player::getConnId(player);
       v5 = Answer::Singleton<CActivityManager>::instance();
-      if ( FamilyId == CActivityManager::GetCityWarWinner(v5, ConnId) && Player::getFamilyPosition(player) == 3 )
+      if ( FamilyId == v5->GetCityWarWinner(ConnId) && player->getFamilyPosition() == 3 )
       {
-        Player::getName((const Player *const)&strName);
+        Player::getName(nullptr, &strName);
         Cid = Player::getCid(player);
-        GameService::broadcastCityWarWinnerLogin(this, Cid, &strName);
+        broadcastCityWarWinnerLogin(Cid, &strName);
               }
     }
-    GameService::sendSocialAddPlayer(this, player);
+    sendSocialAddPlayer(player);
     Player::sendBasicInfo(player, reason);
-    LastLoginTime = Player::getLastLoginTime(player);
+    LastLoginTime = player->getLastLoginTime();
     v9 = Player::getCid(player);
     v10 = Player::getConnId(player);
     v11 = Answer::Singleton<DBService>::instance();
-    DBService::UpdateLoginTime(v11, v10, v9, LastLoginTime);
+    v11->UpdateLoginTime(v10, v9, LastLoginTime);
   }
 }
 
 
 void GameService::removePlayer(Player *player)
 {
-  CharId_t Cid; // rax
-  std::pair<const long int,Player*> *v3; // rax
-  int64_t v4; // rbx
-  std::pair<const long int,Player*> *v5; // rax
+  CharId_t Cid; 
+  std::pair<const long int,Player*> *v3;   /* var */std::pair<const long int,Player*> *v5; 
 
-  std::pair<const long int,Player*> *v7; // rax
+  std::pair<const long int,Player*> *v7; 
 
-  CharId_t v9; // rbx
-  int64_t v10; // rax
-  std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
+  CharId_t v9;   /* var */std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
   int64_t __x;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > v14;
 
@@ -1289,9 +1280,9 @@ void GameService::removePlayer(Player *player)
   {
     Answer::MutexGuard lock(&this->m_playerLock);
     __x = Player::getCid(player);
-    it._M_node = std::map<long,Player *>::find(&this->m_players, &__x)._M_node;
-    v14._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator==(&it, &v14) )
+    it = this->m_players.find(__x);
+    v14 = this->m_players.end();
+    if ( it == v14 )
     {
       Cid = Player::getCid(player);
       Answer::Logger::print(
@@ -1302,18 +1293,18 @@ void GameService::removePlayer(Player *player)
     }
     else
     {
-      v3 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+      v3 = it.operator->();
       v4 = (*((int64_t (__fastcall **)(Player *))v3->second->_vptr_Entity + 2))(v3->second);
       if ( v4 == (*((int64_t (__fastcall **)(Player *))player->_vptr_Entity + 2))(player) )
       {
-        std::map<long,Player *>::erase(&this->m_players, it);
-        GameService::sendSocialRemovePlayer(this, player);
+        this->m_players.erase(it);
+        sendSocialRemovePlayer(player);
       }
       else
       {
-        v5 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+        v5 = it.operator->();
         v6 = Player::getCid(v5->second);
-        v7 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+        v7 = it.operator->();
         v8 = (*((int64_t (__fastcall **)(Player *))v7->second->_vptr_Entity + 2))(v7->second);
         v9 = Player::getCid(player);
         v10 = (*((int64_t (__fastcall **)(Player *))player->_vptr_Entity + 2))(player);
@@ -1332,27 +1323,23 @@ void GameService::removePlayer(Player *player)
 
 
 bool GameService::SendChatValidate( Player *Owner, int32_t Channel, Answer::NetPacket *inPacket)
-{
-  bool v4; // bl
-  int8_t ConnId; // bl
+{  /* var */int8_t ConnId; 
 
 
-  CharId_t v8; // rax
+  CharId_t v8; 
 
-  char *Buffer; // rax
+  char *Buffer; 
 
 
-  ChatValidate *v13; // rbx
-  ChatValidate *v14; // rbx
-  ChatValidate *v15; // rbx
+  ChatValidate *v13; 
+  ChatValidate *v14; 
+  ChatValidate *v15; 
   std::string Key;
   std::string Md5String;
   std::string Cid;
   std::string Sid;
   std::string Name;
   std::string PassPort;
-  Answer::MutexGuard lockChat;
-  Answer::MutexGuard lock;
   std::string v32;
   std::string __rhs;
   Answer::MD5 v35;
@@ -1362,12 +1349,12 @@ bool GameService::SendChatValidate( Player *Owner, int32_t Channel, Answer::NetP
   Answer::MutexGuard lock(&this->m_playerLock);
   Answer::MutexGuard lockChat(&this->m_ChatValidateLock);
   ConnId = Player::getConnId(Owner);
-  packet = GameService::popNetpacket(this, ConnId, Answer::PackType::PACK_DISPATCH, 0x2ED8u);
+  packet = popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2ED8u);
   if ( packet )
   {
     Player::GetPassport((Player *const)&PassPort);
-    Player::getName((const Player *const)&Name);
-    SidInt = Player::getSid(Owner);
+    Player::getName(nullptr, &Name);
+    SidInt = Owner->getSid();
                 v6 = std::ios::out | std::ios::in;
     std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream(v19, (uint32_t)v6);
     std::ostream::operator<<(v20, (uint32_t)SidInt);
@@ -1379,7 +1366,7 @@ bool GameService::SendChatValidate( Player *Owner, int32_t Channel, Answer::NetP
     std::ostream::operator<<(v20, v8);
     std::operator>><char>(v19, &Cid);
     std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::~basic_stringstream(v19);
-    Player::GetPlatform((const Player *const)v31);
+    Player::GetPlatform(nullptr, v31);
     std::operator+<char>((const char *)__lhs, &stru_8DF6CD);
     std::operator+<char>(&__rhs, __lhs);
     std::operator+<char>(&v32, &__rhs);
@@ -1389,34 +1376,25 @@ bool GameService::SendChatValidate( Player *Owner, int32_t Channel, Answer::NetP
     std::operator+<char>(&Key, (const std::string *const)&v35);
         Answer::MD5::~MD5((Answer::MD5 *const)v35.count);
     ++*/* member access via offset */;
-    Answer::NetPacket::writeInt8(packet, 1);
+    packet->writeInt8(1);
     Answer::NetPacket::writeInt32(packet, */* member access via offset */);
     Answer::NetPacket::writeUTF8(packet, &Key);
-    Size = Answer::NetPacket::getSize(inPacket);
-    Buffer = Answer::NetPacket::getBuffer(inPacket);
-    Answer::NetPacket::write(packet, Buffer, Size);
-    WOffset = Answer::NetPacket::getWOffset(packet);
-    Answer::NetPacket::setSize(packet, WOffset);
+    Size = inPacket->getSize();
+    Buffer = inPacket->getBuffer();
+    packet->write(Buffer, Size);
+  uint32_t wOffset = 0;
+    wOffset = packet->getWOffset();
+    packet->setSize(wOffset);
     GateIndex = Player::getGateIndex(Owner);
     LOBYTE(Size) = Player::getConnId(Owner);
-    GameService::sendPacketTo(this, Size, GateIndex, packet);
-    std::map<int,ChatValidate>::operator[](
-      &this->m_ChatValidateMap,
-      (const int *const)((char *)&loc_7A1530 + (int64_t)this))->SendPacket = inPacket;
-    v13 = std::map<int,ChatValidate>::operator[](
-            &this->m_ChatValidateMap,
-            (const int *const)((char *)&loc_7A1530 + (int64_t)this));
+    sendPacketTo(Size, GateIndex, packet);
+    this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this))->SendPacket = inPacket;
+    v13 = this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this));
     v13->CharId = Player::getCid(Owner);
-    v14 = std::map<int,ChatValidate>::operator[](
-            &this->m_ChatValidateMap,
-            (const int *const)((char *)&loc_7A1530 + (int64_t)this));
+    v14 = this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this));
     v14->Time = Unit::getNow(Owner);
-    std::map<int,ChatValidate>::operator[](
-      &this->m_ChatValidateMap,
-      (const int *const)((char *)&loc_7A1530 + (int64_t)this))->Channel = Channel;
-    v15 = std::map<int,ChatValidate>::operator[](
-            &this->m_ChatValidateMap,
-            (const int *const)((char *)&loc_7A1530 + (int64_t)this));
+    this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this))->Channel = Channel;
+    v15 = this->m_ChatValidateMap[(const int *const]((char *)&loc_7A1530 + (int64_t)this));
     v15->SendCharId = Player::getCid(Owner);
     v4 = 1;
                           }
@@ -1432,12 +1410,11 @@ bool GameService::SendChatValidate( Player *Owner, int32_t Channel, Answer::NetP
 
 void GameService::addPet(CObjPet *pPet)
 {
-  Answer::MutexGuard lock;
   if ( pPet )
   {
     Answer::MutexGuard lock(&this->m_petsLock);
     __k[0] = CObjPet::GetPetId(pPet);
-    *std::map<long,CObjPet *>::operator[](&this->m_pets, __k) = pPet;
+    *this->m_pets[__k] = pPet;
     /* MutexGuard destroyed */
   }
 }
@@ -1445,12 +1422,11 @@ void GameService::addPet(CObjPet *pPet)
 
 void GameService::removePet(CObjPet *pPet)
 {
-  Answer::MutexGuard lock;
   if ( pPet )
   {
     Answer::MutexGuard lock(&this->m_petsLock);
     __x[0] = CObjPet::GetPetId(pPet);
-    std::map<long,CObjPet *>::erase(&this->m_pets, __x);
+    this->m_pets.erase(__x);
     /* MutexGuard destroyed */
   }
 }
@@ -1458,12 +1434,11 @@ void GameService::removePet(CObjPet *pPet)
 
 void GameService::addMonster(Monster *monster)
 {
-  Answer::MutexGuard lock;
   if ( monster )
   {
     Answer::MutexGuard lock(&this->m_monstersLock);
     __k[0] = (*((int64_t (__fastcall **)(Monster *))monster->_vptr_Entity + 2))(monster);
-    *std::map<long,Monster *>::operator[](&this->m_monsters, __k) = monster;
+    *this->m_monsters[__k] = monster;
     /* MutexGuard destroyed */
   }
 }
@@ -1471,12 +1446,11 @@ void GameService::addMonster(Monster *monster)
 
 void GameService::removeMonster(Monster *monster)
 {
-  Answer::MutexGuard lock;
   if ( monster )
   {
     Answer::MutexGuard lock(&this->m_monstersLock);
     __x[0] = (*((int64_t (__fastcall **)(Monster *))monster->_vptr_Entity + 2))(monster);
-    std::map<long,Monster *>::erase(&this->m_monsters, __x);
+    this->m_monsters.erase(__x);
     /* MutexGuard destroyed */
   }
 }
@@ -1484,12 +1458,11 @@ void GameService::removeMonster(Monster *monster)
 
 void GameService::addTrailer(Trailer *trailer)
 {
-  Answer::MutexGuard lock;
   if ( trailer )
   {
     Answer::MutexGuard lock(/* mutex member */);
     __k[0] = (*((int64_t (__fastcall **)(Trailer *))trailer->_vptr_Entity + 2))(trailer);
-    *std::map<long,Trailer *>::operator[](&this->m_trailers, __k) = trailer;
+    *this->m_trailers[__k] = trailer;
     /* MutexGuard destroyed */
   }
 }
@@ -1497,12 +1470,11 @@ void GameService::addTrailer(Trailer *trailer)
 
 void GameService::removeTrailer(Trailer *trailer)
 {
-  Answer::MutexGuard lock;
   if ( trailer )
   {
     Answer::MutexGuard lock(/* mutex member */);
     __x[0] = (*((int64_t (__fastcall **)(Trailer *))trailer->_vptr_Entity + 2))(trailer);
-    std::map<long,Trailer *>::erase(&this->m_trailers, __x);
+    this->m_trailers.erase(__x);
     /* MutexGuard destroyed */
   }
 }
@@ -1511,22 +1483,21 @@ void GameService::removeTrailer(Trailer *trailer)
 void GameService::saveAllPlayerToDB()
 {
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   nNowTime = Answer::DayTime::now();
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( it._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( it = this->m_players.begin();
         ;
         std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&it) )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+    __x = this->m_players.end();
+    if ( it == __x )
       break;
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it)->second;
+    player = it->second;
     if ( player )
-      Player::onLogout(player, 1, 0);
+      player->onLogout(1, 0);
   }
   /* MutexGuard destroyed */
 }
@@ -1534,23 +1505,22 @@ void GameService::saveAllPlayerToDB()
 
 void GameService::onUserPayed(Answer::NetPacket *inPacket)
 {
-  std::pair<const long int,Player*> *v2; // rax
+  std::pair<const long int,Player*> *v2; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
   CharId_t Cid;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
 
   if ( inPacket )
   {
-    Cid = Answer::NetPacket::readInt64(inPacket);
+    Cid = inPacket->readInt64();
     Answer::MutexGuard lock(&this->m_playerLock);
-    it._M_node = std::map<long,Player *>::find(&this->m_players, &Cid)._M_node;
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+    it = this->m_players.find(Cid);
+    __x = this->m_players.end();
+    if ( it != __x )
     {
-      if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it)->second )
+      if ( it->second )
       {
-        v2 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+        v2 = it.operator->();
         Player::addNetPacket(v2->second, inPacket, 8u);
       }
     }
@@ -1559,24 +1529,23 @@ void GameService::onUserPayed(Answer::NetPacket *inPacket)
 }
 
 
-void GameService::onAddUser( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onAddUser( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  CPoolManager *v3; // rax
-  Answer::MutexGuard lock;
+  CPoolManager *v3; 
   User *user;
 
   if ( inPacket )
   {
-    cgindex = Answer::NetPacket::readInt16(inPacket);
-    uid = Answer::NetPacket::readInt64(inPacket);
-    sid = Answer::NetPacket::readInt32(inPacket);
-    connid = MutiConn<GameService>::GetId(pConn);
+    cgindex = inPacket->readInt16();
+    uid = inPacket->readInt64();
+    sid = inPacket->readInt32();
+    connid = pConn->GetId();
     Answer::MutexGuard lock(&this->m_userLock);
     if ( (uint8_t)connid < 0x64u && cgindex > 0 && cgindex <= 9999 && uid > 0 && sid > 0 )
     {
       nIndex = getUserIndex(connid, cgindex);
       v3 = Answer::Singleton<CPoolManager>::instance();
-      user = CPoolManager::pop<User>(v3);
+      user = v3->pop<Player>();
       if ( user )
       {
         User::init(user, uid, sid);
@@ -1588,48 +1557,46 @@ void GameService::onAddUser( std::map<int8_t,ConnType*>::ConnType *pConn, Answer
 }
 
 
-void GameService::qqToPlayer( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::qqToPlayer( ConnType *pConn, Answer::NetPacket *inPacket)
 {
   TencentInfo info;
-  Answer::MutexGuard lock;
   User *user;
 
   if ( inPacket )
   {
-    cgindex = Answer::NetPacket::readInt16(inPacket);
-    connid = MutiConn<GameService>::GetId(pConn);
-    TencentInfo::TencentInfo(&info);
-    TencentInfo::UnPacketInfo(&info, inPacket);
+    cgindex = inPacket->readInt16();
+    connid = pConn->GetId();
+    TencentInfo info;
+    info.UnPacketInfo(inPacket);
     Answer::MutexGuard lock(&this->m_userLock);
     nIndex = getUserIndex(connid, cgindex);
     user = this->m_users[cgindex];
     if ( user )
       User::SetTencentInfo(user, &info);
     /* MutexGuard destroyed */
-    TencentInfo::~TencentInfo(&info);
+    /* info auto-destructed */
   }
 }
 
 
-void GameService::onRemoveUser( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onRemoveUser( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  int8_t v3; // bl
-  GameService *v4; // rax
+  int8_t v3; 
+  GameService *v4; 
 
-  CharId_t Cid; // rax
-  void (__fastcall *v7)(Player *, _QWORD, _QWORD, _QWORD); // r12
+  CharId_t Cid; 
+  void (__fastcall *v7)(Player *, _QWORD, _QWORD, _QWORD); 
 
-  CPoolManager *v9; // rax
-  CPoolManager *v10; // rax
-  Answer::MutexGuard lock;
+  CPoolManager *v9; 
+  CPoolManager *v10; 
   User *user;
   Player *player;
   Answer::NetPacket *packet;
 
   if ( inPacket )
   {
-    cgindex = Answer::NetPacket::readInt16(inPacket);
-    connid = MutiConn<GameService>::GetId(pConn);
+    cgindex = inPacket->readInt16();
+    connid = pConn->GetId();
     if ( (uint8_t)connid < 0x64u && cgindex > 0 && cgindex <= 9999 )
     {
       Answer::MutexGuard lock(&this->m_userLock);
@@ -1644,12 +1611,12 @@ void GameService::onRemoveUser( std::map<int8_t,ConnType*>::ConnType *pConn, Ans
           this->m_users[nIndex] = 0;
           User::reset(user);
           v10 = Answer::Singleton<CPoolManager>::instance();
-          CPoolManager::push<User>(v10, user);
+          v10->push(user);
           // goto removed
         }
-        Answer::NetPacket::readInt64(inPacket);
-        reason = Answer::NetPacket::readInt32(inPacket);
-        param = Answer::NetPacket::readInt32(inPacket);
+        inPacket->readInt64();
+        reason = inPacket->readInt32();
+        param = inPacket->readInt32();
         if ( !StaticObj::getMap(player) )
         {
           Cid = Player::getCid(player);
@@ -1660,10 +1627,10 @@ void GameService::onRemoveUser( std::map<int8_t,ConnType*>::ConnType *pConn, Ans
           v7 = (void (__fastcall *)(Player *, _QWORD, _QWORD, _QWORD))*((_QWORD *)player->_vptr_Entity + 35);
           Now = Unit::getNow(player);
           v7(player, (uint32_t)reason, (uint32_t)param, Now);
-          GameService::removePlayer(this, player);
+          removePlayer(player);
           if ( Player::getGateIndex(player) > 0 )
           {
-            Player::setGateIndex(player, -1);
+            player->setGateIndex(-1);
             if ( (*((unsigned __int8 (__fastcall **)(Player *))player->_vptr_Entity + 34))(player) )
             {
               if ( player )
@@ -1672,7 +1639,7 @@ void GameService::onRemoveUser( std::map<int8_t,ConnType*>::ConnType *pConn, Ans
             else
             {
               v9 = Answer::Singleton<CPoolManager>::instance();
-              CPoolManager::push<Player>(v9, player);
+              v9->push(player);
             }
           }
           // goto removed
@@ -1682,12 +1649,13 @@ void GameService::onRemoveUser( std::map<int8_t,ConnType*>::ConnType *pConn, Ans
         packet = GameService::popNetpacket(v4, v3, Answer::PackType::PACK_DISPATCH, 8u);
         if ( packet )
         {
-          Answer::NetPacket::writeInt32(packet, reason);
-          Answer::NetPacket::writeInt32(packet, param);
-          WOffset = Answer::NetPacket::getWOffset(packet);
-          Answer::NetPacket::setSize(packet, WOffset);
-          Player::addNetPacket(player, packet, 0);
-          Answer::NetPacket::destroy(packet);
+          packet->writeInt32(reason);
+          packet->writeInt32(param);
+  uint32_t wOffset = 0;
+          wOffset = packet->getWOffset();
+          packet->setSize(wOffset);
+          player->addNetPacket(packet, 0);
+          packet->destroy();
           // goto removed
         }
       }
@@ -1698,34 +1666,29 @@ void GameService::onRemoveUser( std::map<int8_t,ConnType*>::ConnType *pConn, Ans
 }
 
 
-void GameService::onGMReloadItem( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onGMReloadItem( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  CfgData *v3; // rax
+  CfgData *v3; 
 
   v3 = Answer::Singleton<CfgData>::instance();
-  CfgData::reload(v3);
+  v3->reload();
 }
 
 
-void GameService::onSocialNetpacket( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialNetpacket( ConnType *pConn, Answer::NetPacket *inPacket)
 {
   if ( inPacket )
   {
-    cgindex = Answer::NetPacket::readInt32(inPacket);
-    connid = MutiConn<GameService>::GetId(pConn);
+    cgindex = inPacket->readInt32();
+    connid = pConn->GetId();
     if ( (uint8_t)connid < 0x64u && cgindex > 0 && cgindex <= 9999 )
-      GameService::onGameNetpacket(this, connid, cgindex, inPacket);
+      onGameNetpacket(connid, cgindex, inPacket);
   }
 }
 
 
-void GameService::onGateDisconnect( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
-{
-
-
-  int64_t v5; // rax
-
-  Answer::NetPacket *packet;
+void GameService::onGateDisconnect( ConnType *pConn, Answer::NetPacket *inPacket)
+{  /* var */Answer::NetPacket *packet;
 
   if ( pConn && inPacket )
   {
@@ -1736,15 +1699,16 @@ void GameService::onGateDisconnect( std::map<int8_t,ConnType*>::ConnType *pConn,
     v4 = Answer::DayTime::now();
     v5 = std::ostream::operator<<(v7, v4);
     std::ostream::operator<<(v5, &std::endl<char,std::char_traits<char>>);
-    packet = GameService::popNetpacket(this, Answer::PackType::PACK_PROC, 0x4E2Eu);
+    packet = popNetpacket(Answer::PackType::PACK_PROC, 0x4E2Eu);
     if ( packet )
     {
-      Answer::NetPacket::writeInt32(packet, 1);
-      WOffset = Answer::NetPacket::getWOffset(packet);
-      Answer::NetPacket::setSize(packet, WOffset);
-      Answer::TcpClient::sendPacket(pConn, packet);
+      packet->writeInt32(1);
+  uint32_t wOffset = 0;
+      wOffset = packet->getWOffset();
+      packet->setSize(wOffset);
+      pConn->sendPacket(packet);
     }
-    std::ofstream::~ofstream(v7);
+    /* v7 auto-destructed */
   }
 }
 
@@ -1752,14 +1716,13 @@ void GameService::onGateDisconnect( std::map<int8_t,ConnType*>::ConnType *pConn,
 void GameService::onEnterGame( int8_t connid, int16_t cgindex, Answer::NetPacket *inPacket)
 {
 
-  DBService *v5; // rax
-  Answer::MutexGuard lock;
+  DBService *v5; 
   User *user;
 
-  cid = Answer::NetPacket::readInt64(inPacket);
-  line = Answer::NetPacket::readInt32(inPacket);
-  reason = Answer::NetPacket::readInt32(inPacket);
-  Answer::Logger::print(Answer::LogLevel::LOG_LEVEL_DEBUG, "GameService::onEnterGame() cid=%lld, line=%d, reason=%d \n", cid, line, reason);
+  cid = inPacket->readInt64();
+  line = inPacket->readInt32();
+  reason = inPacket->readInt32();
+  // LOG(LOG_LEVEL_DEBUG, "GameService::onEnterGame() cid=%lld, line=%d, reason=%d \n", cid, line, reason);
   uid = 0;
   sid = 0;
   nIndex = getUserIndex(connid, cgindex);
@@ -1779,7 +1742,7 @@ void GameService::onEnterGame( int8_t connid, int16_t cgindex, Answer::NetPacket
   if ( v4 )
   {
     v5 = Answer::Singleton<DBService>::instance();
-    DBService::loadPlayer(v5, connid, cgindex, uid, sid, reason);
+    v5->loadPlayer(connid, cgindex, uid, sid, reason);
   }
 }
 
@@ -1787,15 +1750,14 @@ void GameService::onEnterGame( int8_t connid, int16_t cgindex, Answer::NetPacket
 void GameService::onEnterGameRobot( int8_t connid, int16_t cgindex, Answer::NetPacket *inPacket)
 {
 
-  const char *v6; // rax
-  Answer::Random *v7; // rax
+  const char *v6; 
+  Answer::Random *v7; 
   PlayerDBData dbData;
-  Answer::MutexGuard lock;
   Answer::NetPacket v13;
 
   if ( inPacket )
   {
-    /* *(int64_t*)&v13.m_wOffset */ = Answer::NetPacket::readInt32(inPacket);
+    /* *(int64_t*)&v13.m_wOffset */ = inPacket->readInt32();
     *(int32_t*)&v13.m_proc = getUserIndex(connid, cgindex);
     Answer::MutexGuard lock(&this->m_userLock);
     /* *(int64_t*)&v13.m_size */ = this->m_users[/* *(int*)&v13.m_proc */];
@@ -1813,34 +1775,47 @@ void GameService::onEnterGameRobot( int8_t connid, int16_t cgindex, Answer::NetP
     {
       if ( /* *(int64_t*)&v13.m_wOffset */ > 19088743 )
       {
-        PlayerDBData::PlayerDBData(&dbData);
-        Answer::NetPacket::readInt32(inPacket);
+        PlayerDBData dbData;
+        inPacket->readInt32();
         dbData.chr.data.cid = /* *(int64_t*)&v13.m_wOffset */;
         Answer::NetPacket::readUTF8(&v13, (bool)inPacket);
         v6 = (const char *)std::string::c_str((std::string *)&v13);
         snprintf(dbData.chr.data.name, 0x1Eu, v6);
-                dbData.chr.data.sex = Answer::NetPacket::readInt32(inPacket);
-        dbData.chr.data.job = Answer::NetPacket::readInt32(inPacket);
-        Answer::NetPacket::readInt32(inPacket);
-        Answer::NetPacket::readInt32(inPacket);
+                dbData.chr.data.sex = inPacket->readInt32();
+        dbData.chr.data.job = inPacket->readInt32();
+        inPacket->readInt32();
+        inPacket->readInt32();
         dbData.chr.data.level = 60;
-        dbData.chr.data.mapid = Answer::NetPacket::readInt32(inPacket);
-        dbData.chr.data.x = Answer::NetPacket::readInt32(inPacket);
-        dbData.chr.data.y = Answer::NetPacket::readInt32(inPacket);
-        dbData.chr.data.hp = Answer::NetPacket::readInt32(inPacket);
-        dbData.chr.data.mp = Answer::NetPacket::readInt32(inPacket);
-        dbData.chr.data.kun_li = Answer::NetPacket::readInt32(inPacket);
-        dbData.chr.data.head = Answer::NetPacket::readInt32(inPacket);
+        dbData.chr.data.mapid = inPacket->readInt32();
+        dbData.chr.data.x = inPacket->readInt32();
+        dbData.chr.data.y = inPacket->readInt32();
+        dbData.chr.data.hp = inPacket->readInt32();
+        dbData.chr.data.mp = inPacket->readInt32();
+        dbData.chr.data.kun_li = inPacket->readInt32();
+        dbData.chr.data.head = inPacket->readInt32();
         id[0] = 10001;
         id[1] = 10006;
         id[2] = 10011;
         v7 = Answer::Singleton<Answer::Random>::instance();
         HIWORD(v13.m_refCount) = id[Answer::Random::generate(v7, 0, 0)];
-        GameService::onPlayerLoaded(this, &dbData, 0, 0);
-        PlayerDBData::~PlayerDBData(&dbData);
+        onPlayerLoaded(&dbData, 0, 0);
+        /* dbData auto-destructed */
       }
     }
   }
+}
+
+
+Player* GameService::getUserPlayer(int8_t connid, int16_t cgindex)
+{
+  int32_t nIndex = getUserIndex(connid, cgindex);
+  if ( nIndex < 0 || nIndex >= MAX_USERS )
+    return nullptr;
+  Answer::MutexGuard lock(&this->m_userLock);
+  User *user = this->m_users[nIndex];
+  if ( user )
+    return User::getPlayer(user);
+  return nullptr;
 }
 
 
@@ -1850,9 +1825,9 @@ void GameService::onGameNetpacket( int8_t connid, int16_t cgindex, Answer::NetPa
 
   if ( inPacket )
   {
-    player = GameService::getUserPlayer(this, connid, cgindex);
+    player = getUserPlayer(connid, cgindex);
     if ( player )
-      Player::addNetPacket(player, inPacket, 4u);
+      player->addNetPacket(inPacket, 4u);
   }
 }
 
@@ -1863,44 +1838,42 @@ void GameService::OnDBNetPacket( int8_t connid, int16_t cgindex, Answer::NetPack
 
   if ( inPacket )
   {
-    player = GameService::getUserPlayer(this, connid, cgindex);
+    player = getUserPlayer(connid, cgindex);
     if ( player )
-      Player::addNetPacket(player, inPacket, 2u);
+      player->addNetPacket(inPacket, 2u);
   }
 }
 
 
 void GameService::sendSocialAddPlayer(Player *player)
 {
-  int8_t ConnId; // bl
+  int8_t ConnId; 
 
-  CharId_t Cid; // rdx
-  int64_t Uid; // rdx
+  CharId_t Cid;   /* var */int8_t GMLevel; 
 
-  int8_t GMLevel; // dl
-
-  int8_t v9; // cl
+  int8_t v9; 
   Answer::NetPacket *packet;
 
   if ( player )
   {
     ConnId = Player::getConnId(player);
-    packet = GameService::popNetpacket(this, ConnId, Answer::PackType::PACK_PROC, 0x4E34u);
+    packet = popNetpacket(ConnId, Answer::PackType::PACK_PROC, 0x4E34u);
     if ( packet )
     {
       GateIndex = Player::getGateIndex(player);
-      Answer::NetPacket::writeInt32(packet, GateIndex);
+      packet->writeInt32(GateIndex);
       Cid = Player::getCid(player);
-      Answer::NetPacket::writeInt64(packet, Cid);
-      Uid = Player::getUid(player);
-      Answer::NetPacket::writeInt64(packet, Uid);
-      Sid = Player::getSid(player);
-      Answer::NetPacket::writeInt32(packet, Sid);
+      packet->writeInt64(Cid);
+      Uid = player->getUid();
+      packet->writeInt64(Uid);
+      Sid = player->getSid();
+      packet->writeInt32(Sid);
       Answer::NetPacket::writeInt32(packet, this->m_line);
       GMLevel = Player::GetGMLevel(player);
-      Answer::NetPacket::writeInt8(packet, GMLevel);
-      WOffset = Answer::NetPacket::getWOffset(packet);
-      Answer::NetPacket::setSize(packet, WOffset);
+      packet->writeInt8(GMLevel);
+  uint32_t wOffset = 0;
+      wOffset = packet->getWOffset();
+      packet->setSize(wOffset);
       v9 = Player::getConnId(player);
       sendPacket(v9, packet);
     }
@@ -1910,22 +1883,23 @@ void GameService::sendSocialAddPlayer(Player *player)
 
 void GameService::sendSocialRemovePlayer(Player *player)
 {
-  int8_t ConnId; // bl
-  CharId_t Cid; // rdx
+  int8_t ConnId; 
+  CharId_t Cid; 
 
-  int8_t v5; // cl
+  int8_t v5; 
   Answer::NetPacket *packet;
 
   if ( player )
   {
     ConnId = Player::getConnId(player);
-    packet = GameService::popNetpacket(this, ConnId, Answer::PackType::PACK_PROC, 0x4E35u);
+    packet = popNetpacket(ConnId, Answer::PackType::PACK_PROC, 0x4E35u);
     if ( packet )
     {
       Cid = Player::getCid(player);
-      Answer::NetPacket::writeInt64(packet, Cid);
-      WOffset = Answer::NetPacket::getWOffset(packet);
-      Answer::NetPacket::setSize(packet, WOffset);
+      packet->writeInt64(Cid);
+  uint32_t wOffset = 0;
+      wOffset = packet->getWOffset();
+      packet->setSize(wOffset);
       v5 = Player::getConnId(player);
       sendPacket(v5, packet);
     }
@@ -1933,76 +1907,75 @@ void GameService::sendSocialRemovePlayer(Player *player)
 }
 
 
-void GameService::onSocialUpdatePetRank( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialUpdatePetRank( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  CPetManager *v3; // rax
+  CPetManager *v3; 
 
   v3 = Answer::Singleton<CPetManager>::instance();
-  CPetManager::OnUpdatePetRank(v3, inPacket);
+  v3->OnUpdatePetRank(inPacket);
 }
 
 
-void GameService::onSocialUpdateFamilyInfo( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialUpdateFamilyInfo( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  FamilyManager *v3; // rax
+  FamilyManager *v3; 
 
   v3 = Answer::Singleton<FamilyManager>::instance();
-  FamilyManager::OnUpdateFamilyInfo(v3, inPacket);
+  v3->OnUpdateFamilyInfo(inPacket);
 }
 
 
-void GameService::onSocialInitPetRank( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialInitPetRank( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  CPetManager *v3; // rax
+  CPetManager *v3; 
 
   v3 = Answer::Singleton<CPetManager>::instance();
-  CPetManager::OnInitPetRank(v3, inPacket);
+  v3->OnInitPetRank(inPacket);
 }
 
 
-void GameService::onSocialInitRankMirror( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialInitRankMirror( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  CRankMirror *v3; // rax
+  CRankMirror *v3; 
 
   v3 = Answer::Singleton<CRankMirror>::instance();
-  CRankMirror::OnSocialUpdateRank(v3, inPacket);
+  v3->OnSocialUpdateRank(inPacket);
 }
 
 
-void GameService::onSocialUpdateRankMirror( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialUpdateRankMirror( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  CRankMirror *v3; // rax
+  CRankMirror *v3; 
 
   v3 = Answer::Singleton<CRankMirror>::instance();
-  CRankMirror::OnSocialUpdateRank(v3, inPacket);
+  v3->OnSocialUpdateRank(inPacket);
 }
 
 
-void GameService::onSocialQueryPlayerInfo( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialQueryPlayerInfo( ConnType *pConn, Answer::NetPacket *inPacket)
 {
 
-  int8_t Id; // al
+  int8_t Id; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   CharId_t cid;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *pPlayer;
 
   if ( pConn && inPacket )
   {
-    cid = Answer::NetPacket::readInt64(inPacket);
-    cgindex = Answer::NetPacket::readInt16(inPacket);
+    cid = inPacket->readInt64();
+    cgindex = inPacket->readInt16();
     Answer::MutexGuard lock(&this->m_playerLock);
-    iter._M_node = std::map<long,Player *>::find(&this->m_players, &cid)._M_node;
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    iter = this->m_players.find(cid);
+    __x = this->m_players.end();
+    if ( iter != __x )
     {
-      pPlayer = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+      pPlayer = iter->second;
       if ( pPlayer )
       {
         v3 = cgindex;
-        Id = MutiConn<GameService>::GetId(pConn);
-        Player::SendOtherPlayerInfo(pPlayer, Id, v3);
+        Id = pConn->GetId();
+        pPlayer->SendOtherPlayerInfo(Id, v3);
       }
     }
     /* MutexGuard destroyed */
@@ -2010,55 +1983,55 @@ void GameService::onSocialQueryPlayerInfo( std::map<int8_t,ConnType*>::ConnType 
 }
 
 
-void GameService::onSocialCreateTeamDungeon( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialCreateTeamDungeon( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  MapManager *v3; // rax
+  MapManager *v3; 
 
-  MapManager *v5; // rax
+  MapManager *v5; 
   CharId_t memberId;
   CharIdList memberList;
   Dungeon *pDungeon;
-  nDungeonId = Answer::NetPacket::readInt32(inPacket);
+  nDungeonId = inPacket->readInt32();
   v3 = Answer::Singleton<MapManager>::instance();
-  pDungeon = MapManager::NewDungeon(v3, nDungeonId);
+  pDungeon = v3->NewDungeon(nDungeonId);
   if ( pDungeon )
   {
-    std::list<long>::list(&memberList);
+    CharIdList memberList;
     for ( i = 0; i <= 3; ++i )
     {
-      memberId = Answer::NetPacket::readInt64(inPacket);
+      memberId = inPacket->readInt64();
       if ( memberId > 0 )
-        std::list<long>::push_back(&memberList, &memberId);
+        memberList.push_back(memberId);
     }
     Dungeon::InitTeamMember(pDungeon, &memberList);
-    Dungeon::start(pDungeon, 0);
-    RunnerId = Map::GetRunnerId(pDungeon);
+    pDungeon->start(0);
+    RunnerId = pDungeon->GetRunnerId();
     v5 = Answer::Singleton<MapManager>::instance();
     MapManager::PostMsg(v5, RunnerId, GameMsgCode::GMC_ADD_DUNGEON, pDungeon, 0, 0, 0, 0);
-    std::list<long>::~list(&memberList);
+    /* memberList destructed */;
   }
 }
 
 
-void GameService::onSocialSendSystemMail( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialSendSystemMail( ConnType *pConn, Answer::NetPacket *inPacket)
 {
 
-  DBService *v4; // rax
-  DBService *v5; // rax
+  DBService *v4; 
+  DBService *v5; 
   MemChrBag item;
   std::string mailParam;
   if ( pConn && inPacket )
   {
-    nReceiver = Answer::NetPacket::readInt64(inPacket);
-    nMailId = Answer::NetPacket::readInt32(inPacket);
-    nReason = Answer::NetPacket::readInt32(inPacket);
+    nReceiver = inPacket->readInt64();
+    nMailId = inPacket->readInt32();
+    nReason = inPacket->readInt32();
     *(&item.endTime + 1) = 0;
-    item.itemId = Answer::NetPacket::readInt32(inPacket);
-    *(int32_t*)&item.itemClass = (uint8_t)Answer::NetPacket::readInt8(inPacket);
-    item.itemCount = Answer::NetPacket::readInt32(inPacket);
-    item.srcId = Answer::NetPacket::readInt64(inPacket);
-    *(int32_t*)&item.bind = (uint8_t)Answer::NetPacket::readInt8(inPacket);
-    item.endTime = Answer::NetPacket::readInt32(inPacket);
+    item.itemId = inPacket->readInt32();
+    *(int32_t*)&item.itemClass = (uint8_t)inPacket->readInt8();
+    item.itemCount = inPacket->readInt32();
+    item.srcId = inPacket->readInt64();
+    *(int32_t*)&item.bind = (uint8_t)inPacket->readInt8();
+    item.endTime = inPacket->readInt32();
     Answer::NetPacket::readUTF8((Answer::NetPacket *const)&mailParam, (bool)inPacket);
     if ( item.itemId <= 0 || item.itemCount <= 0 )
     {
@@ -2075,23 +2048,23 @@ void GameService::onSocialSendSystemMail( std::map<int8_t,ConnType*>::ConnType *
 }
 
 
-void GameService::onSocialSendSystemMail2( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSocialSendSystemMail2( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  MemChrBag *v3; // rbx
-  MemChrBag *v4; // rbx
-  MemChrBag *v5; // rbx
+  MemChrBag *v3; 
+  MemChrBag *v4; 
+  MemChrBag *v5; 
 
-  DBService *v7; // rax
-  DBService *v8; // rax
+  DBService *v7; 
+  DBService *v8; 
   MemChrBagVector vItem;
   std::string Param;
   std::string v15;
   if ( pConn && inPacket )
   {
-    nReceiver = Answer::NetPacket::readInt64(inPacket);
-    nMailId = Answer::NetPacket::readInt32(inPacket);
-    nReason = Answer::NetPacket::readInt32(inPacket);
-    nSize = Answer::NetPacket::readInt32(inPacket);
+    nReceiver = inPacket->readInt64();
+    nMailId = inPacket->readInt32();
+    nReason = inPacket->readInt32();
+    nSize = inPacket->readInt32();
     if ( nSize <= 0 )
     {
                   v8 = Answer::Singleton<DBService>::instance();
@@ -2099,8 +2072,8 @@ void GameService::onSocialSendSystemMail2( std::map<int8_t,ConnType*>::ConnType 
                 }
     else
     {
-      std::vector<MemChrBag>::vector(&vItem);
-      v12.itemId = 0;
+      std::vector<MemChrBag> vItem;
+v12.itemId = 0;
       v12.itemClass = 0;
       v12.itemCount = 0;
       v12.bind = 0;
@@ -2108,37 +2081,37 @@ void GameService::onSocialSendSystemMail2( std::map<int8_t,ConnType*>::ConnType 
       v12.srcId = 0;
       *(_OWORD *)&__x.itemId = *(_OWORD *)&v12.itemId;
       *(_OWORD *)&__x.endTime = *(unsigned int64_t *)&v12.endTime;
-      std::vector<MemChrBag>::resize(&vItem, nSize, __x);
+      vItem.resize(nSize, __x);
       for ( i = 0; i < nSize; ++i )
       {
-        v3 = std::vector<MemChrBag>::operator[](&vItem, i);
-        v3->itemClass = Answer::NetPacket::readInt8(inPacket);
-        v4 = std::vector<MemChrBag>::operator[](&vItem, i);
-        v4->itemId = Answer::NetPacket::readInt32(inPacket);
-        v5 = std::vector<MemChrBag>::operator[](&vItem, i);
-        v5->itemCount = Answer::NetPacket::readInt32(inPacket);
-        std::vector<MemChrBag>::operator[](&vItem, i)->srcId = 0;
-        std::vector<MemChrBag>::operator[](&vItem, i)->bind = 0;
-        std::vector<MemChrBag>::operator[](&vItem, i)->endTime = 0;
+        v3 = vItem[i];
+        v3->itemClass = inPacket->readInt8();
+        v4 = vItem[i];
+        v4->itemId = inPacket->readInt32();
+        v5 = vItem[i];
+        v5->itemCount = inPacket->readInt32();
+        vItem[i]->srcId = 0;
+        vItem[i]->bind = 0;
+        vItem[i]->endTime = 0;
       }
                   v6 = nReason;
       v7 = Answer::Singleton<DBService>::instance();
       DBService::OnSendSysMail(v7, 0, nReceiver, nMailId, &vItem, (ITEM_CHANGE_REASON)v6, &Param, 0);
-                  std::vector<MemChrBag>::~vector(&vItem);
+                  /* vItem destructed automatically */
     }
   }
 }
 
 
-void GameService::onSetWorldLevel( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onSetWorldLevel( ConnType *pConn, Answer::NetPacket *inPacket)
 {
 
   if ( pConn )
   {
     if ( inPacket )
     {
-      Int32 = Answer::NetPacket::readInt32(inPacket);
-      GameService::SetWorldLevel(this, Int32);
+      Int32 = inPacket->readInt32();
+      SetWorldLevel(Int32);
     }
   }
 }
@@ -2150,15 +2123,14 @@ int32_t GameService::GetDropTimes(int32_t nGroupId)
   int32_t nGroupIda;
 
   std::_Rb_tree_iterator<std::pair<const int,int> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const int,int> > __x;
 
   nGroupIda = nGroupId;
   Answer::MutexGuard lock(&this->m_dropControlLock);
-  iter._M_node = std::map<int,int>::find((std::map<int,int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda)._M_node;
-  __x._M_node = std::map<int,int>::end(&this->m_dropControl)._M_node;
-  if ( std::_Rb_tree_iterator<std::pair<int const,int>>::operator!=(&iter, &__x) )
-    second = std::_Rb_tree_iterator<std::pair<int const,int>>::operator->(&iter)->second;
+  iter = (std::map<int.find(int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda);
+  __x = this->m_dropControl.end();
+  if ( iter != __x )
+    second = iter->second;
   else
     second = 0;
   /* MutexGuard destroyed */
@@ -2168,42 +2140,40 @@ int32_t GameService::GetDropTimes(int32_t nGroupId)
 
 void GameService::AddDropTimes(int32_t nGroupId, int32_t nAddTimes)
 {
-  std::pair<const int,int> *v3; // rax
-  GameService *v4; // rax
-  CTimer *v5; // rax
-  Answer::DBPool *v6; // rax
+  std::pair<const int,int> *v3; 
+  GameService *v4; 
+  CTimer *v5; 
+  Answer::DBPool *v6; 
 
-  DBService *v8; // rax
+  DBService *v8; 
   int32_t nGroupIda;
 
-  Answer::MySqlDBGuard db;
   std::_Rb_tree_iterator<std::pair<const int,int> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const int,int> > __x;
 
   nGroupIda = nGroupId;
   nTimes = nAddTimes;
   Answer::MutexGuard lock(&this->m_dropControlLock);
-  iter._M_node = std::map<int,int>::find((std::map<int,int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda)._M_node;
-  __x._M_node = std::map<int,int>::end(&this->m_dropControl)._M_node;
-  if ( std::_Rb_tree_iterator<std::pair<int const,int>>::operator!=(&iter, &__x) )
+  iter = (std::map<int.find(int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda);
+  __x = this->m_dropControl.end();
+  if ( iter != __x )
   {
-    v3 = std::_Rb_tree_iterator<std::pair<int const,int>>::operator->(&iter);
+    v3 = iter.operator->();
     v3->second += nAddTimes;
-    nTimes = std::_Rb_tree_iterator<std::pair<int const,int>>::operator->(&iter)->second;
+    nTimes = iter->second;
   }
   else
   {
-    *std::map<int,int>::operator[]((std::map<int,int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda) = nAddTimes;
+    *(std::map<int[int> *const]((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda) = nAddTimes;
   }
   /* MutexGuard destroyed */
   v4 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v4) == 9 )
   {
     v5 = Answer::Singleton<CTimer>::instance();
-    nowTime = CTimer::GetNow(v5);
+    nowTime = v5->GetNow();
     v6 = Answer::Singleton<Answer::DBPool>::instance();
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v6);
+    Answer::MySqlDBGuard db(v6);
     memset(szSQL, 0, sizeof(szSQL));
     snprintf(
       szSQL,
@@ -2216,31 +2186,30 @@ void GameService::AddDropTimes(int32_t nGroupId, int32_t nAddTimes)
       nowTime,
       nTimes,
       nowTime);
-    Answer::MySqlDBGuard::excute(&db, szSQL);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
+    db.excute(szSQL);
+    /* db auto-destructed */
   }
   else
   {
     v7 = nGroupIda;
     v8 = Answer::Singleton<DBService>::instance();
-    DBService::SaveDropTimes(v8, v7, nTimes);
+    v8->SaveDropTimes(v7, nTimes);
   }
 }
 
 
 void GameService::UpdateDropTimes(int32_t nGroupId, int32_t nTimes)
 {
-  GameService *v3; // rax
+  GameService *v3; 
   int32_t nGroupIda;
 
-  Answer::MutexGuard lock;
 
   nGroupIda = nGroupId;
   v3 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v3) != 9 )
   {
     Answer::MutexGuard lock(&this->m_dropControlLock);
-    *std::map<int,int>::operator[]((std::map<int,int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda) = nTimes;
+    *(std::map<int[int> *const]((char *)&loc_7A13D0 + (int64_t)this), &nGroupIda) = nTimes;
     /* MutexGuard destroyed */
   }
 }
@@ -2248,46 +2217,42 @@ void GameService::UpdateDropTimes(int32_t nGroupId, int32_t nTimes)
 
 void GameService::ResetDropTimes()
 {
-  GameService *v1; // rax
-  Answer::DBPool *v2; // rax
-  DBService *v3; // rax
-  Answer::MySqlDBGuard db;
-  Answer::MutexGuard lock;
+  GameService *v1; 
+  Answer::DBPool *v2; 
+  DBService *v3; 
 
   v1 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v1) == 9 )
   {
     v2 = Answer::Singleton<Answer::DBPool>::instance();
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v2);
+    Answer::MySqlDBGuard db(v2);
     memset(szSQL, 0, sizeof(szSQL));
     snprintf(szSQL, 0xFFFu, "DELETE FROM `cross_drop_control` WHERE `id`=%d", this->m_id);
-    Answer::MySqlDBGuard::excute(&db, szSQL);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
+    db.excute(szSQL);
+    /* db auto-destructed */
   }
   else
   {
     v3 = Answer::Singleton<DBService>::instance();
-    DBService::ClearDropTimes(v3);
+    v3->ClearDropTimes();
   }
   Answer::MutexGuard lock(&this->m_dropControlLock);
-  std::map<int,int>::clear(&this->m_dropControl);
+  this->m_dropControl.clear();
   /* MutexGuard destroyed */
 }
 
 
 void GameService::InitDropTimes()
 {
-  Answer::DBPool *v1; // rax
-  GameService *v2; // rax
+  Answer::DBPool *v1; 
+  GameService *v2; 
 
 
-  Answer::MySqlQuery *v7; // rax
-  int *v8; // rax
-  Answer::MySqlDBGuard db;
+  Answer::MySqlQuery *v7; 
+  int *v8; 
   int32_t nGroupId;
-  Answer::MySqlQuery result;
   v1 = Answer::Singleton<Answer::DBPool>::instance();
-  Answer::MySqlDBGuard::MySqlDBGuard(&db, v1);
+  Answer::MySqlDBGuard db(v1);
   memset(szSQL, 0, sizeof(szSQL));
   v2 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v2) == 9 )
@@ -2302,37 +2267,33 @@ void GameService::InitDropTimes()
     v6 = Answer::DayTime::dayzero(v5);
     snprintf(szSQL, 0xFFFu, "SELECT * FROM `mem_drop_control` WHERE `time`>=%d", v6);
   }
-  v7 = Answer::MySqlDBGuard::query(&db, szSQL);
-  Answer::MySqlQuery::MySqlQuery(&result, v7);
-  while ( !Answer::MySqlQuery::eof(&result) )
+  v7 = db.query(szSQL);
+  Answer::MySqlQuery result(v7);
+  while ( !result.eof() )
   {
-    nGroupId = Answer::MySqlQuery::getIntValue(&result, "group_id", 0);
-    nTimes = Answer::MySqlQuery::getIntValue(&result, "times", 0);
-    v8 = std::map<int,int>::operator[]((std::map<int,int> *const)((char *)&loc_7A13D0 + (int64_t)this), &nGroupId);
+    nGroupId = result.getIntValue("group_id", 0);
+    nTimes = result.getIntValue("times", 0);
+    v8 = (std::map<int[int> *const]((char *)&loc_7A13D0 + (int64_t)this), &nGroupId);
     *v8 = nTimes;
-    Answer::MySqlQuery::nextRow(&result);
+    result.nextRow();
   }
-  Answer::MySqlQuery::~MySqlQuery(&result);
-  Answer::MySqlDBGuard::~MySqlDBGuard(&db);
+  /* result auto-destructed */
+  /* db auto-destructed */
 }
 
 
 void GameService::TeamDungeonEnterDungeon( Dungeon *pDungeon, const CharIdList *const lst)
 {
 
-  CfgData *v4; // rax
-  const int64_t *v5; // rax
+  CfgData *v4; 
+  const int64_t *v5; 
 
 
-  CHuoYueDu *PlayerHuoYueDu; // rax
+  CHuoYueDu *PlayerHuoYueDu; 
 
 
-  GameService *v13; // rax
-  void (__fastcall *v14)(Dungeon *, Player *, int64_t, _QWORD); // r13
-
-  int64_t x; // rdx
-  std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
+  GameService *v13; 
+  void (__fastcall *v14)(Dungeon *, Player *, int64_t, _QWORD);   /* var */std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
   std::_List_const_iterator<long int> eiter;
   std::_List_const_iterator<long int> iter;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
@@ -2340,51 +2301,51 @@ void GameService::TeamDungeonEnterDungeon( Dungeon *pDungeon, const CharIdList *
   Player *pPlayer;
   Map *pMap;
 
-  DungeonId = Dungeon::getDungeonId(pDungeon);
+  DungeonId = pDungeon->getDungeonId();
   v4 = Answer::Singleton<CfgData>::instance();
-  pCfgDungeon = CfgData::getDungeon(v4, DungeonId);
+  pCfgDungeon = v4->getDungeon(DungeonId);
   if ( pDungeon && pCfgDungeon )
   {
-    iter._M_node = std::list<long>::begin(lst)._M_node;
-    eiter._M_node = std::list<long>::end(lst)._M_node;
-    while ( std::_List_const_iterator<long>::operator!=(&iter, &eiter) )
+    iter = lst.begin();
+    eiter = lst.end();
+    while ( iter != eiter )
     {
       Answer::MutexGuard lock(&this->m_playerLock);
-      v5 = std::_List_const_iterator<long>::operator*(&iter);
-      it._M_node = std::map<long,Player *>::find(&this->m_players, v5)._M_node;
-      __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-      if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+      v5 = *iter;
+      it = this->m_players.find(v5);
+      __x = this->m_players.end();
+      if ( it != __x )
       {
-        pPlayer = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it)->second;
+        pPlayer = it->second;
         if ( pPlayer )
         {
           Player::setOldPosition(pPlayer);
           pMap = StaticObj::getMap(pPlayer);
           if ( pMap )
           {
-            Player::broadcastLeave(pPlayer);
+            pPlayer->broadcastLeave();
             (*((void (__fastcall **)(Map *, Player *, _QWORD))pMap->_vptr_Map + 16))(pMap, pPlayer, 0);
           }
-          DungeonGroupId = Dungeon::getDungeonGroupId(pDungeon);
-          v7 = Player::getRecord(pPlayer, DungeonGroupId) + 1;
-          v8 = Dungeon::getDungeonGroupId(pDungeon);
-          Player::updateRecord(pPlayer, v8, v7);
-          v9 = Dungeon::getDungeonGroupId(pDungeon);
-          PlayerHuoYueDu = Player::GetPlayerHuoYueDu(pPlayer);
+          DungeonGroupId = pDungeon->getDungeonGroupId();
+          v7 = pPlayer->getRecord(DungeonGroupId) + 1;
+          v8 = pDungeon->getDungeonGroupId();
+          pPlayer->updateRecord(v8, v7);
+          v9 = pDungeon->getDungeonGroupId();
+          PlayerHuoYueDu = pPlayer->GetPlayerHuoYueDu();
           CHuoYueDu::AddHuoYueDuRecord(PlayerHuoYueDu, 2, v9, 0);
-          v11 = Dungeon::getDungeonId(pDungeon);
+          v11 = pDungeon->getDungeonId();
           GateIndex = Player::getGateIndex(pPlayer);
           LOBYTE(v9) = Player::getConnId(pPlayer);
           v13 = Answer::Singleton<GameService>::instance();
           GameService::replySuccess(v13, v9, GateIndex, 0x12u, v11);
           v14 = (void (__fastcall *)(Dungeon *, Player *, int64_t, _QWORD))*((_QWORD *)pDungeon->_vptr_Map + 15);
-          y = Dungeon::GetCfgDungeon(pDungeon)->y;
-          x = (uint32_t)Dungeon::GetCfgDungeon(pDungeon)->x;
+          y = pDungeon->GetCfgDungeon()->y;
+          x = (uint32_t)pDungeon->GetCfgDungeon()->x;
           v14(pDungeon, pPlayer, x, y);
         }
       }
       /* MutexGuard destroyed */
-      std::_List_const_iterator<long>::operator++(&iter);
+      ++iter;
     }
   }
 }
@@ -2392,23 +2353,22 @@ void GameService::TeamDungeonEnterDungeon( Dungeon *pDungeon, const CharIdList *
 
 void GameService::OnUpdateMail(Answer::NetPacket *inPacket)
 {
-  std::pair<const long int,Player*> *v2; // rax
+  std::pair<const long int,Player*> *v2; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
   CharId_t Cid;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
 
   if ( inPacket )
   {
-    Cid = Answer::NetPacket::readInt64(inPacket);
+    Cid = inPacket->readInt64();
     Answer::MutexGuard lock(&this->m_playerLock);
-    it._M_node = std::map<long,Player *>::find(&this->m_players, &Cid)._M_node;
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+    it = this->m_players.find(Cid);
+    __x = this->m_players.end();
+    if ( it != __x )
     {
-      if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it)->second )
+      if ( it->second )
       {
-        v2 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+        v2 = it.operator->();
         Player::addNetPacket(v2->second, inPacket, 8u);
       }
     }
@@ -2422,57 +2382,58 @@ void GameService::requestSocialData()
 
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > iter;
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > __x;
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
   Answer::NetPacket *packet;
 
-  for ( iter._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::begin(&this->m_mConn)._M_node;
+  for ( iter = this->m_mConn.begin();
         ;
         std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::end(&this->m_mConn)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator!=(&iter, &__x) )
+    __x = this->m_mConn.end();
+    if ( iter == __x )
       break;
-    pConn = std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator->(&iter)->second;
+    pConn = iter->second;
     if ( pConn )
     {
-      packet = Answer::TcpClient::popNetpacket(pConn);
+      packet = pConn->popNetpacket();
       if ( packet )
       {
         Answer::NetPacket::writeInt32(packet, this->m_line);
-        WOffset = Answer::NetPacket::getWOffset(packet);
-        Answer::NetPacket::setSize(packet, WOffset);
-        Answer::NetPacket::setProc(packet, 0x4E42u);
+  uint32_t wOffset = 0;
+        wOffset = packet->getWOffset();
+        packet->setSize(wOffset);
+        packet->setProc(0x4E42u);
         Answer::NetPacket::setType(packet, Answer::PackType::PACK_DISPATCH);
-        Answer::TcpClient::sendPacket(pConn, packet);
+        pConn->sendPacket(packet);
       }
     }
   }
 }
 
 
-void GameService::OnReceiveDaTiRank( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::OnReceiveDaTiRank( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  GameService *v3; // rax
-  int8_t v4; // bl
-  DBService *v5; // rax
-  GameService *v6; // rax
+  GameService *v3; 
+  int8_t v4; 
+  DBService *v5; 
+  GameService *v6; 
 
 
-  int8_t v9; // bl
-  DBService *v10; // rax
-  int8_t v11; // bl
-  DBService *v12; // rax
-  int8_t v13; // bl
-  DBService *v14; // rax
-  int8_t v15; // bl
-  DBService *v16; // rax
-  int8_t v17; // bl
-  DBService *v18; // rax
-  int8_t v19; // bl
-  CFestivalDoubleEleven *v20; // rax
-  CTimer *v21; // rax
-  int8_t v22; // bl
-  DBService *v23; // rax
+  int8_t v9; 
+  DBService *v10; 
+  int8_t v11; 
+  DBService *v12; 
+  int8_t v13; 
+  DBService *v14; 
+  int8_t v15; 
+  DBService *v16; 
+  int8_t v17; 
+  DBService *v18; 
+  int8_t v19; 
+  CFestivalDoubleEleven *v20; 
+  CTimer *v21; 
+  int8_t v22; 
+  DBService *v23; 
   LogActivity logActivity;
   std::string Name;
   std::string Param;
@@ -2485,14 +2446,14 @@ void GameService::OnReceiveDaTiRank( std::map<int8_t,ConnType*>::ConnType *pConn
 
   if ( pConn && inPacket )
   {
-    nSize = Answer::NetPacket::readInt32(inPacket);
+    nSize = inPacket->readInt32();
     for ( i = 0; ; ++i )
     {
       if ( i >= nSize )
         return;
-      CharId = Answer::NetPacket::readInt64(inPacket);
+      CharId = inPacket->readInt64();
       Answer::NetPacket::readUTF8((Answer::NetPacket *const)&Name, (bool)inPacket);
-      Index = Answer::NetPacket::readInt32(inPacket);
+      Index = inPacket->readInt32();
       v3 = Answer::Singleton<GameService>::instance();
       connid = GameService::GetConnId(v3, CharId);
       switch ( Index )
@@ -2508,12 +2469,13 @@ void GameService::OnReceiveDaTiRank( std::map<int8_t,ConnType*>::ConnType *pConn
             v7 = 0;
             // goto removed
           }
-          Answer::NetPacket::writeInt32(packet, 28);
+          packet->writeInt32(28);
           Answer::NetPacket::writeUTF8(packet, &Name);
-          Answer::NetPacket::writeInt64(packet, CharId);
-          WOffset = Answer::NetPacket::getWOffset(packet);
-          Answer::NetPacket::setSize(packet, WOffset);
-          GameService::worldBroadcast(this, 0, packet);
+          packet->writeInt64(CharId);
+  uint32_t wOffset = 0;
+          wOffset = packet->getWOffset();
+          packet->setSize(wOffset);
+          worldBroadcast(0, packet);
           break;
         case 2:
                               v9 = connid;
@@ -2551,13 +2513,13 @@ void GameService::OnReceiveDaTiRank( std::map<int8_t,ConnType*>::ConnType *pConn
       }
       v19 = connid;
       v20 = Answer::Singleton<CFestivalDoubleEleven>::instance();
-      CFestivalDoubleEleven::SendDaTiReward(v20, v19, Index, CharId);
+      v20->SendDaTiReward(v19, Index, CharId);
       /* *(int64_t*)&logActivity.actid */ = 0x500000000LL;
       /* *(int64_t*)&logActivity.time */ = 0;
       logActivity.param = 0;
       logActivity.cid = CharId;
       v21 = Answer::Singleton<CTimer>::instance();
-      logActivity.time = CTimer::GetNow(v21);
+      logActivity.time = v21->GetNow();
       logActivity.param = Index;
       v22 = connid;
       v23 = Answer::Singleton<DBService>::instance();
@@ -2571,26 +2533,25 @@ void GameService::OnReceiveDaTiRank( std::map<int8_t,ConnType*>::ConnType *pConn
 }
 
 
-void GameService::OnReceiveDaTiResult( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::OnReceiveDaTiResult( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  int8_t v3; // bl
-  std::pair<const long int,Player*> *v4; // rax
+  int8_t v3; 
+  std::pair<const long int,Player*> *v4; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > it;
-  Answer::MutexGuard lock;
   int64_t Cid;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   if ( pConn && inPacket )
   {
-    Cid = Answer::NetPacket::readInt64(inPacket);
-    Index = Answer::NetPacket::readInt32(inPacket);
-    Result = Answer::NetPacket::readInt8(inPacket);
+    Cid = inPacket->readInt64();
+    Index = inPacket->readInt32();
+    Result = inPacket->readInt8();
     Answer::MutexGuard lock(&this->m_playerLock);
-    it._M_node = std::map<long,Player *>::find(&this->m_players, &Cid)._M_node;
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&it, &__x) )
+    it = this->m_players.find(Cid);
+    __x = this->m_players.end();
+    if ( it != __x )
     {
       v3 = Result;
-      v4 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&it);
+      v4 = it.operator->();
       Player::AddDaTiExp(v4->second, Index, v3);
     }
     /* MutexGuard destroyed */
@@ -2600,19 +2561,20 @@ void GameService::OnReceiveDaTiResult( std::map<int8_t,ConnType*>::ConnType *pCo
 
 void GameService::SendServerDiffToGlobal()
 {
-  CfgData *v1; // rax
+  CfgData *v1; 
 
 
   Answer::NetPacket *packet;
 
-  packet = GameService::popNetpacket(this, 0, Answer::PackType::PACK_PROC, 0x4E49u);
+  packet = popNetpacket(0, Answer::PackType::PACK_PROC, 0x4E49u);
   if ( packet )
   {
     v1 = Answer::Singleton<CfgData>::instance();
     ServerDiffDay = CfgData::getServerDiffDay(v1, SERVER_TYPE::SVT_NORMAL);
-    Answer::NetPacket::writeInt32(packet, ServerDiffDay);
-    WOffset = Answer::NetPacket::getWOffset(packet);
-    Answer::NetPacket::setSize(packet, WOffset);
+    packet->writeInt32(ServerDiffDay);
+  uint32_t wOffset = 0;
+    wOffset = packet->getWOffset();
+    packet->setSize(wOffset);
     sendPacket(0, packet);
   }
 }
@@ -2620,39 +2582,38 @@ void GameService::SendServerDiffToGlobal()
 
 void GameService::UpdateCityWarTitle(FamilyId_t OldFamilyId, FamilyId_t NewFamilyId)
 {
-  std::pair<const long int,Player*> *v3; // rax
-  std::pair<const long int,Player*> *v4; // rax
-  CExtCharTitle *CharTitle; // rax
-  std::pair<const long int,Player*> *v6; // rax
-  std::pair<const long int,Player*> *v7; // rax
+  std::pair<const long int,Player*> *v3; 
+  std::pair<const long int,Player*> *v4; 
+  CExtCharTitle *CharTitle; 
+  std::pair<const long int,Player*> *v6; 
+  std::pair<const long int,Player*> *v7; 
 
-  std::pair<const long int,Player*> *v9; // rax
-  CExtCharTitle *v10; // rax
+  std::pair<const long int,Player*> *v9; 
+  CExtCharTitle *v10; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
         std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    __x = this->m_players.end();
+    if ( iter == __x )
       break;
-    v3 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter);
+    v3 = iter.operator->();
     if ( Player::getFamilyId(v3->second) == OldFamilyId )
     {
-      v4 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter);
+      v4 = iter.operator->();
       CharTitle = Player::GetCharTitle(v4->second);
       CExtCharTitle::RemoveTitle(CharTitle, 1, 0);
     }
-    v6 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter);
+    v6 = iter;
     if ( Player::getFamilyId(v6->second) == NewFamilyId )
     {
-      v7 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter);
+      v7 = iter.operator->();
       FamilyPosition = Player::getFamilyPosition(v7->second);
-      v9 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter);
+      v9 = iter.operator->();
       v10 = Player::GetCharTitle(v9->second);
       CExtCharTitle::CheckAddTitle(v10, 1, FamilyPosition);
     }
@@ -2663,24 +2624,23 @@ void GameService::UpdateCityWarTitle(FamilyId_t OldFamilyId, FamilyId_t NewFamil
 
 void GameService::UpdateCityActState(FamilyId_t FamilyId, int8_t ActState)
 {
-  std::pair<const long int,Player*> *v3; // rax
-  std::pair<const long int,Player*> *v4; // rax
+  std::pair<const long int,Player*> *v3; 
+  std::pair<const long int,Player*> *v4; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
         std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    __x = this->m_players.end();
+    if ( iter == __x )
       break;
-    v3 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter);
+    v3 = iter.operator->();
     if ( Player::getFamilyId(v3->second) == FamilyId )
     {
-      v4 = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter);
+      v4 = iter.operator->();
       Player::SetActState(v4->second, ActState);
     }
   }
@@ -2691,21 +2651,20 @@ void GameService::UpdateCityActState(FamilyId_t FamilyId, int8_t ActState)
 void GameService::SetFamilyMemberNeedSync(FamilyId_t nFamilyId)
 {
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
         std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    __x = this->m_players.end();
+    if ( iter == __x )
       break;
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
-    if ( player && Player::getFamilyId(player) == nFamilyId )
-      Player::SetNeedSyncAround(player);
+    player = iter->second;
+    if ( player && player->getFamilyId() == nFamilyId )
+      player->SetNeedSyncAround();
   }
   /* MutexGuard destroyed */
 }
@@ -2715,29 +2674,28 @@ void GameService::GetFamilyMemberInMap( FamilyId_t nFamilyId, int32_t nMapId, Pl
 {
   Player *player;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > v14;
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
         std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
   {
-    v14._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &v14) )
+    v14 = this->m_players.end();
+    if ( iter == v14 )
       break;
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player
-      && Player::getFamilyId(player) == nFamilyId
+      && player->getFamilyId() == nFamilyId
       && (*((int (__fastcall **)(Player *))player->_vptr_Entity + 9))(player) > nLevel )
     {
       if ( StaticObj::getMapId(player) == nMapId )
       {
-        std::list<Player *>::push_back(pList, &player);
+        pList.push_back(player);
       }
       else
       {
         __x[0] = Player::getCid(player);
-        std::list<long>::push_back(farList, __x);
+        farList.push_back(__x);
       }
     }
   }
@@ -2745,36 +2703,35 @@ void GameService::GetFamilyMemberInMap( FamilyId_t nFamilyId, int32_t nMapId, Pl
 }
 
 
-void GameService::onUpdateActivityState( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::onUpdateActivityState( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  int8_t Int8; // bl
-  CActivityManager *v4; // rax
+  int8_t Int8; 
+  CActivityManager *v4; 
   if ( pConn )
   {
     if ( inPacket )
     {
-      nId = Answer::NetPacket::readInt32(inPacket);
-      Int8 = Answer::NetPacket::readInt8(inPacket);
+      nId = inPacket->readInt32();
+      Int8 = inPacket->readInt8();
       v4 = Answer::Singleton<CActivityManager>::instance();
-      CActivityManager::UpdateActivityState(v4, nId, Int8);
+      v4->UpdateActivityState(nId, Int8);
     }
   }
 }
 
 
-void GameService::OnSocialCityMasterBanChat( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
+void GameService::OnSocialCityMasterBanChat( ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  int *v3; // rax
-  Answer::MutexGuard lock;
+  int *v3; 
   CharId_t nCharId;
   if ( pConn )
   {
     if ( inPacket )
     {
-      nCharId = Answer::NetPacket::readInt64(inPacket);
-      nEndTime = Answer::NetPacket::readInt32(inPacket);
+      nCharId = inPacket->readInt64();
+      nEndTime = inPacket->readInt32();
       Answer::MutexGuard lock(&this->m_cityMasterBanChatLock);
-      v3 = std::map<long,int>::operator[](&this->m_mCityMasterBanChatMap, &nCharId);
+      v3 = this->m_mCityMasterBanChatMap[nCharId];
       *v3 = nEndTime;
       /* MutexGuard destroyed */
     }
@@ -2787,11 +2744,10 @@ int32_t GameService::GetCityMasterBanChatTime(CharId_t nCharId)
 
   CharId_t nCharIda;
 
-  Answer::MutexGuard lock;
 
   nCharIda = nCharId;
   Answer::MutexGuard lock(&this->m_cityMasterBanChatLock);
-  v2 = *std::map<long,int>::operator[](&this->m_mCityMasterBanChatMap, &nCharIda);
+  v2 = this->m_mCityMasterBanChatMap[nCharIda];
   /* MutexGuard destroyed */
   return v2;
 }
@@ -2799,39 +2755,35 @@ int32_t GameService::GetCityMasterBanChatTime(CharId_t nCharId)
 
 void GameService::KickUser(CharId_t cid, int32_t opWay)
 {
-  int8_t ConnId; // al
-  int64_t Uid; // rax
-
-
-  int8_t v7; // al
+  int8_t ConnId;   /* var */int8_t v7; 
   CharId_t cida;
 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
   Answer::NetPacket *packet;
 
   cida = cid;
   Answer::MutexGuard lock(&this->m_playerLock);
-  iter._M_node = std::map<long,Player *>::find(&this->m_players, &cida)._M_node;
-  __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-  if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator==(&iter, &__x) )
+  iter = this->m_players.find(cida);
+  __x = this->m_players.end();
+  if ( !iter == __x )
   {
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player )
     {
       ConnId = Player::getConnId(player);
-      packet = GameService::popNetpacket(this, ConnId, Answer::PackType::PACK_PROC, 0x4E2Au);
+      packet = popNetpacket(ConnId, Answer::PackType::PACK_PROC, 0x4E2Au);
       if ( packet )
       {
-        Uid = Player::getUid(player);
-        Answer::NetPacket::writeInt64(packet, Uid);
-        Sid = Player::getSid(player);
-        Answer::NetPacket::writeInt32(packet, Sid);
-        Answer::NetPacket::writeInt32(packet, opWay);
-        WOffset = Answer::NetPacket::getWOffset(packet);
-        Answer::NetPacket::setSize(packet, WOffset);
+        Uid = player->getUid();
+        packet->writeInt64(Uid);
+        Sid = player->getSid();
+        packet->writeInt32(Sid);
+        packet->writeInt32(opWay);
+  uint32_t wOffset = 0;
+        wOffset = packet->getWOffset();
+        packet->setSize(wOffset);
         v7 = Player::getConnId(player);
         sendPacket(v7, packet);
       }
@@ -2846,28 +2798,29 @@ void GameService::KickAll(int32_t opWay)
 
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > iter;
   std::_Rb_tree_iterator<std::pair<const int8_t,GameService::ConnType*> > __x;
-  std::map<int8_t,GameService::ConnType*>::ConnType *pConn;
+  ConnType *pConn;
   Answer::NetPacket *packet;
 
-  for ( iter._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::begin(&this->m_mConn)._M_node;
+  for ( iter = this->m_mConn.begin();
         ;
         std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<int8_t,MutiConn<GameService> *,std::less<int8_t>,std::allocator<std::pair<int8_t const,MutiConn<GameService> *>>>::end(&this->m_mConn)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator!=(&iter, &__x) )
+    __x = this->m_mConn.end();
+    if ( iter == __x )
       break;
-    pConn = std::_Rb_tree_iterator<std::pair<int8_t const,MutiConn<GameService> *>>::operator->(&iter)->second;
+    pConn = iter->second;
     if ( pConn )
     {
-      packet = Answer::TcpClient::popNetpacket(pConn);
+      packet = pConn->popNetpacket();
       if ( packet )
       {
-        Answer::NetPacket::writeInt32(packet, opWay);
-        WOffset = Answer::NetPacket::getWOffset(packet);
-        Answer::NetPacket::setSize(packet, WOffset);
+        packet->writeInt32(opWay);
+  uint32_t wOffset = 0;
+        wOffset = packet->getWOffset();
+        packet->setSize(wOffset);
         Answer::NetPacket::setType(packet, Answer::PackType::PACK_PROC);
-        Answer::NetPacket::setProc(packet, 0x4E2Bu);
-        Answer::TcpClient::sendPacket(pConn, packet);
+        packet->setProc(0x4E2Bu);
+        pConn->sendPacket(packet);
       }
     }
   }
@@ -2876,24 +2829,23 @@ void GameService::KickAll(int32_t opWay)
 
 void GameService::onCheckTitle(CharId_t nCharId, int8_t nType, int32_t nParam)
 {
-  CExtCharTitle *CharTitle; // rax
+  CExtCharTitle *CharTitle; 
   CharId_t nCharIda;
 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   nCharIda = nCharId;
   Answer::MutexGuard lock(&this->m_playerLock);
-  iter._M_node = std::map<long,Player *>::find(&this->m_players, &nCharIda)._M_node;
-  __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-  if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator==(&iter, &__x) )
+  iter = this->m_players.find(nCharIda);
+  __x = this->m_players.end();
+  if ( !iter == __x )
   {
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player )
     {
-      CharTitle = Player::GetCharTitle(player);
+      CharTitle = player->GetCharTitle();
       CExtCharTitle::CheckAddTitle(CharTitle, nType, nParam);
     }
   }
@@ -2903,25 +2855,23 @@ void GameService::onCheckTitle(CharId_t nCharId, int8_t nType, int32_t nParam)
 
 void GameService::onCheckTeShuTitle(CharId_t nCharId, int8_t nType, int32_t nParam)
 {
-  Answer::DBPool *v4; // rax
+  Answer::DBPool *v4; 
 
-  CExtCharTitle *CharTitle; // rax
+  CExtCharTitle *CharTitle; 
   CharId_t nCharIda;
 
-  Answer::MySqlDBGuard db;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   nCharIda = nCharId;
   Answer::MutexGuard lock(&this->m_playerLock);
-  iter._M_node = std::map<long,Player *>::find(&this->m_players, &nCharIda)._M_node;
-  __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-  if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator==(&iter, &__x) )
+  iter = this->m_players.find(nCharIda);
+  __x = this->m_players.end();
+  if ( iter == __x )
   {
     v4 = Answer::Singleton<Answer::DBPool>::instance();
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v4);
+    Answer::MySqlDBGuard db(v4);
     Time = Answer::DayTime::now() + 86340;
     memset(szSQL, 0, sizeof(szSQL));
     bzero(szSQL, 0x1000u);
@@ -2933,17 +2883,17 @@ void GameService::onCheckTeShuTitle(CharId_t nCharId, int8_t nType, int32_t nPar
       nParam + 31301,
       Time,
       Time);
-    Answer::MySqlDBGuard::excute(&db, szSQL);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
+    db.excute(szSQL);
+    /* db auto-destructed */
   }
   else
   {
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player )
     {
       Now = Unit::getNow(player);
       Player::updateRecord(player, nParam + 31301, Now + 86340);
-      CharTitle = Player::GetCharTitle(player);
+      CharTitle = player->GetCharTitle();
       CExtCharTitle::CheckAddTitle(CharTitle, nType, nParam);
     }
   }
@@ -2953,24 +2903,23 @@ void GameService::onCheckTeShuTitle(CharId_t nCharId, int8_t nType, int32_t nPar
 
 void GameService::onRemoveTitle(CharId_t nCharId, int8_t nType)
 {
-  CExtCharTitle *CharTitle; // rax
+  CExtCharTitle *CharTitle; 
   CharId_t nCharIda;
 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   nCharIda = nCharId;
   Answer::MutexGuard lock(&this->m_playerLock);
-  iter._M_node = std::map<long,Player *>::find(&this->m_players, &nCharIda)._M_node;
-  __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-  if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator==(&iter, &__x) )
+  iter = this->m_players.find(nCharIda);
+  __x = this->m_players.end();
+  if ( !iter == __x )
   {
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player )
     {
-      CharTitle = Player::GetCharTitle(player);
+      CharTitle = player->GetCharTitle();
       CExtCharTitle::RemoveTitle(CharTitle, nType, 0);
     }
   }
@@ -2983,12 +2932,13 @@ void GameService::requestWorldLevel()
 
   Answer::NetPacket *packet;
 
-  packet = GameService::popNetpacket(this, 0, Answer::PackType::PACK_PROC, 0x4E4Bu);
+  packet = popNetpacket(0, Answer::PackType::PACK_PROC, 0x4E4Bu);
   if ( packet )
   {
-    Answer::NetPacket::writeInt32(packet, 0);
-    WOffset = Answer::NetPacket::getWOffset(packet);
-    Answer::NetPacket::setSize(packet, WOffset);
+    packet->writeInt32(0);
+  uint32_t wOffset = 0;
+    wOffset = packet->getWOffset();
+    packet->setSize(wOffset);
     sendPacket(0, packet);
   }
 }
@@ -2997,15 +2947,15 @@ void GameService::requestWorldLevel()
 void GameService::onRequestDropRecord( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
 {
 
-  int8_t Id; // bl
-  CWorldBoss *v5; // rax
+  int8_t Id; 
+  CWorldBoss *v5; 
 
   if ( pConn )
   {
     if ( inPacket )
     {
-      Int16 = Answer::NetPacket::readInt16(inPacket);
-      Id = MutiConn<GameService>::GetId(pConn);
+      Int16 = inPacket->readInt16();
+      Id = pConn->GetId();
       v5 = Answer::Singleton<CWorldBoss>::instance();
       CWorldBoss::SendDropRecord(v5, Id, Int16);
     }
@@ -3015,13 +2965,11 @@ void GameService::onRequestDropRecord( std::map<int8_t,ConnType*>::ConnType *pCo
 
 void GameService::InitServerBattle()
 {
-  GameService *v1; // rax
-  DBService *v2; // rax
-  Answer::DBPool *v3; // rax
-  Answer::MySqlQuery *v4; // rax
-  const char *StringValue; // rax
-  Answer::MySqlDBGuard db;
-  Answer::MySqlQuery result;
+  GameService *v1; 
+  DBService *v2; 
+  Answer::DBPool *v3; 
+  Answer::MySqlQuery *v4; 
+  const char *StringValue; 
 
   v1 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v1) == 9 )
@@ -3032,16 +2980,16 @@ void GameService::InitServerBattle()
   else
   {
     v3 = Answer::Singleton<Answer::DBPool>::instance();
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v3);
+    Answer::MySqlDBGuard db(v3);
     v4 = Answer::MySqlDBGuard::query(&db, "SELECT * FROM `sys_server_config` WHERE `name`='BATTLE'");
-    Answer::MySqlQuery::MySqlQuery(&result, v4);
-    if ( !Answer::MySqlQuery::eof(&result) )
+    Answer::MySqlQuery result(v4);
+    if ( !result.eof() )
     {
       StringValue = Answer::MySqlQuery::getStringValue(&result, "value", byte_8DA6C0);
       this->m_Battle = atoi(StringValue);
     }
-    Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
+    /* result auto-destructed */
+    /* db auto-destructed */
   }
 }
 
@@ -3055,96 +3003,93 @@ void GameService::SetServerBattle(int32_t Battle)
 
 void GameService::InitMoYuShiJieRecord()
 {
-  GameService *v1; // rax
-  Answer::DBPool *v2; // rax
-  Answer::MySqlQuery *v3; // rax
-  const char *StringValue; // rax
-  Answer::MySqlQuery *v5; // rax
-  const char *v6; // rax
+  GameService *v1; 
+  Answer::DBPool *v2; 
+  Answer::MySqlQuery *v3; 
+  const char *StringValue; 
+  Answer::MySqlQuery *v5; 
+  const char *v6; 
   LogMoYuShiJieReward record;
-  Answer::MySqlDBGuard db;
-  Answer::MySqlQuery result;
   v1 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v1) != 9 )
   {
     v2 = Answer::Singleton<Answer::DBPool>::instance();
-    Answer::MySqlDBGuard::MySqlDBGuard(&db, v2);
+    Answer::MySqlDBGuard db(v2);
     nSize = 0;
     v3 = Answer::MySqlDBGuard::query(
            &db,
            "SELECT * FROM `log_moyushijie_reward` WHERE `special`=1 ORDER BY `time` DESC LIMIT 5");
-    Answer::MySqlQuery::MySqlQuery(&result, v3);
-    while ( !Answer::MySqlQuery::eof(&result) )
+    Answer::MySqlQuery result(v3);
+    while ( !result.eof() )
     {
       memset(&record, 0, sizeof(record));
       record.cid = Answer::MySqlQuery::getInt64Value(&result, "cid", 0);
       StringValue = Answer::MySqlQuery::getStringValue(&result, "name", byte_8DA6C0);
       snprintf(record.name, 0x1Eu, StringValue);
-      record.dungeonid = Answer::MySqlQuery::getIntValue(&result, "dungeonid", 0);
-      record.itemid = Answer::MySqlQuery::getIntValue(&result, "itemid", 0);
-      record.itemclass = Answer::MySqlQuery::getIntValue(&result, "itemclass", 0);
-      record.itemcount = Answer::MySqlQuery::getIntValue(&result, "itemcount", 0);
-      record.time = Answer::MySqlQuery::getIntValue(&result, "time", 0);
-      record.special = Answer::MySqlQuery::getIntValue(&result, "special", 0);
-      std::list<LogMoYuShiJieReward>::push_front(&this->m_lMYSJRecordSpecial, &record);
+      record.dungeonid = result.getIntValue("dungeonid", 0);
+      record.itemid = result.getIntValue("itemid", 0);
+      record.itemclass = result.getIntValue("itemclass", 0);
+      record.itemcount = result.getIntValue("itemcount", 0);
+      record.time = result.getIntValue("time", 0);
+      record.special = result.getIntValue("special", 0);
+      this->m_lMYSJRecordSpecial.push_front(record);
       if ( ++nSize > 4 )
         break;
-      Answer::MySqlQuery::nextRow(&result);
+      result.nextRow();
     }
     v5 = Answer::MySqlDBGuard::query(
            &db,
            "SELECT * FROM `log_moyushijie_reward` WHERE `special`=0 ORDER BY `time` DESC LIMIT 30");
     Answer::MySqlQuery::operator=(&result, v5);
-    while ( !Answer::MySqlQuery::eof(&result) )
+    while ( !result.eof() )
     {
       memset(&record, 0, sizeof(record));
       record.cid = Answer::MySqlQuery::getInt64Value(&result, "cid", 0);
       v6 = Answer::MySqlQuery::getStringValue(&result, "name", byte_8DA6C0);
       snprintf(record.name, 0x1Eu, v6);
-      record.dungeonid = Answer::MySqlQuery::getIntValue(&result, "dungeonid", 0);
-      record.itemid = Answer::MySqlQuery::getIntValue(&result, "itemid", 0);
-      record.itemclass = Answer::MySqlQuery::getIntValue(&result, "itemclass", 0);
-      record.itemcount = Answer::MySqlQuery::getIntValue(&result, "itemcount", 0);
-      record.time = Answer::MySqlQuery::getIntValue(&result, "time", 0);
-      record.special = Answer::MySqlQuery::getIntValue(&result, "special", 0);
-      std::list<LogMoYuShiJieReward>::push_front(&this->m_lMYSJRecord, &record);
+      record.dungeonid = result.getIntValue("dungeonid", 0);
+      record.itemid = result.getIntValue("itemid", 0);
+      record.itemclass = result.getIntValue("itemclass", 0);
+      record.itemcount = result.getIntValue("itemcount", 0);
+      record.time = result.getIntValue("time", 0);
+      record.special = result.getIntValue("special", 0);
+      this->m_lMYSJRecord.push_front(record);
       if ( ++nSize > 29 )
         break;
-      Answer::MySqlQuery::nextRow(&result);
+      result.nextRow();
     }
-    Answer::MySqlQuery::~MySqlQuery(&result);
-    Answer::MySqlDBGuard::~MySqlDBGuard(&db);
+    /* result auto-destructed */
+    /* db auto-destructed */
   }
 }
 
 
 void GameService::SendMoYuShiJieRecord(Player *player)
 {
-  int8_t ConnId; // bl
+  int8_t ConnId; 
 
 
-  const LogMoYuShiJieReward *v5; // rax
-  const LogMoYuShiJieReward *v6; // rax
-  const LogMoYuShiJieReward *v7; // rax
-  const LogMoYuShiJieReward *v8; // rax
-  const LogMoYuShiJieReward *v9; // rax
-  const LogMoYuShiJieReward *v10; // rax
-  const LogMoYuShiJieReward *v11; // rax
-  const LogMoYuShiJieReward *v12; // rax
-  const LogMoYuShiJieReward *v13; // rax
-  const LogMoYuShiJieReward *v14; // rax
-  const LogMoYuShiJieReward *v15; // rax
-  const LogMoYuShiJieReward *v16; // rax
-  const LogMoYuShiJieReward *v17; // rax
-  const LogMoYuShiJieReward *v18; // rax
-  const LogMoYuShiJieReward *v19; // rax
-  const LogMoYuShiJieReward *v20; // rax
+  const LogMoYuShiJieReward *v5; 
+  const LogMoYuShiJieReward *v6; 
+  const LogMoYuShiJieReward *v7; 
+  const LogMoYuShiJieReward *v8; 
+  const LogMoYuShiJieReward *v9; 
+  const LogMoYuShiJieReward *v10; 
+  const LogMoYuShiJieReward *v11; 
+  const LogMoYuShiJieReward *v12; 
+  const LogMoYuShiJieReward *v13; 
+  const LogMoYuShiJieReward *v14; 
+  const LogMoYuShiJieReward *v15; 
+  const LogMoYuShiJieReward *v16; 
+  const LogMoYuShiJieReward *v17; 
+  const LogMoYuShiJieReward *v18; 
+  const LogMoYuShiJieReward *v19; 
+  const LogMoYuShiJieReward *v20; 
 
 
-  int8_t v23; // bl
+  int8_t v23; 
   std::_List_const_iterator<LogMoYuShiJieReward> iter_0;
   std::_List_const_iterator<LogMoYuShiJieReward> iter;
-  Answer::MutexGuard lock;
   std::_List_iterator<LogMoYuShiJieReward> __x;
   std::_List_const_iterator<LogMoYuShiJieReward> v28;
   std::_List_iterator<LogMoYuShiJieReward> v29;
@@ -3158,71 +3103,72 @@ void GameService::SendMoYuShiJieRecord(Player *player)
   if ( player )
   {
     ConnId = Player::getConnId(player);
-    packet = GameService::popNetpacket(this, ConnId, Answer::PackType::PACK_DISPATCH, 0x2ED7u);
+    packet = popNetpacket(ConnId, Answer::PackType::PACK_DISPATCH, 0x2ED7u);
     if ( packet )
     {
       Answer::MutexGuard lock(&this->m_mysjRecordLock);
-      v3 = std::list<LogMoYuShiJieReward>::size(&this->m_lMYSJRecord);
-      v4 = std::list<LogMoYuShiJieReward>::size(&this->m_lMYSJRecordSpecial);
+      v3 = this->m_lMYSJRecord.size();
+      v4 = this->m_lMYSJRecordSpecial.size();
       Answer::NetPacket::writeInt16(packet, v3 + v4);
-      __x._M_node = std::list<LogMoYuShiJieReward>::begin(&this->m_lMYSJRecordSpecial)._M_node;
-      std::_List_const_iterator<LogMoYuShiJieReward>::_List_const_iterator(&iter, &__x);
+      __x = this->m_lMYSJRecordSpecial.begin();
+      iter = __x;
       while ( 1 )
       {
-        v29._M_node = std::list<LogMoYuShiJieReward>::end(&this->m_lMYSJRecordSpecial)._M_node;
-        std::_List_const_iterator<LogMoYuShiJieReward>::_List_const_iterator(&v28, &v29);
-        if ( !std::_List_const_iterator<LogMoYuShiJieReward>::operator!=(&iter, &v28) )
+        v29 = this->m_lMYSJRecordSpecial.end();
+        v28 = v29;
+        if ( iter == v28 )
           break;
-        v5 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+        v5 = iter.operator->();
         Answer::NetPacket::writeInt64(packet, v5->cid);
-                v6 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+                v6 = iter.operator->();
                 Answer::NetPacket::writeUTF8(packet, &val);
-                        v7 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+                        v7 = iter.operator->();
         Answer::NetPacket::writeInt32(packet, v7->dungeonid);
-        v8 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+        v8 = iter.operator->();
         Answer::NetPacket::writeInt32(packet, v8->itemid);
-        v9 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+        v9 = iter.operator->();
         Answer::NetPacket::writeInt8(packet, v9->itemclass);
-        v10 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+        v10 = iter.operator->();
         Answer::NetPacket::writeInt32(packet, v10->itemcount);
-        v11 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+        v11 = iter.operator->();
         Answer::NetPacket::writeInt32(packet, v11->time);
-        v12 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter);
+        v12 = iter.operator->();
         Answer::NetPacket::writeInt8(packet, v12->special);
-        std::_List_const_iterator<LogMoYuShiJieReward>::operator++(&iter);
+        ++iter;
       }
-      v32._M_node = std::list<LogMoYuShiJieReward>::begin(&this->m_lMYSJRecord)._M_node;
-      std::_List_const_iterator<LogMoYuShiJieReward>::_List_const_iterator(&iter_0, &v32);
+      v32 = this->m_lMYSJRecord.begin();
+      iter_0 = v32;
       while ( 1 )
       {
-        v34._M_node = std::list<LogMoYuShiJieReward>::end(&this->m_lMYSJRecord)._M_node;
-        std::_List_const_iterator<LogMoYuShiJieReward>::_List_const_iterator(&v33, &v34);
-        if ( !std::_List_const_iterator<LogMoYuShiJieReward>::operator!=(&iter_0, &v33) )
+        v34 = this->m_lMYSJRecord.end();
+        v33 = v34;
+        if ( iter_0 == v33 )
           break;
-        v13 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+        v13 = iter_0.operator->();
         Answer::NetPacket::writeInt64(packet, v13->cid);
-                v14 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+                v14 = iter_0.operator->();
                 Answer::NetPacket::writeUTF8(packet, &v35);
-                        v15 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+                        v15 = iter_0.operator->();
         Answer::NetPacket::writeInt32(packet, v15->dungeonid);
-        v16 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+        v16 = iter_0.operator->();
         Answer::NetPacket::writeInt32(packet, v16->itemid);
-        v17 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+        v17 = iter_0.operator->();
         Answer::NetPacket::writeInt8(packet, v17->itemclass);
-        v18 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+        v18 = iter_0.operator->();
         Answer::NetPacket::writeInt32(packet, v18->itemcount);
-        v19 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+        v19 = iter_0.operator->();
         Answer::NetPacket::writeInt32(packet, v19->time);
-        v20 = std::_List_const_iterator<LogMoYuShiJieReward>::operator->(&iter_0);
+        v20 = iter_0.operator->();
         Answer::NetPacket::writeInt8(packet, v20->special);
-        std::_List_const_iterator<LogMoYuShiJieReward>::operator++(&iter_0);
+        ++iter_0;
       }
       /* MutexGuard destroyed */
-      WOffset = Answer::NetPacket::getWOffset(packet);
-      Answer::NetPacket::setSize(packet, WOffset);
+  uint32_t wOffset = 0;
+      wOffset = packet->getWOffset();
+      packet->setSize(wOffset);
       GateIndex = Player::getGateIndex(player);
       v23 = Player::getConnId(player);
-      GameService::sendPacketTo(this, v23, GateIndex, packet);
+      sendPacketTo(v23, GateIndex, packet);
     }
   }
 }
@@ -3230,11 +3176,9 @@ void GameService::SendMoYuShiJieRecord(Player *player)
 
 void GameService::AddMoYuShiJieRecord(const LogMoYuShiJieReward *const logReward)
 {
-  GameService *v2; // rax
-  size_t v3; // rbx
-  size_t v4; // rbx
-  Answer::MutexGuard lock_0;
-  Answer::MutexGuard lock;
+  GameService *v2; 
+  size_t v3; 
+  size_t v4; 
 
   v2 = Answer::Singleton<GameService>::instance();
   if ( GameService::getLine(v2) != 9 && logReward->special >= 0 )
@@ -3242,26 +3186,26 @@ void GameService::AddMoYuShiJieRecord(const LogMoYuShiJieReward *const logReward
     if ( logReward->special )
     {
       Answer::MutexGuard lock_0(&this->m_mysjRecordLock);
-      std::list<LogMoYuShiJieReward>::push_front(&this->m_lMYSJRecordSpecial, logReward);
-      if ( std::list<LogMoYuShiJieReward>::size(&this->m_lMYSJRecordSpecial) <= 5 )
+      this->m_lMYSJRecordSpecial.push_front(logReward);
+      if ( this->m_lMYSJRecordSpecial.size() <= 5 )
       {
-        v4 = std::list<LogMoYuShiJieReward>::size(&this->m_lMYSJRecordSpecial);
-        if ( v4 + std::list<LogMoYuShiJieReward>::size(&this->m_lMYSJRecord) > 0x1E )
-          std::list<LogMoYuShiJieReward>::pop_front(&this->m_lMYSJRecord);
+        v4 = this->m_lMYSJRecordSpecial.size();
+        if ( v4 + this->m_lMYSJRecord.size() > 0x1E )
+          this->m_lMYSJRecord.pop_front();
       }
       else
       {
-        std::list<LogMoYuShiJieReward>::pop_back(&this->m_lMYSJRecordSpecial);
+        this->m_lMYSJRecordSpecial.pop_back();
       }
       /* MutexGuard destroyed */
     }
     else
     {
       Answer::MutexGuard lock(&this->m_mysjRecordLock);
-      std::list<LogMoYuShiJieReward>::push_front(&this->m_lMYSJRecord, logReward);
-      v3 = std::list<LogMoYuShiJieReward>::size(&this->m_lMYSJRecord);
-      if ( v3 + std::list<LogMoYuShiJieReward>::size(&this->m_lMYSJRecordSpecial) > 0x1E )
-        std::list<LogMoYuShiJieReward>::pop_back(&this->m_lMYSJRecord);
+      this->m_lMYSJRecord.push_front(logReward);
+      v3 = this->m_lMYSJRecord.size();
+      if ( v3 + this->m_lMYSJRecordSpecial.size() > 0x1E )
+        this->m_lMYSJRecord.pop_back();
       /* MutexGuard destroyed */
     }
   }
@@ -3271,19 +3215,18 @@ void GameService::AddMoYuShiJieRecord(const LogMoYuShiJieReward *const logReward
 void GameService::ResetFestivalData(int32_t nVersion)
 {
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
         std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    __x = this->m_players.end();
+    if ( iter == __x )
       break;
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player )
       Player::ResetFestivalData(player, nVersion);
   }
@@ -3293,21 +3236,20 @@ void GameService::ResetFestivalData(int32_t nVersion)
 
 void GameService::UpdateTencentInfo(CharId_t cid, const TencentInfo *const info)
 {
-  CExtCharTencent *CharTencent; // rax
+  CExtCharTencent *CharTencent; 
   CharId_t cida;
 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   cida = cid;
   Answer::MutexGuard lock(&this->m_playerLock);
-  iter._M_node = std::map<long,Player *>::find(&this->m_players, &cida)._M_node;
-  __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-  if ( std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+  iter = this->m_players.find(cida);
+  __x = this->m_players.end();
+  if ( iter != __x )
   {
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player )
     {
       CharTencent = Player::GetCharTencent(player);
@@ -3322,33 +3264,34 @@ void GameService::FamilyBroadcast( int8_t connid, FamilyId_t nFamilyId, Answer::
 {
 
 
-  char *Buffer; // rcx
+  char *Buffer; 
 
   Answer::NetPacket *packet;
 
   if ( inPacket )
   {
-    packet = GameService::popNetpacket(this, connid, Answer::PackType::PACK_DISPATCH, 0x4E4Fu);
+    packet = popNetpacket(connid, Answer::PackType::PACK_DISPATCH, 0x4E4Fu);
     if ( packet )
     {
-      Answer::NetPacket::writeInt64(packet, nFamilyId);
-      Proc = Answer::NetPacket::getProc(inPacket);
+      packet->writeInt64(nFamilyId);
+      Proc = inPacket->getProc();
       Answer::NetPacket::writeUInt16(packet, Proc);
-      Size = Answer::NetPacket::getSize(inPacket);
-      Buffer = Answer::NetPacket::getBuffer(inPacket);
-      Answer::NetPacket::write(packet, Buffer, Size);
-      WOffset = Answer::NetPacket::getWOffset(packet);
-      Answer::NetPacket::setSize(packet, WOffset);
+      Size = inPacket->getSize();
+      Buffer = inPacket->getBuffer();
+      packet->write(Buffer, Size);
+  uint32_t wOffset = 0;
+      wOffset = packet->getWOffset();
+      packet->setSize(wOffset);
       sendPacket(connid, packet);
     }
-    Answer::NetPacket::destroy(inPacket);
+    inPacket->destroy();
   }
 }
 
 
 void GameService::onSocialInitFamilyInfo( std::map<int8_t,ConnType*>::ConnType *pConn, Answer::NetPacket *inPacket)
 {
-  FamilyManager *v3; // rax
+  FamilyManager *v3; 
 
   if ( pConn )
   {
@@ -3363,20 +3306,21 @@ void GameService::onSocialInitFamilyInfo( std::map<int8_t,ConnType*>::ConnType *
 
 void GameService::broadcastCityWarWinnerLogin( CharId_t nCharId, const std::string *const strName)
 {
-  GameService *v3; // rax
+  GameService *v3; 
 
-  GameService *v5; // rax
+  GameService *v5; 
   Answer::NetPacket *packet;
 
   v3 = Answer::Singleton<GameService>::instance();
   packet = GameService::popNetpacket(v3, Answer::PackType::PACK_DISPATCH, 0x2CD6u);
   if ( packet )
   {
-    Answer::NetPacket::writeInt32(packet, 334);
-    Answer::NetPacket::writeUTF8(packet, strName);
-    Answer::NetPacket::writeInt64(packet, nCharId);
-    WOffset = Answer::NetPacket::getWOffset(packet);
-    Answer::NetPacket::setSize(packet, WOffset);
+    packet->writeInt32(334);
+    packet->writeUTF8(strName);
+    packet->writeInt64(nCharId);
+  uint32_t wOffset = 0;
+    wOffset = packet->getWOffset();
+    packet->setSize(wOffset);
     v5 = Answer::Singleton<GameService>::instance();
     GameService::worldBroadcast(v5, packet);
   }
@@ -3385,21 +3329,20 @@ void GameService::broadcastCityWarWinnerLogin( CharId_t nCharId, const std::stri
 
 void GameService::broadCastKiaFuHuoDongIcon()
 {
-  CKaiFuHuoDong *v1; // rax
+  CKaiFuHuoDong *v1; 
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > iter;
-  Answer::MutexGuard lock;
   std::_Rb_tree_iterator<std::pair<const long int,Player*> > __x;
   Player *player;
 
   Answer::MutexGuard lock(&this->m_playerLock);
-  for ( iter._M_node = std::map<long,Player *>::begin(&this->m_players)._M_node;
+  for ( iter = this->m_players.begin();
         ;
         std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
   {
-    __x._M_node = std::map<long,Player *>::end(&this->m_players)._M_node;
-    if ( !std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator!=(&iter, &__x) )
+    __x = this->m_players.end();
+    if ( iter == __x )
       break;
-    player = std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator->(&iter)->second;
+    player = iter->second;
     if ( player )
     {
       v1 = Answer::Singleton<CKaiFuHuoDong>::instance();

@@ -34,6 +34,10 @@ public:
     void setType(PackType type);
     void setProc(uint16_t proc);
     void destroy();
+    bool rightShift(uint32_t n) { (void)n; return true; }
+    uint32_t getSize() { return 0; }
+    char* getBuffer() { return nullptr; }
+    void write(const char* buf, uint32_t len) { (void)buf; (void)len; }
 
     // 静态包装方法
     static void writeInt32(NetPacket* p, int32_t v) { if (p) p->writeInt32(v); }
@@ -58,6 +62,7 @@ public:
     static uint32_t getSize(NetPacket* p) { (void)p; return 0; }
     static char* getBuffer(NetPacket* p) { (void)p; return nullptr; }
     static void write(NetPacket* p, const char* buf, uint32_t len) { (void)p; (void)buf; (void)len; }
+    static bool rightShift(NetPacket* p, uint32_t n) { return p ? p->rightShift(n) : false; }
 };
 
 } // namespace Answer
