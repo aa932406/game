@@ -10,9 +10,7 @@
 #include "Game/MapManager.h"
 #include "Game/CPoolManager.h"
 #include "Game/CTimer.h"
-#include "Game/CWorldBoss.h"
-#include "Game/DBService.h"
-#include "Other/User.h"
+#include "Game/CWorldBoss.h"#include "Other/User.h"
 #include "Other/CVip.h"
 #include "Other/CGMBackstate.h"
 #include "Other/PlayerRobot.h"
@@ -716,7 +714,7 @@ void GameService::onPlayerLogout(Player *player)
       else
       {
         v2 = Answer::Singleton<CPoolManager>::instance();
-        v2->push(player);
+        v2->Push(player);
       }
     }
     if ( (uint8_t)connid < 0x64u && (uint16_t)cgindex < 0x2710u )
@@ -926,13 +924,13 @@ void GameService::broadcast( Answer::NetPacket *inPacket, int8_t connid, const I
 
   if ( inPacket )
   {
-    if ( indexList.empty() )
+    if (      indexList->empty() )
     {
       inPacket->destroy();
     }
     else
     {
-      nsize = indexList.size();
+      nsize = indexList->size();
       v4 = 2 * (nsize + 1) + inPacket->getSize();
       Proc = inPacket->getProc();
       Type = inPacket->getType();
@@ -940,11 +938,11 @@ void GameService::broadcast( Answer::NetPacket *inPacket, int8_t connid, const I
       if ( packet )
       {
         packet->writeInt16(nsize);
-        for ( iter = indexList.begin();
+        for ( iter =      indexList->begin();
               ;
               ++iter )
         {
-          __x = indexList.end();
+          __x =      indexList->end();
           if ( iter == __x )
             break;
           v7 = (int16_t *)*iter;
@@ -992,7 +990,7 @@ void GameService::broadcast(Answer::NetPacket *inPacket)
       {
         __x = Player::getGateIndex(player);
         __k = Player::getConnId(player);
-        v2 = indexMap[__k];
+        std::list<int16_t>& v2 = indexMap[__k];
         v2.push_back(__x);
       }
       ++iter;
@@ -1019,16 +1017,16 @@ void GameService::broadcast(Answer::NetPacket *inPacket, const CharIdList *const
 
   if ( inPacket )
   {
-    if ( cids.empty() )
+    if (      cids->empty() )
     {
       inPacket->destroy();
     }
     else
     {
       IndexMap indexMap;
-      for ( iter = cids.begin(); ; ++iter )
+      for ( iter =      cids->begin(); ; ++iter )
       {
-        v10 = cids.end();
+        v10 =      cids->end();
         if ( iter == v10 )
           break;
         Answer::MutexGuard lock(&this->m_playerLock);
@@ -2663,7 +2661,7 @@ void GameService::UpdateCityWarTitle(FamilyId_t OldFamilyId, FamilyId_t NewFamil
   Answer::MutexGuard lock(&this->m_playerLock);
   for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_players.end();
     if ( iter == __x )
@@ -2699,7 +2697,7 @@ void GameService::UpdateCityActState(FamilyId_t FamilyId, int8_t ActState)
   Answer::MutexGuard lock(&this->m_playerLock);
   for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_players.end();
     if ( iter == __x )
@@ -2724,7 +2722,7 @@ void GameService::SetFamilyMemberNeedSync(FamilyId_t nFamilyId)
   Answer::MutexGuard lock(&this->m_playerLock);
   for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_players.end();
     if ( iter == __x )
@@ -2745,7 +2743,7 @@ void GameService::GetFamilyMemberInMap( FamilyId_t nFamilyId, int32_t nMapId, Pl
   Answer::MutexGuard lock(&this->m_playerLock);
   for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
+        ++iter )
   {
     v14 = this->m_players.end();
     if ( iter == v14 )
@@ -3289,7 +3287,7 @@ void GameService::ResetFestivalData(int32_t nVersion)
   Answer::MutexGuard lock(&this->m_playerLock);
   for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_players.end();
     if ( iter == __x )
@@ -3405,7 +3403,7 @@ void GameService::broadCastKiaFuHuoDongIcon()
   Answer::MutexGuard lock(&this->m_playerLock);
   for ( iter = this->m_players.begin();
         ;
-        std::_Rb_tree_iterator<std::pair<long const,Player *>>::operator++(&iter) )
+        ++iter )
   {
     __x = this->m_players.end();
     if ( iter == __x )

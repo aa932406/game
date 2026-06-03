@@ -31,6 +31,7 @@ public:
     uint32_t getWOffset();
     void setWOffset(uint32_t offset);
     uint16_t getProc();
+    PackType getType() { return PackType::PACK_PROC; }
     void setType(PackType type);
     void setProc(uint16_t proc);
     void destroy();
@@ -56,6 +57,7 @@ public:
     static uint32_t getWOffset(NetPacket* p) { return p ? p->getWOffset() : 0; }
     static void setWOffset(NetPacket* p, uint32_t o) { if (p) p->setWOffset(o); }
     static uint16_t getProc(NetPacket* p) { return p ? p->getProc() : 0; }
+    static PackType getType(NetPacket* p) { return p ? p->getType() : PackType::PACK_PROC; }
     static void setType(NetPacket* p, PackType t) { if (p) p->setType(t); }
     static void setProc(NetPacket* p, uint16_t pr) { if (p) p->setProc(pr); }
     static void destroy(NetPacket* p) { if (p) p->destroy(); }
