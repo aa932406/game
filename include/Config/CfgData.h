@@ -575,7 +575,12 @@ struct RefreshMonster {
 #ifndef RATEITEM_DEFINED
 #define RATEITEM_DEFINED
 struct RateItem {
-    // 成员变量
+    int32_t nRate;
+    int32_t nItemId;
+    int8_t nItemClass;
+    int32_t nItemCount;
+    int8_t nBind;
+    int32_t nGongGaoId;
 };
 
 #endif // RATEITEM_DEFINED

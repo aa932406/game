@@ -256,7 +256,10 @@ enum class ITEM_CHANGE_REASON
     ICR_SEVEN_LOGIN_REWARD,            // 七日登录奖励
     ICR_MAINTAIN_COMPENSATE_REWARD,    // 维护补偿奖励
     ICR_ONLINE_REWAR,                  // 在线奖励
-    ICR_SIGN_REWARD,                   // 签到奖励
+    ICR_SIGN_REWARD,                  // 签到奖励
+    ICR_WU_HUN_DRESS = 800,
+    ICR_WU_HUN_UNDRESS = 801,
+    ICR_WU_HUN_CREATE = 802,
 };
 #endif
 

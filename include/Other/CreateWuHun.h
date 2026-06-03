@@ -29,12 +29,12 @@ public:
     ~CreateWuHun();
     CreateWuHun(const CreateWuHun& other);
 
-private:
+public:
     int32_t nId;
     std::list<ItemData> ConstItem;
     std::list<RateItem> GetItemRate;
     std::list<RateItem> GetItemRate2;
-    int32_t SpecialCost;
+    ItemData SpecialCost;
 };
 
 #endif // _CREATEWUHUN_H_

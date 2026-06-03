@@ -25,7 +25,7 @@ struct AddAttribute;
 class WuHunItem
 {
 public:
-    WuHunItem(const WuHunItem\& a2);
+    WuHunItem(const WuHunItem& a2);
 
     int32_t nId;
     int32_t nLevel;

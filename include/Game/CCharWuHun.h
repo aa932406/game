@@ -8,45 +8,43 @@
 #include <map>
 
 #include "Database/PlayerDBData.h"
-
+#include "Character/CExtSystemBase.h"
 class Player;
-class Map;
-class Unit;
-class Monster;
-class Npc;
-class CActivity;
-class CActivityMap;
-class CfgActivity;
-class CfgMonster;
-class CfgMap;
-class Answer_NetPacket;
-class Position;
+class GameService;
+class WuHunItem;
+class CreateWuHun;
+class GameService;
 
-class CCharWuHun
+class CCharWuHun : public CExtSystemBase
 {
 public:
     CCharWuHun();
-    ~CCharWuHun();
+    virtual ~CCharWuHun();
 
-    void OnLoadFromDB(PlayerDBData * dbData);
-    void OnSaveToDB(PlayerDBData * dbData);
-    void GetInterestsProtocol(ProcIdList * procList);
-    int32_t DispatchNetDatas(ProcId_t nProcId, Answer::NetPacket *inPacket);
+    virtual void Init(Player* pPlayer) override;
+    virtual void OnCleanUp() override;
+    virtual void OnUpdate(int64_t curTick) override;
+    virtual void OnDaySwitch(int32_t nDiffDays) override;
+    virtual void OnLoadFromDB(const PlayerDBData* dbData) override;
+    virtual void OnSaveToDB(PlayerDBData* dbData) override;
+    virtual void GetInterestsProtocol(ProcIdList* procList) override;
+    virtual int32_t DispatchNetDatas(ProcId_t nProcId, Answer::NetPacket* inPacket) override;
+
     void AddCharAttr();
-    int32_t onAskWuHunInfo(Answer::NetPacket *inPacket);
-    int32_t onDressWuHun(Answer::NetPacket *inPacket);
-    int32_t onUnDressWuHun(Answer::NetPacket *inPacket);
+    int32_t onAskWuHunInfo(Answer::NetPacket* inPacket);
+    int32_t onDressWuHun(Answer::NetPacket* inPacket);
+    int32_t onUnDressWuHun(Answer::NetPacket* inPacket);
     void OnRemoveTalent(int32_t TalentId, int32_t TalentLevel);
     void OnAddTalent(int32_t TalentId, int32_t TalentLevel);
-    int32_t onCreateWuHun(Answer::NetPacket *inPacket);
+    int32_t onCreateWuHun(Answer::NetPacket* inPacket);
     void sendWuHunInfo();
     void sendWuHunSlotInfo(int32_t Level, int32_t Slot);
     bool checkWuHunPlace(int32_t Type, int32_t Slot);
     int32_t GetSuitLevel(int32_t nLevel);
 
 private:
-        // TODO: 确认类型 m_WuHun
-        // TODO: 确认类型 m_pPlayer
+    Player* m_pPlayer;
+    int32_t m_WuHun[5][16];
 };
 
 #endif // _CCHARWUHUN_H_
